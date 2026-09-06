@@ -48,28 +48,28 @@ export async function runCriticAndSelfImprovement(
     } catch (_) {}
 
     const prompt = `
-You are the Chief Editorial Quality Critic & Self-Refinement Agent for an elite technology media publication.
-Your job is to critically review the following article draft, score it (0-100), and perform automatic self-improvement if there is any room for enhancement.
+You are the Chief Editorial Director & Human-Grade Prose Auditor for an elite technology media publication.
+Your job is to critically review the following article draft, score it (0-100), and REWRITE any section that sounds like an AI chatbot so that it reads 100% like a brilliant, candid human principal engineer or senior tech journalist.
 
 Historical Reader Preference Memory: "${pastMemory}"
 
 Topic: "${topic}"
 Draft Title: "${draftTitle}"
 Draft Markdown:
-${draftContent.slice(0, 3000)}
+${draftContent.slice(0, 3500)}
 
-Evaluation Criteria:
-1. Depth & Practicality: Does it contain actionable insights, code/tables, or only generic fluff?
-2. Structure: Are there clean H2 (##) and H3 (###) headers?
-3. Engagement: Is the hook compelling?
-4. Formatting: Are key takeaways highlighted?
+ANTI-AI HUMANIZATION AUDIT RULES:
+1. Scrub all AI clichés: eliminate "In today's fast-paced world", "delve into", "tapestry", "revolutionize", "in conclusion", "furthermore", "it's crucial to note".
+2. Inject human rhythm & burstiness: short punchy declarations mixed with detailed technical explanations.
+3. Authentic developer tone: real architectural trade-offs, realistic benchmark metrics, honest caveats, and practical hands-on verdicts.
+4. Clean Markdown structure: ensure sharp ## and ### headers, structured tables, code snippets, and takeaway callout blocks.
 
 Return STRICTLY a JSON object with this schema:
 {
   "score": number (0-100),
-  "feedback": "Short evaluation critique",
-  "improvedTitle": "Optimized, higher-converting title (or same if already great)",
-  "improvedContent": "The enhanced, refined Markdown article content with any weaknesses polished",
+  "feedback": "Short evaluation critique focusing on human authenticity and technical punch",
+  "improvedTitle": "Optimized, high-converting human-style title",
+  "improvedContent": "The enhanced, fully humanized Markdown article with zero AI clichés",
   "recommendations": ["point 1", "point 2"]
 }
 `;

@@ -11,6 +11,8 @@ import {
   ArrowLeft,
   Sparkles,
   TrendingUp,
+  Share2,
+  DollarSign,
 } from "lucide-react";
 
 export default function AdminSidebar() {
@@ -27,6 +29,16 @@ export default function AdminSidebar() {
       href: "/admin/generator",
       label: "AI Generation Studio",
       icon: Wand2,
+    },
+    {
+      href: "/admin/promoter",
+      label: "Viral Promotion Hub",
+      icon: Share2,
+    },
+    {
+      href: "/admin/monetization",
+      label: "Monetization & Ads",
+      icon: DollarSign,
     },
     {
       href: "/admin/posts",
