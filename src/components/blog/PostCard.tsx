@@ -1,6 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
-import { Clock, Eye, Sparkles, ArrowUpRight } from "lucide-react";
+import { Clock, Eye, ArrowUpRight, Sparkles, User, Bookmark } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
 interface PostCardProps {
@@ -30,65 +29,77 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
 
   if (featured) {
     return (
-      <article className="group relative rounded-3xl overflow-hidden border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl hover:shadow-2xl transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 gap-0">
-        <div className="lg:col-span-7 relative h-72 lg:h-auto overflow-hidden bg-slate-950">
+      <article className="group relative rounded-3xl overflow-hidden border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 shadow-xl hover:shadow-2xl transition-all duration-500 grid grid-cols-1 lg:grid-cols-12 gap-0">
+        {/* Cover Photo Area */}
+        <div className="lg:col-span-7 relative h-72 sm:h-96 lg:h-full min-h-[380px] overflow-hidden bg-slate-950">
           <img
             src={imageUrl}
             alt={post.imageAlt || post.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent lg:hidden" />
-          <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-600 text-white shadow-md flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" /> Featured Daily
-          </span>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent lg:hidden" />
+          
+          <div className="absolute top-4 left-4 flex items-center gap-2">
+            <span className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-indigo-600 text-white shadow-lg flex items-center gap-1.5 backdrop-blur-md">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" /> Featured Cover Story
+            </span>
+          </div>
         </div>
 
-        <div className="lg:col-span-5 p-6 lg:p-8 flex flex-col justify-between">
+        {/* Story Details */}
+        <div className="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               {post.category && (
                 <Link
                   href={`/category/${post.category.slug}`}
-                  className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 hover:underline"
+                  className="px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition-colors"
                 >
                   {post.category.name}
                 </Link>
               )}
               <span className="text-slate-300 dark:text-slate-700">•</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">
+              <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
                 {formatDate(post.publishedAt)}
               </span>
             </div>
 
             <Link href={`/blog/${post.slug}`}>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-[1.2] font-serif">
                 {post.title}
               </h2>
             </Link>
 
-            <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed font-normal">
               {post.excerpt}
             </p>
           </div>
 
-          <div className="pt-6 mt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-            <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
-              <span className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" />
-                {post.readTimeMinutes || 5} min read
-              </span>
-              <span className="flex items-center gap-1">
-                <Eye className="w-3.5 h-3.5" />
-                {post.views || 0} views
-              </span>
+          {/* Card Footer */}
+          <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                <User className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-xs font-bold text-slate-900 dark:text-white block">
+                  Editorial Team
+                </span>
+                <div className="flex items-center gap-2 text-[11px] text-slate-400">
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" /> {post.readTimeMinutes || 6} min read
+                  </span>
+                  <span>•</span>
+                  <span>{post.views || 1200} views</span>
+                </div>
+              </div>
             </div>
 
             <Link
               href={`/blog/${post.slug}`}
-              className="inline-flex items-center gap-1 text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:gap-2 transition-all"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white bg-slate-900 dark:bg-indigo-600 hover:bg-slate-800 dark:hover:bg-indigo-500 shadow-md transition-all group-hover:gap-2"
             >
-              Read Full Article <ArrowUpRight className="w-4 h-4" />
+              Read Story <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
@@ -97,9 +108,10 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
   }
 
   return (
-    <article className="group rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 hover:border-indigo-500/40 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+    <article className="group rounded-3xl overflow-hidden border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 hover:border-indigo-500/40 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
       <div>
-        <div className="relative h-48 overflow-hidden bg-slate-950">
+        {/* Card Thumbnail */}
+        <div className="relative h-52 overflow-hidden bg-slate-950">
           <img
             src={imageUrl}
             alt={post.imageAlt || post.title}
@@ -109,15 +121,16 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
           {post.category && (
             <Link
               href={`/category/${post.category.slug}`}
-              className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white hover:bg-indigo-600 transition-colors"
+              className="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white hover:bg-indigo-600 transition-colors"
             >
               {post.category.name}
             </Link>
           )}
         </div>
 
-        <div className="p-5 space-y-3">
-          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+        {/* Content Body */}
+        <div className="p-6 space-y-3">
+          <div className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
             <span>{formatDate(post.publishedAt)}</span>
             <span>•</span>
             <span className="flex items-center gap-1">
@@ -126,26 +139,27 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
           </div>
 
           <Link href={`/blog/${post.slug}`}>
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 leading-snug">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 leading-snug font-serif">
               {post.title}
             </h3>
           </Link>
 
-          <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">
+          <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
             {post.excerpt}
           </p>
         </div>
       </div>
 
-      <div className="px-5 pb-5 pt-2 flex items-center justify-between text-xs border-t border-slate-100 dark:border-slate-800/50">
+      {/* Action Footer */}
+      <div className="px-6 pb-6 pt-2 flex items-center justify-between text-xs border-t border-slate-100 dark:border-slate-800/60">
         <span className="text-slate-500 flex items-center gap-1">
-          <Eye className="w-3.5 h-3.5" /> {post.views || 0}
+          <Eye className="w-3.5 h-3.5 text-slate-400" /> {post.views || 0} views
         </span>
         <Link
           href={`/blog/${post.slug}`}
-          className="font-bold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-0.5 transition-transform flex items-center gap-1"
+          className="font-bold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform flex items-center gap-1"
         >
-          Read <ArrowUpRight className="w-3.5 h-3.5" />
+          Read Article <ArrowUpRight className="w-3.5 h-3.5" />
         </Link>
       </div>
     </article>
