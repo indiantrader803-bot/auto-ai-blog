@@ -118,8 +118,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/admin" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" /> Admin Studio &amp; Agent Controls
+                <Link href="/privacy" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" /> Privacy &amp; Data Ethics
                 </Link>
               </li>
             </ul>

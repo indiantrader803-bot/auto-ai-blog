@@ -142,8 +142,8 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         {/* Footer info */}
         <div className="px-6 py-3 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
           <span>Press <kbd className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 font-mono text-[10px]">ESC</kbd> to exit</span>
-          <Link href="/admin" onClick={onClose} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-            Admin Studio →
+          <Link href="/about" onClick={onClose} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+            About SmartMag Chronicle →
           </Link>
         </div>
       </div>

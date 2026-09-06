@@ -19,7 +19,7 @@ export const VERIFIED_SPONSORS: SponsorDeal[] = [
     tagline: "Deploy On-Demand H100 & RTX 4090 Clusters with 80% Cost Savings",
     description: "Instant serverless GPU provisioning for fine-tuning LLMs, running 70B local inference, and scaling multi-agent swarms with zero idle fees.",
     ctaText: "Claim $100 Free GPU Credits",
-    ctaUrl: "https://auto-ai-blog-orpin.vercel.app/admin?ref=gpu_sponsor",
+    ctaUrl: "/contact?ref=gpu_sponsor",
     discountCode: "SMARTMAG2026",
     categoryMatch: ["Artificial Intelligence", "Technology", "Development & Engineering"],
     cpcTier: "ULTRA"
@@ -31,7 +31,7 @@ export const VERIFIED_SPONSORS: SponsorDeal[] = [
     tagline: "Automated eBPF Observability & Secrets Protection for Kubernetes",
     description: "Eliminate static credentials and enforce kernel-level microsegmentation for AI agent sandboxes and cloud native microservices.",
     ctaText: "Start Free 30-Day Enterprise Trial",
-    ctaUrl: "https://auto-ai-blog-orpin.vercel.app/admin?ref=sec_sponsor",
+    ctaUrl: "/contact?ref=sec_sponsor",
     discountCode: "DEVPASS",
     categoryMatch: ["Development & Engineering", "Technology"],
     cpcTier: "HIGH"
@@ -43,7 +43,7 @@ export const VERIFIED_SPONSORS: SponsorDeal[] = [
     tagline: "Real-Time NLP Sentiment Streams for Global Equities & Macro Data",
     description: "Institutional-grade sentiment feeds, SEC filing anomaly alerts, and automated Python SDK backtesting for modern trading desks.",
     ctaText: "Access Live Market Data",
-    ctaUrl: "https://auto-ai-blog-orpin.vercel.app/admin?ref=quant_sponsor",
+    ctaUrl: "/contact?ref=quant_sponsor",
     discountCode: "ALPHA2026",
     categoryMatch: ["Finance & Markets"],
     cpcTier: "ULTRA"

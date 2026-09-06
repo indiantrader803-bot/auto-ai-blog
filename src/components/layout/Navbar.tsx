@@ -118,12 +118,12 @@ export default function Navbar() {
               </a>
             </div>
 
-            <Link
-              href="/admin"
-              className="text-amber-400 hover:text-amber-300 transition-colors font-bold uppercase tracking-wider text-[10px]"
+            <a
+              href="#newsletter"
+              className="text-indigo-400 hover:text-indigo-300 transition-colors font-bold uppercase tracking-wider text-[10px] flex items-center gap-1"
             >
-              Admin Studio →
-            </Link>
+              <Sparkles className="w-3 h-3" /> Get VIP Daily Briefing →
+            </a>
           </div>
         </div>
       </div>
@@ -303,13 +303,13 @@ export default function Navbar() {
               Contact
             </Link>
             <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <Link
-                href="/admin"
+              <a
+                href="#newsletter"
                 onClick={() => setIsMenuOpen(false)}
                 className="px-4 py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider w-full text-center"
               >
-                Admin Studio &amp; AI Engine
-              </Link>
+                Join VIP Newsletter Free
+              </a>
             </div>
           </div>
         )}
