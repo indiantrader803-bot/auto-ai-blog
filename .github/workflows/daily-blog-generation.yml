@@ -1,0 +1,51 @@
+name: Auto AI Daily Blog Generation
+
+on:
+  schedule:
+    # Runs everyday at 08:00 UTC (1:30 PM IST)
+    - cron: '0 8 * * *'
+  workflow_dispatch: # Allows manual run button in GitHub Actions tab
+
+jobs:
+  generate-daily-article:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client & Sync Database
+        run: |
+          npx prisma generate
+          npx prisma db push
+
+      - name: Execute Autonomous AI Content Generation Pipeline
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL || 'file:./dev.db' }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          AUTO_PUBLISH_DEFAULT: "true"
+          TARGET_WORD_COUNT: "1800"
+          DEFAULT_NICHE: "Artificial Intelligence, Tech Gadgets & SaaS"
+        run: |
+          node scripts/generate-cli.mjs
+
+      - name: Commit & Push Generated Content (If using local SQLite)
+        if: ${{ env.DATABASE_URL == 'file:./dev.db' }}
+        run: |
+          git config --global user.name "AutoAI Bot"
+          git config --global user.email "bot@autoaichronicle.com"
+          git add dev.db
+          git commit -m "chore(auto-blog): daily autonomous post generated [skip ci]" || echo "No changes to commit"
+          git push || echo "Push skipped or not configured"

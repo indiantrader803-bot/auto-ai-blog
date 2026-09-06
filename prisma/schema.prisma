@@ -1,0 +1,106 @@
+// Prisma schema for Auto AI Blog Engine & Monetization Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id                   String            @id @default(cuid())
+  title                String
+  slug                 String            @unique
+  excerpt              String
+  content              String            // Rich Markdown article content
+  featuredImage        String?
+  imageAlt             String?
+  imagePhotographer    String?
+  imagePhotographerUrl String?
+  youtubeVideoId       String?
+  youtubeVideoTitle    String?
+  seoTitle             String?
+  seoDescription       String?
+  seoKeywords          String?           // Comma-separated or JSON list
+  faqJson              String?           // Structured FAQ data [{ question, answer }]
+  readTimeMinutes      Int               @default(5)
+  status               String            @default("PUBLISHED") // PUBLISHED, DRAFT, SCHEDULED
+  views                Int               @default(0)
+  shares               Int               @default(0)
+  publishedAt          DateTime?         @default(now())
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  
+  categoryId           String?
+  category             Category?         @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tags                 PostTag[]
+  logs                 GenerationLog[]
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  color       String   @default("#6366f1")
+  posts       Post[]
+  createdAt   DateTime @default(now())
+}
+
+model Tag {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  posts     PostTag[]
+  createdAt DateTime  @default(now())
+}
+
+model PostTag {
+  postId String
+  tagId  String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+}
+
+model GenerationLog {
+  id              String   @id @default(cuid())
+  topic           String
+  status          String   // RUNNING, SUCCESS, FAILED
+  currentStep     String   // SCOUTING, WRITING, MEDIA, VIDEO, SEO, PUBLISHING, COMPLETED, FAILED
+  details         String?  // JSON string or step messages
+  error           String?
+  durationSeconds Float    @default(0)
+  postId          String?
+  post            Post?    @relation(fields: [postId], references: [id], onDelete: SetNull)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Setting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  status    String   @default("ACTIVE") // ACTIVE, UNSUBSCRIBED
+  createdAt DateTime @default(now())
+}
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  eventType String   // PAGE_VIEW, AD_CLICK, AFFILIATE_CLICK, SHARE
+  slug      String?
+  referrer  String?
+  ipHash    String?
+  metadata  String?  // JSON string with extra details (e.g. ad slot, product name)
+  createdAt DateTime @default(now())
+}
