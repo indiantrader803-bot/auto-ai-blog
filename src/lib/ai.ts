@@ -76,24 +76,38 @@ Return strictly a JSON object with this exact schema:
 
   // 1. If Gemini API Key is available
   if (apiKey) {
-    try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({
-        model: modelName.includes("gemini") ? modelName : "gemini-1.5-flash",
-        generationConfig: {
-          temperature: 0.7,
-          responseMimeType: "application/json",
-        },
-      });
+    const candidateModels = [
+      modelName,
+      "gemini-1.5-flash-latest",
+      "gemini-2.0-flash",
+      "gemini-1.5-flash",
+      "gemini-1.5-pro",
+      "gemini-pro",
+    ];
 
-      const result = await model.generateContent([
-        { text: systemInstruction },
-        { text: userPrompt },
-      ]);
-      const rawText = result.response.text();
-      return parseAiJsonResponse(rawText, options.topic);
-    } catch (err: any) {
-      console.warn("Gemini API call failed, falling back if possible:", err.message);
+    const genAI = new GoogleGenerativeAI(apiKey);
+
+    for (const mName of candidateModels) {
+      try {
+        const model = genAI.getGenerativeModel({
+          model: mName,
+          generationConfig: {
+            temperature: 0.7,
+            responseMimeType: "application/json",
+          },
+        });
+
+        const result = await model.generateContent([
+          { text: systemInstruction },
+          { text: userPrompt },
+        ]);
+        const rawText = result.response.text();
+        if (rawText && rawText.length > 50) {
+          return parseAiJsonResponse(rawText, options.topic);
+        }
+      } catch (err: any) {
+        // try next candidate model
+      }
     }
   }
 
