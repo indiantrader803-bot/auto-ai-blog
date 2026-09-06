@@ -123,7 +123,11 @@ Autonomous AI swarms do not replace developers; they elevate software engineers 
   tags: [{ tag: { name: "AI Swarms" } }, { tag: { name: "Software Architecture" } }, { tag: { name: "Autonomous Coding" } }]
 };
 
+import { getArticleBySlug, getAllCatalogArticles } from "@/lib/content/articles";
+import { matchSponsorForArticle } from "@/lib/pipeline/agents/sponsorAgent";
+
 export default async function BlogPostPage({ params }: Props) {
+  const cleanSlug = decodeURIComponent(params.slug || "");
   let post: any = null;
   let relatedPosts: any[] = [];
   let prevPost: any = null;
@@ -131,7 +135,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   try {
     post = await prisma.post.findUnique({
-      where: { slug: params.slug },
+      where: { slug: cleanSlug },
       include: {
         category: true,
         tags: { include: { tag: true } },
@@ -142,7 +146,7 @@ export default async function BlogPostPage({ params }: Props) {
       await prisma.post.update({
         where: { id: post.id },
         data: { views: { increment: 1 } },
-      });
+      }).catch(() => {});
 
       const [related, prev, next] = await Promise.all([
         prisma.post.findMany({
@@ -171,13 +175,54 @@ export default async function BlogPostPage({ params }: Props) {
       nextPost = next;
     }
   } catch (e) {
-    console.warn("Post query notice:", e);
+    console.warn("Post DB query notice:", e);
   }
 
-  // Fallback to rich article if slug matches or during initial sync
+  // 1. Fallback to rich Content Catalog
   if (!post) {
-    post = { ...FALLBACK_ARTICLE, slug: params.slug };
+    const catalogItem = getArticleBySlug(cleanSlug);
+    if (catalogItem) {
+      post = {
+        ...catalogItem,
+        publishedAt: new Date(catalogItem.publishedAt),
+        tags: catalogItem.tags.map((t) => ({ tag: { name: t } })),
+        faqJson: JSON.stringify(catalogItem.faqs),
+      };
+    }
   }
+
+  // 2. Fallback to default catalog article if still not resolved
+  if (!post) {
+    const fallback = getAllCatalogArticles()[0];
+    post = {
+      ...fallback,
+      slug: cleanSlug,
+      title: cleanSlug
+        .split("-")
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" "),
+      publishedAt: new Date(),
+      tags: fallback.tags.map((t) => ({ tag: { name: t } })),
+      faqJson: JSON.stringify(fallback.faqs),
+    };
+  }
+
+  const allCatalog = getAllCatalogArticles();
+  if (relatedPosts.length === 0) {
+    relatedPosts = allCatalog.filter((a) => a.slug !== post.slug).slice(0, 3);
+  }
+  if (!prevPost && allCatalog.length > 1) {
+    prevPost = allCatalog.find((a) => a.slug !== post.slug);
+  }
+  if (!nextPost && allCatalog.length > 2) {
+    nextPost = allCatalog.slice().reverse().find((a) => a.slug !== post.slug);
+  }
+
+  const matchedSponsor = matchSponsorForArticle(
+    post.title,
+    post.category?.name || "Technology",
+    Array.isArray(post.tags) ? post.tags.map((t: any) => t.tag?.name || t) : []
+  );
 
   // Parse FAQs
   let faqs: Array<{ question: string; answer: string }> = [];
@@ -337,8 +382,19 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Interactive Reader Reactions */}
             <ArticleReactions />
 
-            {/* High-Converting Affiliate Recommendation Card */}
-            <AffiliateCard />
+            {/* High-Converting AI Matched Sponsor & Monetization Card */}
+            <AffiliateCard
+              title={matchedSponsor.sponsorName}
+              subtitle={matchedSponsor.tagline}
+              badge={matchedSponsor.badge}
+              ctaText={matchedSponsor.ctaText}
+              ctaLink={matchedSponsor.ctaUrl}
+              features={[
+                matchedSponsor.description,
+                matchedSponsor.discountCode ? `Exclusive Promo Code: ${matchedSponsor.discountCode}` : "Instant Free Tier Access",
+                "Strict Zero Data Retention & Enterprise Tier Support"
+              ]}
+            />
 
             {/* Mid-Article Ad Banner */}
             <AdBanner slot="article-mid" className="my-8" />

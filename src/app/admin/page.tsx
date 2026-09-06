@@ -148,6 +148,108 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
+      {/* AI Autonomous Dedicated Swarm Monitor (7-Agent Team) */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-slate-950 text-white border border-slate-800 shadow-xl space-y-6 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4 relative z-10">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              <h2 className="text-lg font-black font-serif tracking-tight text-white">
+                Dedicated AI Agent Swarm Fleet (24/7 Autonomous)
+              </h2>
+            </div>
+            <p className="text-xs text-slate-400 mt-1">
+              7 specialized AI sub-agents coordinating trend scouting, long-form writing, editorial critique, HD visuals, video research, and sponsor discovery.
+            </p>
+          </div>
+
+          <Link
+            href="/admin/generator"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-md shadow-indigo-600/30"
+          >
+            <Wand2 className="w-3.5 h-3.5" /> Trigger Full Swarm Pipeline
+          </Link>
+        </div>
+
+        {/* 7 Agents Live Matrix */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
+          {/* Agent 1: Trend Scout */}
+          <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase tracking-wider text-indigo-400">Agent 01</span>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">ACTIVE 24/7</span>
+            </div>
+            <h4 className="text-xs font-bold text-white font-serif">🌐 Trend Scout Agent</h4>
+            <p className="text-[11px] text-slate-400">Real-time RSS, Google Trends &amp; HackerNews scraper.</p>
+          </div>
+
+          {/* Agent 2: Senior Writer */}
+          <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase tracking-wider text-purple-400">Agent 02</span>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">ACTIVE</span>
+            </div>
+            <h4 className="text-xs font-bold text-white font-serif">✍️ Senior Writer Agent</h4>
+            <p className="text-[11px] text-slate-400">ExperientialLabs Claude Sonnet 4.5 (1600+ words).</p>
+          </div>
+
+          {/* Agent 3: Editorial Critic */}
+          <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase tracking-wider text-amber-400">Agent 03</span>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">ACTIVE</span>
+            </div>
+            <h4 className="text-xs font-bold text-white font-serif">🧐 Critic &amp; Self-Heal</h4>
+            <p className="text-[11px] text-slate-400">Automated quality scoring, depth check, and self-patching.</p>
+          </div>
+
+          {/* Agent 4: Art Director */}
+          <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase tracking-wider text-rose-400">Agent 04</span>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">ACTIVE</span>
+            </div>
+            <h4 className="text-xs font-bold text-white font-serif">🎨 Art Director Agent</h4>
+            <p className="text-[11px] text-slate-400">Unsplash 4K photography curation &amp; AI art synthesis.</p>
+          </div>
+
+          {/* Agent 5: Video Researcher */}
+          <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase tracking-wider text-sky-400">Agent 05</span>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">ACTIVE</span>
+            </div>
+            <h4 className="text-xs font-bold text-white font-serif">🎬 Video Researcher</h4>
+            <p className="text-[11px] text-slate-400">YouTube 4K technical breakdown contextual discovery.</p>
+          </div>
+
+          {/* Agent 6: Sponsor & Monetization */}
+          <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400">Agent 06</span>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">ACTIVE</span>
+            </div>
+            <h4 className="text-xs font-bold text-white font-serif">💰 Sponsor &amp; Ad Optimizer</h4>
+            <p className="text-[11px] text-slate-400">Contextual high-CPC sponsor matching &amp; ad placement.</p>
+          </div>
+
+          {/* Agent 7: Swarm Telemetry */}
+          <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 lg:col-span-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase tracking-wider text-amber-400">Agent 07</span>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">ACTIVE</span>
+            </div>
+            <h4 className="text-xs font-bold text-white font-serif">📈 Telemetry &amp; Swarm Collective Memory</h4>
+            <p className="text-[11px] text-slate-400">Analyzes reader dwell time and updates swarm memory to refine future articles.</p>
+          </div>
+        </div>
+      </div>
+
       {/* Two Column Section: Category Distribution & Recent Pipeline Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Categories Breakdown (5 cols) */}

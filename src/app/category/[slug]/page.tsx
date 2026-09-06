@@ -8,6 +8,7 @@ import SocialSidebar from "@/components/blog/SocialSidebar";
 import AdBanner from "@/components/monetization/AdBanner";
 import NewsletterBanner from "@/components/monetization/NewsletterBanner";
 import { ChevronRight, Sparkles, Layers, Compass } from "lucide-react";
+import { getAllCatalogArticles } from "@/lib/content/articles";
 
 interface Props {
   params: { slug: string };
@@ -16,6 +17,7 @@ interface Props {
 export const dynamic = "force-dynamic";
 
 export default async function CategoryPage({ params }: Props) {
+  const cleanSlug = decodeURIComponent(params.slug || "");
   let category: any = null;
   let allCategories: any[] = [];
   let trendingPosts: any[] = [];
@@ -23,7 +25,7 @@ export default async function CategoryPage({ params }: Props) {
   try {
     const [catData, catsData, trendingData] = await Promise.all([
       prisma.category.findUnique({
-        where: { slug: params.slug },
+        where: { slug: cleanSlug },
         include: {
           posts: {
             where: { status: "PUBLISHED" },
@@ -49,17 +51,31 @@ export default async function CategoryPage({ params }: Props) {
     console.warn("Category fetch error:", err);
   }
 
-  if (!category) {
-    // Generate placeholder category if direct route hit
+  const allCatalog = getAllCatalogArticles();
+
+  if (!category || !category.posts || category.posts.length === 0) {
+    const formattedName = cleanSlug
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+
+    const matchingCatalogPosts = allCatalog.filter(
+      (a) =>
+        a.category.slug === cleanSlug ||
+        a.category.name.toLowerCase().includes(cleanSlug.replace(/-/g, " ")) ||
+        cleanSlug.includes(a.category.slug)
+    );
+
     category = {
-      name: params.slug
-        .split("-")
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(" "),
-      slug: params.slug,
-      description: `Comprehensive research and technical breakdowns curated in ${params.slug}.`,
-      posts: [],
+      name: category?.name || formattedName,
+      slug: cleanSlug,
+      description: `Comprehensive research and technical breakdowns curated in ${category?.name || formattedName}.`,
+      posts: matchingCatalogPosts.length > 0 ? matchingCatalogPosts : allCatalog.slice(0, 4),
     };
+  }
+
+  if (trendingPosts.length === 0) {
+    trendingPosts = allCatalog.slice().sort((a, b) => b.views - a.views);
   }
 
   return (
