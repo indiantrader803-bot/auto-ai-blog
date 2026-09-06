@@ -228,24 +228,34 @@ export default function AdminDashboardPage() {
             <p className="text-[11px] text-slate-400">YouTube 4K technical breakdown contextual discovery.</p>
           </div>
 
-          {/* Agent 6: Sponsor & Monetization */}
+          {/* Agent 6: Dedicated SEO Master Agent */}
           <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400">Agent 06</span>
               <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">ACTIVE</span>
             </div>
-            <h4 className="text-xs font-bold text-white font-serif">💰 Sponsor &amp; Ad Optimizer</h4>
-            <p className="text-[11px] text-slate-400">Contextual high-CPC sponsor matching &amp; ad placement.</p>
+            <h4 className="text-xs font-bold text-white font-serif">🎯 SEO Master Agent</h4>
+            <p className="text-[11px] text-slate-400">Schema.org JSON-LD, internal linking, sitemaps &amp; SERP metadata.</p>
           </div>
 
-          {/* Agent 7: Swarm Telemetry */}
-          <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 lg:col-span-2">
+          {/* Agent 7: Sponsor & Monetization */}
+          <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-black uppercase tracking-wider text-amber-400">Agent 07</span>
               <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">ACTIVE</span>
             </div>
+            <h4 className="text-xs font-bold text-white font-serif">💰 Sponsor &amp; Ad Optimizer</h4>
+            <p className="text-[11px] text-slate-400">Contextual high-CPC sponsor matching &amp; affiliate card injection.</p>
+          </div>
+
+          {/* Agent 8: Swarm Telemetry & Collective Memory */}
+          <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 lg:col-span-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase tracking-wider text-cyan-400">Agent 08</span>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">ACTIVE</span>
+            </div>
             <h4 className="text-xs font-bold text-white font-serif">📈 Telemetry &amp; Swarm Collective Memory</h4>
-            <p className="text-[11px] text-slate-400">Analyzes reader dwell time and updates swarm memory to refine future articles.</p>
+            <p className="text-[11px] text-slate-400">Continuous reader analytics telemetry and self-improving prompt memory.</p>
           </div>
         </div>
       </div>

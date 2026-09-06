@@ -2,7 +2,7 @@ import { prisma } from "../prisma";
 import { scoutTrendingTopic } from "./topicScout";
 import { generateArticleContent } from "../ai";
 import { enrichMedia } from "./mediaEnricher";
-import { enrichSeoAndAffiliates } from "./seoAffiliateEngine";
+import { runSeoMasterAgent } from "./agents/seoAgent";
 import { runCriticAndSelfImprovement, updateSwarmMemoryFromAnalytics } from "./agents/criticAgent";
 import { PipelineOptions, PipelineProgress } from "../types";
 import { generateSlug } from "../utils";
@@ -113,10 +113,10 @@ export async function runBlogPipeline(
       data: { currentStep: "VIDEO" },
     });
 
-    // 6. Monetization & SEO Agent
+    // 6. Dedicated SEO Master Agent
     report({
       step: "SEO",
-      message: "Monetization Agent injecting FAQ schemas & affiliate links...",
+      message: "Dedicated SEO Master Agent engineering schemas, canonical URLs, and internal linking...",
       percent: 88,
     });
 
@@ -125,20 +125,23 @@ export async function runBlogPipeline(
       data: { currentStep: "SEO" },
     });
 
-    const {
-      processedContent,
-      slug: baseSlug,
-      readTimeMinutes,
-      faqJson,
-      seoKeywords,
-    } = enrichSeoAndAffiliates(
-      refinedContent,
-      refinedTitle,
-      aiResult.category,
-      aiResult.tags,
-      aiResult.faq,
-      options.affiliateKeywords
-    );
+    const seoResult = runSeoMasterAgent({
+      title: refinedTitle,
+      excerpt: aiResult.excerpt,
+      content: refinedContent,
+      category: aiResult.category || options.category || "Technology",
+      tags: aiResult.tags,
+      faq: aiResult.faq,
+      featuredImage: mediaResult.featuredImage,
+      youtubeVideoId: mediaResult.youtubeVideoId,
+      youtubeVideoTitle: mediaResult.youtubeVideoTitle,
+    });
+
+    const baseSlug = seoResult.slug;
+    const processedContent = seoResult.processedContent;
+    const readTimeMinutes = seoResult.readTimeMinutes;
+    const faqJson = JSON.stringify(aiResult.faq || []);
+    const seoKeywords = seoResult.seoKeywords;
 
     // Ensure unique slug
     let finalSlug = baseSlug;
