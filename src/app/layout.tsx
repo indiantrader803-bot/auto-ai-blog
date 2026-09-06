@@ -2,7 +2,10 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-orpin.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     template: "%s | SmartMag Tech Chronicle",
     default: "SmartMag Tech - Frontier AI & Engineering Chronicle",
@@ -17,7 +20,38 @@ export const metadata: Metadata = {
     "Machine Learning",
     "Tech Reviews",
     "Software Engineering",
+    "Cloud Architecture",
   ],
+  alternates: {
+    canonical: "/",
+    types: {
+      "application/rss+xml": "/rss.xml",
+    },
+  },
+  openGraph: {
+    title: "SmartMag Tech - Frontier AI & Engineering Chronicle",
+    description: "Autonomous editorial technology publication covering breakthroughs in artificial intelligence and engineering.",
+    url: siteUrl,
+    siteName: "SmartMag Tech Chronicle",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SmartMag Tech - Frontier AI & Engineering Chronicle",
+    description: "Autonomous editorial technology publication covering breakthroughs in artificial intelligence and engineering.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   manifest: "/manifest.json",
 };
 

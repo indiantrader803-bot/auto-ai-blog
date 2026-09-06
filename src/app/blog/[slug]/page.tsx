@@ -43,6 +43,72 @@ interface Props {
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const cleanSlug = decodeURIComponent(params.slug || "");
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-orpin.vercel.app";
+  const canonicalUrl = `${siteUrl}/blog/${cleanSlug}`;
+
+  let title = "Article | SmartMag Tech Chronicle";
+  let description = "Deep-dive technical report and architectural analysis.";
+  let image = `${siteUrl}/default-og.jpg`;
+  let publishedTime = new Date().toISOString();
+  let tags: string[] = ["AI", "Tech", "Engineering"];
+
+  try {
+    const post = await prisma.post.findUnique({
+      where: { slug: cleanSlug },
+      include: { category: true, tags: { include: { tag: true } } },
+    });
+
+    if (post) {
+      title = post.seoTitle || post.title;
+      description = post.seoDescription || post.excerpt;
+      image = post.featuredImage || image;
+      publishedTime = (post.publishedAt || new Date()).toISOString();
+      tags = post.tags.map((t) => t.tag.name);
+    } else {
+      const catalog = getArticleBySlug(cleanSlug);
+      if (catalog) {
+        title = catalog.seoTitle || catalog.title;
+        description = catalog.seoDescription || catalog.excerpt;
+        image = catalog.featuredImage || image;
+        publishedTime = new Date(catalog.publishedAt).toISOString();
+        tags = catalog.tags;
+      }
+    }
+  } catch (_) {}
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      type: "article",
+      publishedTime,
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+    keywords: tags,
+  };
+}
+
 const FALLBACK_ARTICLE = {
   id: "sample-article",
   title: "Autonomous AI Agent Swarms in 2026: How Coordinated Multi-Agent Systems Are Reshaping Enterprise Automation",

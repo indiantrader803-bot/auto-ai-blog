@@ -10,11 +10,43 @@ import NewsletterBanner from "@/components/monetization/NewsletterBanner";
 import { ChevronRight, Sparkles, Layers, Compass } from "lucide-react";
 import { getAllCatalogArticles } from "@/lib/content/articles";
 
+import { Metadata } from "next";
+
 interface Props {
   params: { slug: string };
 }
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const cleanSlug = decodeURIComponent(params.slug || "");
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-orpin.vercel.app";
+  const categoryTitle = cleanSlug
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+
+  const canonicalUrl = `${siteUrl}/category/${cleanSlug}`;
+
+  return {
+    title: `${categoryTitle} Articles & Trends`,
+    description: `Explore the latest high-impact breakdowns, benchmarks, and guides in ${categoryTitle}.`,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${categoryTitle} | SmartMag Tech Chronicle`,
+      description: `Explore the latest high-impact breakdowns, benchmarks, and guides in ${categoryTitle}.`,
+      url: canonicalUrl,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${categoryTitle} | SmartMag Tech Chronicle`,
+      description: `Explore the latest high-impact breakdowns, benchmarks, and guides in ${categoryTitle}.`,
+    },
+  };
+}
 
 export default async function CategoryPage({ params }: Props) {
   const cleanSlug = decodeURIComponent(params.slug || "");
