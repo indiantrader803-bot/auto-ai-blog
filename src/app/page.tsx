@@ -10,34 +10,47 @@ import { Sparkles, TrendingUp, Compass, Flame } from "lucide-react";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [featuredPost, recentPosts, categories, trendingPosts] = await Promise.all([
-    prisma.post.findFirst({
-      where: { status: "PUBLISHED" },
-      orderBy: { publishedAt: "desc" },
-      include: { category: true },
-    }),
-    prisma.post.findMany({
-      where: { status: "PUBLISHED" },
-      orderBy: { publishedAt: "desc" },
-      skip: 1,
-      take: 6,
-      include: { category: true },
-    }),
-    prisma.category.findMany({
-      include: {
-        _count: {
-          select: { posts: true },
+  let featuredPost = null;
+  let recentPosts: any[] = [];
+  let categories: any[] = [];
+  let trendingPosts: any[] = [];
+
+  try {
+    const results = await Promise.all([
+      prisma.post.findFirst({
+        where: { status: "PUBLISHED" },
+        orderBy: { publishedAt: "desc" },
+        include: { category: true },
+      }),
+      prisma.post.findMany({
+        where: { status: "PUBLISHED" },
+        orderBy: { publishedAt: "desc" },
+        skip: 1,
+        take: 6,
+        include: { category: true },
+      }),
+      prisma.category.findMany({
+        include: {
+          _count: {
+            select: { posts: true },
+          },
         },
-      },
-      take: 6,
-    }),
-    prisma.post.findMany({
-      where: { status: "PUBLISHED" },
-      orderBy: { views: "desc" },
-      take: 4,
-      include: { category: true },
-    }),
-  ]);
+        take: 6,
+      }),
+      prisma.post.findMany({
+        where: { status: "PUBLISHED" },
+        orderBy: { views: "desc" },
+        take: 4,
+        include: { category: true },
+      }),
+    ]);
+    featuredPost = results[0];
+    recentPosts = results[1] || [];
+    categories = results[2] || [];
+    trendingPosts = results[3] || [];
+  } catch (err: any) {
+    console.warn("Database query notice:", err.message);
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
