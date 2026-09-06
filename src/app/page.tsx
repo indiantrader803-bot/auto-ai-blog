@@ -167,10 +167,11 @@ export default async function HomePage() {
 
   if (categories.length === 0) {
     categories = [
-      { id: "1", name: "Artificial Intelligence", slug: "artificial-intelligence", _count: { posts: 14 } },
-      { id: "2", name: "Development & Engineering", slug: "development-and-engineering", _count: { posts: 12 } },
-      { id: "3", name: "Finance & Markets", slug: "finance-and-markets", _count: { posts: 8 } },
-      { id: "4", name: "Technology & Hardware", slug: "technology", _count: { posts: 10 } },
+      { id: "1", name: "Telecom & Connectivity", slug: "telecom-and-connectivity", _count: { posts: 16 } },
+      { id: "2", name: "Artificial Intelligence", slug: "artificial-intelligence", _count: { posts: 18 } },
+      { id: "3", name: "Software & Cloud", slug: "development-and-engineering", _count: { posts: 14 } },
+      { id: "4", name: "Finance & Markets", slug: "finance-and-markets", _count: { posts: 12 } },
+      { id: "5", name: "Technology & Hardware", slug: "technology", _count: { posts: 10 } },
     ];
   }
 

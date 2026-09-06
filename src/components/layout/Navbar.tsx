@@ -103,24 +103,14 @@ export default function Navbar() {
               </span>
             </div>
 
-            <div className="flex items-center gap-3 text-slate-400 border-l border-r border-slate-800 px-4">
-              <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors" aria-label="Twitter">
-                <Twitter className="w-3.5 h-3.5" />
-              </a>
-              <a href="https://github.com/indiantrader803-bot/auto-ai-blog" target="_blank" rel="noreferrer" className="hover:text-white transition-colors" aria-label="GitHub">
-                <Github className="w-3.5 h-3.5" />
-              </a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer" className="hover:text-rose-400 transition-colors" aria-label="YouTube">
-                <Youtube className="w-3.5 h-3.5" />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-indigo-400 transition-colors" aria-label="LinkedIn">
-                <Linkedin className="w-3.5 h-3.5" />
-              </a>
+            <div className="flex items-center gap-2 text-slate-300">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">LIVE 24/7 DISPATCH</span>
             </div>
 
             <a
               href="#newsletter"
-              className="text-indigo-400 hover:text-indigo-300 transition-colors font-bold uppercase tracking-wider text-[10px] flex items-center gap-1"
+              className="text-indigo-400 hover:text-indigo-300 transition-colors font-bold uppercase tracking-wider text-[10px] flex items-center gap-1 border-l border-slate-800 pl-4"
             >
               <Sparkles className="w-3 h-3" /> Get VIP Daily Briefing →
             </a>

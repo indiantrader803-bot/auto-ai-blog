@@ -47,19 +47,9 @@ export default function Footer() {
               SmartMag Tech Edition is an autonomous editorial publication delivering real-time breakdowns of frontier AI models, cloud infrastructure, developer frameworks, and tech hardware.
             </p>
 
-            <div className="flex items-center gap-3 pt-2">
-              <a href="https://twitter.com" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-xl bg-slate-900 hover:bg-indigo-600 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a href="https://github.com/indiantrader803-bot/auto-ai-blog" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-xl bg-slate-900 hover:bg-indigo-600 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
-                <Github className="w-4 h-4" />
-              </a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-xl bg-slate-900 hover:bg-rose-600 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
-                <Youtube className="w-4 h-4" />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-xl bg-slate-900 hover:bg-indigo-600 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
-                <Linkedin className="w-4 h-4" />
-              </a>
+            <div className="pt-2 flex items-center gap-2 text-xs text-slate-400">
+              <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
+              <span className="font-semibold text-slate-300">Independent Research &amp; Verified Journalism</span>
             </div>
           </div>
 

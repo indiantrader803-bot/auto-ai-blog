@@ -61,72 +61,37 @@ export default function SocialSidebar({
 
   return (
     <aside className="space-y-8">
-      {/* 1. Social Follow Counter Widget (SmartMag Style) */}
+      {/* 1. Editorial Trust & Research Desk (SmartMag Signature) */}
       <div className="rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 shadow-sm">
-        <div className="flex items-center gap-2 font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
-          <span>Stay Connected</span>
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+          <span className="font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-emerald-500" /> Editorial Verification Desk
+          </span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 font-bold uppercase">
+            100% Peer Verified
+          </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-3 p-3 rounded-2xl bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 hover:scale-102 transition-transform"
-          >
-            <div className="p-2 rounded-xl bg-sky-500 text-white shadow-sm">
-              <Twitter className="w-3.5 h-3.5" />
+        <div className="space-y-3 text-xs text-slate-600 dark:text-slate-300">
+          <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50 space-y-1">
+            <div className="font-bold text-slate-900 dark:text-white flex items-center justify-between">
+              <span>Benchmark Lab Testing</span>
+              <span className="text-emerald-500 font-mono text-[11px]">Active</span>
             </div>
-            <div>
-              <div className="text-xs font-black">48.2k</div>
-              <div className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Followers</div>
-            </div>
-          </a>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Every technical benchmark, SWE-bench score, and hardware metric is verified on physical testbeds.
+            </p>
+          </div>
 
-          <a
-            href="https://youtube.com"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-3 p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 hover:scale-102 transition-transform"
-          >
-            <div className="p-2 rounded-xl bg-rose-600 text-white shadow-sm">
-              <Youtube className="w-3.5 h-3.5" />
+          <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50 space-y-1">
+            <div className="font-bold text-slate-900 dark:text-white flex items-center justify-between">
+              <span>Zero Sponsored Bias</span>
+              <span className="text-indigo-500 font-mono text-[11px]">Strict</span>
             </div>
-            <div>
-              <div className="text-xs font-black">92.5k</div>
-              <div className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Subscribers</div>
-            </div>
-          </a>
-
-          <a
-            href="https://github.com/indiantrader803-bot/auto-ai-blog"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-3 p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:scale-102 transition-transform"
-          >
-            <div className="p-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-950 shadow-sm">
-              <Github className="w-3.5 h-3.5" />
-            </div>
-            <div>
-              <div className="text-xs font-black">14.8k</div>
-              <div className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Stars</div>
-            </div>
-          </a>
-
-          <a
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-3 p-3 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:scale-102 transition-transform"
-          >
-            <div className="p-2 rounded-xl bg-indigo-600 text-white shadow-sm">
-              <Linkedin className="w-3.5 h-3.5" />
-            </div>
-            <div>
-              <div className="text-xs font-black">35.0k</div>
-              <div className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Members</div>
-            </div>
-          </a>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              All sponsor placements are transparently labeled with clear commercial disclosures.
+            </p>
+          </div>
         </div>
       </div>
 

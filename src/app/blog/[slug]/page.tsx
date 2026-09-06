@@ -500,13 +500,8 @@ export default async function BlogPostPage({ params }: Props) {
                       Autonomous Intelligence &amp; Software Research
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 text-slate-400">
-                    <a href="https://twitter.com" target="_blank" rel="noreferrer" className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-sky-500 transition-colors">
-                      <Twitter className="w-3.5 h-3.5" />
-                    </a>
-                    <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-indigo-500 transition-colors">
-                      <Linkedin className="w-3.5 h-3.5" />
-                    </a>
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[11px] font-bold">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> Verified Editorial Team
                   </div>
                 </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">

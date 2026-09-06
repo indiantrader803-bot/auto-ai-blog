@@ -33,46 +33,22 @@ export default function SocialShare({ title, url }: SocialShareProps) {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 mr-1 flex items-center gap-1">
-        <Share2 className="w-3.5 h-3.5" /> Share:
-      </span>
-
-      <a
-        href={twitterUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Share on X"
-        className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
-      >
-        <Twitter className="w-4 h-4" />
-      </a>
-
-      <a
-        href={linkedinUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Share on LinkedIn"
-        className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-[#0077b5] hover:text-white transition-colors"
-      >
-        <Linkedin className="w-4 h-4" />
-      </a>
-
-      <a
-        href={facebookUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Share on Facebook"
-        className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-[#1877f2] hover:text-white transition-colors"
-      >
-        <Facebook className="w-4 h-4" />
-      </a>
-
       <button
         onClick={handleCopy}
-        aria-label="Copy link"
-        className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white transition-colors flex items-center gap-1"
+        aria-label="Copy article link"
+        className="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white transition-colors flex items-center gap-1.5 text-xs font-bold"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Link2 className="w-4 h-4" />}
+        {copied ? (
+          <>
+            <Check className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="text-emerald-400">Link Copied!</span>
+          </>
+        ) : (
+          <>
+            <Link2 className="w-3.5 h-3.5" />
+            <span>Copy Article Link</span>
+          </>
+        )}
       </button>
     </div>
   );
