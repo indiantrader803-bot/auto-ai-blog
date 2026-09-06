@@ -13,6 +13,8 @@ export async function GET() {
 
     // Merge with process.env defaults
     const combined = {
+      EXPLABS_API_KEY: process.env.EXPLABS_API_KEY ? "••••••••" + process.env.EXPLABS_API_KEY.slice(-4) : "",
+      EXPLABS_MODEL: settingsMap["EXPLABS_MODEL"] || process.env.EXPLABS_MODEL || "claude-sonnet-4.5",
       GEMINI_API_KEY: process.env.GEMINI_API_KEY ? "••••••••" + process.env.GEMINI_API_KEY.slice(-4) : "",
       OPENAI_API_KEY: process.env.OPENAI_API_KEY ? "••••••••" + process.env.OPENAI_API_KEY.slice(-4) : "",
       UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY ? "••••••••" : "",

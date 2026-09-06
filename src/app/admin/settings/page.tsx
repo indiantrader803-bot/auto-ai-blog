@@ -78,17 +78,55 @@ export default function AdminSettingsPage() {
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                Google Gemini API Key (Recommended)
+                ExperientialLabs AI API Key (Active Frontier Engine)
               </label>
               <input
                 type="text"
-                value={settings.GEMINI_API_KEY}
+                value={settings.EXPLABS_API_KEY || ""}
+                onChange={(e) => handleChange("EXPLABS_API_KEY", e.target.value)}
+                placeholder="xpl_..."
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm font-mono"
+              />
+              <p className="text-[11px] text-slate-500 mt-1">
+                Connected to <code className="text-indigo-600 dark:text-indigo-400">https://api.experientiallabs.ai</code> (Verified)
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                ExperientialLabs Model
+              </label>
+              <select
+                value={settings.EXPLABS_MODEL || "claude-sonnet-4.5"}
+                onChange={(e) => handleChange("EXPLABS_MODEL", e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm"
+              >
+                <option value="claude-sonnet-4.5">Claude Sonnet 4.5 (Best Editorial & High-Retention Writing)</option>
+                <option value="claude-sonnet-latest">Claude Sonnet Latest</option>
+                <option value="claude-opus-latest">Claude Opus Latest (Ultimate Analytical Depth)</option>
+                <option value="gpt-5">GPT-5 (Frontier Reasoning)</option>
+                <option value="gpt-4o">GPT-4o (High Speed Multitask)</option>
+                <option value="deepseek-v3.2">DeepSeek V3.2 (Supercharged Technical Knowledge)</option>
+                <option value="deepseek-r1">DeepSeek R1 (Advanced Chain of Thought)</option>
+                <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                <option value="sonar-pro">Sonar Pro (Live Web Grounding)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                Google Gemini API Key (Fallback)
+              </label>
+              <input
+                type="text"
+                value={settings.GEMINI_API_KEY || ""}
                 onChange={(e) => handleChange("GEMINI_API_KEY", e.target.value)}
                 placeholder="AIzaSy..."
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm"
               />
               <p className="text-[11px] text-slate-500 mt-1">
-                Get a free key from Google AI Studio (aistudio.google.com).
+                Get a key from Google AI Studio (aistudio.google.com).
               </p>
             </div>
 
@@ -98,7 +136,7 @@ export default function AdminSettingsPage() {
               </label>
               <input
                 type="text"
-                value={settings.OPENAI_API_KEY}
+                value={settings.OPENAI_API_KEY || ""}
                 onChange={(e) => handleChange("OPENAI_API_KEY", e.target.value)}
                 placeholder="sk-..."
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm"

@@ -22,9 +22,12 @@ export async function generateArticleContent(options: GenerateArticlePromptOptio
   suggestedImageQuery: string;
   suggestedVideoQuery: string;
 }> {
+  const explabsKey = process.env.EXPLABS_API_KEY || process.env.EXPERIENTIALLABS_API_KEY || "";
+  const explabsBaseUrl = process.env.EXPLABS_BASE_URL || "https://api.experientiallabs.ai";
+  const explabsModel = process.env.EXPLABS_MODEL || "claude-sonnet-4.5";
   const apiKey = process.env.GEMINI_API_KEY || "";
   const openaiKey = process.env.OPENAI_API_KEY || "";
-  const modelName = process.env.AI_MODEL_PREFERENCE || "gemini-1.5-flash";
+  const modelName = process.env.AI_MODEL_PREFERENCE || explabsModel || "gemini-1.5-flash";
   const targetWords = options.targetWordCount || 1600;
   const tone = options.tone || "engaging, authoritative, and deeply informative";
   const language = options.language || "English";
@@ -74,7 +77,50 @@ Return strictly a JSON object with this exact schema:
 }
 `;
 
-  // 1. If Gemini API Key is available
+  // 1. If ExperientialLabs AI is configured (State-of-the-Art Frontier Engine)
+  if (explabsKey) {
+    try {
+      const candidateModels = [
+        explabsModel,
+        "claude-sonnet-4.5",
+        "claude-sonnet-latest",
+        "gpt-4o",
+        "deepseek-v3.2",
+      ];
+      const selectedModel = candidateModels.find((m) => !!m) || "claude-sonnet-4.5";
+
+      const res = await fetch(`${explabsBaseUrl}/v1/chat/completions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${explabsKey}`,
+        },
+        body: JSON.stringify({
+          model: selectedModel,
+          messages: [
+            { role: "system", content: systemInstruction },
+            { role: "user", content: userPrompt },
+          ],
+          temperature: 0.7,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const content = data.choices?.[0]?.message?.content;
+        if (content && content.length > 50) {
+          return parseAiJsonResponse(content, options.topic);
+        }
+      } else {
+        const errText = await res.text();
+        console.warn("ExperientialLabs API responded with non-200:", res.status, errText);
+      }
+    } catch (err: any) {
+      console.warn("ExperientialLabs API call failed, falling back:", err.message);
+    }
+  }
+
+  // 2. If Gemini API Key is available
   if (apiKey) {
     const candidateModels = [
       modelName,

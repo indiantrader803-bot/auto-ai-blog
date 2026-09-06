@@ -4,17 +4,18 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | AutoAI Chronicle",
-    default: "AutoAI Chronicle - Daily Autonomous AI & Tech Insights",
+    template: "%s | SmartMag Tech Chronicle",
+    default: "SmartMag Tech - Frontier AI & Engineering Chronicle",
   },
   description:
-    "Autonomous daily AI publication covering breakthroughs in artificial intelligence, engineering, cloud architecture, and wealth creation.",
+    "Autonomous editorial technology publication covering breakthroughs in artificial intelligence, engineering architecture, hardware benchmarks, and future trends.",
   keywords: [
+    "SmartMag Tech",
     "AI News",
     "Artificial Intelligence",
     "Autonomous Agents",
     "Machine Learning",
-    "Tech Trends",
+    "Tech Reviews",
     "Software Engineering",
   ],
   manifest: "/manifest.json",
@@ -37,6 +38,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap"
+          rel="stylesheet"
+        />
         <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
         <script
           dangerouslySetInnerHTML={{
@@ -45,6 +52,11 @@ export default function RootLayout({
                 darkMode: 'class',
                 theme: {
                   extend: {
+                    fontFamily: {
+                      sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                      serif: ['"Lora"', 'Georgia', 'serif'],
+                      mono: ['"JetBrains Mono"', 'monospace'],
+                    },
                     colors: {
                       primary: {
                         50: '#eef2ff',
@@ -74,7 +86,7 @@ export default function RootLayout({
           />
         )}
       </head>
-      <body className="min-h-screen bg-slate-50 dark:bg-[#090d16] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
+      <body className="min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white font-sans">
         {children}
       </body>
     </html>
