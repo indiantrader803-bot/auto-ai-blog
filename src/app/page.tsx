@@ -91,8 +91,10 @@ const FALLBACK_POSTS = [
   }
 ];
 
+import { getAllCatalogArticles } from "@/lib/content/articles";
+
 export default async function HomePage() {
-  let allPosts: any[] = [];
+  let dbPosts: any[] = [];
   let categories: any[] = [];
 
   try {
@@ -100,7 +102,7 @@ export default async function HomePage() {
       prisma.post.findMany({
         where: { status: "PUBLISHED" },
         orderBy: { publishedAt: "desc" },
-        take: 16,
+        take: 24,
         include: { category: true },
       }),
       prisma.category.findMany({
@@ -112,16 +114,35 @@ export default async function HomePage() {
         take: 8,
       }),
     ]);
-    allPosts = postsData || [];
+    dbPosts = postsData || [];
     categories = catsData || [];
   } catch (err: any) {
     console.warn("Database notice:", err.message);
   }
 
-  // Use fallback if database is newly initialized
-  const displayPosts = allPosts.length > 0 ? allPosts : FALLBACK_POSTS;
-  const featuredPost = displayPosts[0] || FALLBACK_POSTS[0];
-  const subFeaturedPosts = displayPosts.slice(1, 4).length > 0 ? displayPosts.slice(1, 4) : FALLBACK_POSTS.slice(1, 4);
+  const catalogArticles = getAllCatalogArticles();
+
+  // Combine DB posts and Catalog articles, ensuring no duplicate slugs
+  const seenSlugs = new Set<string>();
+  const combinedPosts: any[] = [];
+
+  for (const p of dbPosts) {
+    if (!seenSlugs.has(p.slug)) {
+      seenSlugs.add(p.slug);
+      combinedPosts.push(p);
+    }
+  }
+
+  for (const c of catalogArticles) {
+    if (!seenSlugs.has(c.slug)) {
+      seenSlugs.add(c.slug);
+      combinedPosts.push(c);
+    }
+  }
+
+  const displayPosts = combinedPosts.length > 0 ? combinedPosts : catalogArticles;
+  const featuredPost = displayPosts[0];
+  const subFeaturedPosts = displayPosts.slice(1, 4);
   const trendingPosts = displayPosts.slice().sort((a, b) => (b.views || 0) - (a.views || 0));
   const recentPosts = displayPosts.slice(4);
 
@@ -147,9 +168,9 @@ export default async function HomePage() {
   if (categories.length === 0) {
     categories = [
       { id: "1", name: "Artificial Intelligence", slug: "artificial-intelligence", _count: { posts: 14 } },
-      { id: "2", name: "Development & Engineering", slug: "development-and-engineering", _count: { posts: 10 } },
+      { id: "2", name: "Development & Engineering", slug: "development-and-engineering", _count: { posts: 12 } },
       { id: "3", name: "Finance & Markets", slug: "finance-and-markets", _count: { posts: 8 } },
-      { id: "4", name: "Technology & Gadgets", slug: "technology", _count: { posts: 12 } },
+      { id: "4", name: "Technology & Hardware", slug: "technology", _count: { posts: 10 } },
     ];
   }
 

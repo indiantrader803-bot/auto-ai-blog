@@ -12,11 +12,15 @@ interface Props {
 
 export const dynamic = "force-dynamic";
 
+import { getAllCatalogArticles } from "@/lib/content/articles";
+
 export default async function SearchPage({ searchParams }: Props) {
   const query = searchParams.q || "";
   let posts: any[] = [];
   let categories: any[] = [];
   let trendingPosts: any[] = [];
+
+  const catalog = getAllCatalogArticles();
 
   if (query.trim()) {
     try {
@@ -49,6 +53,28 @@ export default async function SearchPage({ searchParams }: Props) {
     } catch (e) {
       console.warn("Search query error:", e);
     }
+
+    // Also match in local catalog
+    const qLower = query.toLowerCase();
+    const matchingCatalog = catalog.filter(
+      (item) =>
+        item.title.toLowerCase().includes(qLower) ||
+        item.excerpt.toLowerCase().includes(qLower) ||
+        item.tags.some((t) => t.toLowerCase().includes(qLower)) ||
+        item.category.name.toLowerCase().includes(qLower)
+    );
+
+    const seenSlugs = new Set(posts.map((p) => p.slug));
+    for (const catItem of matchingCatalog) {
+      if (!seenSlugs.has(catItem.slug)) {
+        seenSlugs.add(catItem.slug);
+        posts.push(catItem);
+      }
+    }
+  }
+
+  if (trendingPosts.length === 0) {
+    trendingPosts = catalog.slice(0, 5);
   }
 
   return (
