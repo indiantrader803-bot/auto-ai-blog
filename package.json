@@ -20,6 +20,7 @@
     "@aws-sdk/client-ses": "^3.1127.0",
     "@google/generative-ai": "^0.21.0",
     "@prisma/client": "^5.19.0",
+    "@tailwindcss/typography": "^0.5.20",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "lucide-react": "^0.439.0",
