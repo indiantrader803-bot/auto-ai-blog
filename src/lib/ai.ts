@@ -126,8 +126,24 @@ Return strictly a JSON object with this exact schema:
     }
   }
 
-  // 3. Fallback Mock Generator if no keys are yet configured
-  console.info("Notice: No GEMINI_API_KEY or OPENAI_API_KEY configured yet. Using structured high-quality fallback template.");
+  // 3. If AWS Bedrock is configured
+  if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+    try {
+      const { generateWithBedrock } = await import("./aws/bedrock");
+      const bedrockOutput = await generateWithBedrock(
+        systemInstruction,
+        userPrompt
+      );
+      if (bedrockOutput) {
+        return parseAiJsonResponse(bedrockOutput, options.topic);
+      }
+    } catch (err: any) {
+      console.warn("AWS Bedrock call failed:", err.message);
+    }
+  }
+
+  // 4. Fallback Mock Generator if no keys are yet configured
+  console.info("Notice: No GEMINI_API_KEY, OPENAI_API_KEY, or AWS BEDROCK configured yet. Using structured high-quality fallback template.");
   return generateOfflineArticle(options.topic, options.category || "Technology");
 }
 

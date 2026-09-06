@@ -92,6 +92,19 @@ export async function enrichMedia(
     imageResult.photographerUrl = "https://pollinations.ai";
   }
 
+  // 3.5. Optionally Upload to Amazon S3 CDN Bucket
+  if (process.env.AWS_S3_BUCKET_NAME && imageResult.url) {
+    try {
+      const { uploadImageToS3 } = await import("../aws/s3");
+      const s3Url = await uploadImageToS3(imageResult.url, `cover-${Date.now()}.jpg`);
+      if (s3Url) {
+        imageResult.url = s3Url;
+      }
+    } catch (e: any) {
+      console.warn("S3 CDN upload notice:", e.message);
+    }
+  }
+
   // 4. Video Lookup
   let videoResult: { id?: string; title?: string } = {};
 
