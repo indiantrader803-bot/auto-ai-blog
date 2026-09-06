@@ -13,6 +13,7 @@ import {
   TrendingUp,
   Share2,
   DollarSign,
+  Cpu,
 } from "lucide-react";
 
 export default function AdminSidebar() {
@@ -24,6 +25,11 @@ export default function AdminSidebar() {
       label: "Analytics Overview",
       icon: LayoutDashboard,
       exact: true,
+    },
+    {
+      href: "/admin/swarm",
+      label: "Autonomous Swarm",
+      icon: Cpu,
     },
     {
       href: "/admin/generator",

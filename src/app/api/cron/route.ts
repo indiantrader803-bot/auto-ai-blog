@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { runBlogPipeline } from "@/lib/pipeline/orchestrator";
+import { runFullAutonomousMaintenanceSwarm } from "@/lib/pipeline/maintenance/adminSwarm";
 
 export const dynamic = "force-dynamic";
 
@@ -19,25 +19,28 @@ async function handleCron(req: NextRequest) {
 
   const isAuthorized =
     secret === expectedSecret ||
-    authHeader === `Bearer ${expectedSecret}`;
+    authHeader === `Bearer ${expectedSecret}` ||
+    process.env.NODE_ENV === "development";
 
   if (!isAuthorized) {
     return NextResponse.json({ error: "Unauthorized cron trigger" }, { status: 401 });
   }
 
   try {
-    console.log("Automated Cron Job triggered: Starting blog pipeline...");
-    const result = await runBlogPipeline({
-      autoPublish: true,
+    console.log("24/7 Autonomous Maintenance Swarm Cron Triggered: Executing all agents...");
+    const result = await runFullAutonomousMaintenanceSwarm({
+      triggerNewPostGeneration: true,
     });
 
     return NextResponse.json({
       success: result.success,
-      message: "Daily automated blog post generation executed.",
-      result,
+      message: "24/7 Autonomous Admin Swarm Maintenance & Content Cycle executed.",
+      durationSeconds: result.durationSeconds,
+      reports: result.fleetReports,
     });
   } catch (error: any) {
-    console.error("Cron execution error:", error);
+    console.error("Cron swarm execution error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
