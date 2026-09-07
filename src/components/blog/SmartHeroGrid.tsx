@@ -64,11 +64,6 @@ export default function SmartHeroGrid({ featured, subFeatured }: SmartHeroGridPr
               <Clock className="w-3.5 h-3.5 text-indigo-400" />
               <span>{featured.readTimeMinutes || 6} min read</span>
             </div>
-            <span>•</span>
-            <div className="flex items-center gap-1">
-              <Eye className="w-3.5 h-3.5 text-slate-400" />
-              <span>{featured.views || 1420} views</span>
-            </div>
           </div>
         </div>
       </div>
@@ -106,8 +101,6 @@ export default function SmartHeroGrid({ featured, subFeatured }: SmartHeroGridPr
               </h3>
               <div className="flex items-center gap-2 text-[11px] text-slate-300 font-medium">
                 <span>{post.readTimeMinutes || 5} min read</span>
-                <span>•</span>
-                <span>{post.views || 890} views</span>
               </div>
             </div>
           </div>

@@ -155,8 +155,6 @@ export default function SocialSidebar({
                 </h4>
                 <div className="flex items-center gap-2 text-[10px] text-slate-400 mt-1">
                   <span>{post.readTimeMinutes || 5} min read</span>
-                  <span>•</span>
-                  <span>{post.views || 450} views</span>
                 </div>
               </div>
             </Link>

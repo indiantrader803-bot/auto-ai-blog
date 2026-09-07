@@ -62,8 +62,6 @@ export default function DualCategoryBento({ category1, category2 }: DualCategory
               </h4>
               <div className="flex items-center gap-2 text-[11px] text-slate-300 mt-2 font-medium">
                 <span>{heroPost.readTimeMinutes || 5} min read</span>
-                <span>•</span>
-                <span>{heroPost.views || 410} views</span>
               </div>
             </div>
           </div>

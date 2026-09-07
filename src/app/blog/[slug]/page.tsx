@@ -376,10 +376,6 @@ export default async function BlogPostPage({ params }: Props) {
               <span className="flex items-center gap-1 font-medium">
                 <Clock className="w-3.5 h-3.5 text-indigo-500" /> {post.readTimeMinutes || 6} min read
               </span>
-              <span className="text-slate-300 dark:text-slate-700 hidden sm:inline">•</span>
-              <span className="flex items-center gap-1">
-                <Eye className="w-3.5 h-3.5 text-indigo-500" /> {post.views || 1840} views
-              </span>
             </div>
 
             <SocialShare title={post.title} />

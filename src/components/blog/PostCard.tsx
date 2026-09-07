@@ -89,8 +89,6 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
                   <span className="flex items-center gap-1">
                     <Clock className="w-3 h-3" /> {post.readTimeMinutes || 6} min read
                   </span>
-                  <span>•</span>
-                  <span>{post.views || 1200} views</span>
                 </div>
               </div>
             </div>
@@ -151,10 +149,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
       </div>
 
       {/* Action Footer */}
-      <div className="px-6 pb-6 pt-2 flex items-center justify-between text-xs border-t border-slate-100 dark:border-slate-800/60">
-        <span className="text-slate-500 flex items-center gap-1">
-          <Eye className="w-3.5 h-3.5 text-slate-400" /> {post.views || 0} views
-        </span>
+      <div className="px-6 pb-6 pt-2 flex items-center justify-end text-xs border-t border-slate-100 dark:border-slate-800/60">
         <Link
           href={`/blog/${post.slug}`}
           className="font-bold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform flex items-center gap-1"

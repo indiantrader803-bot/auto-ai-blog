@@ -38,8 +38,6 @@ export default function TrendingBar({ posts }: TrendingBarProps) {
               </h4>
               <div className="flex items-center gap-2 text-[10px] text-slate-400 mt-1">
                 <span>{post.readTimeMinutes || 5} min</span>
-                <span>•</span>
-                <span>{post.views || 620} views</span>
               </div>
             </div>
           </Link>
