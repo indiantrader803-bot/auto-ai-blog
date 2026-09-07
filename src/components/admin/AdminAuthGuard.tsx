@@ -1,18 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Lock, Key, ShieldCheck, Sparkles } from "lucide-react";
-
-const VALID_KEYS = [
-  "arnab2026",
-  "auto-blog-secure-key-2025",
-  "arnab.laha2018@gmail.com",
-  "admin123"
-];
+import { Lock, Mail, Key, ShieldCheck, Sparkles } from "lucide-react";
 
 export default function AdminAuthGuard({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [passkey, setPasskey] = useState("");
+  const [email, setEmail] = useState("arnab.laha2018@gmail.com");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -26,12 +20,24 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (VALID_KEYS.includes(passkey.trim())) {
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPass = password.trim();
+
+    const isEmailPassMatch =
+      cleanEmail === "arnab.laha2018@gmail.com" &&
+      (cleanPass === "Myjobmail@#1234" || cleanPass === "Myjobmail@1234" || cleanPass === "arnab2026");
+
+    const isPasskeyMatch =
+      cleanPass === "arnab2026" ||
+      cleanPass === "auto-blog-secure-key-2025" ||
+      cleanPass === "Myjobmail@#1234";
+
+    if (isEmailPassMatch || isPasskeyMatch) {
       localStorage.setItem("auto_ai_admin_session", "authenticated_owner_arnab");
       setIsAuthenticated(true);
       setError("");
     } else {
-      setError("Invalid Owner Passkey. Access restricted to administrator.");
+      setError("Invalid Email or Password. Please check your admin credentials.");
     }
   };
 
@@ -39,7 +45,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white font-sans">
         <div className="flex items-center gap-2 text-indigo-400 font-bold text-sm">
-          <Sparkles className="w-5 h-5 animate-spin" /> Verifying Admin Security Access...
+          <Sparkles className="w-5 h-5 animate-spin" /> Verifying Security Session...
         </div>
       </div>
     );
@@ -54,24 +60,42 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
               <Lock className="w-7 h-7" />
             </div>
             <h2 className="text-2xl font-black font-serif text-white tracking-tight">
-              Owner Security Portal
+              Owner Admin Portal
             </h2>
             <p className="text-xs text-slate-400">
-              Protected Admin Studio. Enter your owner passkey to access system controls.
+              Enter your administrator email &amp; password to sign in.
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4 pt-2">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
-                Admin Passkey
+                Admin Email Address
+              </label>
+              <div className="relative">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="arnab.laha2018@gmail.com"
+                  required
+                  className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-sm font-sans text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors pl-10"
+                />
+                <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                Password
               </label>
               <div className="relative">
                 <input
                   type="password"
-                  value={passkey}
-                  onChange={(e) => setPasskey(e.target.value)}
-                  placeholder="Enter Passkey (e.g. arnab2026)"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  required
                   className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-sm font-mono text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors pl-10"
                 />
                 <Key className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
@@ -88,7 +112,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
               type="submit"
               className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-indigo-600/25 transition-all flex items-center justify-center gap-2"
             >
-              <ShieldCheck className="w-4 h-4" /> Unlock Admin Studio
+              <ShieldCheck className="w-4 h-4" /> Sign In to Admin Studio
             </button>
           </form>
 
@@ -97,7 +121,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
               href="/"
               className="text-xs font-semibold text-slate-400 hover:text-white transition-colors"
             >
-              ← Return to Reader Blog
+              ← Return to Public Blog
             </a>
           </div>
         </div>
