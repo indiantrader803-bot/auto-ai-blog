@@ -93,6 +93,48 @@ export default function MonetizationHubPage() {
     },
   ]);
 
+  const [newKeyword, setNewKeyword] = useState<string>("");
+  const [newProduct, setNewProduct] = useState<string>("");
+  const [newCpa, setNewCpa] = useState<string>("$45.00");
+
+  const handleAddAffiliate = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newKeyword || !newProduct) return;
+    setAffiliates([
+      ...affiliates,
+      {
+        id: `aff_${Date.now()}`,
+        keyword: newKeyword,
+        product: newProduct,
+        cpa: `${newCpa} per signup`,
+        clicks: 0,
+        earnings: "$0.00",
+        status: "ACTIVE",
+      },
+    ]);
+    setNewKeyword("");
+    setNewProduct("");
+  };
+
+  const handleAddSponsor = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newSponsor.sponsorName) return;
+    const added: SponsorDeal = {
+      id: `sp_${Date.now()}`,
+      sponsorName: newSponsor.sponsorName,
+      badge: newSponsor.badge,
+      tagline: newSponsor.tagline || "High-Performance Cloud Infrastructure",
+      description: newSponsor.description || "Enterprise tooling optimized for autonomous AI applications.",
+      ctaText: newSponsor.ctaText,
+      ctaUrl: newSponsor.ctaUrl || "https://auto-ai-blog-orpin.vercel.app",
+      discountCode: newSponsor.discountCode,
+      categoryMatch: ["Technology", "Artificial Intelligence"],
+      cpcTier: newSponsor.cpcTier,
+    };
+    setSponsors([...sponsors, added]);
+    setShowAddSponsorModal(false);
+  };
+
   const realTotalViews = realMetrics?.summary?.totalViews || 0;
   const realAdsensePubId = adsensePubId;
   const activeSponsorsCount = sponsors.length;
