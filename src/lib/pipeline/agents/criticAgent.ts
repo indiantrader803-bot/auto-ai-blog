@@ -58,18 +58,20 @@ Draft Title: "${draftTitle}"
 Draft Markdown:
 ${draftContent.slice(0, 3500)}
 
-ANTI-AI HUMANIZATION AUDIT RULES:
-1. Scrub all AI clichés: eliminate "In today's fast-paced world", "delve into", "tapestry", "revolutionize", "in conclusion", "furthermore", "it's crucial to note".
-2. Inject human rhythm & burstiness: short punchy declarations mixed with detailed technical explanations.
-3. Authentic developer tone: real architectural trade-offs, realistic benchmark metrics, honest caveats, and practical hands-on verdicts.
-4. Clean Markdown structure: ensure sharp ## and ### headers, structured tables, code snippets, and takeaway callout blocks.
+ANTI-AI HUMANIZATION, TRANSLATION & QUALITY AUDIT RULES:
+1. Proofread for zero spelling errors, grammar mistakes, or awkward phrasing.
+2. Scrub all AI clichés: eliminate "In today's fast-paced world", "delve into", "tapestry", "revolutionize", "in conclusion", "furthermore", "it's crucial to note".
+3. Inject human rhythm & burstiness: short punchy declarations mixed with detailed technical explanations.
+4. Authentic developer tone: real architectural trade-offs, realistic benchmark metrics, honest caveats, and practical hands-on verdicts.
+5. Clean Markdown & UI compatibility: ensure sharp ## and ### headers, structured tables, code snippets, and takeaway callout blocks that render perfectly on all mobile, tablet, and desktop UI layouts.
+6. Verify global context & language translation clarity for international multi-language readers.
 
 Return STRICTLY a JSON object with this schema:
 {
   "score": number (0-100),
-  "feedback": "Short evaluation critique focusing on human authenticity and technical punch",
+  "feedback": "Short evaluation critique focusing on spelling accuracy, translation clarity, human authenticity, and technical punch",
   "improvedTitle": "Optimized, high-converting human-style title",
-  "improvedContent": "The enhanced, fully humanized Markdown article with zero AI clichés",
+  "improvedContent": "The enhanced, fully humanized, spell-checked Markdown article with zero AI clichés",
   "recommendations": ["point 1", "point 2"]
 }
 `;

@@ -5,14 +5,25 @@ import { Globe, Check } from "lucide-react";
 
 const LANGUAGES = [
   { code: "en", name: "English", flag: "🇺🇸" },
-  { code: "bn", name: "বাংলা", flag: "🇮🇳" },
-  { code: "es", name: "Español", flag: "🇪🇸" },
-  { code: "fr", name: "Français", flag: "🇫🇷" },
-  { code: "de", name: "Deutsch", flag: "🇩🇪" },
-  { code: "zh-CN", name: "中文", flag: "🇨🇳" },
-  { code: "hi", name: "हिन्दी", flag: "🇮🇳" },
-  { code: "ja", name: "日本語", flag: "🇯🇵" },
-  { code: "ar", name: "العربية", flag: "🇸🇦" },
+  { code: "bn", name: "বাংলা (Bengali)", flag: "🇮🇳" },
+  { code: "hi", name: "हिन्दी (Hindi)", flag: "🇮🇳" },
+  { code: "es", name: "Español (Spanish)", flag: "🇪🇸" },
+  { code: "fr", name: "Français (French)", flag: "🇫🇷" },
+  { code: "de", name: "Deutsch (German)", flag: "🇩🇪" },
+  { code: "zh-CN", name: "中文 (Chinese Simplified)", flag: "🇨🇳" },
+  { code: "zh-TW", name: "繁體中文 (Chinese Traditional)", flag: "🇹🇼" },
+  { code: "ja", name: "日本語 (Japanese)", flag: "🇯🇵" },
+  { code: "ko", name: "한국어 (Korean)", flag: "🇰🇷" },
+  { code: "ar", name: "العربية (Arabic)", flag: "🇸🇦" },
+  { code: "pt", name: "Português (Portuguese)", flag: "🇧🇷" },
+  { code: "ru", name: "Русский (Russian)", flag: "🇷🇺" },
+  { code: "it", name: "Italiano (Italian)", flag: "🇮🇹" },
+  { code: "nl", name: "Nederlands (Dutch)", flag: "🇳🇱" },
+  { code: "tr", name: "Türkçe (Turkish)", flag: "🇹🇷" },
+  { code: "vi", name: "Tiếng Việt (Vietnamese)", flag: "🇻🇳" },
+  { code: "th", name: "ไทย (Thai)", flag: "🇹🇭" },
+  { code: "id", name: "Bahasa Indonesia", flag: "🇮🇩" },
+  { code: "pl", name: "Polski (Polish)", flag: "🇵🇱" },
 ];
 
 export default function LanguageSelector() {
