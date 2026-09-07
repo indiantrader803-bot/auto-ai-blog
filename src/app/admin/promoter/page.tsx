@@ -36,11 +36,24 @@ export default function PromotionHubPage() {
   const [dispatchStatus, setDispatchStatus] = useState<string | null>(null);
 
   useEffect(() => {
-    const catalog = getAllCatalogArticles();
-    setArticles(catalog);
-    if (catalog.length > 0) {
-      setSelectedSlug(catalog[0].slug);
-    }
+    fetch("/api/posts?status=ALL&limit=50")
+      .then((res) => res.json())
+      .then((data) => {
+        const livePosts = data.posts || [];
+        const catalog = getAllCatalogArticles();
+        const combined = [...livePosts, ...catalog];
+        setArticles(combined);
+        if (combined.length > 0) {
+          setSelectedSlug(combined[0].slug);
+        }
+      })
+      .catch(() => {
+        const catalog = getAllCatalogArticles();
+        setArticles(catalog);
+        if (catalog.length > 0) {
+          setSelectedSlug(catalog[0].slug);
+        }
+      });
   }, []);
 
   const handleGenerateCampaign = async () => {
