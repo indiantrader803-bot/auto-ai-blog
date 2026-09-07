@@ -14,6 +14,7 @@ import NewsletterBanner from "@/components/monetization/NewsletterBanner";
 import { Sparkles, TrendingUp, Compass, Flame, ArrowRight, Zap, Award, Layers } from "lucide-react";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 // Rich initial magazine articles for instant high-fidelity rendering
 const FALLBACK_POSTS = [
