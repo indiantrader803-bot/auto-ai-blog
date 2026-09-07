@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import SearchModal from "./SearchModal";
 import LanguageSelector from "./LanguageSelector";
+import PushNotificationBanner from "../common/PushNotificationBanner";
 
 export default function Navbar() {
   const [isDark, setIsDark] = useState(false);
@@ -209,6 +210,9 @@ export default function Navbar() {
 
               {/* Language Selector */}
               <LanguageSelector />
+
+              {/* Web Push Alerts */}
+              <PushNotificationBanner />
 
               {/* Theme Toggle */}
               <button

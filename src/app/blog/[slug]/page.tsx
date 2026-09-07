@@ -10,6 +10,7 @@ import TableOfContents from "@/components/blog/TableOfContents";
 import FaqAccordion from "@/components/blog/FaqAccordion";
 import SocialShare from "@/components/blog/SocialShare";
 import ArticleReactions from "@/components/blog/ArticleReactions";
+import ArticleAudioPlayer from "@/components/blog/ArticleAudioPlayer";
 import CommentsSection from "@/components/blog/CommentsSection";
 import AdBanner from "@/components/monetization/AdBanner";
 import AffiliateCard from "@/components/monetization/AffiliateCard";
@@ -413,8 +414,11 @@ export default async function BlogPostPage({ params }: Props) {
         {/* Article Grid Layout: Content + Sticky TOC Sidebar */}
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Main Article Body (8 cols) */}
-          <article className="lg:col-span-8 space-y-8">
-            {/* Top In-Article Ad Banner */}
+          <article className="lg:col-span-8 space-y-8 min-w-0">
+            {/* AI Voice Audio Player */}
+            <ArticleAudioPlayer title={post.title} content={post.content} />
+
+            {/* In-Article Sponsor / Ad Placement */}
             <AdBanner slot="article-top" className="my-2" />
 
             {/* Markdown Body */}

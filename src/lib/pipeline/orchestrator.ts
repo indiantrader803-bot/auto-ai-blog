@@ -6,6 +6,7 @@ import { runSeoMasterAgent } from "./agents/seoAgent";
 import { runCriticAndSelfImprovement, updateSwarmMemoryFromAnalytics } from "./agents/criticAgent";
 import { PipelineOptions, PipelineProgress } from "../types";
 import { generateSlug } from "../utils";
+import { applySmartInternalLinks } from "./internalLinkingEngine";
 
 /**
  * Safely execute a Prisma database operation.
@@ -173,7 +174,8 @@ export async function runBlogPipeline(
     });
 
     const baseSlug = seoResult.slug;
-    const processedContent = seoResult.processedContent;
+    const rawSeoContent = seoResult.processedContent;
+    const processedContent = await applySmartInternalLinks(rawSeoContent);
     const readTimeMinutes = seoResult.readTimeMinutes;
     const faqJson = JSON.stringify(aiResult.faq || []);
     const seoKeywords = seoResult.seoKeywords;
