@@ -23,14 +23,14 @@ export async function notifyAdminUserLead(payload: UserLeadPayload): Promise<{ s
   if (process.env.RESEND_API_KEY) {
     try {
       // Send Welcome Confirmation to Subscriber
-      await fetch("https://api.resend.com/emails", {
+      const welcomeRes = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: "SmartMag Tech <onboarding@resend.dev>",
+          from: "onboarding@resend.dev",
           to: [payload.email],
           subject: "🎉 Welcome to SmartMag Tech Daily Briefing!",
           html: `
@@ -47,6 +47,11 @@ export async function notifyAdminUserLead(payload: UserLeadPayload): Promise<{ s
         }),
       });
 
+      if (!welcomeRes.ok) {
+        const errText = await welcomeRes.text();
+        console.warn("Resend Welcome Email warning:", welcomeRes.status, errText);
+      }
+
       // Send Admin Notification to Owner
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
@@ -55,7 +60,7 @@ export async function notifyAdminUserLead(payload: UserLeadPayload): Promise<{ s
           Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: "SmartMag Leads <onboarding@resend.dev>",
+          from: "onboarding@resend.dev",
           to: [recipient],
           subject: `🔥 [SmartMag Lead] New ${payload.type.replace(/_/g, " ")}: ${payload.email}`,
           html: `
