@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "a87b1dee8479f0e4",
+    google: "4rMlrKZ5JALf5abCB0z2hxmP7sqgeFEoQVzhWosm3b0",
   },
   manifest: "/manifest.json",
 };
@@ -78,9 +78,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="google-site-verification" content="a87b1dee8479f0e4" />
-        <meta name="google-site-verification" content="googlea87b1dee8479f0e4" />
-        <meta name="google-site-verification" content="google6c34157fb7579448" />
+        <meta name="google-site-verification" content="4rMlrKZ5JALf5abCB0z2hxmP7sqgeFEoQVzhWosm3b0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
