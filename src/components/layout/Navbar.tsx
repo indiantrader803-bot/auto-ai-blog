@@ -21,6 +21,7 @@ import {
   Linkedin,
 } from "lucide-react";
 import SearchModal from "./SearchModal";
+import LanguageSelector from "./LanguageSelector";
 
 export default function Navbar() {
   const [isDark, setIsDark] = useState(false);
@@ -205,6 +206,9 @@ export default function Navbar() {
                   ⌘K
                 </kbd>
               </button>
+
+              {/* Language Selector */}
+              <LanguageSelector />
 
               {/* Theme Toggle */}
               <button

@@ -129,6 +129,24 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white font-sans">
         {children}
+        <Script
+          id="google-translate-script"
+          strategy="lazyOnload"
+          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+        />
+        <Script id="google-translate-init" strategy="lazyOnload">
+          {`
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,es,fr,de,zh-CN,hi,ja,ar',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+              }, 'google_translate_element');
+            }
+          `}
+        </Script>
+        <div id="google_translate_element" className="hidden" />
       </body>
     </html>
   );
