@@ -92,22 +92,6 @@ export default function MonetizationHubPage() {
       status: "ACTIVE",
     },
   ]);
-      product: "Cursor Pro Yearly Pass",
-      cpa: "$25.00 per conversion",
-      clicks: 610,
-      earnings: "$1,225.00",
-      status: "ACTIVE",
-    },
-    {
-      id: "aff_4",
-      keyword: "Kubernetes / DevSecOps",
-      product: "ArmorGuard Zero-Trust",
-      cpa: "$80.00 per demo",
-      clicks: 194,
-      earnings: "$1,360.00",
-      status: "ACTIVE",
-    },
-  ]);
 
   const realTotalViews = realMetrics?.summary?.totalViews || 0;
   const realAdsensePubId = adsensePubId;
