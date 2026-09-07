@@ -22,6 +22,32 @@ export async function notifyAdminUserLead(payload: UserLeadPayload): Promise<{ s
   // 1. If Resend API Key is configured in environment
   if (process.env.RESEND_API_KEY) {
     try {
+      // Send Welcome Confirmation to Subscriber
+      await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: "SmartMag Tech <onboarding@resend.dev>",
+          to: [payload.email],
+          subject: "🎉 Welcome to SmartMag Tech Daily Briefing!",
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #0f172a; color: #ffffff;">
+              <h1 style="color: #818cf8; margin-top: 0; font-size: 24px;">Welcome to SmartMag Tech Chronicle!</h1>
+              <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6;">Thank you for subscribing to our daily autonomous AI & Engineering briefing.</p>
+              <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6;">You will now receive breaking coverage on frontier LLMs, system architecture, quant finance, and tech reviews.</p>
+              <div style="margin: 24px 0;">
+                <a href="https://auto-ai-blog-orpin.vercel.app" style="display: inline-block; padding: 12px 24px; background-color: #4f46e5; color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 10px;">Explore Today's Dispatch →</a>
+              </div>
+              <p style="font-size: 12px; color: #64748b; margin-top: 32px;">SmartMag Tech Chronicle • Delivered to ${payload.email}</p>
+            </div>
+          `,
+        }),
+      });
+
+      // Send Admin Notification to Owner
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
