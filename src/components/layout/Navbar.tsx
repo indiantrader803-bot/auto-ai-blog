@@ -187,25 +187,21 @@ export default function Navbar() {
               >
                 Reviews &amp; Gadgets
               </Link>
-              <Link
-                href="/about"
-                className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors py-2"
-              >
-                Editorial
-              </Link>
             </nav>
 
             {/* Right Action Icons: Live Search, Theme Switcher, Subscribe CTA */}
             <div className="flex items-center gap-3">
-              {/* Search Modal Trigger Button */}
+              {/* Prominent Expanded Search Trigger */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:border-indigo-500/40 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all text-xs font-medium group"
+                className="flex items-center justify-between gap-3 px-4 py-2 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:border-indigo-500/50 hover:bg-white dark:hover:bg-slate-950 hover:shadow-md transition-all text-xs font-medium group min-w-[140px] sm:min-w-[220px]"
                 aria-label="Search"
               >
-                <Search className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors" />
-                <span className="hidden sm:inline">Search...</span>
-                <kbd className="hidden sm:inline px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] text-slate-400 font-mono">
+                <div className="flex items-center gap-2 truncate">
+                  <Search className="w-4 h-4 text-indigo-500 group-hover:scale-110 transition-transform shrink-0" />
+                  <span className="truncate">Search articles &amp; AI topics...</span>
+                </div>
+                <kbd className="hidden md:inline-block px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] text-slate-400 font-mono shrink-0 shadow-2xs">
                   ⌘K
                 </kbd>
               </button>
