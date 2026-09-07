@@ -108,11 +108,20 @@ export default function AdminSidebar() {
         </nav>
       </div>
 
-      {/* Bottom Back to Blog Link */}
-      <div className="p-4 border-t border-slate-200 dark:border-slate-800">
+      {/* Bottom Back to Blog Link & Lock Admin */}
+      <div className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
+        <button
+          onClick={() => {
+            localStorage.removeItem("auto_ai_admin_session");
+            window.location.href = "/admin";
+          }}
+          className="flex items-center justify-center gap-2 w-full py-2 px-4 rounded-xl text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-colors"
+        >
+          🔒 Lock Admin Portal
+        </button>
         <Link
           href="/"
-          className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+          className="flex items-center justify-center gap-2 w-full py-2 px-4 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Back to Reader Blog
         </Link>
