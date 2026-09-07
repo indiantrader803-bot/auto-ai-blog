@@ -211,7 +211,7 @@ export default function Navbar() {
         {/* Tier 2: Category Navigation Menu Bar */}
         <div className="hidden lg:block border-t border-slate-100 dark:border-slate-900 bg-slate-50/50 dark:bg-slate-950/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav className="flex items-center gap-8 py-2.5 overflow-x-auto text-xs font-bold uppercase tracking-wider">
+            <nav className="flex items-center gap-7 py-2.5 overflow-x-auto text-xs font-bold uppercase tracking-wider">
               <Link
                 href="/"
                 className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap"
@@ -219,29 +219,36 @@ export default function Navbar() {
                 Home
               </Link>
               <Link
+                href="/category/indian-markets"
+                className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap"
+              >
+                <span>🇮🇳 Indian Markets</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              </Link>
+              <Link
+                href="/category/us-markets"
+                className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap"
+              >
+                <span>🇺🇸 US Markets</span>
+              </Link>
+              <Link
+                href="/category/forex-and-currencies"
+                className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap"
+              >
+                Forex (USD/INR)
+              </Link>
+              <Link
+                href="/category/commodities"
+                className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap"
+              >
+                Commodities (Gold/Crude)
+              </Link>
+              <Link
                 href="/category/artificial-intelligence"
                 className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap"
               >
-                <span>AI &amp; Models</span>
+                <span>AI &amp; Tech</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-              </Link>
-              <Link
-                href="/category/development-and-engineering"
-                className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap"
-              >
-                Engineering
-              </Link>
-              <Link
-                href="/category/finance-and-markets"
-                className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap"
-              >
-                Markets
-              </Link>
-              <Link
-                href="/category/technology"
-                className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap"
-              >
-                Reviews &amp; Gadgets
               </Link>
             </nav>
           </div>

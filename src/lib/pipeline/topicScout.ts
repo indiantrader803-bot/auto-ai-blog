@@ -5,26 +5,27 @@ const parser = new Parser({
 });
 
 const DEFAULT_NICHE_TOPICS = [
-  "Bharti Airtel 5G Standalone Core & Edge Cloud Infrastructure: Enterprise Case Study",
+  "Nifty 50 & Sensex Technical Outlook: FII Inflows, DII Liquidity & Key Breakout Levels",
+  "Indian Stock Market: Banking, IT & Defence Sectors Poised for High-Growth in 2026",
+  "US Stock Markets (S&P 500, Nasdaq 100): Big Tech Earnings & Federal Reserve Rate Policy",
+  "Global Forex Trading: USD/INR, EUR/USD & Currency Hedging Strategies for Volatility",
+  "Commodity Supercycle: Gold, Silver & Crude Oil Technical Pivot Points and Geo-Economic Drivers",
   "India's Telecom Revolution: 5G SA, Starlink Satellite Broadband vs Airtel OneWeb",
-  "Airtel Payments Bank & Digital Lending: How 50 Million Active Accounts are Driving Rural Fintech",
-  "Global Telecom Tariffs & ARPU Surge in 2026: The Race for Sovereign AI Compute Networks",
-  "Agentic AI Workflows and Autonomous Coding Systems in Production",
-  "Next-Generation Small Language Models (SLMs) for Edge Devices & IoT",
+  "Agentic AI Workflows and Autonomous Coding Systems in Enterprise Production",
   "Semiconductor Manufacturing: TSMC 2nm N2 Node & High-NA EUV Breakthroughs",
-  "High-Yield Quantitative Strategies: Real-Time Sentiment Extraction on Global Markets",
-  "The Electric Vehicle & Solid-State Battery Revolution: Global Grid Transitions",
+  "High-Yield Quantitative Strategies: Real-Time Algorithmic Execution on Global Markets",
   "Zero-Trust Cloud Infrastructure: Hardening Enterprise Kubernetes Clusters",
-  "Cybersecurity in the Age of AI: Post-Quantum Cryptography & Kyber Encryption",
+  "Post-Quantum Cryptography & Kyber Encryption for Financial Systems",
   "Next.js 14 & Edge Computing: Sub-10ms Microservices Architecture"
 ];
 
 const RSS_SOURCES = [
   "https://trends.google.com/trends/trendingsearches/daily/rss?geo=IN",
   "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US",
+  "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
+  "https://www.moneycontrol.com/rss/MCtopnews.xml",
   "https://hnrss.org/frontpage",
-  "https://techcrunch.com/feed/",
-  "https://www.theverge.com/rss/index.xml"
+  "https://techcrunch.com/feed/"
 ];
 
 export async function scoutTrendingTopic(customNiche?: string): Promise<{
@@ -38,11 +39,11 @@ export async function scoutTrendingTopic(customNiche?: string): Promise<{
     return {
       topic,
       source: "Custom Niche Config",
-      suggestedCategory: "Telecom & Connectivity",
+      suggestedCategory: "Finance & Markets",
     };
   }
 
-  // Try fetching from Google Trends / HackerNews RSS
+  // Try fetching from Google Trends / Financial / Tech RSS
   for (const feedUrl of RSS_SOURCES) {
     try {
       const feed = await parser.parseURL(feedUrl);
@@ -67,33 +68,36 @@ export async function scoutTrendingTopic(customNiche?: string): Promise<{
   const fallback = DEFAULT_NICHE_TOPICS[Math.floor(Math.random() * DEFAULT_NICHE_TOPICS.length)];
   return {
     topic: fallback,
-    source: "Curated Hot Topic & Telecom Pool",
+    source: "Curated Global Market & Tech Pool",
     suggestedCategory: categorizeTopic(fallback),
   };
 }
 
 function cleanRssTitle(raw: string): string {
-  let title = raw.replace(/\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters)$/i, "");
+  let title = raw.replace(/\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol)$/i, "");
   title = title.replace(/^Show HN:\s*/i, "").replace(/^Ask HN:\s*/i, "");
   return title.trim();
 }
 
 function categorizeTopic(title: string): string {
   const lower = title.toLowerCase();
-  if (lower.includes("airtel") || lower.includes("telecom") || lower.includes("5g") || lower.includes("6g") || lower.includes("broadband") || lower.includes("oneweb") || lower.includes("spectrum") || lower.includes("jio")) {
-    return "Telecom & Connectivity";
+  if (lower.includes("nifty") || lower.includes("sensex") || lower.includes("bse") || lower.includes("nse") || lower.includes("rupee") || lower.includes("sebi") || lower.includes("fii") || lower.includes("dii")) {
+    return "Indian Markets";
+  }
+  if (lower.includes("forex") || lower.includes("usd") || lower.includes("eur") || lower.includes("gbp") || lower.includes("jpy") || lower.includes("currency")) {
+    return "Forex & Currencies";
+  }
+  if (lower.includes("gold") || lower.includes("silver") || lower.includes("crude") || lower.includes("oil") || lower.includes("commodity") || lower.includes("metal") || lower.includes("natural gas")) {
+    return "Commodities";
+  }
+  if (lower.includes("s&p") || lower.includes("nasdaq") || lower.includes("dow") || lower.includes("wall street") || lower.includes("fed") || lower.includes("nyse")) {
+    return "US Markets";
   }
   if (lower.includes("ai") || lower.includes("gpt") || lower.includes("llm") || lower.includes("model") || lower.includes("neural") || lower.includes("agent") || lower.includes("claude")) {
     return "Artificial Intelligence";
   }
-  if (lower.includes("crypto") || lower.includes("bitcoin") || lower.includes("finance") || lower.includes("money") || lower.includes("stock") || lower.includes("bank") || lower.includes("market") || lower.includes("upi")) {
-    return "Finance & Markets";
-  }
-  if (lower.includes("battery") || lower.includes("ev") || lower.includes("electric") || lower.includes("energy") || lower.includes("quantum") || lower.includes("chip") || lower.includes("semiconductor")) {
-    return "Science & Future Tech";
-  }
   if (lower.includes("code") || lower.includes("javascript") || lower.includes("python") || lower.includes("react") || lower.includes("dev") || lower.includes("rust") || lower.includes("kubernetes")) {
     return "Development & Engineering";
   }
-  return "Technology";
+  return "Finance & Markets";
 }
