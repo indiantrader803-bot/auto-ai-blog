@@ -4,6 +4,7 @@ import { generateArticleContent } from "../ai";
 import { enrichMedia } from "./mediaEnricher";
 import { runSeoMasterAgent } from "./agents/seoAgent";
 import { runCriticAndSelfImprovement, updateSwarmMemoryFromAnalytics } from "./agents/criticAgent";
+import { runPromotionAgent } from "./agents/promotionAgent";
 import { PipelineOptions, PipelineProgress } from "../types";
 import { generateSlug } from "../utils";
 import { applySmartInternalLinks } from "./internalLinkingEngine";
@@ -271,6 +272,18 @@ export async function runBlogPipeline(
           }
         }
       }
+
+      // 8. Auto-Trigger Viral Social Promotion Campaign
+      try {
+        await runPromotionAgent({
+          title: post.title,
+          excerpt: post.excerpt,
+          slug: post.slug,
+          category: categoryName,
+          tags: aiResult.tags || [],
+          content: post.content,
+        });
+      } catch (_) {}
     }
 
     // If database was unavailable, create an in-memory post object for the response

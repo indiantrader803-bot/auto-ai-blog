@@ -45,9 +45,14 @@ export default function ArticleAudioPlayer({ title, content }: Props) {
       } else {
         window.speechSynthesis.cancel(); // Stop any previous speech
         const textToRead = `${title}. ${cleanTextForSpeech(content)}`;
-        const utterance = new SpeechSynthesisUtterance(textToRead.slice(0, 4000)); // Limit to first 4000 chars for browser stability
+        const utterance = new SpeechSynthesisUtterance(textToRead.slice(0, 4000));
         utterance.rate = rate;
         utterance.volume = isMuted ? 0 : 1;
+
+        // Detect current language from Google Translate cookie or browser selection
+        const match = document.cookie.match(/googtrans=\/en\/([a-z-A-Z]+)/);
+        const selectedLang = match && match[1] ? match[1] : "en";
+        utterance.lang = selectedLang === "bn" ? "bn-IN" : selectedLang === "hi" ? "hi-IN" : selectedLang === "es" ? "es-ES" : selectedLang === "fr" ? "fr-FR" : selectedLang === "de" ? "de-DE" : selectedLang === "zh-CN" ? "zh-CN" : selectedLang === "ja" ? "ja-JP" : selectedLang === "ar" ? "ar-SA" : selectedLang === "pt" ? "pt-BR" : selectedLang === "ru" ? "ru-RU" : "en-US";
 
         utterance.onend = () => {
           setIsPlaying(false);
