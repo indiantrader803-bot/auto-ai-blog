@@ -139,7 +139,7 @@ export default function RootLayout({
             function googleTranslateElementInit() {
               new google.translate.TranslateElement({
                 pageLanguage: 'en',
-                includedLanguages: 'en,es,fr,de,zh-CN,hi,ja,ar',
+                includedLanguages: 'en,bn,es,fr,de,zh-CN,hi,ja,ar',
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                 autoDisplay: false
               }, 'google_translate_element');
