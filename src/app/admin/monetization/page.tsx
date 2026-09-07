@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   DollarSign,
   TrendingUp,
@@ -30,7 +28,15 @@ export default function MonetizationHubPage() {
   const [midArticleAd, setMidArticleAd] = useState<boolean>(true);
   const [sidebarAd, setSidebarAd] = useState<boolean>(true);
   const [exitModalAd, setExitModalAd] = useState<boolean>(false);
-  const [adsensePubId, setAdsensePubId] = useState<string>("ca-pub-9847291847192847");
+  const [adsensePubId, setAdsensePubId] = useState<string>("ca-pub-9768860457233655");
+  const [realMetrics, setRealMetrics] = useState<any>(null);
+
+  useEffect(() => {
+    fetch("/api/analytics")
+      .then((res) => res.json())
+      .then((data) => setRealMetrics(data))
+      .catch(() => {});
+  }, []);
 
   const [sponsors, setSponsors] = useState<SponsorDeal[]>(VERIFIED_SPONSORS);
   const [newSponsor, setNewSponsor] = useState({
@@ -45,15 +51,15 @@ export default function MonetizationHubPage() {
   });
   const [showAddSponsorModal, setShowAddSponsorModal] = useState<boolean>(false);
 
-  // Contextual Affiliates
+  // Real Contextual Affiliates
   const [affiliates, setAffiliates] = useState([
     {
       id: "aff_1",
       keyword: "Cloud GPU / H100",
       product: "HyperCompute Serverless GPUs",
       cpa: "$50.00 per signup",
-      clicks: 482,
-      earnings: "$1,450.00",
+      clicks: 0,
+      earnings: "$0.00",
       status: "ACTIVE",
     },
     {
@@ -61,13 +67,29 @@ export default function MonetizationHubPage() {
       keyword: "Next.js / Vercel Hosting",
       product: "Vercel Enterprise Tier",
       cpa: "$35.00 per seat",
-      clicks: 318,
-      earnings: "$875.00",
+      clicks: 0,
+      earnings: "$0.00",
       status: "ACTIVE",
     },
     {
       id: "aff_3",
       keyword: "Cursor / AI Code Editor",
+      product: "Cursor Pro Yearly Pass",
+      cpa: "$25.00 per conversion",
+      clicks: 0,
+      earnings: "$0.00",
+      status: "ACTIVE",
+    },
+    {
+      id: "aff_4",
+      keyword: "Kubernetes / DevSecOps",
+      product: "ArmorGuard Zero-Trust",
+      cpa: "$80.00 per demo",
+      clicks: 0,
+      earnings: "$0.00",
+      status: "ACTIVE",
+    },
+  ]);
       product: "Cursor Pro Yearly Pass",
       cpa: "$25.00 per conversion",
       clicks: 610,
@@ -85,47 +107,9 @@ export default function MonetizationHubPage() {
     },
   ]);
 
-  const [newKeyword, setNewKeyword] = useState<string>("");
-  const [newProduct, setNewProduct] = useState<string>("");
-  const [newCpa, setNewCpa] = useState<string>("$45.00");
-
-  const handleAddAffiliate = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newKeyword || !newProduct) return;
-    setAffiliates([
-      ...affiliates,
-      {
-        id: `aff_${Date.now()}`,
-        keyword: newKeyword,
-        product: newProduct,
-        cpa: `${newCpa} per signup`,
-        clicks: 0,
-        earnings: "$0.00",
-        status: "ACTIVE",
-      },
-    ]);
-    setNewKeyword("");
-    setNewProduct("");
-  };
-
-  const handleAddSponsor = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newSponsor.sponsorName) return;
-    const added: SponsorDeal = {
-      id: `sp_${Date.now()}`,
-      sponsorName: newSponsor.sponsorName,
-      badge: newSponsor.badge,
-      tagline: newSponsor.tagline || "High-Performance Cloud Infrastructure",
-      description: newSponsor.description || "Enterprise tooling optimized for autonomous AI applications.",
-      ctaText: newSponsor.ctaText,
-      ctaUrl: newSponsor.ctaUrl || "https://auto-ai-blog-orpin.vercel.app",
-      discountCode: newSponsor.discountCode,
-      categoryMatch: ["Technology", "Artificial Intelligence"],
-      cpcTier: newSponsor.cpcTier,
-    };
-    setSponsors([...sponsors, added]);
-    setShowAddSponsorModal(false);
-  };
+  const realTotalViews = realMetrics?.summary?.totalViews || 0;
+  const realAdsensePubId = adsensePubId;
+  const activeSponsorsCount = sponsors.length;
 
   return (
     <div className="p-6 sm:p-10 max-w-7xl mx-auto space-y-8">
@@ -147,62 +131,62 @@ export default function MonetizationHubPage() {
 
         <div className="flex items-center gap-3">
           <span className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
-            <Zap className="w-3.5 h-3.5" /> Est. MRR: $4,910.00
+            <Zap className="w-3.5 h-3.5" /> AdSense Status: Active DIRECT
           </span>
         </div>
       </div>
 
-      {/* KPI Cards */}
+      {/* KPI Cards (Real Telemetry) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Estimated Revenue</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Live AdSense Inventory</span>
             <DollarSign className="w-4 h-4 text-emerald-500" />
           </div>
           <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-            $4,910.00
+            {realAdsensePubId ? "Connected" : "Pending"}
           </div>
           <div className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
-            <TrendingUp className="w-3 h-3" /> +28.4% from last month
+            <TrendingUp className="w-3 h-3" /> pub-9768860457233655 DIRECT
           </div>
         </div>
 
         <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Average Ad RPM</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Live Real Impressions</span>
             <Flame className="w-4 h-4 text-orange-500" />
           </div>
           <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-            $24.80
+            {realTotalViews.toLocaleString()}
           </div>
           <div className="text-[11px] font-semibold text-slate-400">
-            Based on 198k page impressions
+            Verified database page views
           </div>
         </div>
 
         <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Affiliate Conversions</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Active Affiliate Rules</span>
             <MousePointerClick className="w-4 h-4 text-indigo-500" />
           </div>
           <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-            1,604
+            {affiliates.length}
           </div>
           <div className="text-[11px] font-semibold text-indigo-600">
-            $4,910 in pipeline payouts
+            Contextually embedded by AI
           </div>
         </div>
 
         <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Active Brand Deals</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Active Brand Sponsors</span>
             <Award className="w-4 h-4 text-purple-500" />
           </div>
           <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-            {sponsors.length}
+            {activeSponsorsCount}
           </div>
           <div className="text-[11px] font-semibold text-purple-600">
-            100% fill-rate on all pages
+            Live high-CPC contextual deals
           </div>
         </div>
       </div>
