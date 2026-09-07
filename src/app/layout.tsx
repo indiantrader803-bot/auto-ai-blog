@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: ["googlea87b1dee8479f0e4", "google6c34157fb7579448"],
+    google: "a87b1dee8479f0e4",
   },
   manifest: "/manifest.json",
 };
@@ -78,6 +78,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="google-site-verification" content="a87b1dee8479f0e4" />
         <meta name="google-site-verification" content="googlea87b1dee8479f0e4" />
         <meta name="google-site-verification" content="google6c34157fb7579448" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
