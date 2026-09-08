@@ -12,9 +12,9 @@ export default function AdminLayout({
 }) {
   return (
     <AdminAuthGuard>
-      <div className="flex min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100">
+      <div className="flex flex-col lg:flex-row min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100">
         <AdminSidebar />
-        <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <div className="flex-1 flex flex-col min-w-0 overflow-y-auto pb-24 lg:pb-0">
           {children}
         </div>
       </div>

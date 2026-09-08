@@ -58,19 +58,19 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <div className="p-6 sm:p-10 space-y-8 max-w-4xl mx-auto w-full">
+    <div className="p-4 sm:p-6 lg:p-10 space-y-6 sm:space-y-8 max-w-4xl mx-auto w-full">
       <header className="space-y-1">
-        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-          <Settings className="w-6 h-6 text-indigo-600" /> Platform & Engine Configuration
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+          <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600" /> Platform &amp; Engine Configuration
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
           Manage AI providers, monetization IDs, automation triggers, and default generation parameters.
         </p>
       </header>
 
-      <form onSubmit={handleSave} className="space-y-8">
+      <form onSubmit={handleSave} className="space-y-6 sm:space-y-8">
         {/* Section 1: AI Provider Keys */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+        <div className="p-5 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
           <div className="flex items-center gap-2 font-bold text-base text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-3">
             <Key className="w-4 h-4 text-indigo-600" /> AI Engine Credentials
           </div>

@@ -111,20 +111,20 @@ export default function PromotionHubPage() {
   };
 
   return (
-    <div className="p-6 sm:p-10 max-w-7xl mx-auto space-y-8">
+    <div className="p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 sm:pb-6 border-b border-slate-200 dark:border-slate-800">
         <div>
           <div className="flex items-center gap-2">
-            <span className="p-2 rounded-xl bg-indigo-600/10 text-indigo-600 dark:text-indigo-400">
+            <span className="p-2 rounded-xl bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 shrink-0">
               <Share2 className="w-5 h-5" />
             </span>
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif tracking-tight">
-              Viral Promotion &amp; Syndication Agent
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white font-serif tracking-tight">
+              Growth &amp; Viral Promotion Hub
             </h1>
           </div>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Transform any blog post into high-converting X threads, LinkedIn executive posts, Reddit hooks, Discord embeds &amp; newsletter editions.
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Generate high-converting social media threads, newsletter campaigns, and automated webhooks for published articles.
           </p>
         </div>
 
@@ -136,13 +136,13 @@ export default function PromotionHubPage() {
       </div>
 
       {/* Target Selector & Trigger Card */}
-      <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
-        <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+      <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+        <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
           <Layers className="w-4 h-4 text-indigo-500" />
           Select Target Content for Multi-Platform Distribution
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
               Select Published Article
@@ -183,7 +183,7 @@ export default function PromotionHubPage() {
         <button
           onClick={handleGenerateCampaign}
           disabled={loading}
-          className="w-full py-4 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-bold text-sm shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+          className="w-full py-3.5 sm:py-4 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-bold text-xs sm:text-sm shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
         >
           {loading ? (
             <>
@@ -202,13 +202,13 @@ export default function PromotionHubPage() {
       {/* Generated Campaign Workstation */}
       {campaign ? (
         <div className="space-y-6">
-          {/* Channel Tabs */}
-          <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+          {/* Channel Tabs (Scrollable on Mobile) */}
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-2 border-b border-slate-200 dark:border-slate-800">
             {[
-              { id: "twitter", label: "Twitter / X Viral Thread", icon: Twitter },
-              { id: "linkedin", label: "LinkedIn Executive Post", icon: Linkedin },
-              { id: "reddit", label: "Reddit / HackerNews Starter", icon: MessageSquare },
-              { id: "chat", label: "Discord & Telegram Alerts", icon: Send },
+              { id: "twitter", label: "Twitter / X Thread", icon: Twitter },
+              { id: "linkedin", label: "LinkedIn Post", icon: Linkedin },
+              { id: "reddit", label: "Reddit / HackerNews", icon: MessageSquare },
+              { id: "chat", label: "Discord & Telegram", icon: Send },
               { id: "newsletter", label: "Email Newsletter Blast", icon: Mail },
             ].map((tab) => {
               const Icon = tab.icon;
@@ -217,7 +217,7 @@ export default function PromotionHubPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                  className={`flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
                     isActive
                       ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20"
                       : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800"

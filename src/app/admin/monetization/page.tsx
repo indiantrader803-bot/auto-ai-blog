@@ -140,33 +140,33 @@ export default function MonetizationHubPage() {
   const activeSponsorsCount = sponsors.length;
 
   return (
-    <div className="p-6 sm:p-10 max-w-7xl mx-auto space-y-8">
+    <div className="p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 sm:pb-6 border-b border-slate-200 dark:border-slate-800">
         <div>
           <div className="flex items-center gap-2">
-            <span className="p-2 rounded-xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
+            <span className="p-2 rounded-xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 shrink-0">
               <DollarSign className="w-5 h-5" />
             </span>
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif tracking-tight">
-              Monetization &amp; Revenue Generation Hub
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white font-serif tracking-tight">
+              Monetization &amp; Revenue Hub
             </h1>
           </div>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
             Manage AdSense inventory, high-CPC affiliate autolinks, direct sponsor contracts, and VIP paid subscriptions.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <span className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
-            <Zap className="w-3.5 h-3.5" /> AdSense Status: Active DIRECT
+        <div className="flex items-center gap-2 sm:gap-3">
+          <span className="px-3.5 py-1.5 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5 w-fit">
+            <Zap className="w-3.5 h-3.5 shrink-0" /> AdSense: Active DIRECT
           </span>
         </div>
       </div>
 
       {/* KPI Cards (Real Telemetry) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-bold uppercase tracking-wider">Live AdSense Inventory</span>
             <DollarSign className="w-4 h-4 text-emerald-500" />
@@ -179,33 +179,33 @@ export default function MonetizationHubPage() {
           </div>
         </div>
 
-        <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
+        <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Live Real Impressions</span>
-            <Flame className="w-4 h-4 text-orange-500" />
+            <span className="text-xs font-bold uppercase tracking-wider">Verified Impressions</span>
+            <Eye className="w-4 h-4 text-indigo-500" />
           </div>
           <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
             {realTotalViews.toLocaleString()}
           </div>
-          <div className="text-[11px] font-semibold text-slate-400">
-            Verified database page views
+          <div className="text-[11px] font-semibold text-indigo-600">
+            100% Real Live Reader Traffic
           </div>
         </div>
 
-        <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
+        <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Active Affiliate Rules</span>
-            <MousePointerClick className="w-4 h-4 text-indigo-500" />
+            <span className="text-xs font-bold uppercase tracking-wider">Contextual Affiliates</span>
+            <Tag className="w-4 h-4 text-amber-500" />
           </div>
           <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-            {affiliates.length}
+            {affiliates.length} Offers
           </div>
-          <div className="text-[11px] font-semibold text-indigo-600">
-            Contextually embedded by AI
+          <div className="text-[11px] font-semibold text-amber-600">
+            High-CPA SaaS &amp; Dev tools
           </div>
         </div>
 
-        <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
+        <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-bold uppercase tracking-wider">Active Brand Sponsors</span>
             <Award className="w-4 h-4 text-purple-500" />
@@ -219,8 +219,8 @@ export default function MonetizationHubPage() {
         </div>
       </div>
 
-      {/* Navigation Tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+      {/* Navigation Tabs (Scrollable on Mobile) */}
+      <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-2 border-b border-slate-200 dark:border-slate-800">
         {[
           { id: "overview", label: "Revenue Overview", icon: TrendingUp },
           { id: "ads", label: "Google AdSense & Banners", icon: Eye },
@@ -234,14 +234,14 @@ export default function MonetizationHubPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
                 isActive
                   ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
                   : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800"
               }`}
             >
-              <Icon className="w-4 h-4" />
-              {tab.label}
+              <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span>{tab.label}</span>
             </button>
           );
         })}

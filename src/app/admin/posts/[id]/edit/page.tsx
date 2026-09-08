@@ -86,7 +86,7 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="p-6 sm:p-10 space-y-6 max-w-7xl mx-auto w-full">
+    <div className="p-4 sm:p-6 lg:p-10 space-y-6 max-w-7xl mx-auto w-full">
       {/* Top Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-3">
