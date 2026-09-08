@@ -57,22 +57,61 @@ async function main() {
     suggestedVideoQuery: `${targetTopic} explained`
   };
 
-  if (apiKey) {
+  const explabsKey = process.env.EXPLABS_API_KEY || process.env.EXPERIENTIALLABS_API_KEY;
+  const explabsBaseUrl = process.env.EXPLABS_BASE_URL || "https://api.experientiallabs.ai";
+  const prompt = `Write a 1500+ word comprehensive SEO blog article in JSON format for: "${targetTopic}".
+Schema: {"title": "string", "excerpt": "string", "content": "string in markdown", "category": "string", "tags": ["string"], "seoTitle": "string", "seoDescription": "string", "faq": [{"question": "string", "answer": "string"}], "suggestedImageQuery": "string", "suggestedVideoQuery": "string"}`;
+
+  let generated = false;
+
+  if (explabsKey) {
+    try {
+      const res = await fetch(`${explabsBaseUrl}/v1/chat/completions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${explabsKey}`,
+        },
+        body: JSON.stringify({
+          model: "claude-sonnet-4.5",
+          messages: [
+            { role: "system", content: "You are an elite research tech & financial journalist. Always return strictly valid JSON." },
+            { role: "user", content: prompt },
+          ],
+          temperature: 0.7,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const content = data.choices?.[0]?.message?.content;
+        if (content) {
+          const clean = content.trim().replace(/^```json\s*/, "").replace(/\s*```$/, "");
+          const parsed = JSON.parse(clean);
+          article = { ...article, ...parsed };
+          generated = true;
+          console.log("✅ Successfully generated article using Claude Sonnet 4.5 (ExperientialLabs)!");
+        }
+      }
+    } catch (err) {
+      console.warn("ExperientialLabs Claude call notice:", err.message);
+    }
+  }
+
+  if (!generated && apiKey) {
     try {
       const genAI = new GoogleGenerativeAI(apiKey);
       const model = genAI.getGenerativeModel({
         model: "gemini-1.5-flash",
         generationConfig: { responseMimeType: "application/json" }
       });
-      const prompt = `Write a 1500+ word comprehensive SEO blog article in JSON format for: "${targetTopic}".
-Schema: {"title": "string", "excerpt": "string", "content": "string in markdown", "category": "string", "tags": ["string"], "seoTitle": "string", "seoDescription": "string", "faq": [{"question": "string", "answer": "string"}], "suggestedImageQuery": "string", "suggestedVideoQuery": "string"}`;
       
       const res = await model.generateContent(prompt);
       const parsed = JSON.parse(res.response.text());
       article = { ...article, ...parsed };
       console.log("✅ Successfully generated article using Gemini API!");
     } catch (err) {
-      console.warn("Gemini API call failed, using high-quality structured template:", err.message);
+      console.warn("Gemini API call fallback to structured template:", err.message);
     }
   }
 
