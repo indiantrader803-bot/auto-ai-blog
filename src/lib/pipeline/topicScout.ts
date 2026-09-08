@@ -5,18 +5,23 @@ const parser = new Parser({
 });
 
 const DEFAULT_NICHE_TOPICS = [
+  "Viral Social Media Algorithms in 2026: Cracking TikTok, YouTube Shorts & Instagram Reels Distribution",
+  "AI Influencers & Digital Creators: How Autonomous Synthetic Avatars Are Generating Millions in Brand Sponsorships",
+  "Social Media Monetization Blueprint: Scaling High-Ticket Affiliate Funnels Across Twitter/X and LinkedIn",
   "Nifty 50 & Sensex Technical Outlook: FII Inflows, DII Liquidity & Key Breakout Levels",
   "Indian Stock Market: Banking, IT & Defence Sectors Poised for High-Growth in 2026",
   "US Stock Markets (S&P 500, Nasdaq 100): Big Tech Earnings & Federal Reserve Rate Policy",
   "Global Forex Trading: USD/INR, EUR/USD & Currency Hedging Strategies for Volatility",
   "Commodity Supercycle: Gold, Silver & Crude Oil Technical Pivot Points and Geo-Economic Drivers",
+  "DeepSeek V3 vs Claude 3.7 Sonnet: The Open-Weights AI Reasoning Architecture War",
+  "Prop Trading Masterclass: Passing MFFU & Blue Guardian Funding Challenges with Algorithmic Risk Management",
   "India's Telecom Revolution: 5G SA, Starlink Satellite Broadband vs Airtel OneWeb",
   "Agentic AI Workflows and Autonomous Coding Systems in Enterprise Production",
   "Semiconductor Manufacturing: TSMC 2nm N2 Node & High-NA EUV Breakthroughs",
   "High-Yield Quantitative Strategies: Real-Time Algorithmic Execution on Global Markets",
   "Zero-Trust Cloud Infrastructure: Hardening Enterprise Kubernetes Clusters",
   "Post-Quantum Cryptography & Kyber Encryption for Financial Systems",
-  "Next.js 14 & Edge Computing: Sub-10ms Microservices Architecture"
+  "Next.js 15 & Edge Computing: Sub-10ms Microservices Architecture"
 ];
 
 const RSS_SOURCES = [
@@ -25,7 +30,9 @@ const RSS_SOURCES = [
   "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
   "https://www.moneycontrol.com/rss/MCtopnews.xml",
   "https://hnrss.org/frontpage",
-  "https://techcrunch.com/feed/"
+  "https://techcrunch.com/feed/",
+  "https://mashable.com/feeds/rss/all",
+  "https://www.theverge.com/rss/index.xml"
 ];
 
 export async function scoutTrendingTopic(customNiche?: string): Promise<{
