@@ -189,144 +189,97 @@ export default function SponsorVideoPage() {
           })}
         </div>
 
-        {/* Submission & Direct Bank Payment Form */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left: Direct Bank Payment Details */}
-          <div className="lg:col-span-5 rounded-3xl bg-slate-900 border border-slate-800 p-6 sm:p-8 space-y-6">
-            <div className="flex items-center gap-2 text-emerald-400 text-xs font-black uppercase tracking-wider">
-              <ShieldCheck className="w-4 h-4" /> Direct Instant Payment Gateways
+        {/* Submission & Automated Payment Flow */}
+        <div className="max-w-3xl mx-auto rounded-3xl bg-slate-900 border border-slate-800 p-6 sm:p-10 shadow-2xl">
+          {submitted ? (
+            <div className="py-12 text-center space-y-4">
+              <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/30">
+                <CheckCircle className="w-8 h-8" />
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black font-serif text-white">Promotion Activated!</h3>
+              <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+                Thank you! Your payment for the <strong>{selectedTier}</strong> package has been processed. Our media agent has queued your video for broadcast across our editorial channels. A confirmation has been sent to <strong>{contactEmail}</strong>.
+              </p>
             </div>
-            <h3 className="text-xl font-bold font-serif text-white">
-              Official Account Routing
-            </h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Transfer the selected tier fee via UPI (India) or Bank Wire (Global/India). Your video will be verified and published within 2 hours.
-            </p>
-
-            {/* UPI Option */}
-            <div className="p-4 rounded-2xl bg-black/40 border border-slate-800 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-400 uppercase">⚡ UPI Instant Pay (INR)</span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">Instant</span>
-              </div>
-              <div className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-slate-950 border border-slate-800">
-                <span className="font-mono text-xs font-black text-amber-300">8240438062@superyes</span>
-                <button
-                  onClick={() => handleCopy("8240438062@superyes", "upi")}
-                  className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center gap-1"
-                >
-                  <Copy className="w-3 h-3" />
-                  <span>{copied === "upi" ? "Copied!" : "Copy"}</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Bank Wire Option */}
-            <div className="p-4 rounded-2xl bg-black/40 border border-slate-800 space-y-2.5 text-xs text-slate-300">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-slate-400 uppercase">🏛️ DBS Bank Account (USD / INR)</span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">NEFT / SWIFT</span>
-              </div>
-              <div className="space-y-1 font-mono text-[11px] pt-1">
-                <div>Account Name: <strong className="text-white">ARNAB LAHA</strong></div>
-                <div>Bank: <strong className="text-white">DBS Bank Ltd</strong></div>
-                <div className="flex items-center justify-between">
-                  <span>IFSC: <strong className="text-amber-300">DBSS0IN0811</strong></span>
-                  <button
-                    onClick={() => handleCopy("DBSS0IN0811", "ifsc")}
-                    className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-200"
-                  >
-                    {copied === "ifsc" ? "Copied" : "Copy"}
-                  </button>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="border-b border-slate-800 pb-4">
+                <div className="flex items-center gap-2 text-emerald-400 text-xs font-black uppercase tracking-wider mb-1">
+                  <ShieldCheck className="w-4 h-4" /> Secure 256-bit Encrypted Checkout
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Submission Form */}
-          <div className="lg:col-span-7 rounded-3xl bg-slate-900 border border-slate-800 p-6 sm:p-8">
-            {submitted ? (
-              <div className="py-12 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/30">
-                  <CheckCircle className="w-8 h-8" />
-                </div>
-                <h3 className="text-2xl font-black font-serif text-white">Promotion Request Received!</h3>
-                <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                  Our media agent is verifying your payment and preparing your video embed for the <strong>{selectedTier}</strong> showcase. You will receive a confirmation email at <strong>{contactEmail}</strong> once live.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <h3 className="text-xl font-bold font-serif text-white mb-2">
-                  Submit Video Details
+                <h3 className="text-xl sm:text-2xl font-bold font-serif text-white">
+                  Complete Video Promotion Order
                 </h3>
+              </div>
 
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                  YouTube Video URL *
+                </label>
+                <input
+                  type="url"
+                  required
+                  value={videoUrl}
+                  onChange={(e) => setVideoUrl(e.target.value)}
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-rose-500 font-mono"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
-                    YouTube Video URL *
-                  </label>
-                  <input
-                    type="url"
-                    required
-                    value={videoUrl}
-                    onChange={(e) => setVideoUrl(e.target.value)}
-                    placeholder="https://www.youtube.com/watch?v=..."
-                    className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-rose-500 font-mono"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
-                      Channel / Creator Name
-                    </label>
-                    <input
-                      type="text"
-                      value={channelName}
-                      onChange={(e) => setChannelName(e.target.value)}
-                      placeholder="e.g. Quant Trading Academy"
-                      className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-rose-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
-                      Contact Email *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={contactEmail}
-                      onChange={(e) => setContactEmail(e.target.value)}
-                      placeholder="creator@gmail.com"
-                      className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-rose-500"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
-                    Payment Reference / Transaction ID / UTR
+                    Channel / Creator Name
                   </label>
                   <input
                     type="text"
-                    value={txHash}
-                    onChange={(e) => setTxHash(e.target.value)}
-                    placeholder="e.g. UPI Ref 42918402914 or Bank Wire UTR"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-rose-500 font-mono"
+                    value={channelName}
+                    onChange={(e) => setChannelName(e.target.value)}
+                    placeholder="e.g. Quant Trading Academy"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-rose-500"
                   />
                 </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                    Receipt Email *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={contactEmail}
+                    onChange={(e) => setContactEmail(e.target.value)}
+                    placeholder="creator@gmail.com"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-rose-500"
+                  />
+                </div>
+              </div>
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-xs uppercase tracking-wider shadow-xl shadow-rose-600/30 transition-all flex items-center justify-center gap-2 mt-4"
-                >
-                  <Play className="w-4 h-4 fill-white" />
-                  <span>{loading ? "Submitting Promotion..." : "Submit Video for Promotion"}</span>
-                </button>
-              </form>
-            )}
-          </div>
+              {/* Order Summary & One-Click Pay */}
+              <div className="p-5 rounded-2xl bg-black/40 border border-slate-800 flex items-center justify-between">
+                <div>
+                  <div className="text-xs text-slate-400">Total Investment:</div>
+                  <div className="text-2xl font-black font-mono text-emerald-400">
+                    {currency === "USD"
+                      ? TIERS.find((t) => t.id === selectedTier)?.priceUSD
+                      : TIERS.find((t) => t.id === selectedTier)?.priceINR}
+                  </div>
+                </div>
+                <div className="text-right text-[11px] text-slate-400">
+                  <span>Selected Package: </span>
+                  <strong className="text-white block">{selectedTier}</strong>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-4 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-xs uppercase tracking-wider shadow-xl shadow-rose-600/30 transition-all flex items-center justify-center gap-2"
+              >
+                <Play className="w-4 h-4 fill-white" />
+                <span>{loading ? "Processing Order..." : `Pay & Start Promotion (${currency === "USD" ? TIERS.find((t) => t.id === selectedTier)?.priceUSD : TIERS.find((t) => t.id === selectedTier)?.priceINR})`}</span>
+              </button>
+            </form>
+          )}
         </div>
       </main>
 
