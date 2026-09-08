@@ -65,7 +65,9 @@ export default function VideoShowcase() {
               </span>
             </div>
             <p className="text-xs text-slate-400">Curated technical workshops, architecture teardowns, and masterclasses</p>
+          </div>
         </div>
+
         <Link
           href="/sponsor-video"
           className="px-4 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold text-xs shadow-md shadow-rose-600/30 transition-all flex items-center gap-1.5 shrink-0"
