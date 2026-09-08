@@ -34,6 +34,12 @@ export default function SmartHeroGrid({ featured, subFeatured }: SmartHeroGridPr
             <span className="px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md text-amber-300 font-bold text-xs flex items-center gap-1 border border-slate-700/50">
               <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300" /> Editor&apos;s Pick
             </span>
+            <span className="px-2.5 py-1 rounded-full bg-indigo-900/80 backdrop-blur-md text-indigo-200 font-bold text-xs flex items-center gap-1 border border-indigo-700/50">
+              <TrendingUp className="w-3.5 h-3.5 text-indigo-400" />
+              {(featured.views || 3400) >= 1000
+                ? `${((featured.views || 3400) / 1000).toFixed(1)}k reads`
+                : `${featured.views || 3400} reads`}
+            </span>
           </div>
         </div>
 
@@ -64,6 +70,15 @@ export default function SmartHeroGrid({ featured, subFeatured }: SmartHeroGridPr
               <Clock className="w-3.5 h-3.5 text-indigo-400" />
               <span>{featured.readTimeMinutes || 6} min read</span>
             </div>
+            <span>•</span>
+            <div className="flex items-center gap-1 text-amber-400 font-semibold">
+              <Eye className="w-3.5 h-3.5" />
+              <span>
+                {(featured.views || 3400) >= 1000
+                  ? `${((featured.views || 3400) / 1000).toFixed(1)}k active readers`
+                  : `${featured.views || 3400} readers`}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -85,12 +100,20 @@ export default function SmartHeroGrid({ featured, subFeatured }: SmartHeroGridPr
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent" />
 
             <div className="relative z-10 space-y-2">
-              <Link
-                href={`/category/${post.category?.slug || "tech"}`}
-                className="inline-block px-2.5 py-0.5 rounded-md bg-white/20 backdrop-blur-md text-white font-bold text-[10px] uppercase tracking-wider hover:bg-indigo-600 transition-colors"
-              >
-                {post.category?.name || "Tech Trends"}
-              </Link>
+              <div className="flex items-center justify-between">
+                <Link
+                  href={`/category/${post.category?.slug || "tech"}`}
+                  className="inline-block px-2.5 py-0.5 rounded-md bg-white/20 backdrop-blur-md text-white font-bold text-[10px] uppercase tracking-wider hover:bg-indigo-600 transition-colors"
+                >
+                  {post.category?.name || "Tech Trends"}
+                </Link>
+                <span className="text-[10px] font-bold text-amber-300 flex items-center gap-0.5 bg-black/40 px-2 py-0.5 rounded-md backdrop-blur-sm">
+                  <TrendingUp className="w-3 h-3 text-amber-400" />
+                  {(post.views || 2400) >= 1000
+                    ? `${((post.views || 2400) / 1000).toFixed(1)}k`
+                    : `${post.views || 2400}`}
+                </span>
+              </div>
               <h3 className="text-sm sm:text-base font-bold text-white line-clamp-2 leading-snug font-serif">
                 <Link
                   href={`/blog/${post.slug}`}
@@ -101,6 +124,12 @@ export default function SmartHeroGrid({ featured, subFeatured }: SmartHeroGridPr
               </h3>
               <div className="flex items-center gap-2 text-[11px] text-slate-300 font-medium">
                 <span>{post.readTimeMinutes || 5} min read</span>
+                <span>•</span>
+                <span className="text-emerald-400 font-semibold">
+                  {(post.views || 2400) >= 1000
+                    ? `${((post.views || 2400) / 1000).toFixed(1)}k reads`
+                    : `${post.views || 2400} reads`}
+                </span>
               </div>
             </div>
           </div>

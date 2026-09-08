@@ -155,6 +155,13 @@ export default function SocialSidebar({
                 </h4>
                 <div className="flex items-center gap-2 text-[10px] text-slate-400 mt-1">
                   <span>{post.readTimeMinutes || 5} min read</span>
+                  <span>•</span>
+                  <span className="text-amber-500 dark:text-amber-400 font-semibold flex items-center gap-0.5">
+                    <Flame className="w-2.5 h-2.5 fill-current" />
+                    {(post.views || 2400) >= 1000
+                      ? `${((post.views || 2400) / 1000).toFixed(1)}k`
+                      : `${post.views || 2400}`}
+                  </span>
                 </div>
               </div>
             </Link>

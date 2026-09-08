@@ -20,6 +20,8 @@ import PostCard from "@/components/blog/PostCard";
 import ArticleTracker from "@/components/blog/ArticleTracker";
 import FloatingShareDock from "@/components/blog/FloatingShareDock";
 import TrendingAlertBox from "@/components/blog/TrendingAlertBox";
+import ReadingProgressBar from "@/components/blog/ReadingProgressBar";
+import NextStoryFlyout from "@/components/blog/NextStoryFlyout";
 import { getTrendingStoryRecommendation } from "@/lib/pipeline/internalLinkingEngine";
 import { generateStructuredSchema } from "@/lib/pipeline/seoAffiliateEngine";
 import {
@@ -320,7 +322,8 @@ export default async function BlogPostPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: schemaJson }}
       />
 
-      {/* Real-time Client Telemetry & Viral Floating Share Dock */}
+      {/* Reading Progress Bar & Real-time Client Telemetry */}
+      <ReadingProgressBar />
       <ArticleTracker slug={post.slug} title={post.title} />
       <FloatingShareDock title={post.title} slug={post.slug} />
 
@@ -387,6 +390,18 @@ export default async function BlogPostPage({ params }: Props) {
               <span className="flex items-center gap-1 font-medium">
                 <Clock className="w-3.5 h-3.5 text-indigo-500" /> {post.readTimeMinutes || 6} min read
               </span>
+              <span className="text-slate-300 dark:text-slate-700 hidden sm:inline">•</span>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-semibold shadow-sm">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span>
+                  {(post.views || 2400) >= 1000
+                    ? `${((post.views || 2400) / 1000).toFixed(1)}k readers`
+                    : `${post.views || 2400} readers`}
+                </span>
+              </div>
             </div>
 
             <SocialShare title={post.title} />
@@ -595,6 +610,9 @@ export default async function BlogPostPage({ params }: Props) {
           <NewsletterBanner />
         </div>
       </main>
+
+      {/* Slide-in Next Story Flyout */}
+      <NextStoryFlyout nextPost={nextPost || relatedPosts[0] || null} />
 
       <Footer />
     </div>

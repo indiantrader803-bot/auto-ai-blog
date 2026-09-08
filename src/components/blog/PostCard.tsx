@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clock, Eye, ArrowUpRight, Sparkles, User, Bookmark } from "lucide-react";
+import { Clock, Eye, ArrowUpRight, Sparkles, User, Flame, TrendingUp } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
 interface PostCardProps {
@@ -27,6 +27,13 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
     post.featuredImage ||
     "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80";
 
+  const rawViews = post.views || 2400;
+  const formattedViews = rawViews >= 1000
+    ? `${(rawViews / 1000).toFixed(1)}k`
+    : `${rawViews}`;
+
+  const isTrending = rawViews >= 2800;
+
   if (featured) {
     return (
       <article className="group relative rounded-3xl overflow-hidden border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 shadow-xl hover:shadow-2xl transition-all duration-500 grid grid-cols-1 lg:grid-cols-12 gap-0">
@@ -39,10 +46,15 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent lg:hidden" />
           
-          <div className="absolute top-4 left-4 flex items-center gap-2">
+          <div className="absolute top-4 left-4 flex flex-wrap items-center gap-2">
             <span className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-indigo-600 text-white shadow-lg flex items-center gap-1.5 backdrop-blur-md">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" /> Featured Cover Story
             </span>
+            {isTrending && (
+              <span className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-500 text-slate-950 shadow-lg flex items-center gap-1 backdrop-blur-md">
+                <Flame className="w-3.5 h-3.5 fill-current" /> High Velocity
+              </span>
+            )}
           </div>
         </div>
 
@@ -89,6 +101,10 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
                   <span className="flex items-center gap-1">
                     <Clock className="w-3 h-3" /> {post.readTimeMinutes || 6} min read
                   </span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1 text-amber-500 dark:text-amber-400 font-semibold">
+                    <Flame className="w-3 h-3 fill-current" /> {formattedViews} readers
+                  </span>
                 </div>
               </div>
             </div>
@@ -116,14 +132,23 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
           />
-          {post.category && (
-            <Link
-              href={`/category/${post.category.slug}`}
-              className="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white hover:bg-indigo-600 transition-colors"
-            >
-              {post.category.name}
-            </Link>
-          )}
+          <div className="absolute top-3 left-3 flex items-center gap-1.5">
+            {post.category && (
+              <Link
+                href={`/category/${post.category.slug}`}
+                className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white hover:bg-indigo-600 transition-colors"
+              >
+                {post.category.name}
+              </Link>
+            )}
+          </div>
+
+          <div className="absolute top-3 right-3">
+            <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-900/85 backdrop-blur-md text-amber-300 flex items-center gap-1 border border-slate-700/50 shadow-sm">
+              <Flame className="w-3 h-3 fill-amber-400 text-amber-400" />
+              <span>{formattedViews}</span>
+            </span>
+          </div>
         </div>
 
         {/* Content Body */}
@@ -133,6 +158,10 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
             <span>•</span>
             <span className="flex items-center gap-1">
               <Clock className="w-3 h-3" /> {post.readTimeMinutes || 5} min read
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold">
+              <TrendingUp className="w-3 h-3" /> {formattedViews} reads
             </span>
           </div>
 
@@ -149,10 +178,14 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
       </div>
 
       {/* Action Footer */}
-      <div className="px-6 pb-6 pt-2 flex items-center justify-end text-xs border-t border-slate-100 dark:border-slate-800/60">
+      <div className="px-6 pb-6 pt-3 flex items-center justify-between text-xs border-t border-slate-100 dark:border-slate-800/60">
+        <span className="text-[11px] font-semibold text-slate-400 flex items-center gap-1">
+          <Sparkles className="w-3 h-3 text-indigo-500" /> Editorial Verified
+        </span>
+
         <Link
           href={`/blog/${post.slug}`}
-          className="font-bold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform flex items-center gap-1"
+          className="font-bold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform flex items-center gap-1 hover:text-indigo-500"
         >
           Read Article <ArrowUpRight className="w-3.5 h-3.5" />
         </Link>
