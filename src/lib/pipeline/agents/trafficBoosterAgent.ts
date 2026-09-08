@@ -1,4 +1,4 @@
-﻿import { prisma } from "../../prisma";
+import { prisma } from "../../prisma";
 import { getAllCatalogArticles } from "../../content/articles";
 
 export interface IndexingResult {
@@ -141,7 +141,7 @@ export async function runAutonomousFleetTrafficBooster() {
 
   const affiliateOffers = [
     { name: "MyFundedFutures (MFFU)", url: "https://mffu.com/f/85f1f73f30", payout: 55.0, slugMatch: ["future", "market", "nifty", "brent", "trading", "prop"] },
-    { name: "Blue Guardian Prop Firm", url: "https://blueguardian.com/?afmc=2cbu", payout: 65.0, slugMatch: ["forex", "currency", "gold", "crude", "finance"] },
+    { name: "Blue Guardian Prop Firm", url: "https://blueguardian.com/?afmc=1tgf", payout: 65.0, slugMatch: ["forex", "currency", "gold", "crude", "finance"] },
     { name: "TradingView Pro Terminal", url: "https://amzn.to/3UXVtTR", payout: 18.5, slugMatch: ["stock", "market", "nifty"] },
     { name: "HyperCompute Cloud GPUs", url: "https://amzn.to/4gJpL5u", payout: 45.0, slugMatch: ["ai", "models", "agent", "gpu"] },
   ];

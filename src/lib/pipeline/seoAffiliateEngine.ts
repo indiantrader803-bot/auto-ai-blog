@@ -1,4 +1,4 @@
-﻿import { calculateReadingTime, generateSlug } from "../utils";
+import { calculateReadingTime, generateSlug } from "../utils";
 
 export interface AffiliateRule {
   keyword: string;
@@ -25,12 +25,12 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
   },
   {
     keyword: "forex trading",
-    url: "https://blueguardian.com/?afmc=2cbu",
+    url: "https://blueguardian.com/?afmc=1tgf",
     label: "Blue Guardian Prop Firm (Unlimited Days & Guardian Protector)",
   },
   {
     keyword: "currency trading",
-    url: "https://blueguardian.com/?afmc=2cbu",
+    url: "https://blueguardian.com/?afmc=1tgf",
     label: "Blue Guardian $400k Forex & CFD Challenge",
   },
   {
@@ -40,7 +40,7 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
   },
   {
     keyword: "breakout levels",
-    url: "https://blueguardian.com/?afmc=2cbu",
+    url: "https://blueguardian.com/?afmc=1tgf",
     label: "Execute Live Breakout Trades on Blue Guardian",
   },
 

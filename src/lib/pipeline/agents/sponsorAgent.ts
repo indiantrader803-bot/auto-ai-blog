@@ -1,4 +1,4 @@
-﻿export interface SponsorDeal {
+export interface SponsorDeal {
   id: string;
   sponsorName: string;
   badge: string;
@@ -31,7 +31,7 @@ export const VERIFIED_SPONSORS: SponsorDeal[] = [
     tagline: "Unlimited Trading Days & The Guardian Protector Risk Engine",
     description: "Trade Forex, Crypto, Indices & Commodities with up to $400k capital. No hidden rules, fast scaling plans, and 85%+ profit splits.",
     ctaText: "Start Blue Guardian Challenge →",
-    ctaUrl: "https://blueguardian.com/?afmc=2cbu",
+    ctaUrl: "https://blueguardian.com/?afmc=1tgf",
     discountCode: "GUARDIAN803",
     categoryMatch: ["Forex & Currencies", "US Markets", "Indian Markets", "Commodities", "Finance & Markets", "Trading"],
     cpcTier: "ULTRA",

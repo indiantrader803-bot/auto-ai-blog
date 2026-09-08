@@ -1,4 +1,4 @@
-﻿import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export interface PropFirmPartner {
   id: string;
@@ -38,7 +38,7 @@ export const TOP_PROP_FIRMS_TARGETS: PropFirmPartner[] = [
     marketType: "FOREX_CFD",
     contactEmail: "affiliates@blueguardian.com",
     affiliatePortalUrl: "https://blueguardian.com/affiliates",
-    defaultAffiliateUrl: "https://blueguardian.com/?afmc=2cbu",
+    defaultAffiliateUrl: "https://blueguardian.com/?afmc=1tgf",
     proposedCommission: "15% - 22% CPA per evaluation challenge",
     outreachPitchDeck: {
       subjectLine: "Affiliate & Media Partnership: Blue Guardian x SmartMag Tech",
