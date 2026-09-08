@@ -454,13 +454,18 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Embedded YouTube Video Explainer */}
             {post.youtubeVideoId && (
               <section className="my-10 p-6 sm:p-8 rounded-3xl bg-slate-950 text-white border border-slate-800 shadow-2xl">
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-rose-400 mb-3">
-                  <Video className="w-4 h-4" /> Contextual Video Breakdown
+                <div className="flex items-center justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-rose-400">
+                    <Video className="w-4 h-4" /> Featured Video Workshop &amp; Tutorial
+                  </div>
+                  <span className="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[10px] font-bold uppercase tracking-wider border border-rose-500/30">
+                    Verified Partner
+                  </span>
                 </div>
                 {post.youtubeVideoTitle && (
-                  <h3 className="text-lg font-bold mb-4 font-serif">{post.youtubeVideoTitle}</h3>
+                  <h3 className="text-lg font-bold mb-4 font-serif text-white">{post.youtubeVideoTitle}</h3>
                 )}
-                <div className="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-inner">
+                <div className="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-inner mb-4">
                   <iframe
                     src={`https://www.youtube-nocookie.com/embed/${post.youtubeVideoId}`}
                     title={post.youtubeVideoTitle || "YouTube video player"}
@@ -468,6 +473,20 @@ export default async function BlogPostPage({ params }: Props) {
                     allowFullScreen
                     className="absolute inset-0 w-full h-full border-0"
                   />
+                </div>
+
+                {/* Creator Monetization CTA Box */}
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <div className="space-y-0.5 text-center sm:text-left">
+                    <div className="text-xs font-bold text-white">Want your video embedded in our high-traffic articles?</div>
+                    <div className="text-[11px] text-slate-400">Reach 100,000+ targeted traders &amp; developers starting at $29 / ₹2,499.</div>
+                  </div>
+                  <Link
+                    href="/sponsor-video"
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs font-bold shadow-md shadow-rose-600/30 transition-all shrink-0 flex items-center gap-1.5"
+                  >
+                    <span>Feature Your Video →</span>
+                  </Link>
                 </div>
               </section>
             )}
