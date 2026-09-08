@@ -6,6 +6,8 @@ export interface DigitalProductItem {
   tagline: string;
   priceINR: number;
   originalPriceINR: number;
+  priceUSD: number;
+  originalPriceUSD: number;
   badge: string;
   category: string;
   features: string[];
@@ -13,6 +15,7 @@ export interface DigitalProductItem {
     code: string;
     discountPercent: number;
     finalPriceINR: number;
+    finalPriceUSD: number;
     bannerText: string;
   };
 }
@@ -24,6 +27,8 @@ export const BASE_PRODUCTS: DigitalProductItem[] = [
     tagline: "Tested Production Prompts for Developers, Traders & Marketers",
     priceINR: 299,
     originalPriceINR: 1499,
+    priceUSD: 4.99,
+    originalPriceUSD: 24.99,
     badge: "BESTSELLER",
     category: "Prompt Engineering",
     features: [
@@ -40,6 +45,8 @@ export const BASE_PRODUCTS: DigitalProductItem[] = [
     tagline: "Visual Desk Reference & Shortcut Playbook",
     priceINR: 299,
     originalPriceINR: 999,
+    priceUSD: 4.99,
+    originalPriceUSD: 14.99,
     badge: "POPULAR",
     category: "Cheat Sheets",
     features: [
@@ -56,6 +63,8 @@ export const BASE_PRODUCTS: DigitalProductItem[] = [
     tagline: "Silicon Valley Verified LaTeX, Word & Notion Templates",
     priceINR: 499,
     originalPriceINR: 1999,
+    priceUSD: 7.99,
+    originalPriceUSD: 29.99,
     badge: "CAREER ACCELERATOR",
     category: "Career & Tech",
     features: [
@@ -72,10 +81,12 @@ export const BASE_PRODUCTS: DigitalProductItem[] = [
     tagline: "The Full Operational Blueprint for Launching AI Services",
     priceINR: 999,
     originalPriceINR: 4999,
+    priceUSD: 14.99,
+    originalPriceUSD: 69.99,
     badge: "ENTERPRISE COMPLETE",
     category: "Business Suite",
     features: [
-      "All 3 products above included free (Save ₹1,097)",
+      "All 3 products above included free (Save $45 / ₹1,097)",
       "Full client proposal decks, contracts & SOW agreements",
       "Autonomous agent multi-platform setup documentation",
       "Cold outreach scripts that close $2,000/mo retainer clients",
@@ -93,35 +104,35 @@ export interface StoreDiscountState {
 }
 
 /**
- * 🏷️ Autonomous AI Product & Promotional Discount Engine
- * Dynamically shifts discount coupons (e.g. "SMART50", "AI2026", "FLASH70") to accelerate conversions.
+ * 🏷️ Autonomous AI Product & Promotional Discount Engine (Multi-Currency USD & INR)
  */
 export function getAutonomousStoreCatalog(): StoreDiscountState {
-  // Rotate dynamic promotional coupons based on hour of day
   const hour = new Date().getHours();
   
-  let promoCode = "SMARTMAG30";
+  let promoCode = "GLOBAL30";
   let discount = 30;
-  let banner = "🔥 Flash Sale: Use code SMARTMAG30 for an extra 30% instant discount!";
+  let banner = "🔥 Flash Sale: Use code GLOBAL30 for 30% OFF ($ / ₹) storewide!";
 
   if (hour % 3 === 0) {
     promoCode = "VIP50";
     discount = 50;
-    banner = "⚡ AI Founder Special: Use code VIP50 to unlock 50% OFF all toolkits for the next 2 hours!";
+    banner = "⚡ AI Founder Special: Use code VIP50 for 50% OFF all toolkits!";
   } else if (hour % 2 === 0) {
     promoCode = "QUANT40";
     discount = 40;
-    banner = "🚀 Developer & Quant Pass: Use code QUANT40 for an extra 40% discount!";
+    banner = "🚀 Global Developer Pass: Use code QUANT40 for an extra 40% discount!";
   }
 
   const discountedProducts = BASE_PRODUCTS.map((p) => {
-    const discountedPrice = Math.round(p.priceINR * (1 - discount / 100));
+    const discountedINR = Math.round(p.priceINR * (1 - discount / 100));
+    const discountedUSD = parseFloat((p.priceUSD * (1 - discount / 100)).toFixed(2));
     return {
       ...p,
       activeCoupon: {
         code: promoCode,
         discountPercent: discount,
-        finalPriceINR: discountedPrice,
+        finalPriceINR: discountedINR,
+        finalPriceUSD: discountedUSD,
         bannerText: banner,
       },
     };

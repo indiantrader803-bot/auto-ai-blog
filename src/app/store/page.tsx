@@ -12,31 +12,28 @@ import {
   Zap,
   QrCode,
   Landmark,
-  ArrowRight,
-  Star,
-  FileText,
-  Briefcase,
-  Terminal,
-  BookOpen,
-  Copy,
-  Check,
+  Globe,
   Tag,
   Clock,
   Flame,
+  CreditCard,
+  Copy,
+  Check,
 } from "lucide-react";
 
 export default function DigitalProductsStorePage() {
   const [products, setProducts] = useState<any[]>([]);
-  const [activeCoupon, setActiveCoupon] = useState<string>("SMARTMAG30");
-  const [promoBanner, setPromoBanner] = useState<string>("🔥 Flash Sale: Use code SMARTMAG30 for an extra 30% instant discount!");
+  const [currency, setCurrency] = useState<"USD" | "INR">("USD");
+  const [activeCoupon, setActiveCoupon] = useState<string>("GLOBAL30");
+  const [promoBanner, setPromoBanner] = useState<string>("🔥 Flash Sale: Use code GLOBAL30 for 30% OFF storewide!");
   const [inputCoupon, setInputCoupon] = useState<string>("");
-  const [appliedDiscount, setAppliedDiscount] = useState<number>(0);
+  const [appliedDiscount, setAppliedDiscount] = useState<number>(30);
   const [couponMsg, setCouponMsg] = useState<string>("");
 
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [purchased, setPurchased] = useState(false);
   const [buyerEmail, setBuyerEmail] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<"UPI" | "BANK">("UPI");
+  const [paymentMethod, setPaymentMethod] = useState<"UPI" | "BANK" | "CARD">("CARD");
   const [utrNumber, setUtrNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [copiedUpi, setCopiedUpi] = useState(false);
@@ -47,7 +44,7 @@ export default function DigitalProductsStorePage() {
       .then((data) => {
         if (data.products) {
           setProducts(data.products);
-          setActiveCoupon(data.activeCouponCode || "SMARTMAG30");
+          setActiveCoupon(data.activeCouponCode || "GLOBAL30");
           setPromoBanner(data.bannerHeadline || "");
           setInputCoupon(data.activeCouponCode || "");
           setAppliedDiscount(data.discountPercentage || 30);
@@ -65,12 +62,12 @@ export default function DigitalProductsStorePage() {
     } else if (clean === "QUANT40") {
       setAppliedDiscount(40);
       setCouponMsg("🎉 40% Developer Discount Applied!");
-    } else if (clean === "SMARTMAG30" || clean === "AI30") {
+    } else if (clean === "GLOBAL30" || clean === "AI30" || clean === "SMARTMAG30") {
       setAppliedDiscount(30);
       setCouponMsg("🎉 30% Promo Coupon Applied!");
     } else {
       setAppliedDiscount(20);
-      setCouponMsg("🎉 Special 20% Instant Discount Applied!");
+      setCouponMsg("🎉 Special 20% Global Discount Applied!");
     }
   };
 
@@ -78,6 +75,11 @@ export default function DigitalProductsStorePage() {
     setSelectedProduct(product);
     setPurchased(false);
     setUtrNumber("");
+    if (currency === "INR") {
+      setPaymentMethod("UPI");
+    } else {
+      setPaymentMethod("CARD");
+    }
   };
 
   const handleCopyUpi = () => {
@@ -86,18 +88,27 @@ export default function DigitalProductsStorePage() {
     setTimeout(() => setCopiedUpi(false), 2000);
   };
 
-  const calculateFinalPrice = (basePrice: number) => {
-    if (appliedDiscount > 0) {
-      return Math.round(basePrice * (1 - appliedDiscount / 100));
+  const calculateFinalPrice = (product: any) => {
+    if (currency === "USD") {
+      const base = product.priceUSD || 4.99;
+      if (appliedDiscount > 0) {
+        return parseFloat((base * (1 - appliedDiscount / 100)).toFixed(2));
+      }
+      return base;
+    } else {
+      const base = product.priceINR || 299;
+      if (appliedDiscount > 0) {
+        return Math.round(base * (1 - appliedDiscount / 100));
+      }
+      return base;
     }
-    return basePrice;
   };
 
   const handleCompleteOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!buyerEmail) return;
     setLoading(true);
-    const finalPrice = calculateFinalPrice(selectedProduct.priceINR);
+    const finalPrice = calculateFinalPrice(selectedProduct);
     try {
       await fetch("/api/store/checkout", {
         method: "POST",
@@ -105,11 +116,12 @@ export default function DigitalProductsStorePage() {
         body: JSON.stringify({
           productId: selectedProduct.id,
           productTitle: selectedProduct.title,
-          priceINR: finalPrice,
+          price: finalPrice,
+          currency,
           buyerEmail,
           paymentMethod,
           couponUsed: inputCoupon.toUpperCase() || "NONE",
-          utrOrTxnId: utrNumber || "INSTANT_APP_PAY",
+          utrOrTxnId: utrNumber || "INSTANT_GLOBAL_PAY",
         }),
       });
       setPurchased(true);
@@ -125,16 +137,35 @@ export default function DigitalProductsStorePage() {
       <Navbar />
 
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-10">
-        {/* Autonomous AI Promotion Banner */}
-        <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500 via-rose-600 to-indigo-600 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-          <div className="flex items-center gap-2">
-            <Flame className="w-5 h-5 text-amber-200 animate-pulse shrink-0" />
-            <span className="text-xs sm:text-sm font-bold tracking-tight">
-              {promoBanner}
-            </span>
+        {/* Top Currency Switcher & Global Promotion Banner */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/30 text-white shadow-xl">
+          <div className="flex items-center gap-2 text-xs sm:text-sm font-bold">
+            <Flame className="w-5 h-5 text-amber-400 animate-pulse shrink-0" />
+            <span>{promoBanner}</span>
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="px-3 py-1 rounded-xl bg-black/30 backdrop-blur-md text-xs font-mono font-bold tracking-widest border border-white/20">
+
+          <div className="flex items-center gap-3">
+            {/* Currency Toggle */}
+            <div className="flex items-center p-1 rounded-2xl bg-slate-950 border border-slate-800 text-xs font-bold">
+              <button
+                onClick={() => setCurrency("USD")}
+                className={`px-3 py-1.5 rounded-xl transition-all ${
+                  currency === "USD" ? "bg-indigo-600 text-white shadow-sm" : "text-slate-400 hover:text-white"
+                }`}
+              >
+                💵 USD ($)
+              </button>
+              <button
+                onClick={() => setCurrency("INR")}
+                className={`px-3 py-1.5 rounded-xl transition-all ${
+                  currency === "INR" ? "bg-indigo-600 text-white shadow-sm" : "text-slate-400 hover:text-white"
+                }`}
+              >
+                🇮🇳 INR (₹)
+              </button>
+            </div>
+
+            <span className="px-3 py-1.5 rounded-xl bg-indigo-500/20 text-indigo-300 font-mono text-xs font-bold border border-indigo-500/30">
               CODE: {activeCoupon}
             </span>
           </div>
@@ -143,13 +174,13 @@ export default function DigitalProductsStorePage() {
         {/* Store Hero */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
-            <Sparkles className="w-3.5 h-3.5" /> Autonomous AI Digital Store
+            <Globe className="w-3.5 h-3.5" /> Worldwide AI Digital Store
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white font-serif tracking-tight">
             Production AI Toolkits, Cheat Sheets &amp; Blueprints
           </h1>
           <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-            Curated, priced, and discounted continuously by our autonomous monetization agent. 100% direct bank fulfillment with instant download delivery.
+            Accelerate your engineering, algorithmic trading, and career with production-tested digital toolkits. Instant delivery worldwide.
           </p>
 
           {/* Coupon Input Box */}
@@ -179,7 +210,11 @@ export default function DigitalProductsStorePage() {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((prod) => {
-            const finalPrice = calculateFinalPrice(prod.priceINR);
+            const finalPrice = calculateFinalPrice(prod);
+            const originalPrice = currency === "USD" ? prod.originalPriceUSD : prod.originalPriceINR;
+            const standardPrice = currency === "USD" ? prod.priceUSD : prod.priceINR;
+            const symbol = currency === "USD" ? "$" : "₹";
+
             return (
               <div
                 key={prod.id}
@@ -204,15 +239,13 @@ export default function DigitalProductsStorePage() {
 
                   <div className="flex items-baseline gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                     <span className="text-2xl font-black font-serif text-slate-900 dark:text-white">
-                      ₹{finalPrice}
+                      {symbol}{finalPrice}
                     </span>
-                    {appliedDiscount > 0 && (
-                      <span className="text-xs text-slate-400 line-through">
-                        ₹{prod.priceINR}
-                      </span>
-                    )}
+                    <span className="text-xs text-slate-400 line-through">
+                      {symbol}{originalPrice}
+                    </span>
                     <span className="text-[10px] font-bold text-emerald-500">
-                      {appliedDiscount > 0 ? `${appliedDiscount}% OFF Applied` : `Save ${Math.round(((prod.originalPriceINR - prod.priceINR) / prod.originalPriceINR) * 100)}%`}
+                      {appliedDiscount > 0 ? `${appliedDiscount}% OFF` : `Save 75%`}
                     </span>
                   </div>
 
@@ -230,7 +263,7 @@ export default function DigitalProductsStorePage() {
                   onClick={() => handleCheckout(prod)}
                   className="w-full py-3 px-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 active:scale-95 transition-all cursor-pointer"
                 >
-                  <ShoppingBag className="w-3.5 h-3.5" /> Instant Access (₹{finalPrice})
+                  <ShoppingBag className="w-3.5 h-3.5" /> Instant Access ({symbol}{finalPrice})
                 </button>
               </div>
             );
@@ -243,7 +276,7 @@ export default function DigitalProductsStorePage() {
             <div className="relative w-full max-w-xl p-6 sm:p-8 rounded-3xl bg-slate-900 border border-indigo-500/30 text-white shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between border-b border-slate-800 pb-4">
                 <div>
-                  <span className="text-[10px] font-black uppercase text-indigo-400">Direct Bank &amp; UPI Settlement</span>
+                  <span className="text-[10px] font-black uppercase text-indigo-400">Global Direct Checkout</span>
                   <h3 className="text-lg font-bold font-serif">{selectedProduct.title}</h3>
                 </div>
                 <button
@@ -259,9 +292,9 @@ export default function DigitalProductsStorePage() {
                   <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h4 className="text-xl font-bold font-serif">Payment Verified!</h4>
+                  <h4 className="text-xl font-bold font-serif">Order Confirmed!</h4>
                   <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
-                    Money has been routed directly to bank account. Your instant download files for <b>{selectedProduct.title}</b> have been unlocked and dispatched to <b>{buyerEmail}</b>.
+                    Payment has been verified. Your instant download files for <b>{selectedProduct.title}</b> have been unlocked and dispatched to <b>{buyerEmail}</b>.
                   </p>
                   <a
                     href="https://auto-ai-blog-web.onrender.com"
@@ -279,10 +312,10 @@ export default function DigitalProductsStorePage() {
                     </div>
                     <div className="text-right">
                       <div className="text-lg font-black font-serif text-emerald-400">
-                        ₹{calculateFinalPrice(selectedProduct.priceINR)}
+                        {currency === "USD" ? "$" : "₹"}{calculateFinalPrice(selectedProduct)}
                       </div>
                       <div className="text-[10px] text-slate-500">
-                        {appliedDiscount > 0 ? `${appliedDiscount}% Promo Discount Applied` : "Zero Gateway Surcharges"}
+                        {appliedDiscount > 0 ? `${appliedDiscount}% Promo Discount Applied` : "Zero Gateway Fees"}
                       </div>
                     </div>
                   </div>
@@ -301,85 +334,102 @@ export default function DigitalProductsStorePage() {
                     />
                   </div>
 
-                  {/* Payment Options: Direct UPI or Direct Bank Wire */}
+                  {/* Payment Options: International Card / Wire / UPI */}
                   <div className="space-y-3">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400">
-                      Select Direct Instant Transfer
+                      Select Payment Method
                     </label>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("CARD")}
+                        className={`p-3 rounded-2xl border text-left transition-all ${
+                          paymentMethod === "CARD"
+                            ? "bg-indigo-600/20 border-indigo-500 text-white"
+                            : "bg-slate-950 border-slate-800 text-slate-400"
+                        }`}
+                      >
+                        <div className="flex items-center gap-1.5 font-bold text-xs">
+                          <CreditCard className="w-3.5 h-3.5 text-indigo-400" /> Global Card
+                        </div>
+                        <div className="text-[9px] text-slate-400 mt-0.5">Stripe / PayPal</div>
+                      </button>
+
                       <button
                         type="button"
                         onClick={() => setPaymentMethod("UPI")}
-                        className={`p-4 rounded-2xl border text-left transition-all ${
+                        className={`p-3 rounded-2xl border text-left transition-all ${
                           paymentMethod === "UPI"
                             ? "bg-indigo-600/20 border-indigo-500 text-white"
                             : "bg-slate-950 border-slate-800 text-slate-400"
                         }`}
                       >
-                        <div className="flex items-center gap-2 font-bold text-xs">
-                          <QrCode className="w-4 h-4 text-indigo-400" /> Direct UPI (GPay/PhonePe/Paytm)
+                        <div className="flex items-center gap-1.5 font-bold text-xs">
+                          <QrCode className="w-3.5 h-3.5 text-emerald-400" /> Instant UPI
                         </div>
-                        <div className="text-[10px] text-slate-400 mt-1">Instant Bank Settlement</div>
+                        <div className="text-[9px] text-slate-400 mt-0.5">GPay/PhonePe</div>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => setPaymentMethod("BANK")}
-                        className={`p-4 rounded-2xl border text-left transition-all ${
+                        className={`p-3 rounded-2xl border text-left transition-all ${
                           paymentMethod === "BANK"
                             ? "bg-indigo-600/20 border-indigo-500 text-white"
                             : "bg-slate-950 border-slate-800 text-slate-400"
                         }`}
                       >
-                        <div className="flex items-center gap-2 font-bold text-xs">
-                          <Landmark className="w-4 h-4 text-emerald-400" /> Direct Bank Wire
+                        <div className="flex items-center gap-1.5 font-bold text-xs">
+                          <Landmark className="w-3.5 h-3.5 text-amber-400" /> Bank Wire
                         </div>
-                        <div className="text-[10px] text-slate-400 mt-1">NEFT / IMPS / SWIFT</div>
+                        <div className="text-[9px] text-slate-400 mt-0.5">SWIFT / NEFT</div>
                       </button>
                     </div>
 
-                    {paymentMethod === "UPI" ? (
-                      <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-3">
+                    {paymentMethod === "CARD" && (
+                      <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs text-slate-300">
+                        <div className="flex items-center justify-between">
+                          <span>International Bank Card / Direct Wire</span>
+                          <span className="text-indigo-400 font-bold">SWIFT: DBSSINBB</span>
+                        </div>
+                        <div className="text-[11px] text-slate-400">
+                          Direct Beneficiary: <b>ARNAB LAHA</b> • DBS Bank India
+                        </div>
+                      </div>
+                    )}
+
+                    {paymentMethod === "UPI" && (
+                      <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-2">
                         <div className="text-xs text-slate-300 font-semibold">
-                          Pay ₹{calculateFinalPrice(selectedProduct.priceINR)} directly to linked Bank UPI:
+                          Pay directly to verified UPI ID:
                         </div>
                         <div className="flex items-center justify-center gap-2">
-                          <span className="px-4 py-2 rounded-xl bg-indigo-500/10 text-indigo-300 font-mono text-sm font-bold border border-indigo-500/30">
+                          <span className="px-4 py-1.5 rounded-xl bg-indigo-500/10 text-indigo-300 font-mono text-sm font-bold border border-indigo-500/30">
                             8240438062@superyes
                           </span>
                           <button
                             type="button"
                             onClick={handleCopyUpi}
-                            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs"
+                            className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs"
                           >
-                            {copiedUpi ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                            {copiedUpi ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                           </button>
                         </div>
                         <div className="text-[11px] text-slate-400">
                           Beneficiary: <b>ARNAB LAHA</b> • Bank: <b>DBS Bank</b>
                         </div>
                       </div>
-                    ) : (
-                      <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-xs space-y-1.5 text-slate-300">
+                    )}
+
+                    {paymentMethod === "BANK" && (
+                      <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-xs space-y-1 text-slate-300">
                         <div><b>Account Name:</b> ARNAB LAHA</div>
                         <div><b>Bank:</b> DBS Bank India Ltd</div>
                         <div><b>IFSC Code:</b> DBSS0IN0811</div>
+                        <div><b>SWIFT Code:</b> DBSSINBB</div>
                         <div><b>UPI:</b> 8240438062@superyes</div>
                       </div>
                     )}
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
-                      UPI Ref / UTR / Transaction ID (Optional)
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. 423987123456 or PhonePe Ref"
-                      value={utrNumber}
-                      onChange={(e) => setUtrNumber(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:ring-1 focus:ring-indigo-500 focus:outline-none font-mono"
-                    />
                   </div>
 
                   <button
@@ -391,7 +441,7 @@ export default function DigitalProductsStorePage() {
                       "Verifying Payment & Unlocking..."
                     ) : (
                       <>
-                        <CheckCircle2 className="w-4 h-4" /> I Have Completed Payment (Unlock ₹{calculateFinalPrice(selectedProduct.priceINR)})
+                        <CheckCircle2 className="w-4 h-4" /> Complete Order ({currency === "USD" ? "$" : "₹"}{calculateFinalPrice(selectedProduct)})
                       </>
                     )}
                   </button>
