@@ -793,58 +793,95 @@ export default function MonetizationHubPage() {
       {activeTab === "bank" && (
         <div className="space-y-8">
           {/* Top Balance & Instant Withdrawal Card */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/20 shadow-xl space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                    Real Settlement Engine
-                  </span>
-                  <span className="text-xs text-slate-400">Verified Total Earnings</span>
-                </div>
-                <div className="text-3xl sm:text-4xl font-black font-serif tracking-tight text-white flex items-baseline gap-3">
-                  <span>{realMetrics?.revenueLedger?.totalActualRevenue || "$0.00"}</span>
-                  <span className="text-sm font-sans font-medium text-emerald-400">
-                    (₹{((parseFloat(String(realMetrics?.revenueLedger?.totalActualRevenue || "0.00").replace(/[^0-9.]/g, "")) || 0) * 86.5).toLocaleString("en-IN")})
-                  </span>
-                </div>
-              </div>
+          {(() => {
+            const rawRevenue = parseFloat(String(realMetrics?.revenueLedger?.totalActualRevenueVal ?? realMetrics?.revenueLedger?.totalActualRevenue ?? "0.00").replace(/[^0-9.]/g, "")) || 0;
+            const totalWithdrawn = (bankInfo.withdrawalHistory || []).reduce((acc: number, tx: any) => acc + (parseFloat(tx.amount) || 0), 0);
+            const eligibleWithdrawVal = Math.max(0, rawRevenue - totalWithdrawn);
+            const eligibleInr = (eligibleWithdrawVal * 86.5).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const totalEarningsInr = (rawRevenue * 86.5).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-              {/* Instant Withdrawal Box */}
-              <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex flex-col sm:flex-row sm:items-center gap-3">
-                <div>
-                  <label className="text-[10px] uppercase font-bold text-slate-300 block">Amount to Withdraw ($ USD)</label>
-                  <div className="relative mt-1">
-                    <span className="absolute left-3 top-2 text-xs font-bold text-slate-400">$</span>
-                    <input
-                      type="number"
-                      step="10"
-                      min="10"
-                      value={withdrawAmount}
-                      onChange={(e) => setWithdrawAmount(e.target.value)}
-                      className="pl-7 pr-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white font-bold text-sm w-36 outline-none focus:border-indigo-400"
-                    />
+            return (
+              <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/20 shadow-xl space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                  {/* Left: Total vs Eligible Balances */}
+                  <div className="md:col-span-6 space-y-4">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                          Live Settlement Engine
+                        </span>
+                        <span className="text-xs text-slate-400">Ledger Verified</span>
+                      </div>
+                      <div className="flex flex-wrap items-baseline gap-2">
+                        <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Total Verified Earnings:</span>
+                        <span className="text-sm font-bold text-slate-200">${rawRevenue.toFixed(2)} USD</span>
+                        <span className="text-xs text-slate-400">(₹{totalEarningsInr})</span>
+                      </div>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 space-y-1">
+                      <div className="text-[11px] uppercase tracking-wider font-bold text-emerald-400 flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5" /> Eligible Balance Available to Withdraw
+                      </div>
+                      <div className="text-3xl sm:text-4xl font-black font-serif tracking-tight text-white flex items-baseline gap-3">
+                        <span>${eligibleWithdrawVal.toFixed(2)}</span>
+                        <span className="text-base font-sans font-bold text-emerald-400">
+                          (₹{eligibleInr})
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-emerald-300/80">
+                        Ready for instant direct settlement to DBS Bank / UPI ({bankInfo.bankUpiId || "8240438062@superyes"})
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right: Instant Withdrawal Box */}
+                  <div className="md:col-span-6 bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/10 flex flex-col sm:flex-row sm:items-end gap-3 justify-end">
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-[10px] uppercase font-bold text-slate-300">Amount to Withdraw ($)</label>
+                        <button
+                          type="button"
+                          onClick={() => setWithdrawAmount(eligibleWithdrawVal.toFixed(2))}
+                          className="text-[10px] font-bold text-emerald-400 hover:text-emerald-300 underline cursor-pointer"
+                        >
+                          Use Max (${eligibleWithdrawVal.toFixed(2)})
+                        </button>
+                      </div>
+                      <div className="relative">
+                        <span className="absolute left-3 top-2.5 text-xs font-bold text-slate-400">$</span>
+                        <input
+                          type="number"
+                          step="0.01"
+                          min="0.01"
+                          value={withdrawAmount}
+                          onChange={(e) => setWithdrawAmount(e.target.value)}
+                          className="w-full pl-7 pr-3 py-2 rounded-xl bg-slate-900/90 border border-slate-700 text-white font-bold text-base outline-none focus:border-emerald-400 font-mono"
+                          placeholder={eligibleWithdrawVal.toFixed(2)}
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={handleRequestWithdrawal}
+                      disabled={bankLoading || !withdrawAmount || parseFloat(withdrawAmount) <= 0}
+                      className="px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50 h-[42px]"
+                    >
+                      <ArrowDownToLine className="w-4 h-4" />
+                      <span>Withdraw to Bank</span>
+                    </button>
                   </div>
                 </div>
 
-                <button
-                  onClick={handleRequestWithdrawal}
-                  disabled={bankLoading || !withdrawAmount}
-                  className="mt-2 sm:mt-auto px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
-                >
-                  <ArrowDownToLine className="w-4 h-4" />
-                  <span>Withdraw to Bank</span>
-                </button>
+                {withdrawStatusMsg && (
+                  <div className="p-3.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
+                    <span>{withdrawStatusMsg}</span>
+                  </div>
+                )}
               </div>
-            </div>
-
-            {withdrawStatusMsg && (
-              <div className="p-3.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
-                <span>{withdrawStatusMsg}</span>
-              </div>
-            )}
-          </div>
+            );
+          })()}
 
           {/* Bank Configuration & Payment Gateways Form */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
