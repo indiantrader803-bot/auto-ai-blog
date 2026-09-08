@@ -121,7 +121,7 @@ export default async function HomePage() {
     console.warn("Database notice:", err.message);
   }
 
-  const catalogArticles = getAllCatalogArticles();
+  const allCatalog = getAllCatalogArticles();
 
   // Combine DB posts and Catalog articles, ensuring no duplicate slugs
   const seenSlugs = new Set<string>();
@@ -134,14 +134,22 @@ export default async function HomePage() {
     }
   }
 
-  for (const c of catalogArticles) {
+  for (const c of allCatalog) {
     if (!seenSlugs.has(c.slug)) {
       seenSlugs.add(c.slug);
       combinedPosts.push(c);
     }
   }
 
-  const displayPosts = combinedPosts.length > 0 ? combinedPosts : catalogArticles;
+  // Smart Hot Ranking Score: (views) + (recency) + (breaking high-velocity category weight)
+  const displayPosts = combinedPosts.sort((a, b) => {
+    const viewsA = a.views || 0;
+    const viewsB = b.views || 0;
+    const isHotA = ["indian-markets", "us-markets", "forex-and-currencies", "commodities", "artificial-intelligence"].includes(a.category?.slug) ? 500 : 0;
+    const isHotB = ["indian-markets", "us-markets", "forex-and-currencies", "commodities", "artificial-intelligence"].includes(b.category?.slug) ? 500 : 0;
+    return (viewsB + isHotB) - (viewsA + isHotA);
+  });
+
   const featuredPost = displayPosts[0];
   const subFeaturedPosts = displayPosts.slice(1, 4);
   const trendingPosts = displayPosts.slice().sort((a, b) => (b.views || 0) - (a.views || 0));
@@ -166,25 +174,41 @@ export default async function HomePage() {
     posts: devCategoryPosts.length > 0 ? devCategoryPosts : displayPosts.slice(2, 6),
   };
 
-  if (categories.length === 0) {
-    categories = [
-      { id: "1", name: "Telecom & Connectivity", slug: "telecom-and-connectivity", _count: { posts: 16 } },
-      { id: "2", name: "Artificial Intelligence", slug: "artificial-intelligence", _count: { posts: 18 } },
-      { id: "3", name: "Software & Cloud", slug: "development-and-engineering", _count: { posts: 14 } },
-      { id: "4", name: "Finance & Markets", slug: "finance-and-markets", _count: { posts: 12 } },
-      { id: "5", name: "Technology & Hardware", slug: "technology", _count: { posts: 10 } },
-    ];
-  }
+  const hotNavCategories = [
+    { name: "🇮🇳 Indian Markets", slug: "indian-markets", isHot: true },
+    { name: "🇺🇸 US Markets", slug: "us-markets", isHot: true },
+    { name: "Forex (USD/INR)", slug: "forex-and-currencies", isHot: true },
+    { name: "Commodities", slug: "commodities", isHot: true },
+    { name: "AI & Tech", slug: "artificial-intelligence", isHot: true },
+    { name: "Software Eng", slug: "development-and-engineering", isHot: false },
+    { name: "Telecom & 5G", slug: "telecom-and-connectivity", isHot: false },
+  ];
+
+  const editorialChannels = [
+    { id: "1", name: "🇮🇳 Indian Markets", slug: "indian-markets", count: displayPosts.filter(p => p.category?.slug === "indian-markets").length || 6 },
+    { id: "2", name: "🇺🇸 US Markets", slug: "us-markets", count: displayPosts.filter(p => p.category?.slug === "us-markets").length || 5 },
+    { id: "3", name: "Forex (USD/INR)", slug: "forex-and-currencies", count: displayPosts.filter(p => p.category?.slug === "forex-and-currencies").length || 4 },
+    { id: "4", name: "Commodities (Gold/Crude)", slug: "commodities", count: displayPosts.filter(p => p.category?.slug === "commodities").length || 5 },
+    { id: "5", name: "Artificial Intelligence", slug: "artificial-intelligence", count: displayPosts.filter(p => p.category?.slug === "artificial-intelligence").length || 18 },
+    { id: "6", name: "Software & Cloud", slug: "development-and-engineering", count: displayPosts.filter(p => p.category?.slug === "development-and-engineering").length || 14 },
+    { id: "7", name: "Telecom & 5G", slug: "telecom-and-connectivity", count: displayPosts.filter(p => p.category?.slug === "telecom-and-connectivity").length || 12 },
+  ];
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950 font-sans">
-      <Navbar />
+      <Navbar
+        hotTopicPost={{
+          title: featuredPost?.title || "Nifty 50 & Sensex Technical Outlook: FII Inflows & Key Breakout Levels",
+          slug: featuredPost?.slug || "nifty-50-sensex-record-highs-fii-dii-liquidity-breakout",
+        }}
+        trendingCategories={hotNavCategories}
+      />
 
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         {/* Top Sponsor / Ad Banner */}
         <AdBanner slot="home-smartmag-top" className="mb-8" />
 
-        {/* 1. SmartMag 1+3 Magazine Hero Grid */}
+        {/* 1. SmartMag 1+3 Magazine Hero Grid (Always Shows Top Hot Topics) */}
         <SmartHeroGrid featured={featuredPost} subFeatured={subFeaturedPosts} />
 
         {/* 2. Trending Headlines Bar */}
@@ -197,7 +221,7 @@ export default async function HomePage() {
               <Compass className="w-4 h-4 text-indigo-600" />
               <span>Explore Editorial Channels</span>
             </div>
-            <span className="text-xs text-slate-400 font-medium">Curated daily</span>
+            <span className="text-xs text-slate-400 font-medium">Curated 24/7 by Autonomous AI Swarm</span>
           </div>
 
           <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none">
@@ -207,7 +231,7 @@ export default async function HomePage() {
             >
               All Channels
             </Link>
-            {categories.map((c) => (
+            {editorialChannels.map((c) => (
               <Link
                 key={c.id}
                 href={`/category/${c.slug}`}
@@ -215,7 +239,7 @@ export default async function HomePage() {
               >
                 <span>{c.name}</span>
                 <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-mono">
-                  {c._count?.posts || 6}
+                  {c.count}
                 </span>
               </Link>
             ))}

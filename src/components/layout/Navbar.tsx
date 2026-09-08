@@ -24,12 +24,53 @@ import SearchModal from "./SearchModal";
 import LanguageSelector from "./LanguageSelector";
 import PushNotificationBanner from "../common/PushNotificationBanner";
 
-export default function Navbar() {
+export interface NavCategory {
+  id?: string;
+  name: string;
+  slug: string;
+  isHot?: boolean;
+  count?: number;
+}
+
+interface NavbarProps {
+  hotTopicPost?: {
+    title: string;
+    slug: string;
+  };
+  trendingCategories?: NavCategory[];
+}
+
+const DEFAULT_CATEGORIES: NavCategory[] = [
+  { name: "🇮🇳 Indian Markets", slug: "indian-markets", isHot: true },
+  { name: "🇺🇸 US Markets", slug: "us-markets", isHot: true },
+  { name: "Forex (USD/INR)", slug: "forex-and-currencies", isHot: true },
+  { name: "Commodities", slug: "commodities", isHot: true },
+  { name: "AI & Tech", slug: "artificial-intelligence", isHot: true },
+  { name: "Software Eng", slug: "development-and-engineering", isHot: false },
+  { name: "Telecom & 5G", slug: "telecom-and-connectivity", isHot: false },
+];
+
+export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps) {
   const [isDark, setIsDark] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeMegaCategory, setActiveMegaCategory] = useState<string | null>(null);
+  const [categories, setCategories] = useState<NavCategory[]>(trendingCategories || DEFAULT_CATEGORIES);
+  const [tickerPost, setTickerPost] = useState<{ title: string; slug: string }>(
+    hotTopicPost || {
+      title: "Nifty 50 & Sensex Technical Outlook: FII Inflows, DII Liquidity & Key Breakout Levels",
+      slug: "nifty-50-sensex-record-highs-fii-dii-liquidity-breakout",
+    }
+  );
+
+  useEffect(() => {
+    if (trendingCategories && trendingCategories.length > 0) {
+      setCategories(trendingCategories);
+    }
+    if (hotTopicPost) {
+      setTickerPost(hotTopicPost);
+    }
+  }, [trendingCategories, hotTopicPost]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -79,14 +120,15 @@ export default function Navbar() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
               </span>
-              TRENDING
+              HOT TRENDING
             </span>
             <div className="flex items-center gap-2 truncate text-[11px] text-slate-300">
               <Link
-                href="/blog/the-agentic-revolution-autonomous-ai-swarms"
-                className="hover:text-amber-300 transition-colors truncate font-medium"
+                href={`/blog/${tickerPost.slug}`}
+                className="hover:text-amber-300 transition-colors truncate font-medium flex items-center gap-1.5"
               >
-                Next-Gen Autonomous Agentic Swarms &amp; Edge Inference Transforming Modern Engineering
+                <Flame className="w-3.5 h-3.5 text-rose-400 shrink-0 animate-pulse" />
+                <span className="truncate">{tickerPost.title}</span>
               </Link>
             </div>
           </div>
@@ -107,7 +149,7 @@ export default function Navbar() {
 
             <div className="flex items-center gap-2 text-slate-300">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">LIVE 24/7 DISPATCH</span>
+              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">LIVE 24/7 AGENT FLEET</span>
             </div>
 
             <a
@@ -208,48 +250,28 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Tier 2: Category Navigation Menu Bar */}
+        {/* Tier 2: Category Navigation Menu Bar (Dynamically updated via Hot Topics) */}
         <div className="hidden lg:block border-t border-slate-100 dark:border-slate-900 bg-slate-50/50 dark:bg-slate-950/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav className="flex items-center gap-7 py-2.5 overflow-x-auto text-xs font-bold uppercase tracking-wider">
+            <nav className="flex items-center gap-6 py-2.5 overflow-x-auto text-xs font-bold uppercase tracking-wider scrollbar-none">
               <Link
                 href="/"
                 className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap"
               >
                 Home
               </Link>
-              <Link
-                href="/category/indian-markets"
-                className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap"
-              >
-                <span>🇮🇳 Indian Markets</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              </Link>
-              <Link
-                href="/category/us-markets"
-                className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap"
-              >
-                <span>🇺🇸 US Markets</span>
-              </Link>
-              <Link
-                href="/category/forex-and-currencies"
-                className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap"
-              >
-                Forex (USD/INR)
-              </Link>
-              <Link
-                href="/category/commodities"
-                className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap"
-              >
-                Commodities (Gold/Crude)
-              </Link>
-              <Link
-                href="/category/artificial-intelligence"
-                className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap"
-              >
-                <span>AI &amp; Tech</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-              </Link>
+              {categories.map((cat) => (
+                <Link
+                  key={cat.slug}
+                  href={`/category/${cat.slug}`}
+                  className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap group"
+                >
+                  <span>{cat.name}</span>
+                  {cat.isHot && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse group-hover:scale-125 transition-transform" />
+                  )}
+                </Link>
+              ))}
             </nav>
           </div>
         </div>
@@ -264,34 +286,21 @@ export default function Navbar() {
             >
               Featured Stories
             </Link>
-            <Link
-              href="/category/artificial-intelligence"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-sm font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300"
-            >
-              AI &amp; Models
-            </Link>
-            <Link
-              href="/category/development-and-engineering"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-sm font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300"
-            >
-              Software Engineering
-            </Link>
-            <Link
-              href="/category/finance-and-markets"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-sm font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300"
-            >
-              Markets &amp; Wealth
-            </Link>
-            <Link
-              href="/category/technology"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-sm font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300"
-            >
-              Reviews &amp; Gadgets
-            </Link>
+            {categories.map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/category/${cat.slug}`}
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-between text-sm font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 hover:text-indigo-600"
+              >
+                <span>{cat.name}</span>
+                {cat.isHot && (
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/10 text-rose-500 border border-rose-500/20">
+                    HOT
+                  </span>
+                )}
+              </Link>
+            ))}
             <Link
               href="/about"
               onClick={() => setIsMenuOpen(false)}
@@ -321,3 +330,4 @@ export default function Navbar() {
     </>
   );
 }
+
