@@ -1,4 +1,4 @@
-﻿import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export interface SocialPromotionCampaign {
   id: string;
@@ -109,13 +109,13 @@ function buildExpandedSocialCampaign(
     `4/ The hidden gotcha: Cold starts spike by ~400ms when cluster utilization drops below 10% unless you maintain warm worker pools.`,
     `5/ Key architectural takeaway: Don't adopt this just for the buzzword. Use it where deterministic latency under load is non-negotiable.`,
   ];
-  const ctaTweet = `6/ 🚀 We documented all benchmarks, architecture diagrams, and configuration files in our full breakdown:\n\n👉 ${fullArticleUrl}`;
+  const ctaTweet = `6/ 🚀 Full benchmarks, video workshop & open-source blueprint:\n👉 ${fullArticleUrl}\n\n💡 Want your video featured to 100k+ quant traders? Submit at https://auto-ai-blog-web.onrender.com/sponsor-video`;
   const fullThreadText = [hookTweet, ...tweets, ctaTweet].join("\n\n---\n\n");
 
   const liHeadline = `Why Software Teams Are Rethinking ${input.title} in 2026`;
   const liBody = `There is a massive gap between marketing announcements and production reality.\n\nOver the past 90 days, we benchmarked ${input.title} across 1.2M real-world requests. The findings surprised us:\n\n• 84% reduction in P95 latency with proper connection pooling\n• 5.8x lower memory utilization\n• But cold-start penalties remain real if pre-warming isn't configured\n\nSoftware architecture is always a series of deliberate trade-offs.`;
   const liTags = ["#SoftwareEngineering", "#ArtificialIntelligence", "#CloudArchitecture", "#DevOps"];
-  const fullLinkedInText = `${liHeadline}\n\n${liBody}\n\n🔗 Full technical report & benchmark charts:\n${fullArticleUrl}\n\n${liTags.join(" ")}`;
+  const fullLinkedInText = `${liHeadline}\n\n${liBody}\n\n🔗 Full technical report, video walkthrough & charts:\n${fullArticleUrl}\n\n🎥 Feature your video or dev tools: https://auto-ai-blog-web.onrender.com/sponsor-video\n\n${liTags.join(" ")}`;
 
   // LinkedIn Carousel Slides
   const linkedInCarousel = {
