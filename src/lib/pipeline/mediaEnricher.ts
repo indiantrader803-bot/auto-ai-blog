@@ -83,12 +83,22 @@ export async function enrichMedia(
     }
   }
 
-  // 3. Fallback: High-quality AI Generated Image via Pollinations / Unsplash Source
+  // 3. Fallback: High-quality AI Generated Image via Pollinations / Dynamic Seeded AI Canvas
   if (!imageResult.url) {
-    const prompt = `modern sleek high tech editorial 4k wallpaper illustration of ${imageQuery}, cinematic lighting, photorealistic, octane render, 16:9 aspect ratio`;
-    imageResult.url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1200&height=675&nologo=true`;
-    imageResult.alt = `${articleTitle} - AI Concept Visual`;
-    imageResult.photographer = "Synthesized by AI Engine";
+    const uniqueSeed = `${Date.now()}_${Math.floor(Math.random() * 1000000)}`;
+    const visualStyles = [
+      "cinematic lighting, photorealistic 8k octane render, editorial composition",
+      "hyper-detailed digital painting, volumetric lighting, futuristic aesthetic",
+      "isometric 3D architectural render, clean modern minimalism, ray tracing",
+      "award-winning macro photography, ultra-detailed textures, moody bokeh",
+      "modern editorial magazine visual, vibrant corporate tech illustration"
+    ];
+    const chosenStyle = visualStyles[Math.floor(Math.random() * visualStyles.length)];
+    const sanitizedTopic = encodeURIComponent(`${imageQuery} ${articleTitle.slice(0, 40)}`);
+    const prompt = `award-winning 4k wallpaper illustration of ${sanitizedTopic}, ${chosenStyle}, 16:9 aspect ratio, highly detailed`;
+    imageResult.url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1200&height=675&seed=${uniqueSeed}&nologo=true`;
+    imageResult.alt = `${articleTitle} - High Resolution Visual`;
+    imageResult.photographer = "AI Visual Intelligence Engine";
     imageResult.photographerUrl = "https://pollinations.ai";
   }
 

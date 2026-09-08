@@ -141,13 +141,11 @@ export default async function HomePage() {
     }
   }
 
-  // Smart Hot Ranking Score: (views) + (recency) + (breaking high-velocity category weight)
+  // Ensure newest published articles appear at the top hero & recent sections
   const displayPosts = combinedPosts.sort((a, b) => {
-    const viewsA = a.views || 0;
-    const viewsB = b.views || 0;
-    const isHotA = ["indian-markets", "us-markets", "forex-and-currencies", "commodities", "artificial-intelligence"].includes(a.category?.slug) ? 500 : 0;
-    const isHotB = ["indian-markets", "us-markets", "forex-and-currencies", "commodities", "artificial-intelligence"].includes(b.category?.slug) ? 500 : 0;
-    return (viewsB + isHotB) - (viewsA + isHotA);
+    const timeA = new Date(a.publishedAt || 0).getTime();
+    const timeB = new Date(b.publishedAt || 0).getTime();
+    return timeB - timeA;
   });
 
   const featuredPost = displayPosts[0];
