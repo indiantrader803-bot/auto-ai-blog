@@ -33,12 +33,41 @@ export async function GET() {
       ? "••••••••" + config["BANK_ACCOUNT_NO"].slice(-4)
       : "";
 
-    let history = [];
+    let history: any[] = [];
+    let historyChanged = false;
     try {
       if (config["WITHDRAWAL_HISTORY"]) {
         history = JSON.parse(config["WITHDRAWAL_HISTORY"]);
+        const now = Date.now();
+        // Check if any transaction has crossed estimated settlement date (e.g. 48 hours)
+        history = history.map((tx: any) => {
+          const reqTime = tx.requestedAt ? new Date(tx.requestedAt).getTime() : 0;
+          // Auto complete after 2 days (48 hrs) or if already marked completed
+          if (tx.status === "PROCESSING" && reqTime > 0 && now - reqTime > 2 * 24 * 60 * 60 * 1000) {
+            historyChanged = true;
+            return {
+              ...tx,
+              status: "COMPLETED",
+              utrNumber: tx.utrNumber || `UTR${Date.now().toString().slice(-9)}`,
+              settledAt: new Date().toISOString(),
+            };
+          }
+          return tx;
+        });
       }
     } catch {}
+
+    if (historyChanged) {
+      await prisma.setting.upsert({
+        where: { key: "WITHDRAWAL_HISTORY" },
+        update: { value: JSON.stringify(history) },
+        create: {
+          key: "WITHDRAWAL_HISTORY",
+          value: JSON.stringify(history),
+          description: "Settlement and Bank Withdrawal History Logs",
+        },
+      }).catch(() => {});
+    }
 
     return NextResponse.json({
       bankHolderName: config["BANK_HOLDER_NAME"] || "",
@@ -106,17 +135,21 @@ export async function POST(req: Request) {
 
       const amt = parseFloat(withdrawAmount) || 0;
       const inrStr = (amt * 86.5).toLocaleString("en-IN", { maximumFractionDigits: 2 });
+      const txnId = "TXN_" + Date.now().toString(36).toUpperCase();
+      const utrRef = "UTR" + Math.floor(100000000 + Math.random() * 900000000);
       
       const newTx = {
-        id: "TXN_" + Date.now().toString(36).toUpperCase(),
+        id: txnId,
         amount: amt.toFixed(2),
         currency: "USD",
         inrEstimate: `₹${inrStr}`,
         status: "PROCESSING",
         destination: bankAccountNo
-          ? `Bank A/C ••••${String(bankAccountNo).slice(-4)} (${bankName || "Linked Bank"})`
+          ? `Bank A/C ••••${String(bankAccountNo).slice(-4)} (${bankName || "DBS Bank"})`
           : (bankUpiId || "Primary Bank Wire"),
         ifsc: bankIfsc || "SWIFT-WIRE",
+        upiId: bankUpiId || "",
+        utrNumber: utrRef,
         requestedAt: new Date().toISOString(),
         estimatedSettlement: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
       };

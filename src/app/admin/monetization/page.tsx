@@ -1093,32 +1093,54 @@ export default function MonetizationHubPage() {
                     <p className="text-[11px] text-slate-500">Your withdrawal orders and wire receipts will appear here.</p>
                   </div>
                 ) : (
-                  <div className="space-y-2.5">
-                    {bankInfo.withdrawalHistory.slice(0, 5).map((tx: any) => (
-                      <div
-                        key={tx.id}
-                        className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs"
-                      >
-                        <div className="space-y-0.5">
-                          <div className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                            <span>${tx.amount} USD</span>
-                            <span className="text-emerald-600 font-mono text-[11px]">({tx.inrEstimate})</span>
-                          </div>
-                          <div className="text-[10px] text-slate-500 line-clamp-1">
-                            {tx.destination}
-                          </div>
-                        </div>
+                  <div className="space-y-3">
+                    {bankInfo.withdrawalHistory.slice(0, 10).map((tx: any) => {
+                      const isCompleted = tx.status === "COMPLETED" || tx.status === "SUCCESS";
+                      return (
+                        <div
+                          key={tx.id}
+                          className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2 text-xs transition-all hover:border-indigo-500/30"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="space-y-0.5">
+                              <div className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <span>${tx.amount} USD</span>
+                                <span className="text-emerald-600 font-mono text-[11px] font-bold">({tx.inrEstimate})</span>
+                              </div>
+                              <div className="text-[11px] text-slate-500 font-mono">
+                                Ref: <strong className="text-slate-700 dark:text-slate-300">{tx.id}</strong>
+                              </div>
+                            </div>
 
-                        <div className="text-right">
-                          <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                            {tx.status}
-                          </span>
-                          <div className="text-[9px] text-slate-400 mt-0.5">
-                            Est: {tx.estimatedSettlement}
+                            <div className="text-right flex flex-col items-end">
+                              <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border ${
+                                isCompleted
+                                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                                  : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                              }`}>
+                                {isCompleted ? "COMPLETED / SETTLED" : "PROCESSING"}
+                              </span>
+                              <div className="text-[10px] text-slate-400 mt-0.5">
+                                {isCompleted ? `Settled on ${new Date(tx.settledAt || tx.requestedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}` : `Est: ${tx.estimatedSettlement}`}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Tracking & Timeline Details */}
+                          <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[10px] text-slate-500">
+                            <div className="flex items-center gap-1.5">
+                              <Landmark className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                              <span className="truncate">{tx.destination}</span>
+                            </div>
+                            {tx.utrNumber && (
+                              <div className="font-mono text-slate-600 dark:text-slate-400 bg-slate-200/60 dark:bg-slate-800/60 px-2 py-0.5 rounded-md">
+                                UTR / Bank Track: <strong>{tx.utrNumber}</strong>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </div>
