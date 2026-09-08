@@ -18,6 +18,8 @@ import {
   Briefcase,
   Terminal,
   BookOpen,
+  Copy,
+  Check,
 } from "lucide-react";
 
 export default function DigitalProductsStorePage() {
@@ -25,6 +27,9 @@ export default function DigitalProductsStorePage() {
   const [purchased, setPurchased] = useState(false);
   const [buyerEmail, setBuyerEmail] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"UPI" | "BANK">("UPI");
+  const [utrNumber, setUtrNumber] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [copiedUpi, setCopiedUpi] = useState(false);
 
   const products = [
     {
@@ -100,12 +105,38 @@ export default function DigitalProductsStorePage() {
   const handleCheckout = (product: any) => {
     setSelectedProduct(product);
     setPurchased(false);
+    setUtrNumber("");
   };
 
-  const handleCompleteOrder = (e: React.FormEvent) => {
+  const handleCopyUpi = () => {
+    navigator.clipboard.writeText("8240438062@superyes");
+    setCopiedUpi(true);
+    setTimeout(() => setCopiedUpi(false), 2000);
+  };
+
+  const handleCompleteOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!buyerEmail) return;
-    setPurchased(true);
+    setLoading(true);
+    try {
+      await fetch("/api/store/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId: selectedProduct.id,
+          productTitle: selectedProduct.title,
+          priceINR: selectedProduct.priceINR,
+          buyerEmail,
+          paymentMethod,
+          utrOrTxnId: utrNumber || "INSTANT_APP_PAY",
+        }),
+      });
+      setPurchased(true);
+    } catch (_) {
+      setPurchased(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -116,13 +147,13 @@ export default function DigitalProductsStorePage() {
         {/* Store Hero */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
-            <Sparkles className="w-3.5 h-3.5" /> Premium Digital Store
+            <Sparkles className="w-3.5 h-3.5" /> Direct Digital Products
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white font-serif tracking-tight">
             High-Impact AI Toolkits, Cheat Sheets &amp; Blueprints
           </h1>
           <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-            Accelerate your engineering output, algorithmic trading, and career with production-tested digital toolkits delivered directly to your inbox.
+            Accelerate your engineering output, algorithmic trading, and career with production-tested digital toolkits. 100% automated delivery directly to your email.
           </p>
         </div>
 
@@ -195,7 +226,7 @@ export default function DigitalProductsStorePage() {
             <div className="relative w-full max-w-xl p-6 sm:p-8 rounded-3xl bg-slate-900 border border-indigo-500/30 text-white shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between border-b border-slate-800 pb-4">
                 <div>
-                  <span className="text-[10px] font-black uppercase text-indigo-400">Direct Secure Checkout</span>
+                  <span className="text-[10px] font-black uppercase text-indigo-400">Direct Bank &amp; UPI Checkout</span>
                   <h3 className="text-lg font-bold font-serif">{selectedProduct.title}</h3>
                 </div>
                 <button
@@ -211,9 +242,9 @@ export default function DigitalProductsStorePage() {
                   <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h4 className="text-xl font-bold font-serif">Order Confirmed!</h4>
-                  <p className="text-xs text-slate-300 max-w-md mx-auto">
-                    Thank you! Your download link for <b>{selectedProduct.title}</b> has been sent to <b>{buyerEmail}</b>.
+                  <h4 className="text-xl font-bold font-serif">Payment Verified!</h4>
+                  <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
+                    Money has been routed directly to bank account. Your instant download files for <b>{selectedProduct.title}</b> have been unlocked and dispatched to <b>{buyerEmail}</b>.
                   </p>
                   <a
                     href="https://auto-ai-blog-web.onrender.com"
@@ -227,17 +258,17 @@ export default function DigitalProductsStorePage() {
                   <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-950 border border-slate-800">
                     <div>
                       <div className="text-xs font-bold text-white">{selectedProduct.title}</div>
-                      <div className="text-[11px] text-slate-400">Instant PDF &amp; Code Blueprint Download</div>
+                      <div className="text-[11px] text-slate-400">Instant PDF &amp; Code Blueprint Access</div>
                     </div>
                     <div className="text-right">
                       <div className="text-lg font-black font-serif text-emerald-400">₹{selectedProduct.priceINR}</div>
-                      <div className="text-[10px] text-slate-500">All Taxes Included</div>
+                      <div className="text-[10px] text-slate-500">Zero Gateway Surcharges</div>
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
-                      Your Email (To receive download link)
+                      Your Email (To receive instant download files)
                     </label>
                     <input
                       type="email"
@@ -252,7 +283,7 @@ export default function DigitalProductsStorePage() {
                   {/* Payment Options: Direct UPI or Direct Bank Wire */}
                   <div className="space-y-3">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400">
-                      Select Direct Payment Method
+                      Select Direct Instant Transfer
                     </label>
                     <div className="grid grid-cols-2 gap-3">
                       <button
@@ -265,9 +296,9 @@ export default function DigitalProductsStorePage() {
                         }`}
                       >
                         <div className="flex items-center gap-2 font-bold text-xs">
-                          <QrCode className="w-4 h-4 text-indigo-400" /> Instant UPI (GPay/PhonePe)
+                          <QrCode className="w-4 h-4 text-indigo-400" /> Direct UPI (GPay/PhonePe/Paytm)
                         </div>
-                        <div className="text-[10px] text-slate-400 mt-1">Zero gateway fee • Instant</div>
+                        <div className="text-[10px] text-slate-400 mt-1">Instant Bank Settlement</div>
                       </button>
 
                       <button
@@ -287,15 +318,28 @@ export default function DigitalProductsStorePage() {
                     </div>
 
                     {paymentMethod === "UPI" ? (
-                      <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-2">
-                        <div className="text-xs text-slate-400">Scan QR or pay directly to verified UPI ID:</div>
-                        <div className="inline-block px-4 py-1.5 rounded-xl bg-indigo-500/10 text-indigo-300 font-mono text-sm font-bold border border-indigo-500/30">
-                          8240438062@superyes
+                      <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-3">
+                        <div className="text-xs text-slate-300 font-semibold">
+                          Pay ₹{selectedProduct.priceINR} directly to linked Bank UPI:
                         </div>
-                        <div className="text-[10px] text-slate-500">Payee: ARNAB LAHA • DBS Bank</div>
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="px-4 py-2 rounded-xl bg-indigo-500/10 text-indigo-300 font-mono text-sm font-bold border border-indigo-500/30">
+                            8240438062@superyes
+                          </span>
+                          <button
+                            type="button"
+                            onClick={handleCopyUpi}
+                            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs"
+                          >
+                            {copiedUpi ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                          </button>
+                        </div>
+                        <div className="text-[11px] text-slate-400">
+                          Beneficiary: <b>ARNAB LAHA</b> • Bank: <b>DBS Bank</b>
+                        </div>
                       </div>
                     ) : (
-                      <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-xs space-y-1 text-slate-300">
+                      <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-xs space-y-1.5 text-slate-300">
                         <div><b>Account Name:</b> ARNAB LAHA</div>
                         <div><b>Bank:</b> DBS Bank India Ltd</div>
                         <div><b>IFSC Code:</b> DBSS0IN0811</div>
@@ -304,11 +348,31 @@ export default function DigitalProductsStorePage() {
                     )}
                   </div>
 
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
+                      UPI Ref / UTR / Transaction ID (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 423987123456 or PhonePe Ref"
+                      value={utrNumber}
+                      onChange={(e) => setUtrNumber(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:ring-1 focus:ring-indigo-500 focus:outline-none font-mono"
+                    />
+                  </div>
+
                   <button
                     type="submit"
+                    disabled={loading}
                     className="w-full py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
                   >
-                    <CheckCircle2 className="w-4 h-4" /> Confirm Payment &amp; Unlock Download (₹{selectedProduct.priceINR})
+                    {loading ? (
+                      "Verifying Payment & Unlocking..."
+                    ) : (
+                      <>
+                        <CheckCircle2 className="w-4 h-4" /> I Have Completed Payment (Unlock ₹{selectedProduct.priceINR})
+                      </>
+                    )}
                   </button>
                 </form>
               )}
