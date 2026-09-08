@@ -9,28 +9,33 @@ export interface AffiliateRule {
 export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
   {
     keyword: "MacBook",
-    url: "https://www.amazon.in/s?k=apple+macbook+m3+m4&tag=autoaiblog-21",
+    url: "https://amzn.to/3UXVtTR",
     label: "Check Latest Apple MacBook Deals on Amazon",
   },
   {
     keyword: "laptop",
-    url: "https://www.amazon.in/s?k=best+developer+laptops&tag=autoaiblog-21",
+    url: "https://amzn.to/3VjFaRp",
     label: "Browse Best Developer Laptops on Amazon",
   },
   {
     keyword: "RTX 4090",
-    url: "https://www.amazon.in/s?k=nvidia+rtx+4090+gpu&tag=autoaiblog-21",
-    label: "Check RTX 4090 GPU Prices on Amazon",
+    url: "https://amzn.to/4gJpL5u",
+    label: "Check RTX 4090 & Top GPUs on Amazon",
   },
   {
     keyword: "monitor",
-    url: "https://www.amazon.in/s?k=4k+ultrawide+monitor+for+coding&tag=autoaiblog-21",
+    url: "https://amzn.to/4qX7Z1S",
     label: "Top 4K & Ultrawide Coding Monitors on Amazon",
   },
   {
     keyword: "mechanical keyboard",
-    url: "https://www.amazon.in/s?k=mechanical+keyboard+for+programming&tag=autoaiblog-21",
+    url: "https://amzn.to/3SxPMLN",
     label: "Best Developer Mechanical Keyboards on Amazon",
+  },
+  {
+    keyword: "developer setup",
+    url: "https://amzn.to/3UXVtTR",
+    label: "View Top Developer Workstation Gear on Amazon",
   },
   {
     keyword: "TradingView",
