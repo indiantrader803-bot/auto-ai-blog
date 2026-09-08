@@ -222,7 +222,78 @@ export default function SocialSidebar({
         </div>
       </div>
 
-      {/* 4. Sponsored Ad Slot */}
+      {/* 4. High-Yield Prop Firm & Partner Hub Widget */}
+      <div className="rounded-3xl bg-gradient-to-br from-indigo-950 via-slate-900 to-black p-6 border border-indigo-500/30 text-white shadow-xl space-y-4">
+        <div className="flex items-center justify-between pb-2 border-b border-white/10">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400">
+              Verified Partner Offers
+            </span>
+          </div>
+          <span className="text-[10px] font-bold text-amber-300">Active Deals</span>
+        </div>
+
+        {/* Offer 1: MFFU */}
+        <a
+          href="https://mffu.com/f/85f1f73f30"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block p-3.5 rounded-2xl bg-white/5 hover:bg-indigo-600/20 border border-white/10 hover:border-indigo-500/50 transition-all"
+        >
+          <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
+            <span className="group-hover:text-amber-300 transition-colors">MyFundedFutures (MFFU)</span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">90% Split</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-snug mb-2">
+            Pass 1-day challenge up to $300k. Code: <strong className="text-amber-300 font-mono">FUTURES2026</strong>
+          </p>
+          <div className="flex items-center gap-1 text-[11px] text-indigo-400 group-hover:text-white font-bold">
+            <span>Get Funded Account</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </a>
+
+        {/* Offer 2: Blue Guardian */}
+        <a
+          href="https://blueguardian.com/?afmc=1tgf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block p-3.5 rounded-2xl bg-white/5 hover:bg-indigo-600/20 border border-white/10 hover:border-indigo-500/50 transition-all"
+        >
+          <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
+            <span className="group-hover:text-amber-300 transition-colors">Blue Guardian Forex</span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">$400k Max</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-snug mb-2">
+            Unlimited trading days & Guardian Protector risk shield. Code: <strong className="text-amber-300 font-mono">GUARDIAN803</strong>
+          </p>
+          <div className="flex items-center gap-1 text-[11px] text-indigo-400 group-hover:text-white font-bold">
+            <span>Start Forex Challenge</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </a>
+
+        {/* Offer 3: Digital Product Store */}
+        <Link
+          href="/store"
+          className="group block p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/10 to-rose-500/10 hover:from-amber-500/20 hover:to-rose-500/20 border border-amber-500/30 transition-all"
+        >
+          <div className="flex items-center justify-between text-xs font-bold text-amber-300 mb-1">
+            <span>Quant & AI Digital Store</span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-200 font-mono">Instant DL</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-snug mb-2">
+            Download trading indicators, source codes & prompt packs ($ USD / ₹ INR).
+          </p>
+          <div className="flex items-center gap-1 text-[11px] text-amber-400 group-hover:text-white font-bold">
+            <span>Browse Products & Use Coupon</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+      </div>
+
+      {/* 5. Sponsored Ad Slot */}
       <AdBanner slot="sidebar-smartmag" format="rectangle" />
 
       {/* 5. Categories & Topics Widget */}
