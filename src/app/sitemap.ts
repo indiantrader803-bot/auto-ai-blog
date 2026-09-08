@@ -6,7 +6,8 @@ export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = (
-    process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-orpin.vercel.app"
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.RENDER_EXTERNAL_URL ? `https://${process.env.RENDER_EXTERNAL_URL}` : "https://auto-ai-blog-web.onrender.com")
   ).replace(/\/$/, "");
 
   let dbPosts: any[] = [];
