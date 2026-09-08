@@ -130,7 +130,7 @@ export async function executeDailyViralTopicPipeline(): Promise<{
     topic: selectedWinner.title,
     category: selectedWinner.category,
     autoPublish: true,
-    tone: "AUTHORITATIVE_JOURNALISTIC",
+    tone: "authoritative",
     targetWordCount: 1600
   });
 
