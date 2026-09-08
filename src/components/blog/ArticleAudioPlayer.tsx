@@ -44,15 +44,52 @@ export default function ArticleAudioPlayer({ title, content }: Props) {
         setIsPlaying(true);
       } else {
         window.speechSynthesis.cancel(); // Stop any previous speech
-        const textToRead = `${title}. ${cleanTextForSpeech(content)}`;
-        const utterance = new SpeechSynthesisUtterance(textToRead.slice(0, 4000));
+
+        // Check if page has translated text in the DOM or fallback to props
+        const articleBodyEl = document.querySelector(".prose") || document.querySelector("article");
+        const renderedText = articleBodyEl ? (articleBodyEl as HTMLElement).innerText : cleanTextForSpeech(content);
+        const textToRead = `${title}. ${renderedText}`.slice(0, 4000);
+
+        const utterance = new SpeechSynthesisUtterance(textToRead);
         utterance.rate = rate;
         utterance.volume = isMuted ? 0 : 1;
 
         // Detect current language from Google Translate cookie or browser selection
-        const match = document.cookie.match(/googtrans=\/en\/([a-z-A-Z]+)/);
-        const selectedLang = match && match[1] ? match[1] : "en";
-        utterance.lang = selectedLang === "bn" ? "bn-IN" : selectedLang === "hi" ? "hi-IN" : selectedLang === "es" ? "es-ES" : selectedLang === "fr" ? "fr-FR" : selectedLang === "de" ? "de-DE" : selectedLang === "zh-CN" ? "zh-CN" : selectedLang === "ja" ? "ja-JP" : selectedLang === "ar" ? "ar-SA" : selectedLang === "pt" ? "pt-BR" : selectedLang === "ru" ? "ru-RU" : "en-US";
+        const match = document.cookie.match(/googtrans=\/en\/([a-zA-Z_-]+)/);
+        const selectedLang = match && match[1] ? match[1].toLowerCase() : "en";
+
+        const langMap: Record<string, string> = {
+          bn: "bn-IN",
+          hi: "hi-IN",
+          es: "es-ES",
+          fr: "fr-FR",
+          de: "de-DE",
+          "zh-cn": "zh-CN",
+          "zh-tw": "zh-TW",
+          ja: "ja-JP",
+          ko: "ko-KR",
+          ar: "ar-SA",
+          pt: "pt-BR",
+          ru: "ru-RU",
+          it: "it-IT",
+          nl: "nl-NL",
+          tr: "tr-TR",
+          vi: "vi-VN",
+          th: "th-TH",
+          id: "id-ID",
+          pl: "pl-PL",
+          en: "en-US",
+        };
+
+        const targetLangCode = langMap[selectedLang] || "en-US";
+        utterance.lang = targetLangCode;
+
+        // Select the matching native speech synthesis voice if available
+        const voices = window.speechSynthesis.getVoices();
+        const matchedVoice = voices.find((v) => v.lang.toLowerCase().startsWith(selectedLang) || v.lang.toLowerCase().includes(targetLangCode.toLowerCase()));
+        if (matchedVoice) {
+          utterance.voice = matchedVoice;
+        }
 
         utterance.onend = () => {
           setIsPlaying(false);
