@@ -965,36 +965,21 @@ export default function MonetizationHubPage() {
                     <div className="flex items-center gap-2">
                       <CreditCard className="w-4 h-4 text-emerald-600" />
                       <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-                        Direct Payment Gateways (User Tips &amp; VIP Purchases)
+                        Global Payment Gateway (Optional)
                       </h4>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                          Razorpay Key ID (India UPI &amp; Cards)
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="rzp_live_..."
-                          value={bankInfo.razorpayKeyId}
-                          onChange={(e) => setBankInfo({ ...bankInfo, razorpayKeyId: e.target.value })}
-                          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono outline-none focus:ring-2 focus:ring-indigo-500"
-                        />
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                          Stripe Publishable Key (Global Apple Pay &amp; Cards)
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="pk_live_..."
-                          value={bankInfo.stripeKey}
-                          onChange={(e) => setBankInfo({ ...bankInfo, stripeKey: e.target.value })}
-                          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono outline-none focus:ring-2 focus:ring-indigo-500"
-                        />
-                      </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                        Stripe Publishable Key (Global Apple Pay &amp; Credit Cards)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="pk_live_... (Optional)"
+                        value={bankInfo.stripeKey}
+                        onChange={(e) => setBankInfo({ ...bankInfo, stripeKey: e.target.value })}
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
                     </div>
                   </div>
 
