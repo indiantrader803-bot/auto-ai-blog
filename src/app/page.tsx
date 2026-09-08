@@ -11,6 +11,7 @@ import VideoShowcase from "@/components/blog/VideoShowcase";
 import SocialSidebar from "@/components/blog/SocialSidebar";
 import AdBanner from "@/components/monetization/AdBanner";
 import NewsletterBanner from "@/components/monetization/NewsletterBanner";
+import AmazonAffiliateShowcase from "@/components/monetization/AmazonAffiliateShowcase";
 import { Sparkles, TrendingUp, Compass, Flame, ArrowRight, Zap, Award, Layers } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -281,6 +282,9 @@ export default async function HomePage() {
 
         {/* 5. Tech Reviews & Lab Benchmarks Section */}
         <ReviewSection posts={displayPosts} />
+
+        {/* 5.5. Amazon Associates Curated Hardware & Developer Deals */}
+        <AmazonAffiliateShowcase />
 
         {/* 6. Dual Category Bento Hub */}
         <DualCategoryBento category1={cat1} category2={cat2} />
