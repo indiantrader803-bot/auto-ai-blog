@@ -27,9 +27,9 @@ async function handleCron(req: NextRequest) {
   }
 
   try {
-    console.log("24/7 Autonomous Maintenance Swarm Cron Triggered: Executing all agents...");
+    console.log("24/7 Autonomous Traffic, Promotion & Monetization Swarm Triggered...");
     const result = await runFullAutonomousMaintenanceSwarm({
-      triggerNewPostGeneration: true,
+      triggerNewPostGeneration: false, // Priority: Traffic, Indexing, Viral Promotion, and Revenue Optimization!
     });
 
     return NextResponse.json({

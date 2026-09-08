@@ -6,26 +6,66 @@ export interface AffiliateRule {
   label?: string;
 }
 
-const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
+export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
+  {
+    keyword: "TradingView",
+    url: "https://www.tradingview.com/?aff_id=autoai",
+    label: "TradingView Pro Charts & Technical Screeners",
+  },
+  {
+    keyword: "Zerodha",
+    url: "https://zerodha.com/open-account?c=AUTOAI",
+    label: "Zerodha (Zero Brokerage Equity & Demat)",
+  },
+  {
+    keyword: "Angel One",
+    url: "https://www.angelone.in/?ref=AUTOAI",
+    label: "Angel One SmartAPI & Options Trading",
+  },
+  {
+    keyword: "Interactive Brokers",
+    url: "https://www.interactivebrokers.com/?ref=autoai",
+    label: "Interactive Brokers (Institutional Global Equities)",
+  },
+  {
+    keyword: "demat account",
+    url: "https://zerodha.com/open-account?c=AUTOAI",
+    label: "Open Verified Zero Brokerage Demat Account",
+  },
+  {
+    keyword: "technical analysis",
+    url: "https://www.tradingview.com/?aff_id=autoai",
+    label: "Live Candlestick & Technical Indicators on TradingView",
+  },
   {
     keyword: "cloud hosting",
     url: "https://www.digitalocean.com/?refcode=autoai",
-    label: "DigitalOcean Cloud ($200 Free Credit)",
+    label: "DigitalOcean Cloud ($200 Free Developer Credit)",
+  },
+  {
+    keyword: "GPU",
+    url: "https://hypercompute.cloud/?ref=autoai",
+    label: "HyperCompute Serverless Cloud GPUs ($100 Free Credit)",
+  },
+  {
+    keyword: "Cursor",
+    url: "https://cursor.com/?ref=autoai",
+    label: "Cursor AI Next-Gen Code Editor",
   },
   {
     keyword: "VPN",
-    url: "https://nordvpn.com",
-    label: "NordVPN Secure Encryption",
+    url: "https://nordvpn.com/?ref=autoai",
+    label: "NordVPN Threat Protection & Encryption",
   },
   {
     keyword: "AI tools",
-    url: "https://notion.so",
-    label: "Notion AI Workspace",
+    url: "https://notion.so/?ref=autoai",
+    label: "Notion AI Collaborative Workspace",
   },
   {
     keyword: "web development",
-    url: "https://vercel.com",
-    label: "Vercel Next-Gen Deployment",
+    url: "https://vercel.com/?ref=autoai",
+    label: "Vercel Edge & Serverless Platform",
   },
 ];
 

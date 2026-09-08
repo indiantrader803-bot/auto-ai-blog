@@ -34,6 +34,14 @@ export interface SocialPromotionCampaign {
     previewText: string;
     emailBodyMarkdown: string;
   };
+  whatsAppBroadcast: string;
+  oneClickShareUrls: {
+    twitter: string;
+    linkedIn: string;
+    whatsApp: string;
+    telegram: string;
+    reddit: string;
+  };
 }
 
 export interface PromoteArticleInput {
@@ -216,6 +224,8 @@ function formatSocialCampaignResponse(
       ? parsed.newsletterBlast.subjectLines
       : [`The real truth about ${input.title}`, `Inside: We benchmarked ${input.title}`, `Why engineers are rethinking ${input.title}`];
 
+    const whatsAppBroadcast = `🔥 *${input.title}*\n\n${input.excerpt}\n\n👉 *Read Full Breakdown:* ${fullArticleUrl}`;
+
     return {
       id: `promo_${Date.now()}`,
       articleTitle: input.title,
@@ -249,6 +259,14 @@ function formatSocialCampaignResponse(
         subjectLines: subjects,
         previewText: parsed.newsletterBlast?.previewText || input.excerpt,
         emailBodyMarkdown: parsed.newsletterBlast?.emailBodyMarkdown || `# ${input.title}\n\n${input.excerpt}\n\n[Read Full Story](${fullArticleUrl})`,
+      },
+      whatsAppBroadcast,
+      oneClickShareUrls: {
+        twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${hook.slice(0, 200)}...\n\nRead more: `)}&url=${encodeURIComponent(fullArticleUrl)}`,
+        linkedIn: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fullArticleUrl)}`,
+        whatsApp: `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsAppBroadcast)}`,
+        telegram: `https://t.me/share/url?url=${encodeURIComponent(fullArticleUrl)}&text=${encodeURIComponent(input.title)}`,
+        reddit: `https://www.reddit.com/submit?url=${encodeURIComponent(fullArticleUrl)}&title=${encodeURIComponent(input.title)}`,
       },
     };
   } catch (e) {
@@ -328,6 +346,14 @@ function buildOfflineSocialCampaign(
       previewText: `Our 90-day production benchmark data is in. Here is what worked and what broke.`,
       emailBodyMarkdown: `Hi {{subscriber.firstName|default:"Reader"}},\n\nSoftware architecture moves fast, but marketing buzz moves even faster. Today we published our comprehensive 90-day benchmark report on **${input.title}**.\n\n### Key Highlights:\n- **84% Latency Reduction**: How zero-copy streaming eliminated synchronous bottlenecks.\n- **Cost Efficiency**: Real numbers comparing legacy monoliths to modern agentic pipelines.\n- **Production Traps**: 3 gotchas the official documentation omits.\n\n[**Read The Full Benchmark Breakdown →**](${fullArticleUrl})\n\nAs always, let us know your thoughts by replying directly to this email.\n\nBest,\n**The SmartMag Editorial & Engineering Team**`,
     },
+    whatsAppBroadcast: `🔥 *${input.title}*\n\n${input.excerpt}\n\n👉 *Read Full Breakdown:* ${fullArticleUrl}`,
+    oneClickShareUrls: {
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${hookTweet.slice(0, 200)}...\n\nRead more: `)}&url=${encodeURIComponent(fullArticleUrl)}`,
+      linkedIn: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fullArticleUrl)}`,
+      whatsApp: `https://api.whatsapp.com/send?text=${encodeURIComponent(`🔥 *${input.title}*\n\n${input.excerpt}\n\n👉 *Read Full Breakdown:* ${fullArticleUrl}`)}`,
+      telegram: `https://t.me/share/url?url=${encodeURIComponent(fullArticleUrl)}&text=${encodeURIComponent(input.title)}`,
+      reddit: `https://www.reddit.com/submit?url=${encodeURIComponent(fullArticleUrl)}&title=${encodeURIComponent(input.title)}`,
+    },
   };
 }
 
@@ -396,4 +422,37 @@ export async function dispatchSocialWebhook(
     return { success: false, message: err.message || "Webhook dispatch failed." };
   }
 }
+
+/**
+ * 🚀 Fleet Promotion Engine
+ * Generates viral promotion packs for an entire array of articles.
+ */
+export async function runFleetPromotionAgent(
+  articles: PromoteArticleInput[]
+): Promise<{
+  processed: number;
+  campaigns: SocialPromotionCampaign[];
+}> {
+  const campaigns: SocialPromotionCampaign[] = [];
+
+  for (const article of articles) {
+    try {
+      const camp = await runPromotionAgent(article);
+      campaigns.push(camp);
+    } catch (err: any) {
+      console.warn(`Fleet promotion failed for "${article.title}":`, err.message);
+      const fallback = buildOfflineSocialCampaign(
+        article,
+        `${article.siteUrl || "https://auto-ai-blog-web.onrender.com"}/blog/${article.slug}`
+      );
+      campaigns.push(fallback);
+    }
+  }
+
+  return {
+    processed: campaigns.length,
+    campaigns,
+  };
+}
+
 

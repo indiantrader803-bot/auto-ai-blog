@@ -56,7 +56,34 @@ export default function MonetizationHubPage() {
   // Real Contextual Affiliates
   const [affiliates, setAffiliates] = useState([
     {
-      id: "aff_1",
+      id: "aff_tv",
+      keyword: "TradingView / Technicals",
+      product: "TradingView Pro Charts & Indicators",
+      cpa: "$30.00 per subscription",
+      clicks: 0,
+      earnings: "$0.00",
+      status: "ACTIVE",
+    },
+    {
+      id: "aff_zerodha",
+      keyword: "Nifty 50 / Demat Account",
+      product: "Zerodha Free Delivery Demat",
+      cpa: "$40.00 per account",
+      clicks: 0,
+      earnings: "$0.00",
+      status: "ACTIVE",
+    },
+    {
+      id: "aff_ibkr",
+      keyword: "S&P 500 / US Stocks",
+      product: "Interactive Brokers Global",
+      cpa: "$50.00 per account",
+      clicks: 0,
+      earnings: "$0.00",
+      status: "ACTIVE",
+    },
+    {
+      id: "aff_gpu",
       keyword: "Cloud GPU / H100",
       product: "HyperCompute Serverless GPUs",
       cpa: "$50.00 per signup",
@@ -65,16 +92,7 @@ export default function MonetizationHubPage() {
       status: "ACTIVE",
     },
     {
-      id: "aff_2",
-      keyword: "Next.js / Vercel Hosting",
-      product: "Vercel Enterprise Tier",
-      cpa: "$35.00 per seat",
-      clicks: 0,
-      earnings: "$0.00",
-      status: "ACTIVE",
-    },
-    {
-      id: "aff_3",
+      id: "aff_cursor",
       keyword: "Cursor / AI Code Editor",
       product: "Cursor Pro Yearly Pass",
       cpa: "$25.00 per conversion",
@@ -83,10 +101,10 @@ export default function MonetizationHubPage() {
       status: "ACTIVE",
     },
     {
-      id: "aff_4",
-      keyword: "Kubernetes / DevSecOps",
-      product: "ArmorGuard Zero-Trust",
-      cpa: "$80.00 per demo",
+      id: "aff_nord",
+      keyword: "Cybersecurity / VPN",
+      product: "NordVPN Threat Protection",
+      cpa: "$35.00 per sale",
       clicks: 0,
       earnings: "$0.00",
       status: "ACTIVE",
@@ -168,20 +186,7 @@ export default function MonetizationHubPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Live AdSense Inventory</span>
-            <DollarSign className="w-4 h-4 text-emerald-500" />
-          </div>
-          <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-            {realAdsensePubId ? "Connected" : "Pending"}
-          </div>
-          <div className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
-            <TrendingUp className="w-3 h-3" /> pub-9768860457233655 DIRECT
-          </div>
-        </div>
-
-        <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
-          <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Verified Impressions</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Verified Reader Views</span>
             <Eye className="w-4 h-4 text-indigo-500" />
           </div>
           <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
@@ -194,27 +199,40 @@ export default function MonetizationHubPage() {
 
         <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Contextual Affiliates</span>
-            <Tag className="w-4 h-4 text-amber-500" />
+            <span className="text-xs font-bold uppercase tracking-wider">Tracked Clicks &amp; CTR</span>
+            <TrendingUp className="w-4 h-4 text-emerald-500" />
           </div>
           <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-            {affiliates.length} Offers
+            {(realMetrics?.summary?.totalClicks || 0).toLocaleString()} Clicks
           </div>
-          <div className="text-[11px] font-semibold text-amber-600">
-            High-CPA SaaS &amp; Dev tools
+          <div className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
+            <span>{realMetrics?.summary?.clickThroughRate || "0.00%"} CTR</span> • Real User Actions
           </div>
         </div>
 
         <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Active Brand Sponsors</span>
-            <Award className="w-4 h-4 text-purple-500" />
+            <span className="text-xs font-bold uppercase tracking-wider">Monetization Networks</span>
+            <Tag className="w-4 h-4 text-amber-500" />
           </div>
           <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-            {activeSponsorsCount}
+            {affiliates.length} Networks
+          </div>
+          <div className="text-[11px] font-semibold text-amber-600">
+            Trading, Equities &amp; Cloud SaaS
+          </div>
+        </div>
+
+        <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
+          <div className="flex items-center justify-between text-slate-500">
+            <span className="text-xs font-bold uppercase tracking-wider">Total Value Engine</span>
+            <DollarSign className="w-4 h-4 text-purple-500" />
+          </div>
+          <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
+            {realMetrics?.summary?.totalEstimatedEarnings || "$0.00"}
           </div>
           <div className="text-[11px] font-semibold text-purple-600">
-            Live high-CPC contextual deals
+            AdSense + High-CPA Referrals
           </div>
         </div>
       </div>

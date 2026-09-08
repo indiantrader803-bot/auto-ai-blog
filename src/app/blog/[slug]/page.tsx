@@ -17,6 +17,10 @@ import AffiliateCard from "@/components/monetization/AffiliateCard";
 import BuyMeCoffee from "@/components/monetization/BuyMeCoffee";
 import NewsletterBanner from "@/components/monetization/NewsletterBanner";
 import PostCard from "@/components/blog/PostCard";
+import ArticleTracker from "@/components/blog/ArticleTracker";
+import FloatingShareDock from "@/components/blog/FloatingShareDock";
+import TrendingAlertBox from "@/components/blog/TrendingAlertBox";
+import { getTrendingStoryRecommendation } from "@/lib/pipeline/internalLinkingEngine";
 import { generateStructuredSchema } from "@/lib/pipeline/seoAffiliateEngine";
 import {
   Clock,
@@ -306,6 +310,8 @@ export default async function BlogPostPage({ params }: Props) {
     faqs
   );
 
+  const trendingRecommendation = getTrendingStoryRecommendation(cleanSlug);
+
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950 font-sans">
       {/* Schema Markup for Google SEO */}
@@ -313,6 +319,10 @@ export default async function BlogPostPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: schemaJson }}
       />
+
+      {/* Real-time Client Telemetry & Viral Floating Share Dock */}
+      <ArticleTracker slug={post.slug} title={post.title} />
+      <FloatingShareDock title={post.title} slug={post.slug} />
 
       <Navbar />
 
@@ -455,12 +465,18 @@ export default async function BlogPostPage({ params }: Props) {
               badge={matchedSponsor.badge}
               ctaText={matchedSponsor.ctaText}
               ctaLink={matchedSponsor.ctaUrl}
+              slug={post.slug}
               features={[
                 matchedSponsor.description,
                 matchedSponsor.discountCode ? `Exclusive Promo Code: ${matchedSponsor.discountCode}` : "Instant Free Tier Access",
                 "Strict Zero Data Retention & Enterprise Tier Support"
               ]}
             />
+
+            {/* In-Article High-CTR Viral Trending Recommendation */}
+            {trendingRecommendation && (
+              <TrendingAlertBox story={trendingRecommendation} />
+            )}
 
             {/* Mid-Article Ad Banner */}
             <AdBanner slot="article-mid" className="my-8" />
