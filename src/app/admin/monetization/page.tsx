@@ -252,7 +252,9 @@ export default function MonetizationHubPage() {
     setShowAddSponsorModal(false);
   };
 
-  const realTotalViews = realMetrics?.summary?.totalViews || 0;
+  const realTotalViews = realMetrics?.trafficIntelligence?.totalPageViews || 0;
+  const realTotalClicks = realMetrics?.revenueLedger?.totalClicks || 0;
+  const realTotalEarnings = realMetrics?.revenueLedger?.totalActualRevenue || "$0.00";
   const realAdsensePubId = adsensePubId;
   const activeSponsorsCount = sponsors.length;
 
@@ -302,10 +304,10 @@ export default function MonetizationHubPage() {
             <TrendingUp className="w-4 h-4 text-emerald-500" />
           </div>
           <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-            {(realMetrics?.summary?.totalClicks || 0).toLocaleString()} Clicks
+            {realTotalClicks.toLocaleString()} Clicks
           </div>
           <div className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
-            <span>{realMetrics?.summary?.clickThroughRate || "0.00%"} CTR</span> • Real User Actions
+            <span>{realMetrics?.revenueLedger?.clickThroughRate || "0.00%"} CTR</span> • Real User Actions
           </div>
         </div>
 
@@ -318,7 +320,7 @@ export default function MonetizationHubPage() {
             {affiliates.length} Networks
           </div>
           <div className="text-[11px] font-semibold text-amber-600">
-            Trading, Equities &amp; Cloud SaaS
+            Amazon, Trading &amp; Cloud SaaS
           </div>
         </div>
 
@@ -328,10 +330,10 @@ export default function MonetizationHubPage() {
             <DollarSign className="w-4 h-4 text-purple-500" />
           </div>
           <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-            {realMetrics?.summary?.totalEstimatedEarnings || "$0.00"}
+            {realTotalEarnings}
           </div>
           <div className="text-[11px] font-semibold text-purple-600">
-            AdSense + High-CPA Referrals
+            Verified AdSense + Amazon Affiliates
           </div>
         </div>
       </div>

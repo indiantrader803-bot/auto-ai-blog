@@ -58,9 +58,9 @@ export async function GET() {
     const uniqueVisitors = totalViews > 0 ? Math.floor(totalViews * 0.72) : 0;
 
     // Real AdSense & Monetization Earnings
-    // Since AdSense is currently in "Getting ready" review, real verified live ad earnings = $0.00 until Google activates live ads.
+    // Strictly $0.00 until Google AdSense or Amazon Associates confirms completed payment settlement.
     const realAdRevenueVal = 0.00;
-    const realAffiliateEarningsVal = affiliateClicksCount * 2.50; // Real tracked CPA clicks
+    const realAffiliateEarningsVal = 0.00;
     const realSponsorRevenueVal = 0.00;
     const realTotalRevenueVal = realAdRevenueVal + realAffiliateEarningsVal + realSponsorRevenueVal;
 
