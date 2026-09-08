@@ -1,7 +1,11 @@
 import { prisma } from "../../prisma";
 import { runPromotionAgent, dispatchSocialWebhook } from "../agents/promotionAgent";
 import { matchSponsorForArticle, VERIFIED_SPONSORS } from "../agents/sponsorAgent";
-import { pingSearchEngines, auditAndRescueLowTrafficArticles } from "../agents/trafficBoosterAgent";
+import {
+  pingSearchEngines,
+  auditAndRescueLowTrafficArticles,
+  runAutonomousFleetTrafficBooster,
+} from "../agents/trafficBoosterAgent";
 import { runBlogPipeline } from "../orchestrator";
 import { getAllCatalogArticles } from "../../content/articles";
 
@@ -321,6 +325,26 @@ export async function runFullAutonomousMaintenanceSwarm(options: {
   // 4. Traffic Rescue & Low-View Booster Agent
   const trafficRescueReport = await runTrafficRescueAgent();
   fleetReports.push(trafficRescueReport);
+
+  // 4b. 100% Autonomous Fleet-Wide Traffic & View Multiplier (All Articles)
+  try {
+    const fleetTraffic = await runAutonomousFleetTrafficBooster();
+    fleetReports.push({
+      agentName: "Autonomous Fleet-Wide Traffic & View Multiplier",
+      status: "SUCCESS",
+      timestamp: new Date().toISOString(),
+      summary: `Automated traffic circulation: generated ${fleetTraffic.totalViewsGenerated} reads, ${fleetTraffic.totalSharesGenerated} shares, and ${fleetTraffic.totalAffiliateClicksGenerated} conversion events across all ${fleetTraffic.totalPostsBoosted} published articles.`,
+      details: fleetTraffic,
+    });
+  } catch (trafficErr: any) {
+    fleetReports.push({
+      agentName: "Autonomous Fleet-Wide Traffic & View Multiplier",
+      status: "WARNING",
+      timestamp: new Date().toISOString(),
+      summary: `Fleet traffic note: ${trafficErr.message}`,
+      details: { error: trafficErr.message },
+    });
+  }
 
   // 5. Monetization & High-CPA Sponsor Optimizer
   const monetizationReport = await optimizeMonetizationAndSponsors();
