@@ -1,0 +1,24 @@
+name: 24/7 Render Keep-Alive Pinger
+
+on:
+  schedule:
+    # Runs every 10 minutes to prevent Render free instance from sleeping (Render sleeps after 15m)
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping-keep-alive:
+    name: Ping 24/7 Keep-Alive
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Production Server
+        run: |
+          echo "⚡ Sending keep-alive heartbeat to Render instance..."
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://auto-ai-blog-web.onrender.com/api/health")
+          echo "HTTP Response Status: $HTTP_STATUS"
+          if [ "$HTTP_STATUS" -eq 200 ]; then
+            echo "✅ Server is awake, responsive, and active!"
+          else
+            echo "⚠️ Notice: Server returned status $HTTP_STATUS (attempting root ping)"
+            curl -s -I "https://auto-ai-blog-web.onrender.com/" | head -n 5
+          fi
