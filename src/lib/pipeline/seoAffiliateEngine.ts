@@ -8,6 +8,31 @@ export interface AffiliateRule {
 
 export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
   {
+    keyword: "MacBook",
+    url: "https://www.amazon.in/s?k=apple+macbook+m3+m4&tag=autoaiblog-21",
+    label: "Check Latest Apple MacBook Deals on Amazon",
+  },
+  {
+    keyword: "laptop",
+    url: "https://www.amazon.in/s?k=best+developer+laptops&tag=autoaiblog-21",
+    label: "Browse Best Developer Laptops on Amazon",
+  },
+  {
+    keyword: "RTX 4090",
+    url: "https://www.amazon.in/s?k=nvidia+rtx+4090+gpu&tag=autoaiblog-21",
+    label: "Check RTX 4090 GPU Prices on Amazon",
+  },
+  {
+    keyword: "monitor",
+    url: "https://www.amazon.in/s?k=4k+ultrawide+monitor+for+coding&tag=autoaiblog-21",
+    label: "Top 4K & Ultrawide Coding Monitors on Amazon",
+  },
+  {
+    keyword: "mechanical keyboard",
+    url: "https://www.amazon.in/s?k=mechanical+keyboard+for+programming&tag=autoaiblog-21",
+    label: "Best Developer Mechanical Keyboards on Amazon",
+  },
+  {
     keyword: "TradingView",
     url: "https://www.tradingview.com/?aff_id=autoai",
     label: "TradingView Pro Charts & Technical Screeners",
@@ -44,8 +69,8 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
   },
   {
     keyword: "GPU",
-    url: "https://hypercompute.cloud/?ref=autoai",
-    label: "HyperCompute Serverless Cloud GPUs ($100 Free Credit)",
+    url: "https://www.amazon.in/s?k=nvidia+gpu+graphics+card&tag=autoaiblog-21",
+    label: "Explore High-Performance GPUs on Amazon",
   },
   {
     keyword: "Cursor",
