@@ -13,6 +13,18 @@ export interface SponsorDeal {
 
 export const VERIFIED_SPONSORS: SponsorDeal[] = [
   {
+    id: "sp_amazon_tech",
+    sponsorName: "Amazon Tech & AI Gear",
+    badge: "OFFICIAL AMAZON ASSOCIATE",
+    tagline: "Top-Rated Developer Laptops, GPUs, Mechanical Keyboards & Monitors",
+    description: "Exclusive Amazon deals on high-performance M3/M4 MacBooks, RTX 4090 GPUs, ultrawide monitors, and smart home tech with Prime 1-Day Delivery.",
+    ctaText: "Check Amazon Deals & Best Prices",
+    ctaUrl: "https://www.amazon.in/gp/bestsellers/computers/ref=as_li_ss_tl?tag=autoaiblog-21",
+    discountCode: "PRIME2026",
+    categoryMatch: ["Technology", "Artificial Intelligence", "Development & Engineering", "Software & Cloud"],
+    cpcTier: "HIGH",
+  },
+  {
     id: "sp_tradingview",
     sponsorName: "TradingView Pro",
     badge: "FEATURED MARKET CHARTS",
