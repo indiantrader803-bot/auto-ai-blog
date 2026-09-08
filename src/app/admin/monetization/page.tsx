@@ -26,6 +26,7 @@ import {
   QrCode,
   Clock,
   Lock,
+  Globe,
 } from "lucide-react";
 import { VERIFIED_SPONSORS, SponsorDeal } from "@/lib/pipeline/agents/sponsorAgent";
 
@@ -41,13 +42,14 @@ export default function MonetizationHubPage() {
 
   // Bank & Payout State
   const [bankInfo, setBankInfo] = useState({
-    bankHolderName: "",
-    bankName: "",
+    bankHolderName: "ARNAB LAHA",
+    bankName: "DBS Bank",
     bankAccountNo: "",
     bankAccountNoRaw: "",
-    bankIfsc: "",
+    bankIfsc: "DBSS0IN0811",
     bankSwift: "",
-    bankUpiId: "",
+    bankUpiId: "8240438062@superyes",
+    riseAccountEmail: "arnab.laha2018@gmail.com",
     payoutMinThreshold: "100.00",
     razorpayKeyId: "",
     stripeKey: "",
@@ -91,6 +93,7 @@ export default function MonetizationHubPage() {
           bankIfsc: bankInfo.bankIfsc,
           bankSwift: bankInfo.bankSwift,
           bankUpiId: bankInfo.bankUpiId,
+          riseAccountEmail: bankInfo.riseAccountEmail,
           payoutMinThreshold: bankInfo.payoutMinThreshold,
           razorpayKeyId: bankInfo.razorpayKeyId,
           stripeKey: bankInfo.stripeKey,
@@ -98,7 +101,7 @@ export default function MonetizationHubPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setBankSavedMsg("Bank details and payment gateways securely updated!");
+        setBankSavedMsg("Bank details, Rise account & payment gateways securely updated!");
         fetchPayoutSettings();
       }
     } catch {
@@ -991,12 +994,34 @@ export default function MonetizationHubPage() {
                       </label>
                       <input
                         type="text"
-                        placeholder="e.g. username@okaxis / username@paytm"
+                        placeholder="e.g. 8240438062@superyes"
                         value={bankInfo.bankUpiId}
                         onChange={(e) => setBankInfo({ ...bankInfo, bankUpiId: e.target.value })}
                         className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white text-xs outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
                       />
                     </div>
+                  </div>
+
+                  {/* Rise Payment / RiseWorks Global Payout Account */}
+                  <div className="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-indigo-400 flex items-center gap-1.5">
+                        <Globe className="w-3.5 h-3.5" /> Rise Account (RiseWorks.io / Prop Firm Payouts)
+                      </label>
+                      <span className="text-[10px] font-bold text-indigo-300 bg-indigo-500/20 px-2 py-0.5 rounded-full">
+                        Global Payouts Ready
+                      </span>
+                    </div>
+                    <input
+                      type="email"
+                      placeholder="e.g. arnab.laha2018@gmail.com"
+                      value={bankInfo.riseAccountEmail}
+                      onChange={(e) => setBankInfo({ ...bankInfo, riseAccountEmail: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-xl border border-indigo-500/30 bg-slate-900 text-white text-xs outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
+                    />
+                    <p className="text-[11px] text-slate-400">
+                      Used to automatically receive affiliate commissions and sponsor payouts from Blue Guardian, Prop Firms, and global partners directly to your Rise account.
+                    </p>
                   </div>
 
                   {/* Payment Gateway Integration for Direct User Payments */}
@@ -1070,6 +1095,16 @@ export default function MonetizationHubPage() {
                     <div>
                       <strong className="text-slate-900 dark:text-white block">Direct Reader Tips &amp; Razorpay</strong>
                       Deposited automatically into your bank account within <strong>T+2 business days</strong> via UPI/NEFT.
+                    </div>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 flex items-start gap-2.5">
+                    <span className="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-600 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                      4
+                    </span>
+                    <div>
+                      <strong className="text-slate-900 dark:text-white block">Rise (RiseWorks.io)</strong>
+                      Blue Guardian and international sponsor payouts are sent to <strong>{bankInfo.riseAccountEmail || "arnab.laha2018@gmail.com"}</strong>. Withdraw instantly to Indian Bank in INR or USDC.
                     </div>
                   </div>
                 </div>

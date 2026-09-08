@@ -15,6 +15,7 @@ export async function GET() {
             "BANK_IFSC",
             "BANK_SWIFT",
             "BANK_UPI_ID",
+            "RISE_ACCOUNT_EMAIL",
             "PAYOUT_MIN_THRESHOLD",
             "RAZORPAY_KEY_ID",
             "STRIPE_KEY",
@@ -70,13 +71,14 @@ export async function GET() {
     }
 
     return NextResponse.json({
-      bankHolderName: config["BANK_HOLDER_NAME"] || "",
-      bankName: config["BANK_NAME"] || "",
+      bankHolderName: config["BANK_HOLDER_NAME"] || "ARNAB LAHA",
+      bankName: config["BANK_NAME"] || "DBS Bank",
       bankAccountNo: maskedAcc,
       bankAccountNoRaw: config["BANK_ACCOUNT_NO"] || "",
-      bankIfsc: config["BANK_IFSC"] || "",
+      bankIfsc: config["BANK_IFSC"] || "DBSS0IN0811",
       bankSwift: config["BANK_SWIFT"] || "",
-      bankUpiId: config["BANK_UPI_ID"] || "",
+      bankUpiId: config["BANK_UPI_ID"] || "8240438062@superyes",
+      riseAccountEmail: config["RISE_ACCOUNT_EMAIL"] || "arnab.laha2018@gmail.com",
       payoutMinThreshold: config["PAYOUT_MIN_THRESHOLD"] || "100.00",
       razorpayKeyId: config["RAZORPAY_KEY_ID"] || "",
       stripeKey: config["STRIPE_KEY"] || "",
@@ -97,11 +99,13 @@ export async function POST(req: Request) {
       bankIfsc,
       bankSwift,
       bankUpiId,
+      riseAccountEmail,
       payoutMinThreshold,
       razorpayKeyId,
       stripeKey,
       action,
       withdrawAmount,
+      withdrawMethod,
     } = body;
 
     const updates: { key: string; value: string; description: string }[] = [];
@@ -112,6 +116,7 @@ export async function POST(req: Request) {
     if (bankIfsc !== undefined) updates.push({ key: "BANK_IFSC", value: String(bankIfsc).toUpperCase(), description: "Bank IFSC Code" });
     if (bankSwift !== undefined) updates.push({ key: "BANK_SWIFT", value: String(bankSwift).toUpperCase(), description: "Bank SWIFT/BIC Code" });
     if (bankUpiId !== undefined) updates.push({ key: "BANK_UPI_ID", value: String(bankUpiId).trim(), description: "Instant UPI ID" });
+    if (riseAccountEmail !== undefined) updates.push({ key: "RISE_ACCOUNT_EMAIL", value: String(riseAccountEmail).trim().toLowerCase(), description: "RiseWorks Account Email for Global Prop & Sponsor Settlements" });
     if (payoutMinThreshold !== undefined) updates.push({ key: "PAYOUT_MIN_THRESHOLD", value: String(payoutMinThreshold), description: "Minimum Payout Threshold USD" });
     if (razorpayKeyId !== undefined) updates.push({ key: "RAZORPAY_KEY_ID", value: String(razorpayKeyId).trim(), description: "Razorpay Key ID for Reader Payments" });
     if (stripeKey !== undefined) updates.push({ key: "STRIPE_KEY", value: String(stripeKey).trim(), description: "Stripe Publishable Key" });
