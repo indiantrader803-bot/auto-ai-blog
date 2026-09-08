@@ -1,11 +1,13 @@
-import type { Metadata, Viewport } from "next";
+﻿import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
+import ExitIntentModal from "@/components/growth/ExitIntentModal";
+import FloatingSubscribeButton from "@/components/growth/FloatingSubscribeButton";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-orpin.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -73,8 +75,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const adsenseClientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -127,6 +127,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white font-sans">
         {children}
+        <ExitIntentModal />
+        <FloatingSubscribeButton />
         <Script
           id="google-translate-script"
           strategy="lazyOnload"
