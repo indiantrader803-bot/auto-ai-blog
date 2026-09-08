@@ -801,9 +801,9 @@ export default function MonetizationHubPage() {
                   <span className="text-xs text-slate-400">Verified Total Earnings</span>
                 </div>
                 <div className="text-3xl sm:text-4xl font-black font-serif tracking-tight text-white flex items-baseline gap-3">
-                  <span>{realMetrics?.revenueLedger?.totalActualRevenue || "$2,559.75"}</span>
+                  <span>{realMetrics?.revenueLedger?.totalActualRevenue || "$0.00"}</span>
                   <span className="text-sm font-sans font-medium text-emerald-400">
-                    (₹{((parseFloat(String(realMetrics?.revenueLedger?.totalActualRevenue || "2559.75").replace(/[^0-9.]/g, "")) || 2559.75) * 86.5).toLocaleString("en-IN")})
+                    (₹{((parseFloat(String(realMetrics?.revenueLedger?.totalActualRevenue || "0.00").replace(/[^0-9.]/g, "")) || 0) * 86.5).toLocaleString("en-IN")})
                   </span>
                 </div>
               </div>
