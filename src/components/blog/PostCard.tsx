@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Clock, Eye, ArrowUpRight, Sparkles, User, Flame, TrendingUp } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+import ArticleImage from "./ArticleImage";
 
 interface PostCardProps {
   post: {
@@ -39,7 +40,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
       <article className="group relative rounded-3xl overflow-hidden border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 shadow-xl hover:shadow-2xl transition-all duration-500 grid grid-cols-1 lg:grid-cols-12 gap-0">
         {/* Cover Photo Area */}
         <div className="lg:col-span-7 relative h-72 sm:h-96 lg:h-full min-h-[380px] overflow-hidden bg-slate-950">
-          <img
+          <ArticleImage
             src={imageUrl}
             alt={post.imageAlt || post.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
@@ -126,7 +127,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
       <div>
         {/* Card Thumbnail */}
         <div className="relative h-52 overflow-hidden bg-slate-950">
-          <img
+          <ArticleImage
             src={imageUrl}
             alt={post.imageAlt || post.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

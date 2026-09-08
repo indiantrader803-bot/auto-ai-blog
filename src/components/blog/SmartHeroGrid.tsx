@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Clock, Eye, Sparkles, TrendingUp, Bookmark, Star } from "lucide-react";
+import ArticleImage from "./ArticleImage";
 
 interface SmartHeroGridProps {
   featured: any;
@@ -13,13 +14,11 @@ export default function SmartHeroGrid({ featured, subFeatured }: SmartHeroGridPr
     <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-14">
       {/* Main Large Hero Card (8 Cols) */}
       <div className="lg:col-span-8 relative rounded-3xl overflow-hidden group min-h-[460px] sm:min-h-[540px] flex flex-col justify-end p-6 sm:p-10 border border-slate-200/80 dark:border-slate-800 shadow-xl bg-slate-900">
-        {featured.featuredImage && (
-          <img
-            src={featured.featuredImage}
-            alt={featured.imageAlt || featured.title}
-            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.82] dark:brightness-[0.72]"
-          />
-        )}
+        <ArticleImage
+          src={featured.featuredImage}
+          alt={featured.imageAlt || featured.title}
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.82] dark:brightness-[0.72]"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
 
         {/* Top Badges */}
@@ -90,13 +89,11 @@ export default function SmartHeroGrid({ featured, subFeatured }: SmartHeroGridPr
             key={post.id || idx}
             className="relative rounded-3xl overflow-hidden group p-5 flex flex-col justify-end min-h-[160px] sm:min-h-[170px] border border-slate-200/80 dark:border-slate-800 shadow-md bg-slate-900 flex-1"
           >
-            {post.featuredImage && (
-              <img
-                src={post.featuredImage}
-                alt={post.title}
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out brightness-[0.78] dark:brightness-[0.68]"
-              />
-            )}
+            <ArticleImage
+              src={post.featuredImage}
+              alt={post.title}
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out brightness-[0.78] dark:brightness-[0.68]"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent" />
 
             <div className="relative z-10 space-y-2">

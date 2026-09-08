@@ -74,3 +74,48 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json().catch(() => ({}));
+    if (body.action === "DEDUPLICATE") {
+      const allPosts = await prisma.post.findMany({
+        orderBy: { publishedAt: "desc" },
+      });
+
+      const seenTitles = new Map<string, string>();
+      const seenSlugs = new Map<string, string>();
+      const idsToDelete: string[] = [];
+
+      for (const p of allPosts) {
+        const normTitle = p.title.toLowerCase().trim().replace(/[^a-z0-9]/g, "");
+        const baseSlug = p.slug.toLowerCase().replace(/-[0-9]{4,13}$/, "");
+
+        if (seenTitles.has(normTitle) || seenSlugs.has(baseSlug)) {
+          idsToDelete.push(p.id);
+        } else {
+          seenTitles.set(normTitle, p.id);
+          seenSlugs.set(baseSlug, p.id);
+        }
+      }
+
+      let deletedCount = 0;
+      if (idsToDelete.length > 0) {
+        const del = await prisma.post.deleteMany({
+          where: { id: { in: idsToDelete } },
+        });
+        deletedCount = del.count;
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: `Deduplication complete. Scanned ${allPosts.length} posts, removed ${deletedCount} duplicates.`,
+        deletedCount,
+      });
+    }
+
+    return NextResponse.json({ error: "Invalid action" }, { status: 400 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

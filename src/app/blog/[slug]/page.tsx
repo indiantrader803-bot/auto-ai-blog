@@ -17,6 +17,7 @@ import AffiliateCard from "@/components/monetization/AffiliateCard";
 import BuyMeCoffee from "@/components/monetization/BuyMeCoffee";
 import NewsletterBanner from "@/components/monetization/NewsletterBanner";
 import PostCard from "@/components/blog/PostCard";
+import ArticleImage from "@/components/blog/ArticleImage";
 import ArticleTracker from "@/components/blog/ArticleTracker";
 import FloatingShareDock from "@/components/blog/FloatingShareDock";
 import TrendingAlertBox from "@/components/blog/TrendingAlertBox";
@@ -411,10 +412,11 @@ export default async function BlogPostPage({ params }: Props) {
         {/* Featured Hero Photo */}
         {post.featuredImage && (
           <figure className="max-w-5xl mx-auto mb-12 rounded-3xl overflow-hidden shadow-2xl bg-slate-950 border border-slate-200/80 dark:border-slate-800">
-            <img
+            <ArticleImage
               src={post.featuredImage}
               alt={post.imageAlt || post.title}
               className="w-full max-h-[560px] object-cover"
+              loading="eager"
             />
             {post.imagePhotographer && (
               <figcaption className="p-3 text-right text-[11px] text-slate-400 bg-black/50 backdrop-blur-sm">
