@@ -1,4 +1,4 @@
-import { calculateReadingTime, generateSlug } from "../utils";
+﻿import { calculateReadingTime, generateSlug } from "../utils";
 
 export interface AffiliateRule {
   keyword: string;
@@ -7,7 +7,44 @@ export interface AffiliateRule {
 }
 
 export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
-  // User's Direct Amazon Verified Shortlinks
+  // 🏆 1. High-Converting Prop Trading Challenge Links
+  {
+    keyword: "prop firm",
+    url: "https://mffu.com/f/85f1f73f30",
+    label: "MyFundedFutures - Up to $300k Funded Trading Accounts",
+  },
+  {
+    keyword: "futures trading",
+    url: "https://mffu.com/f/85f1f73f30",
+    label: "MyFundedFutures (90% Profit Split & Fast Payouts)",
+  },
+  {
+    keyword: "funded account",
+    url: "https://mffu.com/f/85f1f73f30",
+    label: "Pass Your Trading Evaluation & Get Funded on MFFU",
+  },
+  {
+    keyword: "forex trading",
+    url: "https://blueguardian.com/?afmc=2cbu",
+    label: "Blue Guardian Prop Firm (Unlimited Days & Guardian Protector)",
+  },
+  {
+    keyword: "currency trading",
+    url: "https://blueguardian.com/?afmc=2cbu",
+    label: "Blue Guardian $400k Forex & CFD Challenge",
+  },
+  {
+    keyword: "technical analysis",
+    url: "https://mffu.com/f/85f1f73f30",
+    label: "Trade Institutional Breakouts with MFFU Funded Accounts",
+  },
+  {
+    keyword: "breakout levels",
+    url: "https://blueguardian.com/?afmc=2cbu",
+    label: "Execute Live Breakout Trades on Blue Guardian",
+  },
+
+  // 📦 2. Direct Amazon Verified Shortlinks (autoaiblog-21)
   {
     keyword: "MacBook",
     url: "https://amzn.to/3UXVtTR",
@@ -38,117 +75,15 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
     url: "https://amzn.to/3UXVtTR",
     label: "View Top Developer Workstation Gear on Amazon",
   },
-
-  // Auto-Generated Direct Amazon Affiliate Products (autoaiblog-21)
   {
     keyword: "iPhone",
     url: "https://www.amazon.in/s?k=apple+iphone+15+16+pro&tag=autoaiblog-21",
     label: "Check Best Apple iPhone Deals on Amazon",
   },
   {
-    keyword: "iPad",
-    url: "https://www.amazon.in/s?k=apple+ipad+pro+air&tag=autoaiblog-21",
-    label: "Explore Apple iPad & Tablet Deals on Amazon",
-  },
-  {
-    keyword: "headphones",
-    url: "https://www.amazon.in/s?k=sony+wh1000xm5+noise+cancelling+headphones&tag=autoaiblog-21",
-    label: "Top Noise-Cancelling Headphones on Amazon",
-  },
-  {
     keyword: "SSD",
     url: "https://www.amazon.in/s?k=samsung+990+pro+nvme+ssd&tag=autoaiblog-21",
     label: "High-Speed NVMe SSD Storage on Amazon",
-  },
-  {
-    keyword: "smartwatch",
-    url: "https://www.amazon.in/s?k=apple+watch+ultra+samsung+galaxy+watch&tag=autoaiblog-21",
-    label: "Latest Smartwatches & Fitness Trackers on Amazon",
-  },
-  {
-    keyword: "webcam",
-    url: "https://www.amazon.in/s?k=4k+streaming+webcam+for+work&tag=autoaiblog-21",
-    label: "Best 4K Professional Webcams on Amazon",
-  },
-  {
-    keyword: "ergonomic chair",
-    url: "https://www.amazon.in/s?k=ergonomic+office+chair+for+coding&tag=autoaiblog-21",
-    label: "Top Ergonomic Workstation Chairs on Amazon",
-  },
-  {
-    keyword: "router",
-    url: "https://www.amazon.in/s?k=wifi+6e+wifi+7+high+speed+router&tag=autoaiblog-21",
-    label: "High-Speed WiFi 6/7 Gaming & Dev Routers on Amazon",
-  },
-  {
-    keyword: "desk setup",
-    url: "https://www.amazon.in/s?k=height+adjustable+standing+desk&tag=autoaiblog-21",
-    label: "Motorized Standing Desks & Setups on Amazon",
-  },
-  {
-    keyword: "power bank",
-    url: "https://www.amazon.in/s?k=anker+100w+fast+charging+power+bank&tag=autoaiblog-21",
-    label: "High-Capacity Laptop Fast-Charging Power Banks on Amazon",
-  },
-  {
-    keyword: "TradingView",
-    url: "https://www.tradingview.com/?aff_id=autoai",
-    label: "TradingView Pro Charts & Technical Screeners",
-  },
-  {
-    keyword: "Zerodha",
-    url: "https://zerodha.com/open-account?c=AUTOAI",
-    label: "Zerodha (Zero Brokerage Equity & Demat)",
-  },
-  {
-    keyword: "Angel One",
-    url: "https://www.angelone.in/?ref=AUTOAI",
-    label: "Angel One SmartAPI & Options Trading",
-  },
-  {
-    keyword: "Interactive Brokers",
-    url: "https://www.interactivebrokers.com/?ref=autoai",
-    label: "Interactive Brokers (Institutional Global Equities)",
-  },
-  {
-    keyword: "demat account",
-    url: "https://zerodha.com/open-account?c=AUTOAI",
-    label: "Open Verified Zero Brokerage Demat Account",
-  },
-  {
-    keyword: "technical analysis",
-    url: "https://www.tradingview.com/?aff_id=autoai",
-    label: "Live Candlestick & Technical Indicators on TradingView",
-  },
-  {
-    keyword: "cloud hosting",
-    url: "https://www.digitalocean.com/?refcode=autoai",
-    label: "DigitalOcean Cloud ($200 Free Developer Credit)",
-  },
-  {
-    keyword: "GPU",
-    url: "https://www.amazon.in/s?k=nvidia+gpu+graphics+card&tag=autoaiblog-21",
-    label: "Explore High-Performance GPUs on Amazon",
-  },
-  {
-    keyword: "Cursor",
-    url: "https://cursor.com/?ref=autoai",
-    label: "Cursor AI Next-Gen Code Editor",
-  },
-  {
-    keyword: "VPN",
-    url: "https://nordvpn.com/?ref=autoai",
-    label: "NordVPN Threat Protection & Encryption",
-  },
-  {
-    keyword: "AI tools",
-    url: "https://notion.so/?ref=autoai",
-    label: "Notion AI Collaborative Workspace",
-  },
-  {
-    keyword: "web development",
-    url: "https://vercel.com/?ref=autoai",
-    label: "Vercel Edge & Serverless Platform",
   },
 ];
 
@@ -177,13 +112,11 @@ export function enrichSeoAndAffiliates(
 
   let processedContent = rawContent;
 
-  // Insert contextual affiliate callout badge if relevant keywords match
   let insertedCount = 0;
   for (const rule of affiliateRules) {
-    if (insertedCount >= 2) break; // Keep articles natural, max 2 affiliate links
+    if (insertedCount >= 3) break;
     const regex = new RegExp(`\\b(${rule.keyword})\\b`, "i");
     if (regex.test(processedContent)) {
-      // Replace only first match
       processedContent = processedContent.replace(
         regex,
         `[$1](${rule.url} "${rule.label || rule.keyword}")`
@@ -192,7 +125,6 @@ export function enrichSeoAndAffiliates(
     }
   }
 
-  // Ensure unique SEO keywords
   const seoKeywords = Array.from(
     new Set([category.toLowerCase(), ...tags.map((t) => t.toLowerCase())])
   );
@@ -213,7 +145,7 @@ export function generateStructuredSchema(
   publishedAt: Date | string,
   featuredImage?: string,
   faq?: Array<{ question: string; answer: string }>,
-  siteUrl: string = "http://localhost:3000"
+  siteUrl: string = "https://auto-ai-blog-web.onrender.com"
 ) {
   const articleSchema = {
     "@context": "https://schema.org",
@@ -225,11 +157,11 @@ export function generateStructuredSchema(
     dateModified: new Date(publishedAt).toISOString(),
     author: {
       "@type": "Person",
-      name: "AutoAI Editorial Team",
+      name: "SmartMag Tech Editorial Board",
     },
     publisher: {
       "@type": "Organization",
-      name: "AutoAI Chronicle",
+      name: "SmartMag Tech Chronicle",
       logo: {
         "@type": "ImageObject",
         url: `${siteUrl}/logo.png`,

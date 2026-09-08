@@ -1,4 +1,4 @@
-export interface SponsorDeal {
+﻿export interface SponsorDeal {
   id: string;
   sponsorName: string;
   badge: string;
@@ -13,6 +13,30 @@ export interface SponsorDeal {
 
 export const VERIFIED_SPONSORS: SponsorDeal[] = [
   {
+    id: "sp_mffu",
+    sponsorName: "MyFundedFutures (MFFU) Prop Trading",
+    badge: "FEATURED PROP FIRM",
+    tagline: "Get Funded Up To $300,000 to Trade Futures with 90% Profit Split",
+    description: "Industry-leading evaluation accounts, 1-day pass options, zero activation fees, and fast bi-weekly payouts for serious traders.",
+    ctaText: "Claim Your MFFU Funded Account →",
+    ctaUrl: "https://mffu.com/f/85f1f73f30",
+    discountCode: "FUTURES2026",
+    categoryMatch: ["Indian Markets", "US Markets", "Forex & Currencies", "Commodities", "Finance & Markets", "Trading"],
+    cpcTier: "ULTRA",
+  },
+  {
+    id: "sp_blueguardian",
+    sponsorName: "Blue Guardian Prop Firm",
+    badge: "GLOBAL FOREX & CFD LEADER",
+    tagline: "Unlimited Trading Days & The Guardian Protector Risk Engine",
+    description: "Trade Forex, Crypto, Indices & Commodities with up to $400k capital. No hidden rules, fast scaling plans, and 85%+ profit splits.",
+    ctaText: "Start Blue Guardian Challenge →",
+    ctaUrl: "https://blueguardian.com/?afmc=2cbu",
+    discountCode: "GUARDIAN803",
+    categoryMatch: ["Forex & Currencies", "US Markets", "Indian Markets", "Commodities", "Finance & Markets", "Trading"],
+    cpcTier: "ULTRA",
+  },
+  {
     id: "sp_amazon_tech",
     sponsorName: "Amazon Tech & AI Gear",
     badge: "OFFICIAL AMAZON ASSOCIATE",
@@ -26,12 +50,12 @@ export const VERIFIED_SPONSORS: SponsorDeal[] = [
   },
   {
     id: "sp_tradingview",
-    sponsorName: "TradingView Pro",
+    sponsorName: "TradingView Pro Charts",
     badge: "FEATURED MARKET CHARTS",
     tagline: "Institutional-Grade Candlestick Charts, Heatmaps & Algorithmic Screeners",
     description: "Access real-time data for NSE, BSE, S&P 500, Forex, and MCX commodities with 100+ technical indicators and Pine Script backtesting.",
     ctaText: "Start 30-Day Free Pro Trial",
-    ctaUrl: "https://www.tradingview.com/?aff_id=autoai",
+    ctaUrl: "https://amzn.to/3UXVtTR",
     discountCode: "SMARTTRADER",
     categoryMatch: ["Indian Markets", "US Markets", "Forex & Currencies", "Commodities", "Finance & Markets"],
     cpcTier: "ULTRA",
@@ -43,34 +67,10 @@ export const VERIFIED_SPONSORS: SponsorDeal[] = [
     tagline: "Zero Brokerage on Equity Delivery & Direct Mutual Funds",
     description: "Open an online Demat account in 5 minutes with Kite. Fast execution, advanced option chains, and seamless UPI fund transfers.",
     ctaText: "Open Free Demat Account",
-    ctaUrl: "https://zerodha.com/open-account?c=AUTOAI",
+    ctaUrl: "https://amzn.to/3UXVtTR",
     discountCode: "ZERODHA2026",
     categoryMatch: ["Indian Markets", "Finance & Markets"],
     cpcTier: "ULTRA",
-  },
-  {
-    id: "sp_us_broker",
-    sponsorName: "Interactive Brokers Global",
-    badge: "GLOBAL EQUITIES GATEWAY",
-    tagline: "Trade S&P 500, Nasdaq, ETFs & Bonds Across 150+ Global Markets",
-    description: "Industry-leading low margin rates, deep liquidity, zero-commission US stock trading, and automated API execution for international investors.",
-    ctaText: "Open Global Trading Account",
-    ctaUrl: "https://www.interactivebrokers.com/?ref=autoai",
-    discountCode: "GLOBALPASS",
-    categoryMatch: ["US Markets", "Forex & Currencies", "Finance & Markets"],
-    cpcTier: "ULTRA",
-  },
-  {
-    id: "sp_commodities_terminal",
-    sponsorName: "Bullion & Energy Terminal",
-    badge: "COMMODITY INTELLIGENCE",
-    tagline: "Real-Time Gold, Silver, Brent Crude Oil & Natural Gas Liquidity Feeds",
-    description: "Institutional supply/demand telemetry, OPEC+ tracking, and technical breakout alerts for physical commodity and futures traders.",
-    ctaText: "Access Commodity Liquidity",
-    ctaUrl: "https://www.tradingview.com/markets/commodities/?aff_id=autoai",
-    discountCode: "GOLD2026",
-    categoryMatch: ["Commodities", "Finance & Markets"],
-    cpcTier: "HIGH",
   },
   {
     id: "sp_cloud_gpu",
@@ -79,7 +79,7 @@ export const VERIFIED_SPONSORS: SponsorDeal[] = [
     tagline: "Deploy On-Demand H100 & RTX 4090 Clusters with 80% Cost Savings",
     description: "Instant serverless GPU provisioning for fine-tuning LLMs, running 70B local inference, and scaling multi-agent swarms with zero idle fees.",
     ctaText: "Claim $100 Free GPU Credits",
-    ctaUrl: "https://hypercompute.cloud/?ref=autoai",
+    ctaUrl: "https://amzn.to/4gJpL5u",
     discountCode: "SMARTMAG2026",
     categoryMatch: ["Artificial Intelligence", "Technology", "Software & Cloud"],
     cpcTier: "ULTRA",
@@ -91,40 +91,15 @@ export const VERIFIED_SPONSORS: SponsorDeal[] = [
     tagline: "The #1 AI-Native Code Editor Built for High-Velocity Engineering",
     description: "Full-codebase semantic indexing, multi-file agentic refactoring, and automated terminal debugging trusted by top software teams.",
     ctaText: "Try Cursor Pro Free",
-    ctaUrl: "https://cursor.com/?ref=autoai",
+    ctaUrl: "https://amzn.to/3VjFaRp",
     discountCode: "DEV2026",
     categoryMatch: ["Software & Cloud", "Technology", "Artificial Intelligence"],
     cpcTier: "HIGH",
   },
-  {
-    id: "sp_dev_sec",
-    sponsorName: "ArmorGuard Zero-Trust",
-    badge: "ENTERPRISE SECURITY PARTNER",
-    tagline: "Automated eBPF Observability & Secrets Protection for Kubernetes",
-    description: "Eliminate static credentials and enforce kernel-level microsegmentation for AI agent sandboxes and cloud native microservices.",
-    ctaText: "Start Free 30-Day Enterprise Trial",
-    ctaUrl: "https://nordvpn.com/?ref=autoai",
-    discountCode: "DEVPASS",
-    categoryMatch: ["Technology", "Software & Cloud"],
-    cpcTier: "HIGH",
-  },
-  {
-    id: "sp_quant_tools",
-    sponsorName: "AlphaSignal Terminal",
-    badge: "QUANTITATIVE INTELLIGENCE",
-    tagline: "Real-Time NLP Sentiment Streams for Global Equities & Macro Data",
-    description: "Institutional-grade sentiment feeds, SEC filing anomaly alerts, and automated Python SDK backtesting for modern trading desks.",
-    ctaText: "Access Live Market Data",
-    ctaUrl: "https://www.tradingview.com/?aff_id=autoai",
-    discountCode: "ALPHA2026",
-    categoryMatch: ["Finance & Markets", "US Markets"],
-    cpcTier: "ULTRA",
-  },
 ];
 
 /**
- * 💰 Sponsor & Ad Monetization Agent
- * Matches the article topic and category with the most profitable, highly contextual sponsor.
+ * 💰 Sponsor & Prop Firm Monetization Matcher
  */
 export function matchSponsorForArticle(
   topic: string,
@@ -133,80 +108,36 @@ export function matchSponsorForArticle(
 ): SponsorDeal {
   const combined = `${topic} ${category} ${keywords.join(" ")}`.toLowerCase();
 
-  // 1. Indian Markets (Nifty, Sensex, FII, DII, NSE, BSE, RBI)
+  // 1. Futures / Prop Firm / Trading / Breakout Match
   if (
-    combined.includes("indian") ||
+    combined.includes("future") ||
+    combined.includes("prop") ||
+    combined.includes("funded") ||
+    combined.includes("evaluation") ||
     combined.includes("nifty") ||
     combined.includes("sensex") ||
-    combined.includes("dii") ||
-    combined.includes("fii") ||
-    combined.includes("rupee")
+    combined.includes("breakout")
   ) {
-    return VERIFIED_SPONSORS[1]; // Zerodha
+    return VERIFIED_SPONSORS[0]; // MFFU
   }
 
-  // 2. Commodities (Gold, Silver, Crude Oil, Brent, Energy)
-  if (
-    combined.includes("gold") ||
-    combined.includes("silver") ||
-    combined.includes("crude") ||
-    combined.includes("commodity") ||
-    combined.includes("oil")
-  ) {
-    return VERIFIED_SPONSORS[3]; // Bullion & Energy
-  }
-
-  // 3. US Markets (S&P 500, Nasdaq, Wall Street, Fed, US Stocks)
-  if (
-    combined.includes("s&p") ||
-    combined.includes("nasdaq") ||
-    combined.includes("fed") ||
-    combined.includes("us market") ||
-    combined.includes("wall street") ||
-    combined.includes("dollar")
-  ) {
-    return VERIFIED_SPONSORS[2]; // Interactive Brokers
-  }
-
-  // 4. Forex & Currencies (USD/INR, EUR/USD, Forex)
+  // 2. Forex / Currencies / Gold / Commodities
   if (
     combined.includes("forex") ||
     combined.includes("usd/inr") ||
-    combined.includes("currency")
+    combined.includes("currency") ||
+    combined.includes("gold") ||
+    combined.includes("crude") ||
+    combined.includes("guardian")
   ) {
-    return VERIFIED_SPONSORS[0]; // TradingView
+    return VERIFIED_SPONSORS[1]; // Blue Guardian
   }
 
-  // 5. Code & Software Development (Cursor, Next.js, React, Architecture)
-  if (
-    combined.includes("code") ||
-    combined.includes("editor") ||
-    combined.includes("software") ||
-    combined.includes("frontend") ||
-    combined.includes("backend")
-  ) {
-    return VERIFIED_SPONSORS[5]; // Cursor
+  // 3. AI & GPUs
+  if (combined.includes("gpu") || combined.includes("llm") || combined.includes("ai")) {
+    return VERIFIED_SPONSORS[5]; // HyperCompute
   }
 
-  // 6. Enterprise Security / Cloud Infrastructure
-  if (
-    combined.includes("security") ||
-    combined.includes("kubernetes") ||
-    combined.includes("devops") ||
-    combined.includes("docker")
-  ) {
-    return VERIFIED_SPONSORS[6]; // ArmorGuard
-  }
-
-  // 7. General AI & High Performance Compute
-  if (
-    combined.includes("gpu") ||
-    combined.includes("llm") ||
-    combined.includes("cluster") ||
-    combined.includes("model")
-  ) {
-    return VERIFIED_SPONSORS[4]; // HyperCompute
-  }
-
-  return VERIFIED_SPONSORS[0]; // Default TradingView Pro
+  // 4. Default to MFFU or Blue Guardian high-payout prop trading
+  return Math.random() > 0.5 ? VERIFIED_SPONSORS[0] : VERIFIED_SPONSORS[1];
 }
