@@ -27,9 +27,9 @@ async function handleCron(req: NextRequest) {
   }
 
   try {
-    console.log("24/7 Autonomous Traffic, Promotion & Monetization Swarm Triggered...");
+    console.log("24/7 Autonomous Traffic, Trend Hunter & Monetization Swarm Triggered...");
     const result = await runFullAutonomousMaintenanceSwarm({
-      triggerNewPostGeneration: false, // Priority: Traffic, Indexing, Viral Promotion, and Revenue Optimization!
+      triggerNewPostGeneration: true, // Automatically publishes newly scouted viral topics daily
     });
 
     return NextResponse.json({
