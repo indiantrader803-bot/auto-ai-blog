@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { Mail, Sparkles, X, CheckCircle2, Gift } from "lucide-react";
@@ -14,7 +14,7 @@ export default function FloatingSubscribeButton() {
     if (!email) return;
     setLoading(true);
     try {
-      await fetch("/api/newsletter", {
+      await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, source: "floating_badge_subscribe" }),

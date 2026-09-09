@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { Download, Sparkles, X, CheckCircle2, ShieldCheck, Gift } from "lucide-react";
@@ -12,11 +12,15 @@ export default function ExitIntentModal() {
   useEffect(() => {
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0) {
-        const hasSeen = sessionStorage.getItem("hasSeenExitModal");
-        if (!hasSeen) {
-          setIsOpen(true);
-          sessionStorage.setItem("hasSeenExitModal", "true");
-        }
+        try {
+          if (typeof window !== "undefined" && window.sessionStorage) {
+            const hasSeen = sessionStorage.getItem("hasSeenExitModal");
+            if (!hasSeen) {
+              setIsOpen(true);
+              sessionStorage.setItem("hasSeenExitModal", "true");
+            }
+          }
+        } catch (_) {}
       }
     };
 
@@ -29,7 +33,7 @@ export default function ExitIntentModal() {
     if (!email) return;
     setLoading(true);
     try {
-      await fetch("/api/newsletter", {
+      await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, source: "exit_intent_pdf_lead" }),
