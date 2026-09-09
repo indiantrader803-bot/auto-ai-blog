@@ -234,12 +234,32 @@ export default function SocialSidebar({
           <span className="text-[10px] font-bold text-amber-300">Active Deals</span>
         </div>
 
-        {/* Offer 1: MFFU */}
+        {/* Offer 1: Funded Trader Markets */}
+        <a
+          href="https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block p-3.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-500/50 transition-all"
+        >
+          <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
+            <span className="group-hover:text-emerald-300 transition-colors">Funded Trader Markets</span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">Up to $200k</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-snug mb-2">
+            Trade with instant scaling, zero time limits &amp; lowest spreads. Code: <strong className="text-emerald-300 font-mono">SMARTMAG</strong>
+          </p>
+          <div className="flex items-center gap-1 text-[11px] text-emerald-400 group-hover:text-white font-bold">
+            <span>Claim $200k Funded Challenge</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </a>
+
+        {/* Offer 2: MFFU */}
         <a
           href="https://mffu.com/f/85f1f73f30"
           target="_blank"
           rel="noopener noreferrer"
-          className="group block p-3.5 rounded-2xl bg-white/5 hover:bg-indigo-600/20 border border-white/10 hover:border-indigo-500/50 transition-all"
+          className="group block p-3.5 rounded-2xl bg-white/5 hover:bg-amber-500/20 border border-white/10 hover:border-amber-500/50 transition-all"
         >
           <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
             <span className="group-hover:text-amber-300 transition-colors">MyFundedFutures (MFFU)</span>

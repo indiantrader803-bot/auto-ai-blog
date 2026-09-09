@@ -13,9 +13,21 @@ export interface SponsorDeal {
 
 export const VERIFIED_SPONSORS: SponsorDeal[] = [
   {
+    id: "sp_ftm",
+    sponsorName: "Funded Trader Markets",
+    badge: "FEATURED PRO TRADER PARTNER",
+    tagline: "Trade Up to $200,000 Capital with Instant Scaling & 90% Profit Split",
+    description: "Industry-leading challenge evaluations, zero time limit rules, lowest spreads, and same-day payout approvals via Rise, Bank Wire & Crypto.",
+    ctaText: "Start Funded Trader Markets Challenge →",
+    ctaUrl: "https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog",
+    discountCode: "SMARTMAG",
+    categoryMatch: ["Indian Markets", "US Markets", "Forex & Currencies", "Commodities", "Finance & Markets", "Trading"],
+    cpcTier: "ULTRA",
+  },
+  {
     id: "sp_mffu",
     sponsorName: "MyFundedFutures (MFFU) Prop Trading",
-    badge: "FEATURED PROP FIRM",
+    badge: "FUTURES CAPITAL LEADER",
     tagline: "Get Funded Up To $300,000 to Trade Futures with 90% Profit Split",
     description: "Industry-leading evaluation accounts, 1-day pass options, zero activation fees, and fast bi-weekly payouts for serious traders.",
     ctaText: "Claim Your MFFU Funded Account →",

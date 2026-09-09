@@ -140,6 +140,7 @@ export async function runAutonomousFleetTrafficBooster() {
   ];
 
   const affiliateOffers = [
+    { name: "Funded Trader Markets", url: "https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog", payout: 75.0, slugMatch: ["funded", "trader", "markets", "forex", "trading", "prop", "nifty", "future"] },
     { name: "MyFundedFutures (MFFU)", url: "https://mffu.com/f/85f1f73f30", payout: 55.0, slugMatch: ["future", "market", "nifty", "brent", "trading", "prop"] },
     { name: "Blue Guardian Prop Firm", url: "https://blueguardian.com/?afmc=1tgf", payout: 65.0, slugMatch: ["forex", "currency", "gold", "crude", "finance"] },
     { name: "TradingView Pro Terminal", url: "https://amzn.to/3UXVtTR", payout: 18.5, slugMatch: ["stock", "market", "nifty"] },

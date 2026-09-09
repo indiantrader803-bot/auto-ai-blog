@@ -18,6 +18,21 @@ export interface PropFirmPartner {
 
 export const TOP_PROP_FIRMS_TARGETS: PropFirmPartner[] = [
   {
+    id: "firm_ftm",
+    firmName: "Funded Trader Markets",
+    marketType: "MULTI_ASSET",
+    contactEmail: "support@fundedtradermarkets.com",
+    affiliatePortalUrl: "https://fundedtradermarkets.com",
+    defaultAffiliateUrl: "https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog",
+    proposedCommission: "15% - 25% CPA per Challenge Pass",
+    outreachPitchDeck: {
+      subjectLine: "Partnership Inquiry: SmartMag Chronicle x Funded Trader Markets",
+      emailBody: `Hi Funded Trader Markets Team,\n\nWe feature Funded Trader Markets on SmartMag Tech Chronicle (https://auto-ai-blog-web.onrender.com) across our quant trading audience and institutional market analysis reports.\n\nBest regards,\nSmartMag Editorial & Growth`,
+      monthlyAudienceReach: "60,000+ Active Funded Traders",
+    },
+    partnershipStatus: "ACTIVE_AFFILIATE",
+  },
+  {
     id: "firm_mffu",
     firmName: "MyFundedFutures (MFFU)",
     marketType: "FUTURES",
