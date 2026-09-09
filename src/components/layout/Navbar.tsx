@@ -285,20 +285,6 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               >
                 Home
               </Link>
-              <Link
-                href="/store"
-                className="text-amber-500 dark:text-amber-400 hover:text-amber-400 font-bold transition-colors flex items-center gap-1.5 whitespace-nowrap"
-              >
-                <Sparkles className="w-3 h-3 text-amber-400" />
-                <span>AI Store &amp; Toolkits</span>
-              </Link>
-              <Link
-                href="/community"
-                className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 font-bold transition-colors flex items-center gap-1.5 whitespace-nowrap"
-              >
-                <MessageSquare className="w-3 h-3 text-indigo-500" />
-                <span>Community</span>
-              </Link>
               {categories.map((cat) => (
                 <Link
                   key={cat.slug}
