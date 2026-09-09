@@ -75,12 +75,12 @@ export async function GET() {
       } catch (_) {}
     }
 
-    // Real AdSense & Monetization Earnings
-    // AdSense display impressions yield ($1.45 blended eCPM across Indian & Tier-1 global readers)
-    const realAdRevenueVal = parseFloat(((totalViews * 1.45) / 1000).toFixed(2));
-    const realAffiliateEarningsVal = parseFloat(((affiliateClicksCount * 1.85) / 86.5).toFixed(2)); // Verified CPA telemetry
+    // Pure 100% Real Bank/Payment Monetization
+    // Actual AdSense and Sponsor revenue only accrue upon direct verification / real gateway receipts
+    const realAdRevenueVal = 0.00;
+    const realAffiliateEarningsVal = 0.00; // Accrues on live affiliate network dashboard
     const realStoreRevenueVal = parseFloat((totalDigitalSalesUSD + (totalDigitalSalesINR / 86.5)).toFixed(2));
-    const realSponsorRevenueVal = parseFloat(((Math.max(sponsorClicksCount, 1) * 2.20) / 86.5).toFixed(2));
+    const realSponsorRevenueVal = 0.00; // Accrues when a sponsor completes payment on /sponsor-video
     const realTotalRevenueVal = parseFloat((realAdRevenueVal + realAffiliateEarningsVal + realStoreRevenueVal + realSponsorRevenueVal).toFixed(2));
 
     const globalPageRpm = totalViews > 0 ? ((realTotalRevenueVal / totalViews) * 1000).toFixed(2) : "0.00";
