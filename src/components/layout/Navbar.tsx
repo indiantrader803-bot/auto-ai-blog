@@ -19,6 +19,7 @@ import {
   Twitter,
   Youtube,
   Linkedin,
+  MessageSquare,
 } from "lucide-react";
 import SearchModal from "./SearchModal";
 import LanguageSelector from "./LanguageSelector";
@@ -267,6 +268,13 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
                 <Sparkles className="w-3 h-3 text-amber-400" />
                 <span>AI Store &amp; Toolkits</span>
               </Link>
+              <Link
+                href="/community"
+                className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 font-bold transition-colors flex items-center gap-1.5 whitespace-nowrap"
+              >
+                <MessageSquare className="w-3 h-3 text-indigo-500" />
+                <span>Community</span>
+              </Link>
               {categories.map((cat) => (
                 <Link
                   key={cat.slug}
@@ -292,6 +300,13 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               className="block text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white"
             >
               Featured Stories
+            </Link>
+            <Link
+              href="/community"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-sm font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400"
+            >
+              💬 Community Discussions
             </Link>
             {categories.map((cat) => (
               <Link

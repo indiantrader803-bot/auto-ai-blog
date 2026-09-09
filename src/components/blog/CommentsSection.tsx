@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MessageSquare, Send, CheckCircle, ShieldCheck, Sparkles, Bot, CornerDownRight, Loader2 } from "lucide-react";
 
 interface Comment {
@@ -53,13 +53,36 @@ const INITIAL_COMMENTS: Comment[] = [
 ];
 
 export default function CommentsSection({ articleTitle, articleSlug, articleExcerpt }: Props) {
-  const [comments, setComments] = useState<Comment[]>(INITIAL_COMMENTS);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [content, setContent] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [aiReplying, setAiReplying] = useState(false);
+
+  // Fetch unique discussion for this specific article slug
+  useEffect(() => {
+    let mounted = true;
+    const fetchComments = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/comments?slug=${encodeURIComponent(articleSlug || "general")}`);
+        const data = await res.json();
+        if (mounted && data.comments && Array.isArray(data.comments)) {
+          setComments(data.comments);
+        }
+      } catch (_) {
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    fetchComments();
+    return () => {
+      mounted = false;
+    };
+  }, [articleSlug]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
