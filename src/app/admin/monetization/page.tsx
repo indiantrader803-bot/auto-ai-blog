@@ -317,6 +317,8 @@ export default function MonetizationHubPage() {
 
   const [newKeyword, setNewKeyword] = useState<string>("");
   const [newProduct, setNewProduct] = useState<string>("");
+  const [newUrl, setNewUrl] = useState<string>("");
+  const [newPromoCode, setNewPromoCode] = useState<string>("");
   const [newCpa, setNewCpa] = useState<string>("$45.00");
 
   const handleAddAffiliate = (e: React.FormEvent) => {
@@ -328,15 +330,19 @@ export default function MonetizationHubPage() {
         id: `aff_${Date.now()}`,
         keyword: newKeyword,
         product: newProduct,
+        url: newUrl.trim() || "#",
         cpa: `${newCpa} per signup`,
         clicks: 0,
         earnings: "$0.00",
         status: "ACTIVE",
         badge: "CUSTOM",
+        promoCode: newPromoCode.trim() || "",
       },
     ]);
     setNewKeyword("");
     setNewProduct("");
+    setNewUrl("");
+    setNewPromoCode("");
   };
 
   const handleAddSponsor = (e: React.FormEvent) => {
