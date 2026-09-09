@@ -38,6 +38,16 @@ function getArticleSpecificSeedComments(title: string, slug: string) {
         role: "Network Operations Lead",
         content: "How will Starlink's satellite spectrum allocation impact OneWeb's commercial enterprise contracts in India throughout 2026?",
       },
+      {
+        id: "c_seed_tel_2_reply",
+        author: "Marcus Vance",
+        avatarBg: "from-emerald-500 via-teal-600 to-indigo-600",
+        date: "4 hours ago",
+        role: "Staff Systems Lead & AI Editor",
+        isAiResponse: true,
+        replyTo: "Siddharth Menon",
+        content: "Great strategic question, Siddharth. While Starlink focuses primarily on consumer and maritime broadband, OneWeb/Airtel holds the enterprise advantage with existing fiber ground-stations. If you're designing hybrid backhaul architectures, prioritizing dual-redundant routing between LEO constellations and terrestrial SDN gateways is the optimal enterprise playbook.",
+      },
     ];
   }
 
@@ -69,6 +79,16 @@ function getArticleSpecificSeedComments(title: string, slug: string) {
         role: "Derivatives Analyst",
         content: "What maximum drawdown parameters do you recommend when backtesting this strategy across high-volatility FOMC days?",
       },
+      {
+        id: "c_seed_mkt_2_reply",
+        author: "Marcus Vance",
+        avatarBg: "from-emerald-500 via-teal-600 to-indigo-600",
+        date: "3 hours ago",
+        role: "Staff Systems Lead & AI Editor",
+        isAiResponse: true,
+        replyTo: "Ananya Deshmukh",
+        content: "Crucial question for surviving high-vol events, Ananya. We cap maximum intraday trailing drawdown at 1.5% of total capital during FOMC sessions and enforce a 5-minute pre/post event execution freeze. If backtesting, always model slippage at 2.5x normal spreads—it will save your account from unexpected execution drag.",
+      },
     ];
   }
 
@@ -99,6 +119,16 @@ function getArticleSpecificSeedComments(title: string, slug: string) {
         date: "5 hours ago",
         role: "Full-Stack AI Developer",
         content: "Are there any open-source benchmarks comparing local Ollama function-calling latencies vs cloud API endpoints for this architecture?",
+      },
+      {
+        id: "c_seed_ai_2_reply",
+        author: "Marcus Vance",
+        avatarBg: "from-emerald-500 via-teal-600 to-indigo-600",
+        date: "3 hours ago",
+        role: "Staff Systems Lead & AI Editor",
+        isAiResponse: true,
+        replyTo: "Kavita Nair",
+        content: "Great question, Kavita! In our local benchmarks on Apple M4 Max (64GB) using Ollama with Qwen2.5-Coder-32B (Q4_K_M), cold function-calling latency averaged 420ms vs ~180ms on Claude 3.5 Sonnet / Gemini 1.5 Flash via cloud. However, for zero-egress data privacy and offline agent loops, local Ollama is undefeated. A great optimization trick is pinning the model in GPU memory with OLLAMA_KEEP_ALIVE=-1 to eliminate model reloading latency!",
       },
     ];
   }
