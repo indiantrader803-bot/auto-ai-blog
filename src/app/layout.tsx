@@ -133,24 +133,6 @@ export default function RootLayout({
         {children}
         <ExitIntentModal />
         <FloatingSubscribeButton />
-        <Script
-          id="google-translate-script"
-          strategy="lazyOnload"
-          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-        />
-        <Script id="google-translate-init" strategy="lazyOnload">
-          {`
-            function googleTranslateElementInit() {
-              new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,bn,hi,es,fr,de,zh-CN,zh-TW,ja,ko,ar,pt,ru,it,nl,tr,vi,th,id,pl',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-              }, 'google_translate_element');
-            }
-          `}
-        </Script>
-        <div id="google_translate_element" className="hidden" />
       </body>
     </html>
   );
