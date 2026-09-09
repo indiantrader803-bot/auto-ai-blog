@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import {
@@ -494,6 +494,88 @@ export default function PromotionHubPage() {
               </div>
               <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 text-xs font-medium text-slate-800 dark:text-slate-200 whitespace-pre-line leading-relaxed border border-slate-200 dark:border-slate-800">
                 {campaign.twitterThread.fullThreadText}
+              </div>
+            </div>
+          )}
+
+          {/* TAB: LinkedIn Post */}
+          {activeTab === "linkedin" && campaign.linkedInPost && (
+            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  LinkedIn High-Authority Thought Leadership Post
+                </span>
+                <button
+                  onClick={() => copyToClipboard(campaign.linkedInPost.fullPostText, "linkedin")}
+                  className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold flex items-center gap-1.5"
+                >
+                  {copiedSection === "linkedin" ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                  Copy LinkedIn Post
+                </button>
+              </div>
+              <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 text-xs font-medium text-slate-800 dark:text-slate-200 whitespace-pre-line leading-relaxed border border-slate-200 dark:border-slate-800">
+                {campaign.linkedInPost.fullPostText}
+              </div>
+            </div>
+          )}
+
+          {/* TAB: Reddit / HackerNews */}
+          {activeTab === "reddit" && campaign.redditDiscussion && (
+            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  Reddit &amp; Developer Community Discussion Post
+                </span>
+                <button
+                  onClick={() => copyToClipboard(`${campaign.redditDiscussion.postTitle}\n\n${campaign.redditDiscussion.postBody}`, "reddit")}
+                  className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold flex items-center gap-1.5"
+                >
+                  {copiedSection === "reddit" ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                  Copy Reddit Post
+                </button>
+              </div>
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+                <div className="text-xs font-bold text-slate-500">
+                  Suggested Subreddits: <span className="text-indigo-600 dark:text-indigo-400">{campaign.redditDiscussion.suggestedSubreddits.join(", ")}</span>
+                </div>
+                <div className="text-sm font-bold text-slate-900 dark:text-white">
+                  {campaign.redditDiscussion.postTitle}
+                </div>
+                <p className="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-line leading-relaxed">
+                  {campaign.redditDiscussion.postBody}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: Newsletter Blast */}
+          {activeTab === "newsletter" && campaign.newsletterBlast && (
+            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  Email Newsletter Broadcast (Markdown &amp; Subject Lines)
+                </span>
+                <button
+                  onClick={() => copyToClipboard(campaign.newsletterBlast.emailBodyMarkdown, "newsletter")}
+                  className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold flex items-center gap-1.5"
+                >
+                  {copiedSection === "newsletter" ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                  Copy Newsletter
+                </button>
+              </div>
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+                <div className="text-xs font-bold text-slate-500">
+                  High-Open Subject Lines:
+                  <ul className="list-disc list-inside mt-1 text-slate-800 dark:text-slate-200">
+                    {campaign.newsletterBlast.subjectLines.map((s: string, i: number) => (
+                      <li key={i}>{s}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="text-xs font-bold text-slate-500">Preview Text: <span className="font-normal text-slate-700 dark:text-slate-300">{campaign.newsletterBlast.previewText}</span></div>
+                <div className="p-4 rounded-xl bg-slate-950 text-slate-200 font-mono text-xs whitespace-pre-line border border-slate-800 max-h-80 overflow-y-auto">
+                  {campaign.newsletterBlast.emailBodyMarkdown}
+                </div>
               </div>
             </div>
           )}
