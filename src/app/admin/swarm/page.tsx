@@ -36,6 +36,9 @@ export default function SwarmMaintenancePage() {
       const res = await fetch("/api/admin/swarm/actions");
       const data = await res.json();
       if (data.lastRunTime) setLastRunTime(data.lastRunTime);
+      if (data.initialReports && reports.length === 0) {
+        setReports(data.initialReports);
+      }
     } catch (_) {}
   };
 
