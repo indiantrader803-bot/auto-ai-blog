@@ -199,17 +199,41 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
             </div>
           </Link>
 
+          {/* Center / Right Prominent Interactive Hubs: AI Store & Community */}
+          <div className="hidden sm:flex items-center gap-2">
+            <Link
+              href="/store"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 hover:border-amber-500 hover:bg-amber-500/20 text-xs font-black uppercase tracking-wider transition-all shadow-sm group cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-500 group-hover:scale-125 transition-transform" />
+              <span>AI Store</span>
+              <span className="px-1.5 py-0.2 rounded-full bg-amber-500 text-slate-950 text-[9px] font-black">HOT</span>
+            </Link>
+
+            <Link
+              href="/community"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30 hover:border-indigo-500 hover:bg-indigo-500/20 text-xs font-black uppercase tracking-wider transition-all shadow-sm group cursor-pointer"
+            >
+              <MessageSquare className="w-3.5 h-3.5 text-indigo-500 group-hover:scale-125 transition-transform" />
+              <span>Community</span>
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+            </Link>
+          </div>
+
           {/* Right Actions Bar */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Search Trigger */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center justify-between gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:border-indigo-500/50 hover:bg-white dark:hover:bg-slate-950 transition-all text-xs font-medium group min-w-[120px] sm:min-w-[200px]"
+              className="flex items-center justify-between gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:border-indigo-500/50 hover:bg-white dark:hover:bg-slate-950 transition-all text-xs font-medium group min-w-[100px] sm:min-w-[160px]"
               aria-label="Search"
             >
               <div className="flex items-center gap-2 truncate">
                 <Search className="w-3.5 h-3.5 text-indigo-500 group-hover:scale-110 transition-transform shrink-0" />
-                <span className="truncate">Search AI topics...</span>
+                <span className="truncate">Search...</span>
               </div>
               <kbd className="hidden md:inline-block px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] text-slate-400 font-mono shrink-0">
                 ⌘K

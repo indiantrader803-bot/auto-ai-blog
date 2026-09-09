@@ -12,7 +12,7 @@ import SocialSidebar from "@/components/blog/SocialSidebar";
 import AdBanner from "@/components/monetization/AdBanner";
 import NewsletterBanner from "@/components/monetization/NewsletterBanner";
 import AmazonAffiliateShowcase from "@/components/monetization/AmazonAffiliateShowcase";
-import { Sparkles, TrendingUp, Compass, Flame, ArrowRight, Zap, Award, Layers } from "lucide-react";
+import { Sparkles, TrendingUp, Compass, Flame, ArrowRight, Zap, Award, Layers, MessageSquare } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -206,6 +206,59 @@ export default async function HomePage() {
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         {/* Top Sponsor / Ad Banner */}
         <AdBanner slot="home-smartmag-top" className="mb-8" />
+
+        {/* High-Converting Interactive Hubs (AI Store & Community Live Discussion) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {/* 1. AI Store & Toolkits Banner */}
+          <Link
+            href="/store"
+            className="group relative overflow-hidden p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-slate-900/40 border border-amber-500/30 hover:border-amber-400 transition-all shadow-sm hover:shadow-lg hover:shadow-amber-500/10 flex items-center justify-between gap-4"
+          >
+            <div className="space-y-1.5 z-10">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" /> Digital Products
+                </span>
+                <span className="text-[11px] font-semibold text-amber-500">Instant Download</span>
+              </div>
+              <h3 className="text-base sm:text-lg font-bold font-serif text-slate-900 dark:text-white group-hover:text-amber-500 transition-colors">
+                AI Coding &amp; Quant Toolkits
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
+                Download ready-to-run multi-agent prompts, trading indicators &amp; production templates.
+              </p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-500 flex items-center justify-center font-bold text-lg shrink-0 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-slate-950 transition-all">
+              <ArrowRight className="w-5 h-5" />
+            </div>
+          </Link>
+
+          {/* 2. Community Mastermind Banner */}
+          <Link
+            href="/community"
+            className="group relative overflow-hidden p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-slate-900/40 border border-indigo-500/30 hover:border-indigo-400 transition-all shadow-sm hover:shadow-lg hover:shadow-indigo-500/10 flex items-center justify-between gap-4"
+          >
+            <div className="space-y-1.5 z-10">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-indigo-600 text-white flex items-center gap-1">
+                  <MessageSquare className="w-3 h-3" /> Mastermind
+                </span>
+                <span className="text-[11px] font-semibold text-emerald-500 flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Live AI Peer Reviews
+                </span>
+              </div>
+              <h3 className="text-base sm:text-lg font-bold font-serif text-slate-900 dark:text-white group-hover:text-indigo-400 transition-colors">
+                Community Discussion Hub
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
+                Ask architecture questions &amp; get instant authentic critique from our Staff AI Lead.
+              </p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-lg shrink-0 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+              <ArrowRight className="w-5 h-5" />
+            </div>
+          </Link>
+        </div>
 
         {/* 1. SmartMag 1+3 Magazine Hero Grid (Always Shows Top Hot Topics) */}
         <SmartHeroGrid featured={featuredPost} subFeatured={subFeaturedPosts} />
