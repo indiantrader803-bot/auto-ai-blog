@@ -253,6 +253,100 @@ export default function PromotionHubPage() {
       {/* Generated Campaign Output */}
       {campaign && (
         <div className="space-y-6 animate-in fade-in duration-300">
+          {/* 🎯 AUDIENCE TARGETING & COMMERCIAL INTENT INTELLIGENCE */}
+          {campaign.audienceProfile && (
+            <div className="p-6 rounded-3xl bg-gradient-to-br from-indigo-950/80 via-slate-900 to-slate-950 text-white border-2 border-indigo-500/40 shadow-2xl space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-500/20 pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="p-2 rounded-xl bg-indigo-500/20 text-indigo-400">
+                    <Zap className="w-5 h-5" />
+                  </span>
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400">
+                      Target Audience &amp; Commercial Intent Intelligence
+                    </span>
+                    <h3 className="text-lg font-bold text-white font-serif">
+                      {campaign.audienceProfile.icpName}
+                    </h3>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/40 text-xs font-mono font-bold text-indigo-300">
+                    Segment: {campaign.audienceProfile.segment}
+                  </span>
+                  <span className="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-xs font-bold text-emerald-400">
+                    Purchasing Power: {campaign.audienceProfile.demographics.purchasingPower}
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                {/* Core Pain Points */}
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                  <div className="font-bold text-rose-400 uppercase tracking-wider text-[10px]">
+                    ⚠️ Critical Pain Points (What Bugs Them)
+                  </div>
+                  <ul className="space-y-1.5 text-slate-300">
+                    {campaign.audienceProfile.corePainPoints.map((p: string, i: number) => (
+                      <li key={i} className="flex items-start gap-1.5">
+                        <span className="text-rose-400 shrink-0">•</span> {p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Buying Triggers & Incentives */}
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                  <div className="font-bold text-amber-400 uppercase tracking-wider text-[10px]">
+                    ⚡ Primary Buying Triggers &amp; Hooks
+                  </div>
+                  <ul className="space-y-1.5 text-slate-300">
+                    {campaign.audienceProfile.buyingTriggers.map((t: string, i: number) => (
+                      <li key={i} className="flex items-start gap-1.5">
+                        <span className="text-amber-400 shrink-0">✓</span> {t}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Best Converting Offer */}
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-500/30 space-y-2 flex flex-col justify-between">
+                  <div>
+                    <div className="font-bold text-emerald-400 uppercase tracking-wider text-[10px]">
+                      🏆 Recommended High-Converting Offer
+                    </div>
+                    <div className="font-bold text-sm text-white mt-1">
+                      {campaign.audienceProfile.bestConvertingOffer.partnerName}
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-1">
+                      {campaign.audienceProfile.bestConvertingOffer.hookHeadline}
+                    </p>
+                  </div>
+                  <a
+                    href={campaign.audienceProfile.bestConvertingOffer.affiliateUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full mt-2 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[11px] text-center block transition-all"
+                  >
+                    {campaign.audienceProfile.bestConvertingOffer.ctaButton}
+                  </a>
+                </div>
+              </div>
+
+              {/* Target GEOs & Ad Keywords */}
+              <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400 border-t border-white/5">
+                <div>
+                  <span className="font-bold text-slate-300">Top Geographic Locations:</span>{" "}
+                  {campaign.audienceProfile.demographics.primaryCountries.join(", ")}
+                </div>
+                <div>
+                  <span className="font-bold text-slate-300">Target Keywords:</span>{" "}
+                  {campaign.audienceProfile.recommendedChannels.adTargetKeywords.join(" | ")}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Universal Launchpad */}
           <div className="p-6 rounded-3xl bg-slate-900 text-white border border-indigo-500/30 shadow-xl space-y-4">
             <div className="flex items-center justify-between">

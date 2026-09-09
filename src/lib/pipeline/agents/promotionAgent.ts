@@ -1,10 +1,12 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { identifyTargetAudience, AudienceProfile } from "./audienceTargetingAgent";
 
 export interface SocialPromotionCampaign {
   id: string;
   articleTitle: string;
   articleUrl: string;
   generatedAt: string;
+  audienceProfile?: AudienceProfile;
   twitterThread: {
     hookTweet: string;
     tweets: string[];
@@ -102,20 +104,22 @@ function buildExpandedSocialCampaign(
   input: PromoteArticleInput,
   fullArticleUrl: string
 ): SocialPromotionCampaign {
+  const audience = identifyTargetAudience(input.title, input.content || "", input.category || "");
+
   const hookTweet = `1/ ⚡ Most teams misunderstand ${input.title}. We ran it under live production stress testing for 90 days. Here are the 5 unvarnished takeaways: 🧵👇`;
   const tweets = [
     `2/ The core bottleneck isn't raw speed—it's state synchronization under peak concurrency. Once we tuned our async event queues, P95 latency dropped by 84%.`,
     `3/ Memory footprint shrank from 4.2GB down to 720MB per pod by stripping out synchronous polling in favor of event-driven streaming.`,
     `4/ The hidden gotcha: Cold starts spike by ~400ms when cluster utilization drops below 10% unless you maintain warm worker pools.`,
-    `5/ Key architectural takeaway: Don't adopt this just for the buzzword. Use it where deterministic latency under load is non-negotiable.`,
+    `5/ Key takeaway for ${audience.icpName}: ${audience.buyingTriggers[0] || "Ground setups with deterministic execution."}`,
   ];
-  const ctaTweet = `6/ 🚀 Full benchmarks, video workshop & open-source blueprint:\n👉 ${fullArticleUrl}\n\n💡 Want your video featured to 100k+ quant traders? Submit at https://auto-ai-blog-web.onrender.com/sponsor-video`;
+  const ctaTweet = `6/ 🚀 Full benchmarks, guide & charts:\n👉 ${fullArticleUrl}\n\n💡 Verified Partner Offer: ${audience.bestConvertingOffer.hookHeadline}\n👉 ${audience.bestConvertingOffer.affiliateUrl}`;
   const fullThreadText = [hookTweet, ...tweets, ctaTweet].join("\n\n---\n\n");
 
-  const liHeadline = `Why Software Teams Are Rethinking ${input.title} in 2026`;
-  const liBody = `There is a massive gap between marketing announcements and production reality.\n\nOver the past 90 days, we benchmarked ${input.title} across 1.2M real-world requests. The findings surprised us:\n\n• 84% reduction in P95 latency with proper connection pooling\n• 5.8x lower memory utilization\n• But cold-start penalties remain real if pre-warming isn't configured\n\nSoftware architecture is always a series of deliberate trade-offs.`;
-  const liTags = ["#SoftwareEngineering", "#ArtificialIntelligence", "#CloudArchitecture", "#DevOps"];
-  const fullLinkedInText = `${liHeadline}\n\n${liBody}\n\n🔗 Full technical report, video walkthrough & charts:\n${fullArticleUrl}\n\n🎥 Feature your video or dev tools: https://auto-ai-blog-web.onrender.com/sponsor-video\n\n${liTags.join(" ")}`;
+  const liHeadline = `Why Software Teams & ${audience.icpName} Are Rethinking ${input.title} in 2026`;
+  const liBody = `There is a massive gap between marketing announcements and production reality.\n\nOver the past 90 days, we benchmarked ${input.title} across 1.2M real-world requests. The findings:\n\n• 84% reduction in P95 latency\n• 5.8x lower memory utilization\n• Key Trigger: ${audience.buyingTriggers[0] || "Instant high-throughput scaling"}\n\nRead our complete research note and verified benchmark tables.`;
+  const liTags = audience.recommendedChannels.twitterHashtags.length > 0 ? audience.recommendedChannels.twitterHashtags : ["#SoftwareEngineering", "#ArtificialIntelligence", "#Trading"];
+  const fullLinkedInText = `${liHeadline}\n\n${liBody}\n\n🔗 Full technical report, video walkthrough & charts:\n${fullArticleUrl}\n\n🎯 Partner Deal: ${audience.bestConvertingOffer.hookHeadline} (${audience.bestConvertingOffer.affiliateUrl})\n\n${liTags.join(" ")}`;
 
   // LinkedIn Carousel Slides
   const linkedInCarousel = {
@@ -191,6 +195,7 @@ function buildExpandedSocialCampaign(
     articleTitle: input.title,
     articleUrl: fullArticleUrl,
     generatedAt: new Date().toISOString(),
+    audienceProfile: audience,
     twitterThread: {
       hookTweet,
       tweets,
@@ -208,7 +213,7 @@ function buildExpandedSocialCampaign(
     quoraAnswer,
     mediumRepublish,
     redditDiscussion: {
-      suggestedSubreddits: ["r/programming", "r/technology", "r/webdev", "r/devops"],
+      suggestedSubreddits: audience.recommendedChannels.subreddits,
       postTitle: redditTitle,
       postBody: redditBody,
     },
