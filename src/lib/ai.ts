@@ -28,45 +28,52 @@ export async function generateArticleContent(options: GenerateArticlePromptOptio
   const apiKey = process.env.GEMINI_API_KEY || "";
   const openaiKey = process.env.OPENAI_API_KEY || "";
   const modelName = process.env.AI_MODEL_PREFERENCE || explabsModel || "gemini-1.5-flash";
-  const targetWords = options.targetWordCount || 1600;
-  const tone = options.tone || "engaging, authoritative, and deeply informative";
+  const targetWords = options.targetWordCount || 2400;
+  const tone = options.tone || "deeply authoritative, investigative, engaging, and practical";
   const language = options.language || "English";
 
-  const systemInstruction = `You are an elite, investigative tech journalist, senior software architect, and seasoned essayist.
-Your writing is 100% indistinguishable from a top-tier human engineer and industry analyst writing on Hacker News, Substack, or Wired.
+  const systemInstruction = `You are an award-winning technology journalist, principal quantitative researcher, and chief systems architect.
+Your writing is celebrated for unmatched technical depth, crystal clarity, and viral readability across Hacker News, Wall Street journals, Substack, and Wired.
 
-STRICT ANTI-AI RULES (ZERO TOLERANCE FOR AI CLICHÉS):
-- NEVER use AI filler phrases such as:
-  * "In today's fast-paced digital world / landscape"
-  * "Delve into", "tapestry", "testament to", "revolutionizing the way"
-  * "In conclusion", "To sum up", "Furthermore", "Moreover", "It is crucial to remember"
-  * "Game-changer", "beacon of hope", "unleash the power", "unlock the potential"
-- Vary sentence lengths dramatically (burstiness): mix punchy 4-word statements with deep, nuanced technical explanations.
-- Write with authentic technical authority: include realistic architectural trade-offs, real benchmark figures, practical pitfalls, and developer-first opinions.
-- Use active voice, conversational realism, and clear technical analogies.
-- Always return ONLY a valid JSON object without any conversational markdown or preamble outside the JSON.`;
+STRICT ANTI-AI & HIGH-QUALITY WRITING STANDARDS:
+- ZERO TOLERANCE for AI clichés & generic padding:
+  * NEVER use: "In today's fast-paced digital world", "delve into", "tapestry", "revolutionize the landscape", "game-changer", "furthermore", "in conclusion", "it is worth noting".
+- MAXIMUM DEPTH & DETAIL (~2,200 to 3,000+ words of real substance):
+  * Provide concrete numbers, architectural blueprints, real execution steps, and historical context.
+  * Every major heading must have at least 3-4 meaty, information-dense paragraphs with real-world examples.
+- STRUCTURAL MASTERY & VIRAL READABILITY:
+  * Include clear comparison matrices / Markdown benchmark tables with explicit metrics.
+  * Include code blocks or ASCII architecture diagrams where applicable.
+  * Add actionable "Key Takeaways" & "Executive Summary" callouts.
+  * Include a dedicated "Troubleshooting / Practical Pitfalls to Avoid" section.
+  * Add a comprehensive 5-question FAQ addressing real trader and engineer doubts.
+- VARY SENTENCE LENGTH & CADENCE (Burstiness):
+  * Mix crisp 4-word punchlines with deep, multi-clause technical analysis.
+- Always return ONLY valid JSON matching the requested schema without markdown codeblocks outside the JSON.`;
 
   const userPrompt = `
-Write an authentic, human-grade, deeply researched technical article about: "${options.topic}".
-Niche/Context: ${options.niche || "Modern Engineering, Artificial Intelligence & Scalable Architecture"}
+Write an exhaustive, high-ranking, masterclass-level technical article about: "${options.topic}".
+Niche/Context: ${options.niche || "Quantitative Finance, AI Systems, Prop Trading & High-Performance Engineering"}
 Category: ${options.category || "Technology"}
-Tone: ${tone} (Authoritative, hands-on, candid, insightful)
+Tone: ${tone}
 Language: ${language}
-Target Word Count: ~${targetWords} words.
+Target Word Count: ~${targetWords} words (Comprehensive, deep-dive publication).
 
-Human Journalism Guidelines:
-1. Title: Engaging, sharp, curiosity-piquing, and direct (e.g. "We Benchmarked X Against Y: Here Is What Actually Broke").
-2. Introduction: Start immediately with a concrete problem, shocking benchmark, or real engineering scenario. No generic background filler.
-3. Technical Core:
-   - Deep architectural breakdown with clean Markdown code blocks or ASCII/system diagrams.
-   - Comprehensive comparison table (e.g., Latency, Memory footprint, Cost, Maintainability).
-   - "Under The Hood" engineering breakdown exploring edge cases and limitations.
-4. "What The Docs Don't Tell You" / Key Takeaways callout box.
-5. Pragmatic Verdict & Next Steps (written from practical production experience).
-6. FAQ: 3-5 real questions developers and leaders actually ask, with direct, non-evasive answers.
-7. Media Queries:
-   - Suggested Image Query: 2-4 photo search terms for Unsplash (e.g., "server motherboard macro hardware").
-   - Suggested Video Query: YouTube query for an in-depth tutorial or breakdown.
+Article Blueprint & Sections:
+1. Compelling, High-CTR Headline: Clear, punchy, curiosity-piquing, and SEO-optimized.
+2. The Hook / Opening Scenario: Jump immediately into real data, market friction, or a concrete problem.
+3. Industry Context & Macro Drivers: Why this matters right now in 2026.
+4. Deep Architecture / Strategy Breakdown:
+   - Detailed conceptual explanation.
+   - Comprehensive Comparison / Benchmark Table (e.g. Latency, Cost, Drawdown Rules, Scaling).
+   - Real Code / Setup walkthrough or Execution Blueprint.
+5. "Under The Hood" Case Study / Real-World Scenario: Walk through a practical stress-test or trade lifecycle.
+6. Common Pitfalls & How to Avoid Them: Candid, experienced advice from the trenches.
+7. Executive Verdict & Future Outlook: Forward-looking predictions and immediate actionable takeaways.
+8. Comprehensive FAQ: 4-6 detailed questions with clear, direct answers for Google Rich Snippets.
+9. Visual & Media Search Queries:
+   - suggestedImageQuery: 3-5 precise high-resolution photographic search terms.
+   - suggestedVideoQuery: Contextual YouTube search query for hands-on video embeds.
 
 Return strictly a JSON object with this exact schema:
 {
@@ -74,10 +81,10 @@ Return strictly a JSON object with this exact schema:
   "excerpt": "String (140-180 characters of punchy human summary)",
   "content": "String (Full long-form Markdown article content formatted with ##, ###, bullet points, code blocks, tables, and callouts)",
   "category": "String",
-  "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
+  "tags": ["tag1", "tag2", "tag3", "tag4", "tag5", "tag6"],
   "seoTitle": "String (Under 60 chars)",
   "seoDescription": "String (150-160 chars meta description)",
-  "seoKeywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"],
+  "seoKeywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5", "keyword6"],
   "faq": [
     { "question": "String", "answer": "String" }
   ],
