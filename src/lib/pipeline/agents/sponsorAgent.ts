@@ -13,6 +13,30 @@ export interface SponsorDeal {
 
 export const VERIFIED_SPONSORS: SponsorDeal[] = [
   {
+    id: "sp_pocketoption",
+    sponsorName: "Pocket Option Quick Trading & Signals",
+    badge: "50% DEPOSIT BONUS EXCLUSIVE",
+    tagline: "Trade 100+ Assets with Up to 96% Payouts, Instant Execution & Free Signals",
+    description: "Global quick trading terminal with social copy trading, zero withdrawal fees, 50% deposit bonus on first deposit, and $10,000 free demo practice.",
+    ctaText: "Claim 50% Deposit Bonus on Pocket Option (Code: 50START) →",
+    ctaUrl: "https://v4.lands-po.com/en/land/001-QT-02?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    discountCode: "50START",
+    categoryMatch: ["Finance & Markets", "Trading", "Indian Markets", "US Markets", "Crypto", "Forex & Currencies", "Commodities"],
+    cpcTier: "ULTRA",
+  },
+  {
+    id: "sp_pocketoption_signals",
+    sponsorName: "Pocket Option Pro Signals & Copy Trading",
+    badge: "TOP COPY TRADING HUB",
+    tagline: "Copy Profitable Master Traders in Real-Time with Built-In Automated Signals",
+    description: "Access high-accuracy algorithmic signal alerts, express trades, and 50% bonus code 50START on deposits.",
+    ctaText: "Start Copy Trading with Pocket Option →",
+    ctaUrl: "https://v4.lands-po.com/en/land/009-QT-01?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    discountCode: "50START",
+    categoryMatch: ["Finance & Markets", "Trading", "Indian Markets", "US Markets", "Crypto", "Forex & Currencies"],
+    cpcTier: "ULTRA",
+  },
+  {
     id: "sp_delta_exchange",
     sponsorName: "Delta Exchange Crypto Derivatives",
     badge: "TOP CRYPTO OPTIONS & FUTURES",

@@ -7,6 +7,32 @@ export interface AffiliateRule {
 }
 
 export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
+  // ⚡ Pocket Option Official Smart-Links (50% Deposit Bonus: 50START)
+  {
+    keyword: "Pocket Option",
+    url: "https://v4.lands-po.com/en/land/001-QT-02?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Pocket Option Trading - Claim 50% Deposit Bonus (Code: 50START)",
+  },
+  {
+    keyword: "binary options",
+    url: "https://v4.lands-po.com/en/land/001-QT-03?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Pocket Option Quick Trading Terminal (Up to 96% Payout, Code: 50START)",
+  },
+  {
+    keyword: "quick trading",
+    url: "https://v4.lands-po.com/en/land/001-QT-05?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Pocket Option High Payout Trading Platform (Code: 50START)",
+  },
+  {
+    keyword: "trading signals",
+    url: "https://v4.lands-po.com/en/land/009-QT-01?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Free Built-In Trading Signals & Copy Trading on Pocket Option",
+  },
+  {
+    keyword: "options trading",
+    url: "https://v4.lands-po.com/en/land/001-QT-02?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+    label: "Trade Global Options with Pocket Option (Code: 50START)",
+  },
   // 🏆 1. High-Converting Prop Trading & Crypto Exchange Links
   {
     keyword: "Delta Exchange",

@@ -140,6 +140,8 @@ export async function runAutonomousFleetTrafficBooster() {
   ];
 
   const affiliateOffers = [
+    { name: "Pocket Option Quick Trading (50% Bonus: 50START)", url: "https://v4.lands-po.com/en/land/001-QT-02?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START", payout: 85.0, slugMatch: ["pocket", "option", "binary", "trading", "signals", "forex", "crypto", "nifty", "quick"] },
+    { name: "Pocket Option Copy Trading & Signals", url: "https://v4.lands-po.com/en/land/009-QT-01?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START", payout: 85.0, slugMatch: ["signals", "copy", "breakout", "strategy", "market"] },
     { name: "Delta Exchange Crypto Derivatives", url: "https://www.delta.exchange/?code=YXQSZA", payout: 95.0, slugMatch: ["crypto", "bitcoin", "options", "derivatives", "eth", "trading", "finance"] },
     { name: "CoinSwitch Pro Trading Terminal", url: "https://coinswitch.co/pro/signup?code=NLfEITW", payout: 60.0, slugMatch: ["coinswitch", "crypto", "bitcoin", "inr", "invest", "trading", "indian"] },
     { name: "CoinSwitch Pro VIP Rewards", url: "https://coinswitch.co/pro/signup?code=lUNNbKE", payout: 60.0, slugMatch: ["coinswitch", "crypto", "exchange", "terminal", "market"] },

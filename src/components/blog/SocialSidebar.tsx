@@ -234,6 +234,26 @@ export default function SocialSidebar({
           <span className="text-[10px] font-bold text-amber-300">Active Deals</span>
         </div>
 
+        {/* Offer 00: Pocket Option Quick Trading */}
+        <a
+          href="https://v4.lands-po.com/en/land/001-QT-02?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block p-3.5 rounded-2xl bg-gradient-to-r from-blue-600/20 via-indigo-600/20 to-purple-600/20 hover:from-blue-600/30 hover:to-purple-600/30 border border-indigo-500/40 hover:border-indigo-400 transition-all shadow-lg"
+        >
+          <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
+            <span className="group-hover:text-indigo-300 transition-colors">Pocket Option (Quick Trading)</span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-gradient-to-r from-amber-500 to-rose-500 text-white font-black animate-pulse">50% BONUS</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-snug mb-2">
+            96% max payout, built-in signals &amp; copy trading. Code: <strong className="text-amber-300 font-mono">50START</strong>
+          </p>
+          <div className="flex items-center gap-1 text-[11px] text-indigo-300 group-hover:text-white font-bold">
+            <span>Claim 50% Deposit Bonus (50START)</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </a>
+
         {/* Offer 0A: Delta Exchange */}
         <a
           href="https://www.delta.exchange/?code=YXQSZA"
