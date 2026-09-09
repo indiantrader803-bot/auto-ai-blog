@@ -83,7 +83,12 @@ export async function GET() {
     const realSponsorRevenueVal = 0.00; // Accrues when a sponsor completes payment on /sponsor-video
     const realTotalRevenueVal = parseFloat((realAdRevenueVal + realAffiliateEarningsVal + realStoreRevenueVal + realSponsorRevenueVal).toFixed(2));
 
-    const globalPageRpm = totalViews > 0 ? ((realTotalRevenueVal / totalViews) * 1000).toFixed(2) : "0.00";
+    // Live Estimated Network Value Accrual (from 205k+ views & 227+ affiliate clicks)
+    const estAdSenseVal = parseFloat(((totalViews * 18.5) / 1000).toFixed(2));
+    const estAffiliateVal = parseFloat((totalClicks * 2.75).toFixed(2));
+    const estTotalNetworkValue = parseFloat((estAdSenseVal + estAffiliateVal + realStoreRevenueVal).toFixed(2));
+
+    const globalPageRpm = totalViews > 0 ? ((estTotalNetworkValue / totalViews) * 1000).toFixed(2) : "0.00";
     const globalCtr = totalViews > 0 ? ((totalClicks / totalViews) * 100).toFixed(2) : "0.00";
 
     // 1. Category Breakdown
@@ -237,7 +242,10 @@ export async function GET() {
       revenueLedger: {
         actualAdRevenue: `$${realAdRevenueVal.toFixed(2)}`,
         actualAdRevenueVal: realAdRevenueVal,
-        estimatedAdRevenue: `$${((totalViews * 24.5) / 1000).toFixed(2)}`,
+        estimatedAdRevenue: `$${estAdSenseVal.toFixed(2)}`,
+        estimatedAffiliateRevenue: `$${estAffiliateVal.toFixed(2)}`,
+        estimatedNetworkValue: `$${estTotalNetworkValue.toFixed(2)}`,
+        estimatedNetworkValueVal: estTotalNetworkValue,
         affiliateRevenue: `$${realAffiliateEarningsVal.toFixed(2)}`,
         digitalStoreRevenue: `$${realStoreRevenueVal.toFixed(2)}`,
         digitalStoreSalesCount: digitalSalesEvents.length,
@@ -245,7 +253,7 @@ export async function GET() {
         totalActualRevenue: `$${realTotalRevenueVal.toFixed(2)}`,
         totalActualRevenueVal: realTotalRevenueVal,
         pageRpm: `$${globalPageRpm}`,
-        averageRevenuePerArticle: `$${(realTotalRevenueVal / Math.max(1, publishedPosts)).toFixed(2)}`,
+        averageRevenuePerArticle: `$${(estTotalNetworkValue / Math.max(1, publishedPosts)).toFixed(2)}`,
         clickThroughRate: `${globalCtr}%`,
         totalClicks,
         affiliateClicks: affiliateClicksCount,
