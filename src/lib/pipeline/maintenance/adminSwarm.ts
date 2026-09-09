@@ -258,7 +258,7 @@ export async function autoSyndicateRecentPosts(webhookUrl?: string): Promise<Age
       details: {
         targetArticle: latestPost.title,
         targetAudience: campaign.audienceProfile?.icpName,
-        matchedOffer: campaign.audienceProfile?.bestConvertingOffer.partnerName,
+        matchedOffer: campaign.audienceProfile?.winningOffer.partnerName,
         tweetCount: campaign.twitterThread.tweets.length + 2,
         subreddits: campaign.redditDiscussion.suggestedSubreddits,
         durationSeconds: duration,

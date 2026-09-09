@@ -253,33 +253,40 @@ export default function PromotionHubPage() {
       {/* Generated Campaign Output */}
       {campaign && (
         <div className="space-y-6 animate-in fade-in duration-300">
-          {/* 🎯 AUDIENCE TARGETING & COMMERCIAL INTENT INTELLIGENCE */}
+          {/* 🎯 AI AFFILIATE OPERATING SYSTEM (v2.0) INTENT & SCORING INTELLIGENCE */}
           {campaign.audienceProfile && (
-            <div className="p-6 rounded-3xl bg-gradient-to-br from-indigo-950/80 via-slate-900 to-slate-950 text-white border-2 border-indigo-500/40 shadow-2xl space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-500/20 pb-3">
-                <div className="flex items-center gap-2">
-                  <span className="p-2 rounded-xl bg-indigo-500/20 text-indigo-400">
+            <div className="p-6 rounded-3xl bg-gradient-to-br from-indigo-950/80 via-slate-900 to-slate-950 text-white border-2 border-indigo-500/40 shadow-2xl space-y-5">
+              {/* Header Bar */}
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-indigo-500/20 pb-4">
+                <div className="flex items-center gap-3">
+                  <span className="p-2.5 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-500/30">
                     <Zap className="w-5 h-5" />
                   </span>
                   <div>
-                    <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400">
-                      Target Audience &amp; Commercial Intent Intelligence
-                    </span>
-                    <h3 className="text-lg font-bold text-white font-serif">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400">
+                        AI Operating System (v2.0) • Intent &amp; Offer Intelligence
+                      </span>
+                      <span className="px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 font-mono text-[10px] font-bold">
+                        {campaign.audienceProfile.searchIntent} INTENT ({campaign.audienceProfile.funnelStage} FUNNEL)
+                      </span>
+                    </div>
+                    <h3 className="text-lg font-bold text-white font-serif mt-0.5">
                       {campaign.audienceProfile.icpName}
                     </h3>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/40 text-xs font-mono font-bold text-indigo-300">
-                    Segment: {campaign.audienceProfile.segment}
+                    Primary Action: {campaign.audienceProfile.recommendedPrimaryAction}
                   </span>
                   <span className="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-xs font-bold text-emerald-400">
-                    Purchasing Power: {campaign.audienceProfile.demographics.purchasingPower}
+                    CTA: {campaign.audienceProfile.ctaStrength}
                   </span>
                 </div>
               </div>
 
+              {/* Grid Tier 1: Pain Points, Triggers & Winning Scored Offer */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                 {/* Core Pain Points */}
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
@@ -309,41 +316,71 @@ export default function PromotionHubPage() {
                   </ul>
                 </div>
 
-                {/* Best Converting Offer */}
+                {/* Winning Offer */}
                 <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-500/30 space-y-2 flex flex-col justify-between">
                   <div>
-                    <div className="font-bold text-emerald-400 uppercase tracking-wider text-[10px]">
-                      🏆 Recommended High-Converting Offer
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-emerald-400 uppercase tracking-wider text-[10px]">
+                        🏆 Winner (Score: {campaign.audienceProfile.winningOffer.score}/10)
+                      </span>
+                      {campaign.audienceProfile.winningOffer.promoCode && (
+                        <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono text-[10px] font-bold">
+                          Code: {campaign.audienceProfile.winningOffer.promoCode}
+                        </span>
+                      )}
                     </div>
                     <div className="font-bold text-sm text-white mt-1">
-                      {campaign.audienceProfile.bestConvertingOffer.partnerName}
+                      {campaign.audienceProfile.winningOffer.partnerName}
                     </div>
                     <p className="text-[11px] text-slate-300 mt-1">
-                      {campaign.audienceProfile.bestConvertingOffer.hookHeadline}
+                      {campaign.audienceProfile.winningOffer.hookHeadline}
                     </p>
                   </div>
                   <a
-                    href={campaign.audienceProfile.bestConvertingOffer.affiliateUrl}
+                    href={campaign.audienceProfile.winningOffer.affiliateUrl}
                     target="_blank"
                     rel="noreferrer"
                     className="w-full mt-2 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[11px] text-center block transition-all"
                   >
-                    {campaign.audienceProfile.bestConvertingOffer.ctaButton}
+                    {campaign.audienceProfile.winningOffer.ctaButton}
                   </a>
                 </div>
               </div>
 
-              {/* Target GEOs & Ad Keywords */}
-              <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400 border-t border-white/5">
-                <div>
-                  <span className="font-bold text-slate-300">Top Geographic Locations:</span>{" "}
-                  {campaign.audienceProfile.demographics.primaryCountries.join(", ")}
+              {/* Grid Tier 2: Offer Intelligence Scoring Leaderboard */}
+              {campaign.audienceProfile.offerScoringEngine && (
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold text-indigo-300 uppercase tracking-wider text-[10px]">
+                      📊 Offer Intelligence Scoring Engine: Score = (Intent×0.4) + (GEO×0.3) + (Relevance×0.2) + (Commission×0.1)
+                    </span>
+                    <span className="text-slate-400 text-[10px] font-mono">Dynamic Ranking</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 text-[11px]">
+                    {campaign.audienceProfile.offerScoringEngine.map((off: any, idx: number) => (
+                      <div key={idx} className={`p-3 rounded-xl border ${idx === 0 ? "bg-indigo-600/20 border-indigo-500 text-white font-bold" : "bg-slate-950/60 border-slate-800 text-slate-300"}`}>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="truncate text-[10px]">{off.partnerName.split(" ")[0]}</span>
+                          <span className={`px-1.5 py-0.2 rounded text-[10px] font-mono ${idx === 0 ? "bg-emerald-500 text-slate-950 font-black" : "bg-white/10 text-slate-400"}`}>{off.calculatedScore}</span>
+                        </div>
+                        <div className="text-[9px] text-slate-400 truncate">{off.hookHeadline.slice(0, 32)}...</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div>
-                  <span className="font-bold text-slate-300">Target Keywords:</span>{" "}
-                  {campaign.audienceProfile.recommendedChannels.adTargetKeywords.join(" | ")}
+              )}
+
+              {/* Grid Tier 3: Compliance & Trust Safe Words */}
+              {campaign.audienceProfile.complianceTrustBlock && (
+                <div className="p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-500/30 text-[11px] space-y-1 text-slate-300">
+                  <div className="text-emerald-400 font-bold uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Compliance &amp; Trust Guardrails Verified
+                  </div>
+                  <p className="text-[10px] text-slate-400 leading-snug">
+                    {campaign.audienceProfile.complianceTrustBlock.affiliateDisclosure}
+                  </p>
                 </div>
-              </div>
+              )}
             </div>
           )}
 

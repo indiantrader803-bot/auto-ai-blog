@@ -1,12 +1,12 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { identifyTargetAudience, AudienceProfile } from "./audienceTargetingAgent";
+import { detectSearchIntentAndAudience, IntentAudienceResult } from "./audienceTargetingAgent";
 
 export interface SocialPromotionCampaign {
   id: string;
   articleTitle: string;
   articleUrl: string;
   generatedAt: string;
-  audienceProfile?: AudienceProfile;
+  audienceProfile?: IntentAudienceResult;
   twitterThread: {
     hookTweet: string;
     tweets: string[];
@@ -104,7 +104,7 @@ function buildExpandedSocialCampaign(
   input: PromoteArticleInput,
   fullArticleUrl: string
 ): SocialPromotionCampaign {
-  const audience = identifyTargetAudience(input.title, input.content || "", input.category || "");
+  const audience = detectSearchIntentAndAudience(input.title, input.content || "", input.category || "");
 
   const hookTweet = `1/ ⚡ Most teams misunderstand ${input.title}. We ran it under live production stress testing for 90 days. Here are the 5 unvarnished takeaways: 🧵👇`;
   const tweets = [
@@ -113,13 +113,13 @@ function buildExpandedSocialCampaign(
     `4/ The hidden gotcha: Cold starts spike by ~400ms when cluster utilization drops below 10% unless you maintain warm worker pools.`,
     `5/ Key takeaway for ${audience.icpName}: ${audience.buyingTriggers[0] || "Ground setups with deterministic execution."}`,
   ];
-  const ctaTweet = `6/ 🚀 Full benchmarks, guide & charts:\n👉 ${fullArticleUrl}\n\n💡 Verified Partner Offer: ${audience.bestConvertingOffer.hookHeadline}\n👉 ${audience.bestConvertingOffer.affiliateUrl}`;
+  const ctaTweet = `6/ 🚀 Full benchmarks, guide & charts:\n👉 ${fullArticleUrl}\n\n💡 [Intent Score: ${audience.winningOffer.score}/10] Verified Partner Offer: ${audience.winningOffer.hookHeadline}\n👉 ${audience.winningOffer.affiliateUrl}`;
   const fullThreadText = [hookTweet, ...tweets, ctaTweet].join("\n\n---\n\n");
 
   const liHeadline = `Why Software Teams & ${audience.icpName} Are Rethinking ${input.title} in 2026`;
-  const liBody = `There is a massive gap between marketing announcements and production reality.\n\nOver the past 90 days, we benchmarked ${input.title} across 1.2M real-world requests. The findings:\n\n• 84% reduction in P95 latency\n• 5.8x lower memory utilization\n• Key Trigger: ${audience.buyingTriggers[0] || "Instant high-throughput scaling"}\n\nRead our complete research note and verified benchmark tables.`;
+  const liBody = `There is a massive gap between marketing announcements and production reality.\n\nOver the past 90 days, we benchmarked ${input.title} across 1.2M real-world requests. The findings:\n\n• 84% reduction in P95 latency\n• 5.8x lower memory utilization\n• Search Intent: ${audience.searchIntent} (${audience.funnelStage} Funnel)\n• Key Trigger: ${audience.buyingTriggers[0] || "Instant high-throughput scaling"}\n\nRead our complete research note and verified benchmark tables.`;
   const liTags = audience.recommendedChannels.twitterHashtags.length > 0 ? audience.recommendedChannels.twitterHashtags : ["#SoftwareEngineering", "#ArtificialIntelligence", "#Trading"];
-  const fullLinkedInText = `${liHeadline}\n\n${liBody}\n\n🔗 Full technical report, video walkthrough & charts:\n${fullArticleUrl}\n\n🎯 Partner Deal: ${audience.bestConvertingOffer.hookHeadline} (${audience.bestConvertingOffer.affiliateUrl})\n\n${liTags.join(" ")}`;
+  const fullLinkedInText = `${liHeadline}\n\n${liBody}\n\n🔗 Full technical report, video walkthrough & charts:\n${fullArticleUrl}\n\n🎯 Recommended Partner: ${audience.winningOffer.hookHeadline} (${audience.winningOffer.affiliateUrl})\n\n${liTags.join(" ")}`;
 
   // LinkedIn Carousel Slides
   const linkedInCarousel = {
