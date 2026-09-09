@@ -2,8 +2,8 @@ name: 24/7 Render Keep-Alive Pinger
 
 on:
   schedule:
-    # Runs every 10 minutes to prevent Render free instance from sleeping (Render sleeps after 15m)
-    - cron: "*/10 * * * *"
+    # Runs every 5 minutes around the clock to prevent Render free instance from ever idling or sleeping
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -11,15 +11,12 @@ jobs:
     name: Ping 24/7 Keep-Alive
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Production Server
+      - name: Ping Production Health & Core Pages
         run: |
-          echo "⚡ Sending keep-alive heartbeat to Render instance..."
-          HTTP_STATUS=$(curl -s -m 20 -o /dev/null -w "%{http_code}" "https://auto-ai-blog-web.onrender.com/api/health" || echo "200")
-          echo "HTTP Response Status: $HTTP_STATUS"
-          if [ "$HTTP_STATUS" -eq 200 ]; then
-            echo "✅ Server is awake, responsive, and active!"
-          else
-            echo "⚠️ Notice: Server returned status $HTTP_STATUS (pinging fallback root)"
-            curl -s -m 15 -I "https://auto-ai-blog-web.onrender.com/" | head -n 5 || echo "Root ping fallback completed"
-          fi
+          echo "⚡ Sending keep-alive heartbeat pulses to Render instance..."
+          curl -s -m 20 -o /dev/null -w "Health: %{http_code}\n" "https://auto-ai-blog-web.onrender.com/api/health" || echo "Health check pinged"
+          curl -s -m 20 -o /dev/null -w "Home: %{http_code}\n" "https://auto-ai-blog-web.onrender.com/" || echo "Home pinged"
+          curl -s -m 20 -o /dev/null -w "Community: %{http_code}\n" "https://auto-ai-blog-web.onrender.com/community" || echo "Community pinged"
+          curl -s -m 20 -o /dev/null -w "Store: %{http_code}\n" "https://auto-ai-blog-web.onrender.com/store" || echo "Store pinged"
+          echo "✅ All 24/7 keep-alive heartbeats dispatched successfully!"
           exit 0
