@@ -1,4 +1,4 @@
-﻿import type { Metadata, Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 import ExitIntentModal from "@/components/growth/ExitIntentModal";
@@ -58,7 +58,10 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "4rMlrKZ5JALf5abCB0z2hxmP7sqgeFEoQVzhWosm3b0",
+    google: [
+      "4rMlrKZ5JALf5abCB0z2hxmP7sqgeFEoQVzhWosm3b0",
+      "googlea87b1dee8479f0e4",
+    ],
   },
   manifest: "/manifest.json",
 };
@@ -79,6 +82,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="google-site-verification" content="4rMlrKZ5JALf5abCB0z2hxmP7sqgeFEoQVzhWosm3b0" />
+        <meta name="google-site-verification" content="googlea87b1dee8479f0e4" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
