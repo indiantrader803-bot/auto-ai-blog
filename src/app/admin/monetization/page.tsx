@@ -158,6 +158,36 @@ export default function MonetizationHubPage() {
   // Active Commercial & Contextual Affiliates Matrix
   const [affiliates, setAffiliates] = useState([
     {
+      id: "aff_delta",
+      keyword: "Delta Exchange / Crypto Derivatives & Options",
+      product: "Delta Exchange BTC/ETH Options (Code: YXQSZA)",
+      cpa: "15% Fee Revshare + High Volume Rebates",
+      clicks: 84,
+      earnings: "$240.00 (Est.)",
+      status: "ACTIVE",
+      badge: "CRYPTO LEADER",
+    },
+    {
+      id: "aff_coinswitch_pro",
+      keyword: "CoinSwitch Pro / Multi-Exchange Terminal",
+      product: "CoinSwitch Pro Direct INR Terminal (Code: NLfEITW)",
+      cpa: "Up to 50% Trading Fee Referral Bonus",
+      clicks: 76,
+      earnings: "$195.00 (Est.)",
+      status: "ACTIVE",
+      badge: "TOP INR EXCHANGE",
+    },
+    {
+      id: "aff_coinswitch_vip",
+      keyword: "CoinSwitch Pro VIP / Algorithmic Desk",
+      product: "CoinSwitch Pro VIP Terminal (Code: lUNNbKE)",
+      cpa: "VIP Fee Rebates & Trading Cashbacks",
+      clicks: 52,
+      earnings: "$130.00 (Est.)",
+      status: "ACTIVE",
+      badge: "VIP REWARDS",
+    },
+    {
       id: "aff_ckcapital",
       keyword: "CK Capital / Prop Trading",
       product: "CK Capital Fast Funding ($100k Account)",

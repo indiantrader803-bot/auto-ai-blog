@@ -1,4 +1,4 @@
-﻿import { prisma } from "../../prisma";
+import { prisma } from "../../prisma";
 import { getAllCatalogArticles } from "../../content/articles";
 
 export interface SwarmOptimizationReport {
@@ -146,16 +146,27 @@ export async function runCTROptimizerAgent(
  * Tests call-to-action button styles, text anchors, and shortlink positioning for maximum conversion.
  */
 export function runAffiliateOptimizerAgent(slug: string, title: string) {
-  const isFinance = /nifty|sensex|stock|market|trading|invest/i.test(`${slug} ${title}`);
+  const isCrypto = /crypto|bitcoin|btc|eth|ethereum|token|coin|blockchain|altcoin|defi/i.test(`${slug} ${title}`);
+  const isFinance = /nifty|sensex|stock|market|trading|invest|forex|futures/i.test(`${slug} ${title}`);
   const isHardware = /gpu|server|device|laptop|monitor|gadget|amazon/i.test(`${slug} ${title}`);
+
+  if (isCrypto) {
+    return {
+      slug,
+      recommendedShortlink: "https://www.delta.exchange/?code=YXQSZA",
+      bestButtonCta: "Trade Crypto Options with 100x Leverage (Code: YXQSZA) →",
+      targetKeyword: "Delta Exchange Crypto Derivatives",
+      estimatedCpcGain: "+68% Conversion with Crypto Traders",
+    };
+  }
 
   if (isFinance) {
     return {
       slug,
-      recommendedShortlink: "https://amzn.to/3UXVtTR",
-      bestButtonCta: "Open Free Demat Account & Claim Charts →",
-      targetKeyword: "Trading & Investment Platform",
-      estimatedCpcGain: "+42% Higher Click Conversion",
+      recommendedShortlink: "https://coinswitch.co/pro/signup?code=NLfEITW",
+      bestButtonCta: "Access CoinSwitch Pro Terminal with INR Deposits (Code: NLfEITW) →",
+      targetKeyword: "CoinSwitch Pro Trading Terminal",
+      estimatedCpcGain: "+54% Higher Conversion on Indian & Global Markets",
     };
   }
 

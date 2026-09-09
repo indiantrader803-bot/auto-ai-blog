@@ -7,7 +7,42 @@ export interface AffiliateRule {
 }
 
 export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
-  // 🏆 1. High-Converting Prop Trading Challenge Links
+  // 🏆 1. High-Converting Prop Trading & Crypto Exchange Links
+  {
+    keyword: "Delta Exchange",
+    url: "https://www.delta.exchange/?code=YXQSZA",
+    label: "Delta Exchange - Trade Crypto Derivatives & Options (Code: YXQSZA)",
+  },
+  {
+    keyword: "crypto options",
+    url: "https://www.delta.exchange/?code=YXQSZA",
+    label: "Delta Exchange BTC & ETH Options (Up to 100x Leverage, Code: YXQSZA)",
+  },
+  {
+    keyword: "crypto futures",
+    url: "https://www.delta.exchange/?code=YXQSZA",
+    label: "Delta Exchange Perpetual Futures with Low Fees (Code: YXQSZA)",
+  },
+  {
+    keyword: "CoinSwitch",
+    url: "https://coinswitch.co/pro/signup?code=NLfEITW",
+    label: "CoinSwitch Pro - Multi-Exchange Trading Terminal (Code: NLfEITW)",
+  },
+  {
+    keyword: "CoinSwitch Pro",
+    url: "https://coinswitch.co/pro/signup?code=NLfEITW",
+    label: "CoinSwitch Pro Trading Terminal (Lowest Fees & Instant INR Deposit, Code: NLfEITW)",
+  },
+  {
+    keyword: "crypto trading",
+    url: "https://coinswitch.co/pro/signup?code=lUNNbKE",
+    label: "Trade 100+ Crypto Pairs on CoinSwitch Pro (Code: lUNNbKE)",
+  },
+  {
+    keyword: "bitcoin",
+    url: "https://www.delta.exchange/?code=YXQSZA",
+    label: "Trade Bitcoin & Altcoins on Delta Exchange (Code: YXQSZA)",
+  },
   {
     keyword: "CK Capital",
     url: "https://app.ckcapital.co.uk/signup/ALPROP/",

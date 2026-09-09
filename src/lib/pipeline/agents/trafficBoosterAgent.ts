@@ -140,6 +140,9 @@ export async function runAutonomousFleetTrafficBooster() {
   ];
 
   const affiliateOffers = [
+    { name: "Delta Exchange Crypto Derivatives", url: "https://www.delta.exchange/?code=YXQSZA", payout: 95.0, slugMatch: ["crypto", "bitcoin", "options", "derivatives", "eth", "trading", "finance"] },
+    { name: "CoinSwitch Pro Trading Terminal", url: "https://coinswitch.co/pro/signup?code=NLfEITW", payout: 60.0, slugMatch: ["coinswitch", "crypto", "bitcoin", "inr", "invest", "trading", "indian"] },
+    { name: "CoinSwitch Pro VIP Rewards", url: "https://coinswitch.co/pro/signup?code=lUNNbKE", payout: 60.0, slugMatch: ["coinswitch", "crypto", "exchange", "terminal", "market"] },
     { name: "CK Capital Funded Prop Firm", url: "https://app.ckcapital.co.uk/signup/ALPROP/", payout: 80.0, slugMatch: ["capital", "ck", "prop", "forex", "trading", "scaling", "risk"] },
     { name: "Funded Trader Markets", url: "https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog", payout: 75.0, slugMatch: ["funded", "trader", "markets", "forex", "trading", "prop", "nifty", "future"] },
     { name: "MyFundedFutures (MFFU)", url: "https://mffu.com/f/85f1f73f30", payout: 55.0, slugMatch: ["future", "market", "nifty", "brent", "trading", "prop"] },

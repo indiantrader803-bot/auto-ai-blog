@@ -234,6 +234,46 @@ export default function SocialSidebar({
           <span className="text-[10px] font-bold text-amber-300">Active Deals</span>
         </div>
 
+        {/* Offer 0A: Delta Exchange */}
+        <a
+          href="https://www.delta.exchange/?code=YXQSZA"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block p-3.5 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-500/50 transition-all"
+        >
+          <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
+            <span className="group-hover:text-cyan-300 transition-colors">Delta Exchange (Options & Futures)</span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono">100x Lev</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-snug mb-2">
+            Trade Bitcoin &amp; Ethereum Options with 10% fee discount. Code: <strong className="text-cyan-300 font-mono">YXQSZA</strong>
+          </p>
+          <div className="flex items-center gap-1 text-[11px] text-cyan-400 group-hover:text-white font-bold">
+            <span>Trade Crypto Derivatives (YXQSZA)</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </a>
+
+        {/* Offer 0B: CoinSwitch Pro */}
+        <a
+          href="https://coinswitch.co/pro/signup?code=NLfEITW"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block p-3.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-500/50 transition-all"
+        >
+          <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
+            <span className="group-hover:text-emerald-300 transition-colors">CoinSwitch Pro Trading Terminal</span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">0.05% Fees</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-snug mb-2">
+            Trade 100+ crypto pairs with direct INR deposit. Code: <strong className="text-emerald-300 font-mono">NLfEITW</strong>
+          </p>
+          <div className="flex items-center gap-1 text-[11px] text-emerald-400 group-hover:text-white font-bold">
+            <span>Claim Pro Trading Terminal (NLfEITW)</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </a>
+
         {/* Offer 1: CK Capital */}
         <a
           href="https://app.ckcapital.co.uk/signup/ALPROP/"
