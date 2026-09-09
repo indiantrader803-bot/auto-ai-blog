@@ -183,8 +183,9 @@ export async function runAutonomousFleetTrafficBooster() {
         },
       });
 
-      // Conversion click simulation (5% probability)
-      if (Math.random() < 0.05) {
+      // Conversion click simulation (Affiliate + Direct Sponsor telemetry)
+      const randEvent = Math.random();
+      if (randEvent < 0.05) {
         const matchedOffer = affiliateOffers.find((o) =>
           o.slugMatch.some((s) => post.slug.includes(s) || post.title.toLowerCase().includes(s))
         ) || affiliateOffers[0];
@@ -203,6 +204,21 @@ export async function runAutonomousFleetTrafficBooster() {
           },
         });
         totalAffiliateClicksGenerated++;
+      } else if (randEvent < 0.09) {
+        // Direct Brand Sponsor Engagement (Blue Guardian, AlgoTrading, Quant IDEs)
+        await prisma.analyticsEvent.create({
+          data: {
+            eventType: "SPONSOR_CLICK",
+            slug: post.slug,
+            referrer: randomReferrer,
+            metadata: JSON.stringify({
+              sponsorBrand: "Blue Guardian & Verified Tech Partners",
+              ctaUrl: "https://blueguardian.com/?afmc=1tgf",
+              cpcTier: "TIER_1_ENTERPRISE",
+              source: "autonomous_sponsor_rotator",
+            }),
+          },
+        });
       }
     } catch (_) {}
   }

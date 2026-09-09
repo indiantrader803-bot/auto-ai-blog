@@ -593,8 +593,12 @@ export default async function BlogPostPage({ params }: Props) {
               )}
             </div>
 
-            {/* Community Discussion & Comments */}
-            <CommentsSection />
+            {/* Community Discussion & AI Expert Auto-Reply Agent */}
+            <CommentsSection
+              articleTitle={post.title}
+              articleSlug={cleanSlug}
+              articleExcerpt={post.excerpt}
+            />
 
             {/* Buy Me A Coffee Support Widget */}
             <BuyMeCoffee />
