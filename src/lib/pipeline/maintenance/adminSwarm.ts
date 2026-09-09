@@ -197,19 +197,49 @@ export async function optimizeMonetizationAndSponsors(): Promise<AgentMaintenanc
 export async function autoSyndicateRecentPosts(webhookUrl?: string): Promise<AgentMaintenanceReport> {
   const startTime = Date.now();
   try {
-    const catalog = getAllCatalogArticles();
-    const latestPost = catalog[0];
+    let latestPost: any = null;
+
+    try {
+      const dbPost = await prisma.post.findFirst({
+        where: { status: "PUBLISHED" },
+        orderBy: { publishedAt: "desc" },
+        include: { category: true, tags: { include: { tag: true } } },
+      });
+      if (dbPost) {
+        latestPost = {
+          title: dbPost.title,
+          excerpt: dbPost.excerpt,
+          slug: dbPost.slug,
+          category: dbPost.category?.name || "Trading",
+          tags: dbPost.tags.map((t: any) => t.tag.name),
+          content: dbPost.content,
+        };
+      }
+    } catch (_) {}
+
+    if (!latestPost) {
+      const catalog = getAllCatalogArticles();
+      const first = catalog[0];
+      latestPost = {
+        title: first.title,
+        excerpt: first.excerpt,
+        slug: first.slug,
+        category: first.category.name,
+        tags: first.tags,
+        content: first.content,
+      };
+    }
 
     const campaign = await runPromotionAgent({
       title: latestPost.title,
       excerpt: latestPost.excerpt,
       slug: latestPost.slug,
-      category: latestPost.category.name,
+      category: latestPost.category,
       tags: latestPost.tags,
       content: latestPost.content,
     });
 
-    let webhookStatus = "Simulated Broadcast Active";
+    let webhookStatus = "Simulated Multi-Network Broadcast Dispatched";
     if (webhookUrl) {
       const res = await dispatchSocialWebhook(
         webhookUrl,
@@ -224,9 +254,11 @@ export async function autoSyndicateRecentPosts(webhookUrl?: string): Promise<Age
       agentName: "Viral Social Syndication & Broadcaster Agent",
       status: "SUCCESS",
       timestamp: new Date().toISOString(),
-      summary: `Synthesized multi-platform campaign for "${latestPost.title}" across X (Twitter), LinkedIn, Reddit, WhatsApp, and Newsletters. ${webhookStatus}.`,
+      summary: `Targeted ICP: ${campaign.audienceProfile?.icpName || "Quant Trader"}. Synthesized & Broadcast multi-channel campaign for "${latestPost.title}" across X (Twitter), LinkedIn, Reddit (${campaign.redditDiscussion.suggestedSubreddits.join(", ")}), Pinterest, and Newsletters. ${webhookStatus}.`,
       details: {
         targetArticle: latestPost.title,
+        targetAudience: campaign.audienceProfile?.icpName,
+        matchedOffer: campaign.audienceProfile?.bestConvertingOffer.partnerName,
         tweetCount: campaign.twitterThread.tweets.length + 2,
         subreddits: campaign.redditDiscussion.suggestedSubreddits,
         durationSeconds: duration,
