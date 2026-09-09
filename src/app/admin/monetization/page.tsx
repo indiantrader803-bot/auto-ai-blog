@@ -158,94 +158,160 @@ export default function MonetizationHubPage() {
   // Active Commercial & Contextual Affiliates Matrix
   const [affiliates, setAffiliates] = useState([
     {
+      id: "aff_po_01",
+      keyword: "Pocket Option / Binary Options & Quick Trading",
+      product: "Pocket Option Quick Trading Terminal (Code: 50START)",
+      url: "https://v4.lands-po.com/en/land/001-QT-02?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+      cpa: "50% Deposit Bonus + Up to 80% Revshare",
+      clicks: 112,
+      earnings: "$350.00 (Est.)",
+      status: "ACTIVE",
+      badge: "50% BONUS",
+      promoCode: "50START",
+    },
+    {
+      id: "aff_po_02",
+      keyword: "Pocket Option / Copy Trading & Signals",
+      product: "Pocket Option Social Copy Trading Terminal (Code: 50START)",
+      url: "https://v4.lands-po.com/en/land/009-QT-09?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+      cpa: "50% Deposit Bonus + Copy Master Traders",
+      clicks: 94,
+      earnings: "$290.00 (Est.)",
+      status: "ACTIVE",
+      badge: "COPY TRADING",
+      promoCode: "50START",
+    },
+    {
+      id: "aff_po_03",
+      keyword: "Pocket Option / Free $10k Demo Account",
+      product: "Practice with $10,000 Free Refillable Demo (Code: 50START)",
+      url: "https://v4.lands-po.com/en/land/009-QT-14?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+      cpa: "Zero-Risk Demo + 50% Instant Match",
+      clicks: 86,
+      earnings: "$265.00 (Est.)",
+      status: "ACTIVE",
+      badge: "FREE DEMO",
+      promoCode: "50START",
+    },
+    {
+      id: "aff_po_04",
+      keyword: "Pocket Option / Instant Payouts & Crypto/UPI",
+      product: "Pocket Option Fast Withdrawals (Code: 50START)",
+      url: "https://v4.lands-po.com/en/land/018-QT-01?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START",
+      cpa: "Zero Fee Instant Crypto/UPI Withdrawals",
+      clicks: 65,
+      earnings: "$210.00 (Est.)",
+      status: "ACTIVE",
+      badge: "FAST PAYOUTS",
+      promoCode: "50START",
+    },
+    {
       id: "aff_delta",
       keyword: "Delta Exchange / Crypto Derivatives & Options",
-      product: "Delta Exchange BTC/ETH Options (Code: YXQSZA)",
+      product: "Delta Exchange BTC/ETH Options Terminal (Code: YXQSZA)",
+      url: "https://www.delta.exchange/?code=YXQSZA",
       cpa: "15% Fee Revshare + High Volume Rebates",
       clicks: 84,
       earnings: "$240.00 (Est.)",
       status: "ACTIVE",
       badge: "CRYPTO LEADER",
+      promoCode: "YXQSZA",
     },
     {
       id: "aff_coinswitch_pro",
-      keyword: "CoinSwitch Pro / Multi-Exchange Terminal",
-      product: "CoinSwitch Pro Direct INR Terminal (Code: NLfEITW)",
+      keyword: "CoinSwitch Pro / Multi-Exchange INR Terminal",
+      product: "CoinSwitch Pro Direct INR Trading Desk (Code: NLfEITW)",
+      url: "https://coinswitch.co/pro/signup?code=NLfEITW",
       cpa: "Up to 50% Trading Fee Referral Bonus",
       clicks: 76,
       earnings: "$195.00 (Est.)",
       status: "ACTIVE",
       badge: "TOP INR EXCHANGE",
+      promoCode: "NLfEITW",
     },
     {
       id: "aff_coinswitch_vip",
       keyword: "CoinSwitch Pro VIP / Algorithmic Desk",
-      product: "CoinSwitch Pro VIP Terminal (Code: lUNNbKE)",
+      product: "CoinSwitch Pro VIP Trading Terminal (Code: lUNNbKE)",
+      url: "https://coinswitch.co/pro/signup?code=lUNNbKE",
       cpa: "VIP Fee Rebates & Trading Cashbacks",
       clicks: 52,
       earnings: "$130.00 (Est.)",
       status: "ACTIVE",
       badge: "VIP REWARDS",
+      promoCode: "lUNNbKE",
     },
     {
       id: "aff_ckcapital",
       keyword: "CK Capital / Prop Trading",
-      product: "CK Capital Fast Funding ($100k Account)",
+      product: "CK Capital Fast Funding ($100k-$200k Account)",
+      url: "https://app.ckcapital.co.uk/signup/ALPROP/",
       cpa: "15% - 20% RevShare",
       clicks: 68,
       earnings: "$180.00 (Est.)",
       status: "ACTIVE",
       badge: "HOT DEAL",
+      promoCode: "ALPROP",
     },
     {
       id: "aff_ftm",
       keyword: "Funded Trader Markets / Challenge",
       product: "Funded Trader Markets Evaluation ($200k)",
+      url: "https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog",
       cpa: "15% Commission",
       clicks: 54,
       earnings: "$145.00 (Est.)",
       status: "ACTIVE",
       badge: "FEATURED",
+      promoCode: "SMARTMAG",
     },
     {
       id: "aff_bg",
       keyword: "Blue Guardian / Guardian Shield",
       product: "Blue Guardian Unlimited Evaluation",
+      url: "https://blueguardian.com",
       cpa: "15% Payout",
       clicks: 42,
       earnings: "$110.00 (Est.)",
       status: "ACTIVE",
       badge: "VERIFIED",
+      promoCode: "GUARDIAN",
     },
     {
       id: "aff_mffu",
       keyword: "MyFundedFutures / Futures Prop",
       product: "MyFundedFutures Prop Evaluation",
+      url: "https://mffu.com/f/85f1f73f30",
       cpa: "$35.00 CPA",
       clicks: 35,
       earnings: "$95.00 (Est.)",
       status: "ACTIVE",
       badge: "VERIFIED",
+      promoCode: "FUTURES2026",
     },
     {
       id: "aff_amazon",
-      keyword: "AI Hardware / RTX 5090 / Trading Workstations",
+      keyword: "AI Hardware / RTX 5090 / Workstations",
       product: "Amazon Associates Tech & Creator Showcase",
+      url: "https://www.amazon.com",
       cpa: "3% - 5% Commission",
       clicks: 28,
       earnings: "$62.50 (Est.)",
       status: "ACTIVE",
       badge: "AMAZON TAG",
+      promoCode: "AMAZON",
     },
     {
       id: "aff_tv",
       keyword: "TradingView / Technicals",
       product: "TradingView Pro Charts & Indicators",
+      url: "https://www.tradingview.com",
       cpa: "$30.00 per subscription",
       clicks: 12,
       earnings: "$30.00 (Est.)",
       status: "ACTIVE",
       badge: "CHARTS",
+      promoCode: "PROTRADER",
     },
   ]);
 
@@ -666,26 +732,61 @@ export default function MonetizationHubPage() {
             <table className="w-full text-left text-xs">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-                  <th className="pb-3">Matching Keywords</th>
-                  <th className="pb-3">Product / Network</th>
+                  <th className="pb-3">Matching Keywords &amp; Offer</th>
+                  <th className="pb-3">Promo Code</th>
                   <th className="pb-3">Payout Tier</th>
-                  <th className="pb-3">Clicks</th>
-                  <th className="pb-3">Est. Earnings</th>
-                  <th className="pb-3">Status</th>
+                  <th className="pb-3">Tracked Clicks</th>
+                  <th className="pb-3">Est. Value</th>
+                  <th className="pb-3">Affiliate Target URL</th>
+                  <th className="pb-3 text-right">Live Link</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
-                {affiliates.map((aff) => (
+                {affiliates.map((aff: any) => (
                   <tr key={aff.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3.5 font-bold text-slate-900 dark:text-white">{aff.keyword}</td>
-                    <td className="py-3.5 text-slate-600 dark:text-slate-300">{aff.product}</td>
-                    <td className="py-3.5 text-emerald-600 dark:text-emerald-400 font-bold">{aff.cpa}</td>
-                    <td className="py-3.5 text-slate-500">{aff.clicks} clicks</td>
-                    <td className="py-3.5 font-serif font-bold text-slate-900 dark:text-white">{aff.earnings}</td>
+                    <td className="py-3.5 max-w-[220px]">
+                      <div className="font-bold text-slate-900 dark:text-white truncate">{aff.keyword}</div>
+                      <div className="text-[11px] text-slate-500 truncate">{aff.product}</div>
+                    </td>
                     <td className="py-3.5">
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                        {aff.status}
-                      </span>
+                      {aff.promoCode ? (
+                        <span className="px-2 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-500 font-mono text-[10px] font-bold">
+                          {aff.promoCode}
+                        </span>
+                      ) : (
+                        <span className="text-slate-400 text-[10px]">-</span>
+                      )}
+                    </td>
+                    <td className="py-3.5 text-emerald-600 dark:text-emerald-400 font-bold">{aff.cpa}</td>
+                    <td className="py-3.5 text-slate-500">
+                      <span className="font-mono font-bold text-slate-900 dark:text-white">{aff.clicks}</span> clicks
+                    </td>
+                    <td className="py-3.5 font-serif font-bold text-slate-900 dark:text-white">{aff.earnings}</td>
+                    <td className="py-3.5 max-w-[200px]">
+                      {aff.url ? (
+                        <span className="font-mono text-[10px] text-indigo-500 truncate block" title={aff.url}>
+                          {aff.url}
+                        </span>
+                      ) : (
+                        <span className="text-slate-400 text-[10px]">Auto-injected</span>
+                      )}
+                    </td>
+                    <td className="py-3.5 text-right">
+                      {aff.url ? (
+                        <a
+                          href={aff.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-600 dark:text-indigo-400 font-bold text-[10px] border border-indigo-200 dark:border-indigo-800 transition-all"
+                        >
+                          <span>Test URL</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      ) : (
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                          {aff.status}
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))}
