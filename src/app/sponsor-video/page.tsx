@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Youtube, DollarSign, CheckCircle, ShieldCheck, Sparkles, Send, Copy, ArrowRight, Eye, Play, Award } from "lucide-react";
+import { detectUserCurrency } from "@/lib/utils";
 
 export default function SponsorVideoPage() {
   const [currency, setCurrency] = useState<"USD" | "INR">("USD");
@@ -15,6 +16,10 @@ export default function SponsorVideoPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
+
+  useEffect(() => {
+    setCurrency(detectUserCurrency());
+  }, []);
 
   const TIERS = [
     {

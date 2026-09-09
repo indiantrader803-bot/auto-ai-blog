@@ -70,3 +70,39 @@ export function truncateText(text: string, maxLength: number): string {
   if (!text || text.length <= maxLength) return text || "";
   return text.slice(0, maxLength).trim() + "...";
 }
+
+/**
+ * Automatically detects whether the user is located in India or Global
+ * Returns "INR" for Indian users and "USD" for all other international visitors.
+ */
+export function detectUserCurrency(): "INR" | "USD" {
+  if (typeof window === "undefined") return "USD";
+  try {
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    const languages = navigator.languages || [navigator.language || ""];
+    
+    // Check Indian timezones (Asia/Kolkata, Asia/Calcutta, IST)
+    if (
+      timeZone.includes("Calcutta") ||
+      timeZone.includes("Kolkata") ||
+      timeZone === "Asia/Kolkata" ||
+      timeZone === "Asia/Calcutta" ||
+      timeZone === "IST"
+    ) {
+      return "INR";
+    }
+
+    // Check language locales (en-IN, hi, hi-IN, ta-IN, te-IN, bn-IN, etc.)
+    const isIndianLocale = languages.some(
+      (lang) =>
+        lang.toLowerCase().includes("-in") ||
+        lang.toLowerCase() === "hi" ||
+        lang.toLowerCase().startsWith("hi-")
+    );
+    if (isIndianLocale) {
+      return "INR";
+    }
+  } catch (_) {}
+
+  return "USD";
+}

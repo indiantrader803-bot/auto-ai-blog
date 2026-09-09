@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
@@ -20,6 +20,7 @@ import {
   Copy,
   Check,
 } from "lucide-react";
+import { detectUserCurrency } from "@/lib/utils";
 
 export default function DigitalProductsStorePage() {
   const [products, setProducts] = useState<any[]>([]);
@@ -39,6 +40,12 @@ export default function DigitalProductsStorePage() {
   const [copiedUpi, setCopiedUpi] = useState(false);
 
   useEffect(() => {
+    const userCurr = detectUserCurrency();
+    setCurrency(userCurr);
+    if (userCurr === "INR") {
+      setPaymentMethod("UPI");
+    }
+
     fetch("/api/store/products")
       .then((res) => res.json())
       .then((data) => {

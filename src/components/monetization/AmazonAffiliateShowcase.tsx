@@ -1,6 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { ShoppingBag, Star, ExternalLink, ShieldCheck, Zap, ArrowRight, Flame } from "lucide-react";
+import { detectUserCurrency } from "@/lib/utils";
 
 export interface AmazonProduct {
   id: string;
@@ -72,6 +74,12 @@ export const TOP_AMAZON_PICKS: AmazonProduct[] = [
 ];
 
 export default function AmazonAffiliateShowcase() {
+  const [userCurrency, setUserCurrency] = useState<"USD" | "INR">("USD");
+
+  useEffect(() => {
+    setUserCurrency(detectUserCurrency());
+  }, []);
+
   const handleAmazonClick = (product: AmazonProduct) => {
     try {
       fetch("/api/analytics/track", {
@@ -172,8 +180,17 @@ export default function AmazonAffiliateShowcase() {
             {/* Price & CTA */}
             <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
               <div>
-                <div className="text-sm font-black text-amber-300 font-mono">{product.priceUSD}</div>
-                <div className="text-[10px] text-slate-400 font-mono">{product.priceINR}</div>
+                {userCurrency === "INR" ? (
+                  <>
+                    <div className="text-sm font-black text-amber-300 font-mono">{product.priceINR}</div>
+                    <div className="text-[10px] text-slate-400 font-mono">{product.priceUSD} USD</div>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-sm font-black text-amber-300 font-mono">{product.priceUSD}</div>
+                    <div className="text-[10px] text-slate-400 font-mono">{product.priceINR}</div>
+                  </>
+                )}
               </div>
 
               <a
