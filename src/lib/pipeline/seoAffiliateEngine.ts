@@ -9,6 +9,11 @@ export interface AffiliateRule {
 export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
   // 🏆 1. High-Converting Prop Trading Challenge Links
   {
+    keyword: "CK Capital",
+    url: "https://app.ckcapital.co.uk/signup/ALPROP/",
+    label: "CK Capital Funded Prop Trading (Code: ALPROP)",
+  },
+  {
     keyword: "prop firm",
     url: "https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog",
     label: "Funded Trader Markets - Trade Up to $200k Capital with Rapid Scaling",
@@ -19,14 +24,19 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
     label: "Funded Trader Markets (Instant Evaluation & Scaling)",
   },
   {
+    keyword: "capital scaling",
+    url: "https://app.ckcapital.co.uk/signup/ALPROP/",
+    label: "CK Capital Institutional Capital Program (Code: ALPROP)",
+  },
+  {
     keyword: "futures trading",
     url: "https://mffu.com/f/85f1f73f30",
     label: "MyFundedFutures (90% Profit Split & Fast Payouts)",
   },
   {
     keyword: "funded account",
-    url: "https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog",
-    label: "Get Funded on Funded Trader Markets (Zero Time Limits)",
+    url: "https://app.ckcapital.co.uk/signup/ALPROP/",
+    label: "CK Capital $200k Funded Trading Challenge (Code: ALPROP)",
   },
   {
     keyword: "forex trading",
@@ -35,8 +45,13 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
   },
   {
     keyword: "currency trading",
-    url: "https://blueguardian.com/?afmc=1tgf",
-    label: "Blue Guardian $400k Forex & CFD Challenge",
+    url: "https://app.ckcapital.co.uk/signup/ALPROP/",
+    label: "CK Capital FX & Derivatives Capital Program",
+  },
+  {
+    keyword: "risk management",
+    url: "https://app.ckcapital.co.uk/signup/ALPROP/",
+    label: "CK Capital Advanced Trader Risk Architecture",
   },
   {
     keyword: "technical analysis",
@@ -45,8 +60,8 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
   },
   {
     keyword: "breakout levels",
-    url: "https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog",
-    label: "Execute Breakout Trades with Funded Trader Markets Scaling",
+    url: "https://app.ckcapital.co.uk/signup/ALPROP/",
+    label: "Execute Live Breakouts with CK Capital Funding (Code: ALPROP)",
   },
 
   // 📦 2. Direct Amazon Verified Shortlinks (autoaiblog-21)

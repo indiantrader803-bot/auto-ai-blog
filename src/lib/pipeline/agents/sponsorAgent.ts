@@ -13,6 +13,18 @@ export interface SponsorDeal {
 
 export const VERIFIED_SPONSORS: SponsorDeal[] = [
   {
+    id: "sp_ckcapital",
+    sponsorName: "CK Capital Funded Prop Program",
+    badge: "FEATURED UK & GLOBAL PARTNER",
+    tagline: "Get Funded with Institutional Risk Systems & Same-Day Payout Clearance",
+    description: "Industry-leading evaluation passes, 10% direct affiliate revshare, fast scaling up to $200k, and rapid trader qualification.",
+    ctaText: "Get Funded with CK Capital (Code: ALPROP) →",
+    ctaUrl: "https://app.ckcapital.co.uk/signup/ALPROP/",
+    discountCode: "ALPROP",
+    categoryMatch: ["Indian Markets", "US Markets", "Forex & Currencies", "Commodities", "Finance & Markets", "Trading"],
+    cpcTier: "ULTRA",
+  },
+  {
     id: "sp_ftm",
     sponsorName: "Funded Trader Markets",
     badge: "FEATURED PRO TRADER PARTNER",

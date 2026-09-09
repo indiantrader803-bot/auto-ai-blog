@@ -234,7 +234,27 @@ export default function SocialSidebar({
           <span className="text-[10px] font-bold text-amber-300">Active Deals</span>
         </div>
 
-        {/* Offer 1: Funded Trader Markets */}
+        {/* Offer 1: CK Capital */}
+        <a
+          href="https://app.ckcapital.co.uk/signup/ALPROP/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block p-3.5 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-500/50 transition-all"
+        >
+          <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
+            <span className="group-hover:text-amber-300 transition-colors">CK Capital Funded Prop</span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">10% Split</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-snug mb-2">
+            Institutional UK &amp; global trading accounts. Code: <strong className="text-amber-300 font-mono">ALPROP</strong>
+          </p>
+          <div className="flex items-center gap-1 text-[11px] text-amber-400 group-hover:text-white font-bold">
+            <span>Claim CK Capital Account (ALPROP)</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </a>
+
+        {/* Offer 2: Funded Trader Markets */}
         <a
           href="https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog"
           target="_blank"
