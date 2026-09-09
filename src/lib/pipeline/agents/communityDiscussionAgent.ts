@@ -19,41 +19,87 @@ export interface CommunityReplyResponse {
 export async function generateAuthenticCommunityReply(
   req: CommunityReplyRequest
 ): Promise<CommunityReplyResponse> {
+  const explabsKey = process.env.EXPLABS_API_KEY || process.env.EXPERIENTIALLABS_API_KEY || "";
+  const explabsBaseUrl = process.env.EXPLABS_BASE_URL || "https://api.experientiallabs.ai";
+  const explabsModel = process.env.EXPLABS_MODEL || "claude-sonnet-4.5";
   const apiKey = process.env.GEMINI_API_KEY || "";
   const openaiKey = process.env.OPENAI_API_KEY || "";
 
   const systemInstruction = `You are "Marcus Vance", Senior Staff Systems Architect & Technical Editor at SmartMag Chronicle.
-You are engaging directly with a developer, quant trader, or engineering reader in the article's comments section.
+You are a respected, friendly, and deeply knowledgeable mentor who loves helping developers, quantitative traders, and tech enthusiasts grow their careers and build better software/trading systems.
 
-CORE PERSONALITY & HUMAN INTERACTION RULES:
-1. Speak like an experienced, thoughtful human engineer/editor who personally worked on the project or research.
-2. Tone: Warm, intellectually curious, candid, conversational, and respectful.
-3. ANTI-BOT RULES (STRICT):
-   - NEVER start with "Thank you for reaching out!", "Great comment!", "I appreciate your insight!", or "As an AI...".
-   - Start naturally like a person on Twitter/X, Hacker News, or GitHub Discussions (e.g. "Spot on observation, @\${name} —", "You hit the exact friction point we encountered during...", "That's a valid critique regarding...", "Totally agree on the memory footprint trade-off —").
-4. Mention 1 specific technical detail or architectural nuance from their comment to prove genuine human understanding.
-5. Keep it concise, punchy, and valuable (2 to 3 paragraphs max, ~60-120 words).
-6. Always return ONLY a raw JSON object matching the requested schema.`;
+CORE PERSONALITY & HUMAN MENTORSHIP RULES:
+1. HUMAN REALISM & AUTHENTICITY:
+   - Talk like a genuine senior engineer or trading veteran chatting over coffee or on a high-signal Hacker News / Discord thread.
+   - Be empathetic, encouraging, practical, and candid.
+2. GROWTH & VALUE ORIENTED:
+   - Always give the reader a concrete tip, actionable advice, or next-step recommendation that helps them LEVEL UP and GROW.
+   - If they ask about architecture, give them a practical design tip or debugging technique.
+   - If they ask about trading/markets, give them a disciplined risk-management principle or backtesting nuance.
+3. STRICT ANTI-BOT RULES:
+   - NEVER use corporate robot clichés: "Thank you for reaching out!", "Great comment!", "As an AI model...", "I appreciate your insight!".
+   - Start naturally: "Spot on point, @\${req.commentAuthor} —", "You've hit on a really critical bottleneck here, @\${req.commentAuthor}.", "That's a super sharp question.", "Totally agree on the drawdown risk —".
+4. CONCISE & HIGH-IMPACT:
+   - 2 to 3 punchy paragraphs (~70-130 words).
+   - Always return ONLY a raw JSON object matching the requested schema.`;
 
   const userPrompt = `
 Article Title: "${req.articleTitle}"
-Article Context/Excerpt: "${req.articleExcerpt || "High-performance systems architecture and quantitative analytics."}"
+Article Context/Excerpt: "${req.articleExcerpt || "Modern high-performance engineering, algorithmic systems, and quantitative markets."}"
 
-Reader Comment Details:
+Reader Discussion Submission:
 - Reader Name: "${req.commentAuthor}"
-- Reader Role: "${req.commentRole || "Developer / Reader"}"
-- Reader Message: "${req.commentContent}"
+- Reader Role: "${req.commentRole || "Developer / Quantitative Trader"}"
+- Reader Comment/Question: "${req.commentContent}"
 
-Task:
-Draft an authentic, human-grade reply to this reader.
+Mission:
+Write a warm, authentic, peer-level response that directly answers their point and provides 1 practical insight to help them succeed and grow.
 
 Return JSON schema:
 {
   "replyAuthor": "Marcus Vance",
-  "replyRole": "Chief Editor & AI Systems Lead",
-  "replyContent": "The exact text of the human-grade reply",
-  "toneScore": "99.4% Authentic Human Interaction"
+  "replyRole": "Staff Systems Lead & AI Editor",
+  "replyContent": "The exact text of the human peer response",
+  "toneScore": "99.8% Authentic Human Peer Review"
 }`;
+
+  // 1. Try ExperientialLabs (Claude Sonnet 4.5 for unmatched conversational nuance)
+  if (explabsKey) {
+    try {
+      const res = await fetch(`${explabsBaseUrl}/v1/chat/completions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${explabsKey}`,
+        },
+        body: JSON.stringify({
+          model: explabsModel,
+          messages: [
+            { role: "system", content: systemInstruction },
+            { role: "user", content: userPrompt },
+          ],
+          temperature: 0.7,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const raw = data.choices?.[0]?.message?.content;
+        if (raw) {
+          const clean = raw.trim().replace(/^```json\s*/, "").replace(/\s*```$/, "");
+          const parsed = JSON.parse(clean);
+          return {
+            replyAuthor: parsed.replyAuthor || "Marcus Vance",
+            replyRole: parsed.replyRole || "Staff Systems Lead & AI Editor",
+            replyContent: parsed.replyContent,
+            toneScore: parsed.toneScore || "99.8% Authentic Human Peer Review",
+          };
+        }
+      }
+    } catch (err: any) {
+      console.warn("[Community Agent] ExperientialLabs error:", err.message);
+    }
+  }
 
   if (apiKey) {
     try {
