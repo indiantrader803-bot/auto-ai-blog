@@ -6,6 +6,7 @@ import {
   auditAndRescueLowTrafficArticles,
   runAutonomousFleetTrafficBooster,
 } from "../agents/trafficBoosterAgent";
+import { runAffiliateConversionFetcherAgent } from "../agents/affiliateTrackerAgent";
 import { runBlogPipeline } from "../orchestrator";
 import { getAllCatalogArticles } from "../../content/articles";
 
@@ -381,6 +382,26 @@ export async function runFullAutonomousMaintenanceSwarm(options: {
   // 5. Monetization & High-CPA Sponsor Optimizer
   const monetizationReport = await optimizeMonetizationAndSponsors();
   fleetReports.push(monetizationReport);
+
+  // 5b. Agentic Affiliate Conversion & Purchase Data Fetcher Agent
+  try {
+    const affiliateFetchReport = await runAffiliateConversionFetcherAgent();
+    fleetReports.push({
+      agentName: "Agentic Affiliate Conversion & Purchase Telemetry Fetcher",
+      status: "SUCCESS",
+      timestamp: new Date().toISOString(),
+      summary: `Affiliate sync completed across ${affiliateFetchReport.totalPlatformsMonitored} partner platforms (${affiliateFetchReport.totalActiveLinks} active URLs). Tracked ${affiliateFetchReport.totalPurchasesAndConversions} converted purchases ($${affiliateFetchReport.totalCommissionEarnedUSD.toFixed(2)} / ₹${affiliateFetchReport.totalCommissionEarnedINR.toLocaleString("en-IN")} commission).`,
+      details: affiliateFetchReport,
+    });
+  } catch (affErr: any) {
+    fleetReports.push({
+      agentName: "Agentic Affiliate Conversion & Purchase Telemetry Fetcher",
+      status: "WARNING",
+      timestamp: new Date().toISOString(),
+      summary: `Affiliate sync notice: ${affErr.message}`,
+      details: { error: affErr.message },
+    });
+  }
 
   // 6. Viral Social Syndication Agent
   const syndicationReport = await autoSyndicateRecentPosts(options.webhookUrl);

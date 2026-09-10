@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   DollarSign,
   TrendingUp,
+  ArrowUpRight,
   CreditCard,
   Sparkles,
   CheckCircle2,
@@ -689,6 +691,34 @@ export default function MonetizationHubPage() {
       {/* TAB 3: Contextual Affiliates */}
       {activeTab === "affiliates" && (
         <div className="space-y-6">
+          {/* Direct Link to Dedicated Affiliate Intelligence Dashboard */}
+          <div className="p-5 rounded-3xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900/60 border border-indigo-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 flex items-center justify-center font-bold shrink-0">
+                <TrendingUp className="w-5 h-5 text-indigo-400" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                  <span>Affiliate Intelligence &amp; Conversion Command Center</span>
+                  <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    Agentic Sync Active
+                  </span>
+                </h3>
+                <p className="text-xs text-slate-300 mt-0.5">
+                  View URL-by-URL converted purchases, conversion rate (CR%), earnings per click (EPC), and daily network sync.
+                </p>
+              </div>
+            </div>
+
+            <Link
+              href="/admin/affiliates"
+              className="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 shrink-0 shadow-md shadow-indigo-600/20 transition-all w-fit"
+            >
+              <span>Open Dedicated Conversion Tracker</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </div>
+
           {/* Add Form */}
           <form
             onSubmit={handleAddAffiliate}

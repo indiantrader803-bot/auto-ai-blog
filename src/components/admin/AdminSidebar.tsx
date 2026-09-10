@@ -71,6 +71,12 @@ export default function AdminSidebar() {
       icon: DollarSign,
     },
     {
+      href: "/admin/affiliates",
+      label: "Affiliate Tracker & CR",
+      shortLabel: "Affiliates",
+      icon: TrendingUp,
+    },
+    {
       href: "/admin/posts",
       label: "Posts & Content",
       shortLabel: "Posts",
