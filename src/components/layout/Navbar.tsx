@@ -24,6 +24,7 @@ import {
 import SearchModal from "./SearchModal";
 import LanguageSelector from "./LanguageSelector";
 import PushNotificationBanner from "../common/PushNotificationBanner";
+import SubNavbarHeroBanner from "./SubNavbarHeroBanner";
 
 export interface NavCategory {
   id?: string;
@@ -39,6 +40,14 @@ interface NavbarProps {
     slug: string;
   };
   trendingCategories?: NavCategory[];
+  showSubHeroBanner?: boolean;
+  bannerBadge?: string;
+  bannerTitle?: string;
+  bannerSubLabel?: string;
+  bannerPrimaryText?: string;
+  bannerPrimaryLink?: string;
+  bannerSecondaryText?: string;
+  bannerSecondaryLink?: string;
 }
 
 const DEFAULT_CATEGORIES: NavCategory[] = [
@@ -51,7 +60,18 @@ const DEFAULT_CATEGORIES: NavCategory[] = [
   { name: "Telecom & 5G", slug: "telecom-and-connectivity", isHot: false },
 ];
 
-export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps) {
+export default function Navbar({
+  hotTopicPost,
+  trendingCategories,
+  showSubHeroBanner = true,
+  bannerBadge,
+  bannerTitle,
+  bannerSubLabel,
+  bannerPrimaryText,
+  bannerPrimaryLink,
+  bannerSecondaryText,
+  bannerSecondaryLink,
+}: NavbarProps) {
   const [isDark, setIsDark] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -359,6 +379,19 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
           </div>
         )}
       </header>
+
+      {/* High-Impact Vivid Orange Sub-Navbar Top Hero Section (Matches Reference Image) */}
+      {showSubHeroBanner && (
+        <SubNavbarHeroBanner
+          badgeText={bannerBadge}
+          title={bannerTitle}
+          subLabel={bannerSubLabel}
+          primaryButtonText={bannerPrimaryText}
+          primaryButtonLink={bannerPrimaryLink}
+          secondaryButtonText={bannerSecondaryText}
+          secondaryButtonLink={bannerSecondaryLink}
+        />
+      )}
     </>
   );
 }
