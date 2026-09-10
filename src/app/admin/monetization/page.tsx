@@ -77,6 +77,28 @@ export default function MonetizationHubPage() {
       .then((res) => res.json())
       .then((data) => setRealMetrics(data))
       .catch(() => {});
+
+    fetch("/api/admin/affiliates")
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success && json.programs && json.programs.length > 0) {
+          const mapped = json.programs.map((p: any) => ({
+            id: p.id,
+            keyword: `${p.platform} / ${p.category}`,
+            product: p.name,
+            url: p.targetUrl,
+            cpa: p.payoutModel,
+            clicks: p.clicks,
+            earnings: `$${p.totalEarningsUSD.toFixed(2)} (Real DB)`,
+            status: p.payoutStatus || "ACTIVE",
+            badge: p.badge || "VERIFIED",
+            promoCode: p.promoCode || "",
+          }));
+          setAffiliates(mapped);
+        }
+      })
+      .catch(() => {});
+
     fetchPayoutSettings();
   }, []);
 
