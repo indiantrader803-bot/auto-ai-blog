@@ -385,7 +385,7 @@ export async function runFullAutonomousMaintenanceSwarm(options: {
 
   // 5b. Agentic Affiliate Conversion & Purchase Data Fetcher Agent
   try {
-    const affiliateFetchReport = await runAffiliateConversionFetcherAgent();
+    const { report: affiliateFetchReport } = await runAffiliateConversionFetcherAgent();
     fleetReports.push({
       agentName: "Agentic Affiliate Conversion & Purchase Telemetry Fetcher",
       status: "SUCCESS",
