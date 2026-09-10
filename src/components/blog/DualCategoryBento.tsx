@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Cpu, Code2, ArrowRight } from "lucide-react";
+import ArticleImage from "./ArticleImage";
 
 interface DualCategoryBentoProps {
   category1: {
@@ -47,13 +48,11 @@ export default function DualCategoryBento({ category1, category2 }: DualCategory
         {/* Hero Card */}
         {heroPost && (
           <div className="group relative rounded-2xl overflow-hidden aspect-[16/10] bg-slate-900">
-            {heroPost.featuredImage && (
-              <img
-                src={heroPost.featuredImage}
-                alt={heroPost.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-            )}
+            <ArticleImage
+              src={heroPost.featuredImage}
+              alt={heroPost.imageAlt || heroPost.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent p-5 flex flex-col justify-end">
               <h4 className="text-sm sm:text-base font-bold text-white font-serif leading-snug line-clamp-2">
                 <Link href={`/blog/${heroPost.slug}`} className="hover:text-indigo-200 transition-colors">

@@ -24,9 +24,7 @@ interface PostCardProps {
 }
 
 export default function PostCard({ post, featured = false }: PostCardProps) {
-  const imageUrl =
-    post.featuredImage ||
-    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80";
+  const imageUrl = post.featuredImage || null;
 
   const rawViews = post.views || 2400;
   const formattedViews = rawViews >= 1000

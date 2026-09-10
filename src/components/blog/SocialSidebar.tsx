@@ -18,6 +18,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import AdBanner from "../monetization/AdBanner";
+import ArticleImage from "./ArticleImage";
 
 interface SocialSidebarProps {
   trendingPosts: any[];
@@ -129,22 +130,16 @@ export default function SocialSidebar({
               href={`/blog/${post.slug}`}
               className="group pt-3.5 first:pt-0 flex items-start gap-3.5 block"
             >
-              {post.featuredImage ? (
-                <div className="relative shrink-0">
-                  <img
-                    src={post.featuredImage}
-                    alt={post.title}
-                    className="w-16 h-16 rounded-2xl object-cover border border-slate-200/50 dark:border-slate-700/50 group-hover:scale-105 transition-transform"
-                  />
-                  <span className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black font-serif flex items-center justify-center shadow">
-                    {idx + 1}
-                  </span>
-                </div>
-              ) : (
-                <span className="text-xl font-black text-slate-300 dark:text-slate-700 font-serif shrink-0">
-                  0{idx + 1}
+              <div className="relative shrink-0 w-16 h-16 rounded-2xl overflow-hidden border border-slate-200/50 dark:border-slate-700/50">
+                <ArticleImage
+                  src={post.featuredImage}
+                  alt={post.imageAlt || post.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <span className="absolute top-1 left-1 w-4 h-4 rounded-full bg-slate-900/90 dark:bg-white text-white dark:text-slate-900 text-[9px] font-black font-serif flex items-center justify-center shadow">
+                  {idx + 1}
                 </span>
-              )}
+              </div>
 
               <div className="flex-1 min-w-0">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
