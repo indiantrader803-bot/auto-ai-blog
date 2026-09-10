@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getAllCatalogArticles } from "@/lib/content/articles";
 
 export const dynamic = "force-dynamic";
 
@@ -43,23 +44,49 @@ export async function GET(req: NextRequest) {
       ];
     }
 
-    const [posts, total] = await Promise.all([
-      prisma.post.findMany({
-        where,
-        orderBy: { publishedAt: "desc" },
-        skip,
-        take: limit,
-        include: {
-          category: true,
-          tags: {
-            include: {
-              tag: true,
+    let posts: any[] = [];
+    let total = 0;
+
+    try {
+      const [dbPosts, count] = await Promise.all([
+        prisma.post.findMany({
+          where,
+          orderBy: { publishedAt: "desc" },
+          skip,
+          take: limit,
+          include: {
+            category: true,
+            tags: {
+              include: {
+                tag: true,
+              },
             },
           },
-        },
-      }),
-      prisma.post.count({ where }),
-    ]);
+        }),
+        prisma.post.count({ where }),
+      ]);
+      posts = dbPosts;
+      total = count;
+    } catch (dbErr: any) {
+      console.warn("DB posts fetch notice, serving catalog backup:", dbErr.message);
+      const catalog = getAllCatalogArticles();
+      let filtered = catalog;
+
+      if (category) {
+        filtered = filtered.filter((c) => c.category.slug === category);
+      }
+      if (search) {
+        const s = search.toLowerCase();
+        filtered = filtered.filter((c) => c.title.toLowerCase().includes(s) || c.excerpt.toLowerCase().includes(s));
+      }
+
+      total = filtered.length;
+      posts = filtered.slice(skip, skip + limit).map((c) => ({
+        ...c,
+        category: c.category,
+        tags: c.tags.map((t) => ({ tag: { name: t, slug: t.toLowerCase().replace(/\s+/g, "-") } })),
+      }));
+    }
 
     return NextResponse.json({
       posts,
