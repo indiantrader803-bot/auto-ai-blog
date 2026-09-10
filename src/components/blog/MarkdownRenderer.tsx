@@ -114,12 +114,49 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
           },
           a({ node, href, children, ...props }) {
             const isExternal = href?.startsWith("http");
+            const isAffiliate = href && (
+              href.includes("lands-po.com") ||
+              href.includes("delta.exchange") ||
+              href.includes("coinswitch.co") ||
+              href.includes("ckcapital.co.uk") ||
+              href.includes("fundedtradermarkets.com") ||
+              href.includes("mffu.com") ||
+              href.includes("blueguardian.com") ||
+              href.includes("tradingview.com") ||
+              href.includes("amazon.com")
+            );
+
+            const handleLinkClick = () => {
+              if (isAffiliate) {
+                try {
+                  fetch("/api/analytics/track", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      eventType: "AFFILIATE_CLICK",
+                      referrer: typeof window !== "undefined" ? window.location.pathname : null,
+                      metadata: {
+                        url: href,
+                        label: String(children),
+                        source: "inline_markdown_autolinker",
+                      },
+                    }),
+                  }).catch(() => {});
+                } catch (_) {}
+              }
+            };
+
             return (
               <a
                 href={href}
+                onClick={handleLinkClick}
                 target={isExternal ? "_blank" : undefined}
-                rel={isExternal ? "noopener noreferrer" : undefined}
-                className="text-indigo-600 dark:text-indigo-400 font-semibold underline decoration-indigo-400/40 hover:decoration-indigo-600 transition-colors"
+                rel={isExternal ? "noopener noreferrer nofollow" : undefined}
+                className={`font-semibold underline transition-colors ${
+                  isAffiliate
+                    ? "text-emerald-600 dark:text-emerald-400 decoration-emerald-400 hover:text-emerald-500 font-bold"
+                    : "text-indigo-600 dark:text-indigo-400 decoration-indigo-400/40 hover:decoration-indigo-600"
+                }`}
                 {...props}
               >
                 {children}

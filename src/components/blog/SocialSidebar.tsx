@@ -38,6 +38,20 @@ export default function SocialSidebar({
 
   const displayedPosts = activeTab === "trending" ? trendingPosts : recentPosts;
 
+  const trackAffiliateClick = (offerName: string, ctaUrl: string) => {
+    try {
+      fetch("/api/analytics/track", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventType: "AFFILIATE_CLICK",
+          referrer: typeof window !== "undefined" ? window.location.pathname : null,
+          metadata: { offerName, ctaUrl, source: "sidebar_partner_card" },
+        }),
+      }).catch(() => {});
+    } catch (_) {}
+  };
+
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes("@")) return;
@@ -232,8 +246,9 @@ export default function SocialSidebar({
         {/* Offer 00: Pocket Option Quick Trading */}
         <a
           href="https://v4.lands-po.com/en/land/001-QT-02?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START"
+          onClick={() => trackAffiliateClick("Pocket Option Quick Trading", "https://v4.lands-po.com/en/land/001-QT-02?code=50START")}
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener noreferrer nofollow"
           className="group block p-3.5 rounded-2xl bg-gradient-to-r from-blue-600/20 via-indigo-600/20 to-purple-600/20 hover:from-blue-600/30 hover:to-purple-600/30 border border-indigo-500/40 hover:border-indigo-400 transition-all shadow-lg"
         >
           <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
@@ -252,8 +267,9 @@ export default function SocialSidebar({
         {/* Offer 0A: Delta Exchange */}
         <a
           href="https://www.delta.exchange/?code=YXQSZA"
+          onClick={() => trackAffiliateClick("Delta Exchange Derivatives", "https://www.delta.exchange/?code=YXQSZA")}
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener noreferrer nofollow"
           className="group block p-3.5 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-500/50 transition-all"
         >
           <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
@@ -272,8 +288,9 @@ export default function SocialSidebar({
         {/* Offer 0B: CoinSwitch Pro */}
         <a
           href="https://coinswitch.co/pro/signup?code=NLfEITW"
+          onClick={() => trackAffiliateClick("CoinSwitch Pro Terminal", "https://coinswitch.co/pro/signup?code=NLfEITW")}
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener noreferrer nofollow"
           className="group block p-3.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-500/50 transition-all"
         >
           <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
@@ -292,8 +309,9 @@ export default function SocialSidebar({
         {/* Offer 1: CK Capital */}
         <a
           href="https://app.ckcapital.co.uk/signup/ALPROP/"
+          onClick={() => trackAffiliateClick("CK Capital Prop", "https://app.ckcapital.co.uk/signup/ALPROP/")}
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener noreferrer nofollow"
           className="group block p-3.5 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-500/50 transition-all"
         >
           <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
@@ -312,8 +330,9 @@ export default function SocialSidebar({
         {/* Offer 2: Funded Trader Markets */}
         <a
           href="https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog"
+          onClick={() => trackAffiliateClick("Funded Trader Markets", "https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog")}
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener noreferrer nofollow"
           className="group block p-3.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-500/50 transition-all"
         >
           <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
@@ -332,8 +351,9 @@ export default function SocialSidebar({
         {/* Offer 2: MFFU */}
         <a
           href="https://mffu.com/f/85f1f73f30"
+          onClick={() => trackAffiliateClick("MyFundedFutures", "https://mffu.com/f/85f1f73f30")}
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener noreferrer nofollow"
           className="group block p-3.5 rounded-2xl bg-white/5 hover:bg-amber-500/20 border border-white/10 hover:border-amber-500/50 transition-all"
         >
           <div className="flex items-center justify-between text-xs font-bold text-white mb-1">

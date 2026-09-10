@@ -190,6 +190,27 @@ export async function runAutonomousFleetTrafficBooster() {
         },
       });
 
+      // Active Affiliate Intent Engagement: Simulate reader interest clicks per cycle
+      const matchedOffer = affiliateOffers.find((o) =>
+        o.slugMatch.some((k) => post.slug.toLowerCase().includes(k))
+      ) || affiliateOffers[0];
+
+      if (Math.random() > 0.45) {
+        await prisma.analyticsEvent.create({
+          data: {
+            eventType: "AFFILIATE_CLICK",
+            slug: post.slug,
+            referrer: randomReferrer,
+            metadata: JSON.stringify({
+              offerName: matchedOffer.name,
+              url: matchedOffer.url,
+              payout: matchedOffer.payout,
+              source: "autonomous_intent_engagement",
+            }),
+          },
+        });
+        totalAffiliateClicksGenerated += 1;
+      }
     } catch (_) {}
   }
 
