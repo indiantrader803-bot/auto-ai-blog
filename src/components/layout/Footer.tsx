@@ -11,6 +11,8 @@ import {
   Youtube,
   Github,
   Linkedin,
+  Facebook,
+  Instagram,
   Flame,
   CheckCircle2,
 } from "lucide-react";
@@ -71,6 +73,26 @@ export default function Footer() {
               >
                 <Linkedin className="w-3.5 h-3.5 text-blue-400" />
                 <span>Indian Trader</span>
+              </a>
+
+              <a
+                href="https://www.facebook.com/profile.php?id=61594475423154"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-blue-600/50 transition-all text-xs font-semibold"
+              >
+                <Facebook className="w-3.5 h-3.5 text-blue-500" />
+                <span>Facebook</span>
+              </a>
+
+              <a
+                href="https://www.instagram.com/indiantrader8032026/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-pink-500/50 transition-all text-xs font-semibold"
+              >
+                <Instagram className="w-3.5 h-3.5 text-pink-400" />
+                <span>@indiantrader8032026</span>
               </a>
             </div>
           </div>

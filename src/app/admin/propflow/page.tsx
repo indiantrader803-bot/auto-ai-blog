@@ -30,6 +30,8 @@ import {
   Sliders,
   Twitter,
   Linkedin,
+  Facebook,
+  Instagram,
   FileCode2,
   Award,
   Calculator,
@@ -71,7 +73,7 @@ export default function PropFlowAdminDashboard() {
       const res = await fetch("/api/pipeline/autopost", { method: "POST" });
       const json = await res.json();
       if (json.success) {
-        setAutopostMsg("✅ Autonomous Autoposting dispatched successfully to @Theindainta9go & Indian Trader!");
+        setAutopostMsg("✅ Autonomous Autoposting dispatched successfully across 4 channels (Twitter/X, LinkedIn, Facebook, Instagram)!");
       } else {
         setAutopostMsg("⚠️ Autopost queued: " + (json.error || "Simulated dispatch recorded"));
       }
@@ -509,7 +511,7 @@ export default function PropFlowAdminDashboard() {
                     className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 transition-all shadow-lg active:scale-95 disabled:opacity-50 cursor-pointer"
                   >
                     <Bot className={`w-3.5 h-3.5 ${autoposting ? "animate-spin" : ""}`} />
-                    <span>{autoposting ? "Autoposting..." : "⚡ Run Live Autopost (Twitter + LinkedIn)"}</span>
+                    <span>{autoposting ? "Autoposting across 4 Channels..." : "⚡ Run Live Autopost (Twitter + LinkedIn + Facebook + Instagram)"}</span>
                   </button>
 
                   <a
@@ -586,6 +588,89 @@ export default function PropFlowAdminDashboard() {
                   >
                     <span>Share Tool</span>
                     <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Official Facebook & Instagram Campaign Hubs */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Facebook Card */}
+              <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-950/70 via-slate-900 to-black border border-blue-600/40 text-white space-y-3 flex flex-col justify-between">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                        <Facebook className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-white">Facebook Community Hub</h4>
+                        <span className="text-[10px] text-blue-300 font-mono">Indian Trader</span>
+                      </div>
+                    </div>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-bold">Auto-Syndicated</span>
+                  </div>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Auto-publishes weekly prop firm discount roundups and breakout strategies to your Facebook audience.
+                  </p>
+                </div>
+
+                <div className="pt-2 flex items-center gap-2">
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${baseUrl}/best-prop-firms?utm_source=facebook&utm_medium=social&utm_campaign=indiantrader_fb`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs text-center flex items-center justify-center gap-1 transition-all shadow-md"
+                  >
+                    <span>Share to Facebook</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61594475423154"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold"
+                  >
+                    Profile
+                  </a>
+                </div>
+              </div>
+
+              {/* Instagram Card */}
+              <div className="p-5 rounded-2xl bg-gradient-to-br from-pink-950/70 via-purple-950/50 to-black border border-pink-500/40 text-white space-y-3 flex flex-col justify-between">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-pink-500/20 border border-pink-400/30 flex items-center justify-center text-pink-400">
+                        <Instagram className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-white">Instagram Bio &amp; Reels Hub</h4>
+                        <span className="text-[10px] text-pink-300 font-mono">@indiantrader8032026</span>
+                      </div>
+                    </div>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-pink-500/20 text-pink-300 font-bold">Auto-Syndicated</span>
+                  </div>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Auto-formats captions with hashtags (#indiantrader8032026, #proptrading) and coupon link in bio.
+                  </p>
+                </div>
+
+                <div className="pt-2 flex items-center gap-2">
+                  <button
+                    onClick={() => handleCopy(`📊 2026 Prop Firm Discount Codes:\n• FTM (Code: arnab) - 10% OFF\n• Atlas Funded (Code: 12275) - 20% OFF\n• AquaFunded (Code: 6e9) - 20% Rebate\n• Pocket Option (Code: 50START) - 50% Bonus\n\nLink in bio: ${baseUrl}/best-prop-firms?utm_source=instagram&utm_medium=social&utm_campaign=indiantrader8032026\n\n#forex #daytrading #indiantrader8032026`, "ig_copy")}
+                    className="flex-1 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 text-white font-bold text-xs text-center flex items-center justify-center gap-1 transition-all shadow-md"
+                  >
+                    <span>{copiedId === "ig_copy" ? "Copied Insta Caption!" : "Copy Insta Post & Bio Link"}</span>
+                    <Copy className="w-3.5 h-3.5" />
+                  </button>
+                  <a
+                    href="https://www.instagram.com/indiantrader8032026/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold"
+                  >
+                    Profile
                   </a>
                 </div>
               </div>

@@ -19,6 +19,8 @@ import {
   Twitter,
   Youtube,
   Linkedin,
+  Facebook,
+  Instagram,
   MessageSquare,
 } from "lucide-react";
 import SearchModal from "./SearchModal";
@@ -187,11 +189,33 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               href="https://www.linkedin.com/in/indian-trader-804333436/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-300 border-l border-slate-800 pl-4"
+              className="hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-300 border-l border-slate-800 pl-3"
               title="Connect on LinkedIn (Indian Trader)"
             >
               <Linkedin className="w-3.5 h-3.5 text-blue-400" />
               <span>LinkedIn</span>
+            </a>
+
+            <a
+              href="https://www.facebook.com/profile.php?id=61594475423154"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-300 border-l border-slate-800 pl-3"
+              title="Follow Indian Trader on Facebook"
+            >
+              <Facebook className="w-3.5 h-3.5 text-blue-500" />
+              <span>Facebook</span>
+            </a>
+
+            <a
+              href="https://www.instagram.com/indiantrader8032026/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-300 border-l border-slate-800 pl-3"
+              title="Follow @indiantrader8032026 on Instagram"
+            >
+              <Instagram className="w-3.5 h-3.5 text-pink-400" />
+              <span>Instagram</span>
             </a>
 
             <a

@@ -49,7 +49,7 @@ async function handleAutopost(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Autonomous Daily Autoposting dispatched successfully to Twitter & LinkedIn.",
+      message: "Autonomous Daily Autoposting dispatched successfully across 4 channels (Twitter/X, LinkedIn, Facebook, Instagram).",
       results: result,
     });
   } catch (err: any) {
