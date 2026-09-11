@@ -94,6 +94,16 @@ export default function Footer() {
                 <Instagram className="w-3.5 h-3.5 text-pink-400" />
                 <span>@indiantrader8032026</span>
               </a>
+
+              <a
+                href="https://www.reddit.com/user/Indiantrader803/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-orange-500/50 transition-all text-xs font-semibold"
+              >
+                <span className="w-3.5 h-3.5 rounded-full bg-orange-500 text-[9px] font-black text-white flex items-center justify-center">r</span>
+                <span>u/Indiantrader803</span>
+              </a>
             </div>
           </div>
 

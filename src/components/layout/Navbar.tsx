@@ -219,6 +219,17 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
             </a>
 
             <a
+              href="https://www.reddit.com/user/Indiantrader803/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-300 border-l border-slate-800 pl-3"
+              title="Follow u/Indiantrader803 on Reddit"
+            >
+              <span className="w-3.5 h-3.5 rounded-full bg-orange-500 text-[9px] font-black text-white flex items-center justify-center">r</span>
+              <span>Reddit</span>
+            </a>
+
+            <a
               href="#newsletter"
               className="text-indigo-400 hover:text-indigo-300 transition-colors font-bold uppercase tracking-wider text-[10px] flex items-center gap-1 border-l border-slate-800 pl-4"
             >

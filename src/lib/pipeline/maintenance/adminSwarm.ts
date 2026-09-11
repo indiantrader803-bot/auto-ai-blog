@@ -267,7 +267,7 @@ export async function autoSyndicateRecentPosts(webhookUrl?: string): Promise<Age
       agentName: "Viral Social Syndication & Broadcaster Agent",
       status: "SUCCESS",
       timestamp: new Date().toISOString(),
-      summary: `Targeted ICP: ${campaign.audienceProfile?.icpName || "Quant Trader"}. Autoposted to 4 channels: Twitter/X (@Theindainta9go), LinkedIn, Facebook, and Instagram. Synthesized multi-channel campaign for "${latestPost.title}" across Reddit (${campaign.redditDiscussion.suggestedSubreddits.join(", ")}), Quora, Pinterest, and Newsletters. ${webhookStatus}.`,
+      summary: `Targeted ICP: ${campaign.audienceProfile?.icpName || "Quant Trader"}. Autoposted to 5 channels: Twitter/X (@Theindainta9go), LinkedIn, Facebook, Instagram, and Reddit (u/Indiantrader803). Synthesized multi-channel campaign for "${latestPost.title}" across Quora, Pinterest, Discord, and Newsletters. ${webhookStatus}.`,
       details: {
         targetArticle: latestPost.title,
         targetAudience: campaign.audienceProfile?.icpName,
