@@ -1,0 +1,70 @@
+﻿{
+  "name": "PropFlow-AI 24/7 Multi-Channel Affiliate Sales Swarm",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "name": "Daily 8:00 AM Cron Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://auto-ai-blog-web.onrender.com/api/propflow",
+        "authentication": "none",
+        "requestMethod": "POST",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "{\"action\": \"TRIGGER_DAILY_CYCLE\"}"
+      },
+      "name": "Trigger PropFlow Master Swarm",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://auto-ai-blog-web.onrender.com/api/cron",
+        "authentication": "none",
+        "requestMethod": "GET"
+      },
+      "name": "Sync Search Engine Pings & Traffic Multiplier",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [720, 300]
+    }
+  ],
+  "connections": {
+    "Daily 8:00 AM Cron Trigger": {
+      "main": [
+        [
+          {
+            "node": "Trigger PropFlow Master Swarm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger PropFlow Master Swarm": {
+      "main": [
+        [
+          {
+            "node": "Sync Search Engine Pings & Traffic Multiplier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
