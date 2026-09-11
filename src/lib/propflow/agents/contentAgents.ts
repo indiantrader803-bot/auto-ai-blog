@@ -1,4 +1,4 @@
-﻿import { YouTubeShortScript, EmailFunnelSequence, SocialDistributionPost } from "../types";
+import { YouTubeShortScript, EmailFunnelSequence, SocialDistributionPost } from "../types";
 
 /**
  * 🎬 6. YouTube Shorts Agent
@@ -144,10 +144,10 @@ export async function runSocialDistributionSwarm(): Promise<{
   const posts: SocialDistributionPost[] = [
     {
       platform: "Reddit",
-      targetChannelOrSubreddit: "r/PropFirm",
+      targetChannelOrSubreddit: "r/PropFirm & r/Forex",
       headline: "Unbiased Breakdown: Funded Trader Markets vs Atlas Funded vs AquaFunded (2026 Rules & Coupon Codes)",
-      content: "If you are looking to get funded this quarter, here is our audited comparison of the top 3 firms with working promo codes:\n\n1. Atlas Funded (Code: 12275) -> 20% discount + $5 Free Challenge tokens.\n2. Funded Trader Markets (Code: arnab) -> 10% discount, zero minimum trading days, on-demand payouts.\n3. AquaFunded (Code: 6e9) -> Up to 20% rebate + 90% profit split.\n\nFull rule comparison table & challenge fee savings calculator: https://auto-ai-blog-web.onrender.com/best-prop-firms",
-      callToActionUrl: "https://auto-ai-blog-web.onrender.com/best-prop-firms",
+      content: "If you are looking to get funded this quarter, here is our audited comparison of the top 3 firms with working promo codes:\n\n1. Atlas Funded (Code: 12275) -> 20% discount + $5 Free Challenge tokens.\n2. Funded Trader Markets (Code: arnab) -> 10% discount, zero minimum trading days, on-demand payouts.\n3. AquaFunded (Code: 6e9) -> Up to 20% rebate + 90% profit split.\n\nFull rule comparison table & challenge fee savings calculator: https://auto-ai-blog-web.onrender.com/best-prop-firms?utm_source=reddit&utm_medium=community&utm_campaign=propflow_swarm",
+      callToActionUrl: "https://auto-ai-blog-web.onrender.com/best-prop-firms?utm_source=reddit&utm_medium=community&utm_campaign=propflow_swarm",
       promoCode: "12275 | arnab | 6e9",
       status: "APPROVED",
       generatedAt: new Date().toISOString(),
@@ -156,8 +156,8 @@ export async function runSocialDistributionSwarm(): Promise<{
       platform: "Twitter/X",
       targetChannelOrSubreddit: "#PropFirm #DayTrading #ForexTrader #TradingSetup",
       headline: "⚡ 2026 Prop Firm Discount Master List (Save up to 20% on Challenge Fees)",
-      content: "Getting funded in 2026? Stop paying full price for evaluations:\n\n🔥 Atlas Funded: 20% OFF (Code: 12275)\n🚀 AquaFunded: Up to 20% Rebate (Code: 6e9)\n📈 FTM: 10% OFF + 0 Time Limit (Code: arnab)\n💎 Pocket Option: 50% Match (Code: 50START)\n\nDetailed reviews: https://auto-ai-blog-web.onrender.com/best-prop-firms",
-      callToActionUrl: "https://auto-ai-blog-web.onrender.com/best-prop-firms",
+      content: "Getting funded in 2026? Stop paying full price for evaluations:\n\n🔥 Atlas Funded: 20% OFF (Code: 12275)\n🚀 AquaFunded: Up to 20% Rebate (Code: 6e9)\n📈 FTM: 10% OFF + 0 Time Limit (Code: arnab)\n💎 Pocket Option: 50% Match (Code: 50START)\n\nDetailed reviews & fee calculator: https://auto-ai-blog-web.onrender.com/best-prop-firms?utm_source=twitter&utm_medium=social&utm_campaign=propflow_swarm",
+      callToActionUrl: "https://auto-ai-blog-web.onrender.com/best-prop-firms?utm_source=twitter&utm_medium=social&utm_campaign=propflow_swarm",
       promoCode: "12275 & arnab",
       status: "APPROVED",
       generatedAt: new Date().toISOString(),
@@ -166,8 +166,8 @@ export async function runSocialDistributionSwarm(): Promise<{
       platform: "LinkedIn",
       targetChannelOrSubreddit: "Quantitative Trading & Prop Trading Professionals",
       headline: "The Economics of Modern Prop Trading: How Zero-Time-Limit Models Are Changing Evaluation Pass Rates",
-      content: "Prop trading firm risk models have evolved significantly in 2026. The shift from rigid 30-day deadlines to zero-time-limit evaluations has reduced trader drawdown violations by an estimated 34%.\n\nIn our latest editorial analysis, we examine how firms like Funded Trader Markets, Atlas Funded, and AquaFunded structure capital allocation and profit splits up to 90%.\n\nRead the full report on SmartMag Tech: https://auto-ai-blog-web.onrender.com/best-prop-firms",
-      callToActionUrl: "https://auto-ai-blog-web.onrender.com/best-prop-firms",
+      content: "Prop trading firm risk models have evolved significantly in 2026. The shift from rigid 30-day deadlines to zero-time-limit evaluations has reduced trader drawdown violations by an estimated 34%.\n\nIn our latest editorial analysis, we examine how firms like Funded Trader Markets, Atlas Funded, and AquaFunded structure capital allocation and profit splits up to 90%.\n\nRead the full report on SmartMag Tech: https://auto-ai-blog-web.onrender.com/best-prop-firms?utm_source=linkedin&utm_medium=article&utm_campaign=propflow_swarm",
+      callToActionUrl: "https://auto-ai-blog-web.onrender.com/best-prop-firms?utm_source=linkedin&utm_medium=article&utm_campaign=propflow_swarm",
       promoCode: "arnab",
       status: "APPROVED",
       generatedAt: new Date().toISOString(),
@@ -176,8 +176,8 @@ export async function runSocialDistributionSwarm(): Promise<{
       platform: "Quora",
       targetChannelOrSubreddit: "Questions: 'Which prop firm has the easiest evaluation rules in 2026?'",
       headline: "Expert Answer: Top 3 Prop Firms for Maximum Flexibility and Fast Payouts",
-      content: "When assessing prop firm difficulty, focus on 3 criteria: minimum trading days, maximum drawdown calculation, and payout frequency.\n\n1. Funded Trader Markets (Code 'arnab' for 10% off) has 0 minimum days.\n2. Atlas Funded (Code '12275' for 20% off) offers instant scaling and low spreads.\n3. AquaFunded (Code '6e9') provides rapid 1-step challenges with 90% splits.\n\nRead our complete comparison guide on SmartMag Tech.",
-      callToActionUrl: "https://auto-ai-blog-web.onrender.com/best-prop-firms",
+      content: "When assessing prop firm difficulty, focus on 3 criteria: minimum trading days, maximum drawdown calculation, and payout frequency.\n\n1. Funded Trader Markets (Code 'arnab' for 10% off) has 0 minimum days.\n2. Atlas Funded (Code '12275' for 20% off) offers instant scaling and low spreads.\n3. AquaFunded (Code '6e9') provides rapid 1-step challenges with 90% splits.\n\nCalculate your exact fees & payout savings with our interactive tool: https://auto-ai-blog-web.onrender.com/tools?utm_source=quora&utm_medium=qa&utm_campaign=propflow_swarm",
+      callToActionUrl: "https://auto-ai-blog-web.onrender.com/tools?utm_source=quora&utm_medium=qa&utm_campaign=propflow_swarm",
       promoCode: "12275",
       status: "APPROVED",
       generatedAt: new Date().toISOString(),
