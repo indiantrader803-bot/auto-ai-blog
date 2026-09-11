@@ -165,6 +165,21 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
     label: "AquaFunded Official Challenge Portal (Code: 6e9)",
   },
   {
+    keyword: "Atlas Funded",
+    url: "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN",
+    label: "Atlas Funded - Trade $200k Funded Challenge (20% Discount Auto-Applied)",
+  },
+  {
+    keyword: "AtlasFunded",
+    url: "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN",
+    label: "Atlas Funded Prop Trading Evaluation (Rapid Scaling & Fast Payouts)",
+  },
+  {
+    keyword: "atlas funded",
+    url: "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN",
+    label: "Atlas Funded Challenge Registration Portal",
+  },
+  {
     keyword: "Fundex Prop",
     url: "https://prop.fundex.gg/rc/GGG34QEO",
     label: "Fundex Prop $100k-$200k Funded Trading Challenge (Code: GGG34QEO)",

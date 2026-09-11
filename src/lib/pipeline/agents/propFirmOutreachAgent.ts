@@ -18,6 +18,36 @@ export interface PropFirmPartner {
 
 export const TOP_PROP_FIRMS_TARGETS: PropFirmPartner[] = [
   {
+    id: "firm_atlasfunded",
+    firmName: "Atlas Funded",
+    marketType: "MULTI_ASSET",
+    contactEmail: "support@atlasfunded.com",
+    affiliatePortalUrl: "https://affiliates.atlasfunded.com",
+    defaultAffiliateUrl: "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN",
+    proposedCommission: "20% Purchases + $5 Access FTPs",
+    outreachPitchDeck: {
+      subjectLine: "Partnership & High Volume Traffic: SmartMag Tech Chronicle x Atlas Funded",
+      emailBody: `Hi Atlas Funded Team,\n\nWe feature Atlas Funded on SmartMag Tech Chronicle (https://auto-ai-blog-web.onrender.com) across our high-intent quantitative trading readership.\n\nBest regards,\nSmartMag Growth & Monetization`,
+      monthlyAudienceReach: "75,000+ Active Funded Traders",
+    },
+    partnershipStatus: "ACTIVE_AFFILIATE",
+  },
+  {
+    id: "firm_aquafunded",
+    firmName: "AquaFunded",
+    marketType: "FOREX_CFD",
+    contactEmail: "affiliates@aquafunded.com",
+    affiliatePortalUrl: "https://www.aquafunded.com/?afmc=6e9",
+    defaultAffiliateUrl: "https://www.aquafunded.com/?afmc=6e9",
+    proposedCommission: "20% RevShare per Funded Account",
+    outreachPitchDeck: {
+      subjectLine: "Partnership: SmartMag Tech x AquaFunded",
+      emailBody: `Hi AquaFunded Team,\n\nWe are actively driving high-intent trading volume to AquaFunded via https://auto-ai-blog-web.onrender.com.\n\nBest,\nSmartMag Team`,
+      monthlyAudienceReach: "65,000+ Active Traders",
+    },
+    partnershipStatus: "ACTIVE_AFFILIATE",
+  },
+  {
     id: "firm_ftm",
     firmName: "Funded Trader Markets",
     marketType: "MULTI_ASSET",

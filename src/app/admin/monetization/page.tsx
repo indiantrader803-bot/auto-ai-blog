@@ -278,6 +278,18 @@ export default function MonetizationHubPage() {
       promoCode: "6e9",
     },
     {
+      id: "aff_atlasfunded",
+      keyword: "Atlas Funded / Prop Trading Evaluation",
+      product: "Atlas Funded Evaluation ($25k-$200k)",
+      url: "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN",
+      cpa: "20% Purchases + $5 Access FTPs",
+      clicks: 0,
+      earnings: "$0.00 (Real DB)",
+      status: "ACTIVE",
+      badge: "20% + $5 FTP",
+      promoCode: "12275",
+    },
+    {
       id: "aff_fundex_prop",
       keyword: "Fundex Prop / $200k Funded Trading",
       product: "Fundex Prop Funded Trader Challenge (Code: GGG34QEO)",

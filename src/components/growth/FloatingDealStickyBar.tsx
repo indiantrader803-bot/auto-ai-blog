@@ -32,10 +32,22 @@ export default function FloatingDealStickyBar({ categorySlug, articleTitle }: Fl
   }, [isDismissed]);
 
   // Determine most relevant high-converting offer
+  const isAtlas = articleTitle?.toLowerCase().includes("atlas") || articleTitle?.toLowerCase().includes("futures");
   const isAqua = articleTitle?.toLowerCase().includes("aqua") || articleTitle?.toLowerCase().includes("eval") || categorySlug?.includes("forex");
   const isPropTrading = categorySlug?.includes("market") || categorySlug?.includes("finance") || categorySlug?.includes("forex") || articleTitle?.toLowerCase().includes("trading") || articleTitle?.toLowerCase().includes("nifty") || articleTitle?.toLowerCase().includes("stock");
   
-  const deal = isAqua
+  const deal = isAtlas
+    ? {
+        badge: "ATLAS FUNDED 20% DISCOUNT",
+        title: "Atlas Funded: Trade Up to $200,000 Capital",
+        subtitle: "Rapid evaluation passing, lowest spreads & instant profit withdrawals.",
+        promoCode: "12275",
+        buttonText: "Claim Atlas Challenge ($200k)",
+        url: "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN",
+        platform: "Atlas Funded",
+        colorScheme: "from-amber-600 via-yellow-600 to-orange-700",
+      }
+    : isAqua
     ? {
         badge: "AQUAFUNDED 20% REBATE",
         title: "AquaFunded: Trade Up to $200,000 Capital",
@@ -49,7 +61,7 @@ export default function FloatingDealStickyBar({ categorySlug, articleTitle }: Fl
     : isPropTrading
     ? {
         badge: "EXCLUSIVE PROP CHALLENGE",
-        title: "Fundex & AquaFunded: Scale Up to $200k",
+        title: "Fundex & Atlas: Scale Up to $200k",
         subtitle: "Instant scaling, lowest spreads & up to 90% profit payouts.",
         promoCode: "GGG34QEO",
         buttonText: "Claim Funded Account",
