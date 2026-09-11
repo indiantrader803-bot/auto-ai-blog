@@ -21,6 +21,11 @@ import {
   ExternalLink,
   ChevronRight,
   MoreHorizontal,
+  Bot,
+  Calculator,
+  Award,
+  ShieldCheck,
+  Zap,
 } from "lucide-react";
 
 export default function AdminSidebar() {
@@ -51,6 +56,13 @@ export default function AdminSidebar() {
       shortLabel: "Dashboard",
       icon: LayoutDashboard,
       exact: true,
+    },
+    {
+      href: "/admin/propflow",
+      label: "PropFlow-AI Sales Engine",
+      shortLabel: "PropFlow",
+      icon: Bot,
+      badge: "15 Agents",
     },
     {
       href: "/admin/swarm",
@@ -99,6 +111,45 @@ export default function AdminSidebar() {
       label: "Settings & API Keys",
       shortLabel: "Settings",
       icon: Settings,
+    },
+  ];
+
+  const liveFunnels = [
+    {
+      href: "/best-prop-firms",
+      label: "Prop Firm Leaderboard",
+      icon: Award,
+      badge: "Ranked",
+    },
+    {
+      href: "/tools",
+      label: "Fee & Profit Calculator",
+      icon: Calculator,
+      badge: "Tool",
+    },
+    {
+      href: "/compare/ftmo-vs-ftm",
+      label: "FTMO vs FTM Matrix",
+      icon: Zap,
+      badge: "Compare",
+    },
+    {
+      href: "/reviews/funded-trader-markets",
+      label: "FTM Review (Code: arnab)",
+      icon: ShieldCheck,
+      badge: "10% OFF",
+    },
+    {
+      href: "/reviews/atlas-funded",
+      label: "Atlas Funded (Code: 12275)",
+      icon: ShieldCheck,
+      badge: "20% OFF",
+    },
+    {
+      href: "/reviews/aquafunded",
+      label: "AquaFunded (Code: 6e9)",
+      icon: ShieldCheck,
+      badge: "Rebate",
     },
   ];
 
@@ -217,9 +268,9 @@ export default function AdminSidebar() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setIsMobileDrawerOpen(false)}
-                      className={`flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition-all ${
+                      className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                         isActive
-                          ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20"
+                          ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20 font-bold"
                           : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
@@ -227,11 +278,49 @@ export default function AdminSidebar() {
                         <Icon className="w-4 h-4 shrink-0" />
                         <span>{item.label}</span>
                       </div>
-                      <ChevronRight className={`w-3.5 h-3.5 opacity-50 ${isActive ? "text-white" : ""}`} />
+                      {item.badge ? (
+                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider ${
+                          isActive ? "bg-white/20 text-white" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
+                        }`}>
+                          {item.badge}
+                        </span>
+                      ) : (
+                        <ChevronRight className={`w-3.5 h-3.5 opacity-50 ${isActive ? "text-white" : ""}`} />
+                      )}
                     </Link>
                   );
                 })}
               </nav>
+
+              {/* Live Sales Funnels & Tools */}
+              <div className="pt-3 border-t border-slate-200 dark:border-slate-800">
+                <div className="px-3 py-1 text-[10px] font-black uppercase text-slate-400 tracking-wider flex items-center justify-between">
+                  <span>Live Funnels &amp; Tools</span>
+                  <span className="text-[9px] text-emerald-500 font-bold">Public UI</span>
+                </div>
+                <nav className="space-y-1 mt-1">
+                  {liveFunnels.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        target="_blank"
+                        onClick={() => setIsMobileDrawerOpen(false)}
+                        className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white transition-all"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <Icon className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                          <span>{item.label}</span>
+                        </div>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono font-bold">
+                          {item.badge}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </div>
             </div>
 
             {/* Bottom Actions */}
@@ -257,10 +346,10 @@ export default function AdminSidebar() {
       {/* ========================================================================= */}
       {/* 3. DESKTOP STICKY SIDEBAR (>= lg)                                         */}
       {/* ========================================================================= */}
-      <aside className="hidden lg:flex w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex-col justify-between h-screen sticky top-0 shrink-0 z-30">
+      <aside className="hidden lg:flex w-72 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex-col justify-between h-screen sticky top-0 shrink-0 z-30 overflow-y-auto">
         <div>
           {/* Brand */}
-          <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <div className="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <Link href="/admin" className="flex items-center gap-3 group">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
                 <Sparkles className="w-4 h-4" />
@@ -278,41 +367,84 @@ export default function AdminSidebar() {
           </div>
 
           {/* Navigation Items */}
-          <nav className="p-4 space-y-1.5">
-            {navItems.map((item) => {
-              const isActive = item.exact
-                ? pathname === item.href
-                : pathname.startsWith(item.href);
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
-                    isActive
-                      ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20 font-bold"
-                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                >
-                  <Icon className="w-4 h-4 shrink-0" />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
+          <div className="p-3 space-y-4">
+            <div>
+              <div className="px-3 py-1 text-[10px] font-black uppercase text-slate-400 tracking-wider">
+                Management Modules
+              </div>
+              <nav className="space-y-1 mt-1">
+                {navItems.map((item) => {
+                  const isActive = item.exact
+                    ? pathname === item.href
+                    : pathname.startsWith(item.href);
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                        isActive
+                          ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20 font-bold"
+                          : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Icon className="w-4 h-4 shrink-0" />
+                        <span>{item.label}</span>
+                      </div>
+                      {item.badge && (
+                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider ${
+                          isActive ? "bg-white/20 text-white" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
+                        }`}>
+                          {item.badge}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
+
+            {/* Live Funnels & Tools Section */}
+            <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
+              <div className="px-3 py-1 text-[10px] font-black uppercase text-slate-400 tracking-wider flex items-center justify-between">
+                <span>Live Funnels &amp; Tools</span>
+                <span className="text-[9px] text-indigo-500 font-bold">Public UI</span>
+              </div>
+              <nav className="space-y-1 mt-1">
+                {liveFunnels.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      target="_blank"
+                      className="flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white transition-all group"
+                    >
+                      <div className="flex items-center gap-2 truncate">
+                        <Icon className="w-3.5 h-3.5 text-indigo-500 shrink-0 group-hover:scale-110 transition-transform" />
+                        <span className="truncate">{item.label}</span>
+                      </div>
+                      <ExternalLink className="w-3 h-3 opacity-30 group-hover:opacity-100 shrink-0" />
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
+          </div>
         </div>
 
         {/* Bottom Back to Blog Link & Lock Admin */}
         <div className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
           <button
             onClick={handleLogout}
-            className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-colors cursor-pointer"
+            className="flex items-center justify-center gap-2 w-full py-2 px-4 rounded-xl text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-colors cursor-pointer"
           >
             <Lock className="w-3.5 h-3.5" /> Lock Admin Portal
           </button>
           <Link
             href="/"
-            className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+            className="flex items-center justify-center gap-2 w-full py-2 px-4 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" /> Back to Reader Blog
           </Link>
@@ -325,10 +457,10 @@ export default function AdminSidebar() {
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-2 py-1.5 flex items-center justify-around shadow-2xl safe-area-bottom">
         {[
           { href: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
+          { href: "/admin/propflow", label: "PropFlow", icon: Bot },
           { href: "/admin/swarm", label: "Swarm", icon: Cpu },
           { href: "/admin/generator", label: "Studio", icon: Wand2 },
           { href: "/admin/monetization", label: "Revenue", icon: DollarSign },
-          { href: "/admin/posts", label: "Posts", icon: FileText },
         ].map((item) => {
           const isActive = item.exact
             ? pathname === item.href
