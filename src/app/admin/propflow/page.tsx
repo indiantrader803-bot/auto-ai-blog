@@ -28,6 +28,7 @@ import {
   Eye,
   BarChart3,
   Sliders,
+  Twitter,
   FileCode2,
   Award,
   Calculator,
@@ -352,6 +353,114 @@ export default function PropFlowAdminDashboard() {
               <span className="text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1 rounded-full">
                 7 Major Networks Active
               </span>
+            </div>
+
+            {/* Official Twitter / X Campaign Dispatcher for @Theindainta9go */}
+            <div className="p-5 rounded-2xl bg-gradient-to-br from-sky-950/80 via-slate-900 to-black border border-sky-500/40 text-white space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-400">
+                    <Twitter className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                      <span>Twitter / X Viral Broadcast Hub</span>
+                      <span className="px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 text-[10px] font-mono">@Theindainta9go</span>
+                    </h4>
+                    <p className="text-[11px] text-slate-300">
+                      1-Click Twitter threads &amp; deal alerts with embedded UTM tracking for your profile.
+                    </p>
+                  </div>
+                </div>
+
+                <a
+                  href="https://x.com/Theindainta9go"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3.5 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 transition-all self-start sm:self-auto"
+                >
+                  <span>View @Theindainta9go</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {/* Tweet 1: Prop Codes */}
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold text-amber-300 uppercase tracking-wider">🔥 Discount Codes</span>
+                    <p className="text-[11px] text-slate-200 mt-1 line-clamp-3">
+                      "Getting funded in 2026? Stop paying full price: Atlas (12275), FTM (arnab), AquaFunded (6e9), Pocket Option (50START)..."
+                    </p>
+                  </div>
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Getting funded in 2026? Stop paying full price for prop evaluations:\n\n🔥 Atlas Funded: 20% OFF (Code: 12275)\n📈 FTM: 10% OFF + 0 Time Limits (Code: arnab)\n🚀 AquaFunded: 20% Rebate (Code: 6e9)\n💎 Pocket Option: 50% Match (Code: 50START)\n\nAudit & Fee Calculator:\n${baseUrl}/best-prop-firms?utm_source=twitter&utm_medium=social&utm_campaign=theindainta9go\n\n#Forex #PropFirm #Trading`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-[11px] text-center flex items-center justify-center gap-1 transition-all"
+                  >
+                    <span>Tweet Codes</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+
+                {/* Tweet 2: FTM vs FTMO */}
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold text-emerald-300 uppercase tracking-wider">⚖️ FTM vs FTMO Breakdown</span>
+                    <p className="text-[11px] text-slate-200 mt-1 line-clamp-3">
+                      "Why 2026 prop traders are shifting from FTMO to Funded Trader Markets: 0 time limits, 90% profit split, instant payout..."
+                    </p>
+                  </div>
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Why 2026 prop traders are shifting from FTMO to Funded Trader Markets:\n\n1. Zero time limits on evaluation\n2. 90% payout profit split\n3. 10% instant checkout discount with code 'arnab'\n\nFull Head-to-Head Comparison:\n${baseUrl}/compare/ftmo-vs-ftm?utm_source=twitter&utm_medium=social&utm_campaign=theindainta9go\n\n#ForexTrading #FTMO #PropTrader`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-[11px] text-center flex items-center justify-center gap-1 transition-all"
+                  >
+                    <span>Tweet Comparison</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+
+                {/* Tweet 3: Evaluation Calculator */}
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold text-purple-300 uppercase tracking-wider">🧮 Fee Calculator Tool</span>
+                    <p className="text-[11px] text-slate-200 mt-1 line-clamp-3">
+                      "Never buy an evaluation challenge blindly. Use our interactive calculator to check net profit after fee splits..."
+                    </p>
+                  </div>
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Never buy an evaluation challenge blindly.\n\nCalculate your exact break-even payout, slippage fees, and net savings across top firms:\n\n${baseUrl}/tools?utm_source=twitter&utm_medium=social&utm_campaign=theindainta9go\n\n#Daytrading #TradingTools #Forex`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-[11px] text-center flex items-center justify-center gap-1 transition-all"
+                  >
+                    <span>Tweet Calculator</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+
+                {/* Tweet 4: Trading Gear Setup */}
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold text-rose-300 uppercase tracking-wider">🖥️ Trader Battlestation Gear</span>
+                    <p className="text-[11px] text-slate-200 mt-1 line-clamp-3">
+                      "The ultimate 2026 algorithmic & day trading setup: 49-inch curved monitors, Elgato macro keys & ergonomic chairs..."
+                    </p>
+                  </div>
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`The ultimate 2026 day trading desk setup to eliminate fatigue & boost execution speed:\n\n• Ultra-wide 49" curved monitors\n• Elgato Stream Deck for 1-click risk exits\n• Mechanical macro pads\n\nCurated trading gear list:\n${baseUrl}/store?utm_source=twitter&utm_medium=social&utm_campaign=theindainta9go\n\n#Daytrading #TradingSetup #DeskSetup`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-[11px] text-center flex items-center justify-center gap-1 transition-all"
+                  >
+                    <span>Tweet Gear Setup</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

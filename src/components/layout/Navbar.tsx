@@ -173,6 +173,17 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
             </div>
 
             <a
+              href="https://x.com/Theindainta9go"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-300 border-l border-slate-800 pl-4"
+              title="Follow @Theindainta9go on X"
+            >
+              <Twitter className="w-3.5 h-3.5 text-sky-400" />
+              <span>@Theindainta9go</span>
+            </a>
+
+            <a
               href="#newsletter"
               className="text-indigo-400 hover:text-indigo-300 transition-colors font-bold uppercase tracking-wider text-[10px] flex items-center gap-1 border-l border-slate-800 pl-4"
             >
