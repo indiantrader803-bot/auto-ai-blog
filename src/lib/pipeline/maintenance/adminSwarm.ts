@@ -7,6 +7,7 @@ import {
   runAutonomousFleetTrafficBooster,
 } from "../agents/trafficBoosterAgent";
 import { runAffiliateConversionFetcherAgent } from "../agents/affiliateTrackerAgent";
+import { runAdBannerIntelligenceAgent } from "../agents/adBannerIntelligenceAgent";
 import { runBlogPipeline } from "../orchestrator";
 import { getAllCatalogArticles } from "../../content/articles";
 
@@ -400,6 +401,26 @@ export async function runFullAutonomousMaintenanceSwarm(options: {
       timestamp: new Date().toISOString(),
       summary: `Affiliate sync notice: ${affErr.message}`,
       details: { error: affErr.message },
+    });
+  }
+
+  // 5c. Autonomous 24/7 Ad & High-Yield Banner Intelligence Agent
+  try {
+    const adReport = await runAdBannerIntelligenceAgent();
+    fleetReports.push({
+      agentName: "Autonomous 24/7 Ad, Banner & Promotion Intelligence Agent",
+      status: "SUCCESS",
+      timestamp: new Date().toISOString(),
+      summary: `Discovered and verified ${adReport.activeCreativesCount} high-CTR banners across all slots (Top Deal: ${adReport.featuredTopOffer.title} - ${adReport.featuredTopOffer.badge}). Synthesized ${adReport.viralDistributionCampaigns.length} live promotion blueprints for Reddit, Twitter, Telegram, and Quora.`,
+      details: adReport,
+    });
+  } catch (adErr: any) {
+    fleetReports.push({
+      agentName: "Autonomous 24/7 Ad, Banner & Promotion Intelligence Agent",
+      status: "WARNING",
+      timestamp: new Date().toISOString(),
+      summary: `Ad intelligence notice: ${adErr.message}`,
+      details: { error: adErr.message },
     });
   }
 

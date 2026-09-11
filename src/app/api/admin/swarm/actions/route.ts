@@ -100,6 +100,12 @@ export async function POST(req: Request) {
         return NextResponse.json({ success: true, report });
       }
 
+      case "AD_BANNER_INTELLIGENCE": {
+        const { runAdBannerIntelligenceAgent } = await import("@/lib/pipeline/agents/adBannerIntelligenceAgent");
+        const report = await runAdBannerIntelligenceAgent();
+        return NextResponse.json({ success: true, report });
+      }
+
       default: {
         return NextResponse.json(
           { error: "Unknown maintenance action requested." },
