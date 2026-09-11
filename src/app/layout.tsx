@@ -122,7 +122,8 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* Google AdSense Site Verification & Ad Engine */}
+        {/* Google AdSense Account Verification Meta & Ad Engine */}
+        <meta name="google-adsense-account" content="ca-pub-9768860457233655" />
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9768860457233655"
