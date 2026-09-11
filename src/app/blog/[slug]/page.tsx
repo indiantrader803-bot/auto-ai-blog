@@ -23,6 +23,7 @@ import FloatingShareDock from "@/components/blog/FloatingShareDock";
 import TrendingAlertBox from "@/components/blog/TrendingAlertBox";
 import ReadingProgressBar from "@/components/blog/ReadingProgressBar";
 import NextStoryFlyout from "@/components/blog/NextStoryFlyout";
+import FloatingDealStickyBar from "@/components/growth/FloatingDealStickyBar";
 import { getTrendingStoryRecommendation } from "@/lib/pipeline/internalLinkingEngine";
 import { generateStructuredSchema } from "@/lib/pipeline/seoAffiliateEngine";
 import {
@@ -638,6 +639,12 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Slide-in Next Story Flyout */}
       <NextStoryFlyout nextPost={nextPost || relatedPosts[0] || null} />
+
+      {/* Floating High-Converting Buyer Intent Deal Pill / Sticky Promo */}
+      <FloatingDealStickyBar
+        categorySlug={post?.category?.slug}
+        articleTitle={post?.title}
+      />
 
       <Footer />
     </div>
