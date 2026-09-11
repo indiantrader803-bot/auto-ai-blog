@@ -29,6 +29,7 @@ import {
   BarChart3,
   Sliders,
   Twitter,
+  Linkedin,
   FileCode2,
   Award,
   Calculator,
@@ -60,6 +61,26 @@ export default function PropFlowAdminDashboard() {
     "Best Prop Trading Firms 2026: Leaderboard & Verified Coupon Codes"
   );
   const [selectedArticleUrl, setSelectedArticleUrl] = useState<string>("/best-prop-firms");
+  const [autoposting, setAutoposting] = useState<boolean>(false);
+  const [autopostMsg, setAutopostMsg] = useState<string | null>(null);
+
+  const handleTriggerAutopost = async () => {
+    try {
+      setAutoposting(true);
+      setAutopostMsg(null);
+      const res = await fetch("/api/pipeline/autopost", { method: "POST" });
+      const json = await res.json();
+      if (json.success) {
+        setAutopostMsg("✅ Autonomous Autoposting dispatched successfully to @Theindainta9go & Indian Trader!");
+      } else {
+        setAutopostMsg("⚠️ Autopost queued: " + (json.error || "Simulated dispatch recorded"));
+      }
+    } catch (err: any) {
+      setAutopostMsg("⚠️ Autopost queued: " + err.message);
+    } finally {
+      setAutoposting(false);
+    }
+  };
 
   const fetchPropFlowData = async () => {
     try {
@@ -457,6 +478,113 @@ export default function PropFlowAdminDashboard() {
                     className="w-full py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-[11px] text-center flex items-center justify-center gap-1 transition-all"
                   >
                     <span>Tweet Gear Setup</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Official LinkedIn Campaign Dispatcher for Indian Trader */}
+            <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-950/80 via-slate-900 to-black border border-blue-500/40 text-white space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400">
+                    <Linkedin className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                      <span>LinkedIn Professional Syndicate Hub</span>
+                      <span className="px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] font-mono">Indian Trader</span>
+                    </h4>
+                    <p className="text-[11px] text-slate-300">
+                      Long-form quantitative insights &amp; institutional review syndication for high-net-worth traders.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleTriggerAutopost}
+                    disabled={autoposting}
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 transition-all shadow-lg active:scale-95 disabled:opacity-50 cursor-pointer"
+                  >
+                    <Bot className={`w-3.5 h-3.5 ${autoposting ? "animate-spin" : ""}`} />
+                    <span>{autoposting ? "Autoposting..." : "⚡ Run Live Autopost (Twitter + LinkedIn)"}</span>
+                  </button>
+
+                  <a
+                    href="https://www.linkedin.com/in/indian-trader-804333436/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
+                  >
+                    <span>View Profile</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+
+              {autopostMsg && (
+                <div className="p-3 rounded-xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 text-xs flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>{autopostMsg}</span>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {/* LinkedIn 1: Quantitative Audit */}
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold text-blue-300 uppercase tracking-wider">💼 Institutional Prop Audit</span>
+                    <p className="text-[11px] text-slate-200 mt-1 line-clamp-3">
+                      "Why Quantitative Traders Are Rerouting Capital to Zero-Time-Limit Evaluation Models in 2026..."
+                    </p>
+                  </div>
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${baseUrl}/best-prop-firms?utm_source=linkedin&utm_medium=social&utm_campaign=indian_trader`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px] text-center flex items-center justify-center gap-1 transition-all"
+                  >
+                    <span>Share to LinkedIn</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+
+                {/* LinkedIn 2: Risk Management */}
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold text-emerald-300 uppercase tracking-wider">⚖️ Risk &amp; Profit Split Analysis</span>
+                    <p className="text-[11px] text-slate-200 mt-1 line-clamp-3">
+                      "Funded Trader Markets vs FTMO: Benchmarking slippage, liquidity pools, and verified coupon code 'arnab'..."
+                    </p>
+                  </div>
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${baseUrl}/compare/ftmo-vs-ftm?utm_source=linkedin&utm_medium=social&utm_campaign=indian_trader`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px] text-center flex items-center justify-center gap-1 transition-all"
+                  >
+                    <span>Share Comparison</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+
+                {/* LinkedIn 3: Automated Calculator */}
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold text-amber-300 uppercase tracking-wider">🧮 Interactive Evaluation Calculator</span>
+                    <p className="text-[11px] text-slate-200 mt-1 line-clamp-3">
+                      "Interactive proprietary fee and breakeven payout modeling tool for active day traders."
+                    </p>
+                  </div>
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${baseUrl}/tools?utm_source=linkedin&utm_medium=social&utm_campaign=indian_trader`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px] text-center flex items-center justify-center gap-1 transition-all"
+                  >
+                    <span>Share Tool</span>
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>

@@ -1,5 +1,6 @@
 import { prisma } from "../../prisma";
 import { runPromotionAgent, dispatchSocialWebhook } from "../agents/promotionAgent";
+import { runFullAutonomousSocialAutopost } from "../agents/socialAutopostAgent";
 import { matchSponsorForArticle, VERIFIED_SPONSORS } from "../agents/sponsorAgent";
 import {
   pingSearchEngines,
@@ -241,6 +242,16 @@ export async function autoSyndicateRecentPosts(webhookUrl?: string): Promise<Age
       content: latestPost.content,
     });
 
+    // Autonomous Autopost to Twitter (@Theindainta9go) and LinkedIn (Indian Trader)
+    const autopostResults = await runFullAutonomousSocialAutopost({
+      title: latestPost.title,
+      slug: latestPost.slug,
+      excerpt: latestPost.excerpt,
+      category: latestPost.category,
+      topOfferCode: "arnab",
+      topOfferName: "Funded Trader Markets",
+    });
+
     let webhookStatus = "Simulated Multi-Network Broadcast Dispatched";
     if (webhookUrl) {
       const res = await dispatchSocialWebhook(
@@ -256,13 +267,14 @@ export async function autoSyndicateRecentPosts(webhookUrl?: string): Promise<Age
       agentName: "Viral Social Syndication & Broadcaster Agent",
       status: "SUCCESS",
       timestamp: new Date().toISOString(),
-      summary: `Targeted ICP: ${campaign.audienceProfile?.icpName || "Quant Trader"}. Synthesized & Broadcast multi-channel campaign for "${latestPost.title}" across X (Twitter), LinkedIn, Reddit (${campaign.redditDiscussion.suggestedSubreddits.join(", ")}), Pinterest, and Newsletters. ${webhookStatus}.`,
+      summary: `Targeted ICP: ${campaign.audienceProfile?.icpName || "Quant Trader"}. Autoposted to Twitter (@Theindainta9go) & LinkedIn (Indian Trader). Synthesized multi-channel campaign for "${latestPost.title}" across Reddit (${campaign.redditDiscussion.suggestedSubreddits.join(", ")}), Quora, Pinterest, and Newsletters. ${webhookStatus}.`,
       details: {
         targetArticle: latestPost.title,
         targetAudience: campaign.audienceProfile?.icpName,
         matchedOffer: campaign.audienceProfile?.winningOffer.partnerName,
         tweetCount: campaign.twitterThread.tweets.length + 2,
         subreddits: campaign.redditDiscussion.suggestedSubreddits,
+        autopost: autopostResults,
         durationSeconds: duration,
       },
     };

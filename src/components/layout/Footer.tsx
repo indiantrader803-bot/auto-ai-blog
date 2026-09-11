@@ -52,7 +52,7 @@ export default function Footer() {
               <span className="font-semibold text-slate-300">Independent Research &amp; Verified Journalism</span>
             </div>
 
-            <div className="pt-2 flex items-center gap-3">
+            <div className="pt-2 flex flex-wrap items-center gap-2">
               <a
                 href="https://x.com/Theindainta9go"
                 target="_blank"
@@ -60,7 +60,17 @@ export default function Footer() {
                 className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-sky-500/50 transition-all text-xs font-semibold"
               >
                 <Twitter className="w-3.5 h-3.5 text-sky-400" />
-                <span>Follow @Theindainta9go</span>
+                <span>@Theindainta9go</span>
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/indian-trader-804333436/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-blue-500/50 transition-all text-xs font-semibold"
+              >
+                <Linkedin className="w-3.5 h-3.5 text-blue-400" />
+                <span>Indian Trader</span>
               </a>
             </div>
           </div>
