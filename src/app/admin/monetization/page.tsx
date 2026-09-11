@@ -266,6 +266,18 @@ export default function MonetizationHubPage() {
       promoCode: "lUNNbKE",
     },
     {
+      id: "aff_aquafunded",
+      keyword: "AquaFunded / Prop Trading Evaluation",
+      product: "AquaFunded $10k-$200k Funded Challenge (Code: 6e9)",
+      url: "https://www.aquafunded.com/?afmc=6e9",
+      cpa: "Up to 20% Commission Per Funded Account",
+      clicks: 0,
+      earnings: "$0.00 (Real DB)",
+      status: "ACTIVE",
+      badge: "20% COMM",
+      promoCode: "6e9",
+    },
+    {
       id: "aff_fundex_prop",
       keyword: "Fundex Prop / $200k Funded Trading",
       product: "Fundex Prop Funded Trader Challenge (Code: GGG34QEO)",

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { Sparkles, ArrowRight, X, ShieldCheck, Copy, Check, Flame, Gift } from "lucide-react";
@@ -32,12 +32,24 @@ export default function FloatingDealStickyBar({ categorySlug, articleTitle }: Fl
   }, [isDismissed]);
 
   // Determine most relevant high-converting offer
+  const isAqua = articleTitle?.toLowerCase().includes("aqua") || articleTitle?.toLowerCase().includes("eval") || categorySlug?.includes("forex");
   const isPropTrading = categorySlug?.includes("market") || categorySlug?.includes("finance") || categorySlug?.includes("forex") || articleTitle?.toLowerCase().includes("trading") || articleTitle?.toLowerCase().includes("nifty") || articleTitle?.toLowerCase().includes("stock");
   
-  const deal = isPropTrading
+  const deal = isAqua
+    ? {
+        badge: "AQUAFUNDED 20% REBATE",
+        title: "AquaFunded: Trade Up to $200,000 Capital",
+        subtitle: "Pass evaluation, get funded & keep up to 90% profit split.",
+        promoCode: "6e9",
+        buttonText: "Claim AquaFunded ($200k)",
+        url: "https://www.aquafunded.com/?afmc=6e9",
+        platform: "AquaFunded",
+        colorScheme: "from-cyan-600 via-teal-600 to-blue-700",
+      }
+    : isPropTrading
     ? {
         badge: "EXCLUSIVE PROP CHALLENGE",
-        title: "Fundex & FTM: Trade Up to $200,000 Capital",
+        title: "Fundex & AquaFunded: Scale Up to $200k",
         subtitle: "Instant scaling, lowest spreads & up to 90% profit payouts.",
         promoCode: "GGG34QEO",
         buttonText: "Claim Funded Account",

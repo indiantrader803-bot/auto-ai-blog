@@ -150,6 +150,21 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
     label: "Trade Bitcoin & Altcoins on Delta Exchange (Code: YXQSZA)",
   },
   {
+    keyword: "AquaFunded",
+    url: "https://www.aquafunded.com/?afmc=6e9",
+    label: "AquaFunded Prop Firm - Scale to $200k with Fast Payouts (Code: 6e9)",
+  },
+  {
+    keyword: "Aqua Funded",
+    url: "https://www.aquafunded.com/?afmc=6e9",
+    label: "AquaFunded Evaluation Challenge (Up to 90% Profit Split, Code: 6e9)",
+  },
+  {
+    keyword: "aquafunded",
+    url: "https://www.aquafunded.com/?afmc=6e9",
+    label: "AquaFunded Official Challenge Portal (Code: 6e9)",
+  },
+  {
     keyword: "Fundex Prop",
     url: "https://prop.fundex.gg/rc/GGG34QEO",
     label: "Fundex Prop $100k-$200k Funded Trading Challenge (Code: GGG34QEO)",

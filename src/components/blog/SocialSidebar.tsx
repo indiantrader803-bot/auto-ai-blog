@@ -306,6 +306,27 @@ export default function SocialSidebar({
           </div>
         </a>
 
+        {/* Offer: AquaFunded */}
+        <a
+          href="https://www.aquafunded.com/?afmc=6e9"
+          onClick={() => trackAffiliateClick("AquaFunded Prop Firm", "https://www.aquafunded.com/?afmc=6e9")}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          className="group block p-3.5 rounded-2xl bg-gradient-to-r from-blue-500/15 via-cyan-500/15 to-teal-500/15 hover:from-blue-500/25 hover:to-teal-500/25 border border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden"
+        >
+          <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
+            <span className="group-hover:text-cyan-300 transition-colors">AquaFunded Prop Trading ($200k)</span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono font-bold">20% COMM</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-snug mb-2">
+            Up to 90% profit split &amp; instant scaling. Affiliate Ref: <strong className="text-cyan-300 font-mono">6e9</strong>
+          </p>
+          <div className="flex items-center gap-1 text-[11px] text-cyan-400 group-hover:text-white font-bold">
+            <span>Claim AquaFunded Account (6e9)</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </a>
+
         {/* Offer: Fundex Prop */}
         <a
           href="https://prop.fundex.gg/rc/GGG34QEO"

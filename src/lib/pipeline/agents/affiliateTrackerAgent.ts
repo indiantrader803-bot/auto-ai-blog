@@ -1,4 +1,4 @@
-﻿import { prisma } from "../../prisma";
+import { prisma } from "../../prisma";
 
 export interface AffiliateProgramData {
   id: string;
@@ -70,6 +70,25 @@ export const MASTER_AFFILIATE_PROGRAMS: AffiliateProgramData[] = [
     totalEarningsINR: 0,
     payoutStatus: "AVAILABLE",
     badge: "10% COMM",
+  },
+  {
+    id: "aff_aquafunded",
+    platform: "AquaFunded",
+    name: "AquaFunded Prop Trading Evaluation ($10k-$200k)",
+    category: "Prop Trading",
+    targetUrl: "https://www.aquafunded.com/?afmc=6e9",
+    promoCode: "6e9",
+    payoutModel: "Up to 20% Commission on Every Funded Account",
+    baseCpa: 80.0,
+    clicks: 0,
+    uniqueClicks: 0,
+    purchases: 0,
+    conversionRate: 0,
+    epc: 0,
+    totalEarningsUSD: 0,
+    totalEarningsINR: 0,
+    payoutStatus: "AVAILABLE",
+    badge: "20% COMM",
   },
   {
     id: "aff_fundex_prop",
