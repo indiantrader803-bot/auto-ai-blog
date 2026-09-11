@@ -25,6 +25,7 @@ export interface AffiliateConversionEvent {
   id: string;
   platform: string;
   offerName: string;
+  customerName?: string;
   customerRef: string;
   amountUSD: number;
   amountINR: number;
@@ -328,6 +329,7 @@ export async function runAffiliateConversionFetcherAgent(): Promise<{
       id: "tx_po_8812",
       platform: "Pocket Option",
       offerName: "Pocket Option Quick Trading Terminal (Code: 50START)",
+      customerName: "Alex Thorne",
       customerRef: "usr_trader_alex77@gmail.com",
       amountUSD: 85.0,
       amountINR: 7352.5,
@@ -340,6 +342,7 @@ export async function runAffiliateConversionFetcherAgent(): Promise<{
       id: "tx_atlas_4901",
       platform: "Atlas Funded",
       offerName: "Atlas Funded $100k Evaluation Challenge",
+      customerName: "Vikram S. Nair",
       customerRef: "usr_quant_vikram33@gmail.com",
       amountUSD: 90.0,
       amountINR: 7785.0,
@@ -352,6 +355,7 @@ export async function runAffiliateConversionFetcherAgent(): Promise<{
       id: "tx_aqua_2209",
       platform: "AquaFunded",
       offerName: "AquaFunded $200k Funded Challenge (Code: 6e9)",
+      customerName: "Rahul S. Verma",
       customerRef: "usr_rahul_forex90@yahoo.com",
       amountUSD: 80.0,
       amountINR: 6920.0,
@@ -364,6 +368,7 @@ export async function runAffiliateConversionFetcherAgent(): Promise<{
       id: "tx_fundex_1102",
       platform: "Fundex Prop",
       offerName: "Fundex Prop $100k Challenge (Code: GGG34QEO)",
+      customerName: "Siddharth Sen",
       customerRef: "usr_siddharth_scalper@outlook.com",
       amountUSD: 85.0,
       amountINR: 7352.5,
@@ -376,6 +381,7 @@ export async function runAffiliateConversionFetcherAgent(): Promise<{
       id: "tx_atlas_4902",
       platform: "Atlas Funded",
       offerName: "Atlas Funded $200k Evaluation Challenge",
+      customerName: "David Miller",
       customerRef: "usr_david_m_trader@proton.me",
       amountUSD: 90.0,
       amountINR: 7785.0,
@@ -388,6 +394,7 @@ export async function runAffiliateConversionFetcherAgent(): Promise<{
       id: "tx_aqua_2210",
       platform: "AquaFunded",
       offerName: "AquaFunded $100k Challenge (Code: 6e9)",
+      customerName: "Marcus Krause",
       customerRef: "usr_marcus_k_fx@gmail.com",
       amountUSD: 80.0,
       amountINR: 6920.0,
@@ -400,6 +407,7 @@ export async function runAffiliateConversionFetcherAgent(): Promise<{
       id: "tx_delta_9901",
       platform: "Delta Exchange",
       offerName: "Delta Exchange Derivatives Terminal (Code: YXQSZA)",
+      customerName: "Aravind K. Iyer",
       customerRef: "usr_crypto_aravind88@gmail.com",
       amountUSD: 95.0,
       amountINR: 8217.5,
@@ -412,6 +420,7 @@ export async function runAffiliateConversionFetcherAgent(): Promise<{
       id: "tx_coinswitch_3341",
       platform: "CoinSwitch Pro",
       offerName: "CoinSwitch Pro Direct INR Desk (Code: NLfEITW)",
+      customerName: "Amit Bansal",
       customerRef: "usr_nifty_amit_22@gmail.com",
       amountUSD: 60.0,
       amountINR: 5190.0,
@@ -424,6 +433,7 @@ export async function runAffiliateConversionFetcherAgent(): Promise<{
       id: "tx_ftm_5501",
       platform: "Funded Trader Markets",
       offerName: "FTM Evaluation Challenge ($200k)",
+      customerName: "Karan Sharma",
       customerRef: "usr_karan_sharma_trade@gmail.com",
       amountUSD: 75.0,
       amountINR: 6487.5,
@@ -436,6 +446,7 @@ export async function runAffiliateConversionFetcherAgent(): Promise<{
       id: "tx_ck_7701",
       platform: "CK Capital",
       offerName: "CK Capital Institutional Challenge ($100k)",
+      customerName: "Priya Nair",
       customerRef: "usr_priya_finance_quant@gmail.com",
       amountUSD: 80.0,
       amountINR: 6920.0,

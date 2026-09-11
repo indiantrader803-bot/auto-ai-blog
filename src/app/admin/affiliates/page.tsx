@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -458,28 +458,42 @@ export default function AffiliateTrackingDashboardPage() {
             {conversions.map((conv: any) => (
               <div
                 key={conv.id}
-                className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4"
+                className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4 hover:border-indigo-500/40 transition-all"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold text-xs">
-                    {conv.platform.slice(0, 2).toUpperCase()}
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center font-bold text-xs shadow-md shrink-0 font-mono">
+                    {conv.customerName
+                      ? conv.customerName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()
+                      : conv.platform.slice(0, 2).toUpperCase()}
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-900 dark:text-white">{conv.offerName}</div>
-                    <div className="text-[11px] text-slate-400 flex items-center gap-2 mt-0.5">
-                      <span className="font-mono text-indigo-400">{conv.customerRef}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs sm:text-sm font-black text-slate-900 dark:text-white font-serif">
+                        {conv.customerName || "Verified Buyer"}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-bold text-[9px] uppercase tracking-wider">
+                        {conv.status}
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium mt-0.5">
+                      {conv.offerName}
+                    </div>
+                    <div className="text-[10px] text-slate-400 flex items-center gap-2 mt-0.5 font-mono">
+                      <span className="text-indigo-500 dark:text-indigo-400 font-semibold">{conv.customerRef}</span>
                       <span>•</span>
-                      <span>{conv.referrerSource}</span>
+                      <span className="text-slate-500">{conv.platform}</span>
+                      <span>•</span>
+                      <span className="text-emerald-500 font-bold">{conv.referrerSource}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="text-right shrink-0">
-                  <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400 font-serif">
+                  <div className="text-sm sm:text-base font-black text-emerald-600 dark:text-emerald-400 font-serif">
                     +${conv.amountUSD.toFixed(2)}
                   </div>
                   <div className="text-[10px] text-slate-400 font-mono">
-                    {new Date(conv.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    {new Date(conv.timestamp).toLocaleDateString([], { month: "short", day: "numeric" })} • {new Date(conv.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </div>
                 </div>
               </div>
