@@ -150,6 +150,16 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
     label: "Trade Bitcoin & Altcoins on Delta Exchange (Code: YXQSZA)",
   },
   {
+    keyword: "Fundex Prop",
+    url: "https://prop.fundex.gg/rc/GGG34QEO",
+    label: "Fundex Prop $100k-$200k Funded Trading Challenge (Code: GGG34QEO)",
+  },
+  {
+    keyword: "Fundex",
+    url: "https://prop.fundex.gg/rc/GGG34QEO",
+    label: "Fundex Prop Trading - Scale to $200k with Fast Payouts (Code: GGG34QEO)",
+  },
+  {
     keyword: "CK Capital",
     url: "https://app.ckcapital.co.uk/signup/ALPROP/",
     label: "CK Capital Funded Prop Trading (Code: ALPROP)",

@@ -62,7 +62,7 @@ export async function GET() {
               .map(
                 (p) => `
               <div class="article">
-                <a href="https://auto-ai-blog-orpin.vercel.app/blog/${p.slug}" class="article-title">${p.title}</a>
+                <a href="https://auto-ai-blog-web.onrender.com/blog/${p.slug}" class="article-title">${p.title}</a>
                 <p class="article-excerpt">${p.excerpt}</p>
               </div>
             `

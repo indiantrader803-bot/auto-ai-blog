@@ -58,7 +58,7 @@ export function runSeoMasterAgent(options: {
   const siteUrl = (
     options.siteUrl ||
     process.env.NEXT_PUBLIC_SITE_URL ||
-    "https://auto-ai-blog-orpin.vercel.app"
+    "https://auto-ai-blog-web.onrender.com"
   ).replace(/\/$/, "");
 
   // 1. Slug & Canonical URL Hygiene

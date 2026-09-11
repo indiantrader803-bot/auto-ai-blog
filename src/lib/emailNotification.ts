@@ -39,7 +39,7 @@ export async function notifyAdminUserLead(payload: UserLeadPayload): Promise<{ s
               <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6;">Thank you for subscribing to our daily autonomous AI & Engineering briefing.</p>
               <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6;">You will now receive breaking coverage on frontier LLMs, system architecture, quant finance, and tech reviews.</p>
               <div style="margin: 24px 0;">
-                <a href="https://auto-ai-blog-orpin.vercel.app" style="display: inline-block; padding: 12px 24px; background-color: #4f46e5; color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 10px;">Explore Today's Dispatch →</a>
+                <a href="https://auto-ai-blog-web.onrender.com" style="display: inline-block; padding: 12px 24px; background-color: #4f46e5; color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 10px;">Explore Today's Dispatch →</a>
               </div>
               <p style="font-size: 12px; color: #64748b; margin-top: 32px;">SmartMag Tech Chronicle • Delivered to ${payload.email}</p>
             </div>

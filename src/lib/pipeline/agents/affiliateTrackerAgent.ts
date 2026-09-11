@@ -1,4 +1,4 @@
-﻿import { prisma } from "../../prisma";
+import { prisma } from "../../prisma";
 
 export interface AffiliateProgramData {
   id: string;
@@ -165,6 +165,25 @@ export const MASTER_AFFILIATE_PROGRAMS: AffiliateProgramData[] = [
     totalEarningsINR: 0,
     payoutStatus: "AVAILABLE",
     badge: "VIP DESK",
+  },
+  {
+    id: "aff_fundex_prop",
+    platform: "Fundex Prop",
+    name: "Fundex Prop $100k-$200k Funded Trading Challenge",
+    category: "Prop Trading",
+    targetUrl: "https://prop.fundex.gg/rc/GGG34QEO",
+    promoCode: "GGG34QEO",
+    payoutModel: "20% RevShare + $85 CPA on Challenge Passes",
+    baseCpa: 85.0,
+    clicks: 0,
+    uniqueClicks: 0,
+    purchases: 0,
+    conversionRate: 0,
+    epc: 0,
+    totalEarningsUSD: 0,
+    totalEarningsINR: 0,
+    payoutStatus: "AVAILABLE",
+    badge: "INSTANT SCALING",
   },
   {
     id: "aff_ckcapital",

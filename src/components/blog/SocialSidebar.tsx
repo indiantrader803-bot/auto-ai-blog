@@ -306,6 +306,27 @@ export default function SocialSidebar({
           </div>
         </a>
 
+        {/* Offer: Fundex Prop */}
+        <a
+          href="https://prop.fundex.gg/rc/GGG34QEO"
+          onClick={() => trackAffiliateClick("Fundex Prop", "https://prop.fundex.gg/rc/GGG34QEO")}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          className="group block p-3.5 rounded-2xl bg-gradient-to-r from-purple-500/15 to-indigo-500/15 hover:from-purple-500/25 hover:to-indigo-500/25 border border-purple-500/30 hover:border-purple-400 transition-all"
+        >
+          <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
+            <span className="group-hover:text-purple-300 transition-colors">Fundex Prop $200k Funded</span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono font-bold">HOT CHALLENGE</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-snug mb-2">
+            Instant evaluation scaling &amp; profit splits up to 90%. Ref: <strong className="text-purple-300 font-mono">GGG34QEO</strong>
+          </p>
+          <div className="flex items-center gap-1 text-[11px] text-purple-400 group-hover:text-white font-bold">
+            <span>Claim Fundex Account (GGG34QEO)</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </a>
+
         {/* Offer 1: CK Capital */}
         <a
           href="https://app.ckcapital.co.uk/signup/ALPROP/"

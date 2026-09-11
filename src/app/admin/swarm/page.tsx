@@ -92,7 +92,7 @@ export default function SwarmMaintenancePage() {
   };
 
   const copyCronCommand = () => {
-    const curl = `curl -X POST https://auto-ai-blog-orpin.vercel.app/api/cron -H "Authorization: Bearer auto-blog-secure-key-2025"`;
+    const curl = `curl -X POST https://auto-ai-blog-web.onrender.com/api/cron -H "Authorization: Bearer auto-blog-secure-key-2025"`;
     navigator.clipboard.writeText(curl);
     setCopiedCron(true);
     setTimeout(() => setCopiedCron(false), 2000);

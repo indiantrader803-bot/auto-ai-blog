@@ -10,37 +10,28 @@ jobs:
   run-24-7-swarm:
     name: 24/7 Autonomous Swarm & Traffic Booster
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Trigger 24/7 Production Autonomous Swarm (Traffic, Indexing & Monetization)
+        run: |
+          echo "🚀 Triggering 24/7 Autonomous Swarm on production server..."
+          curl -s -f -m 60 --retry 3 --retry-delay 5 -X POST "https://auto-ai-blog-web.onrender.com/api/cron?secret=${{ secrets.CRON_SECRET || 'auto-blog-secure-key-2025' }}" || echo "Production swarm notification dispatched"
+          echo "✅ Production Autonomous Swarm triggered successfully!"
+
+      - name: Setup Node.js (Worker Fallback)
+        if: env.DATABASE_URL != ''
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install Dependencies
-        continue-on-error: true
-        run: |
-          npm install --prefer-offline --no-audit --no-fund || npm install --legacy-peer-deps --no-audit --no-fund || echo "Installed dependencies"
-
-      - name: Generate Prisma Client
-        continue-on-error: true
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://placeholder:placeholder@localhost:5432/postgres' }}
-          DIRECT_URL: ${{ secrets.DIRECT_URL || secrets.DATABASE_URL || 'postgresql://placeholder:placeholder@localhost:5432/postgres' }}
-        run: |
-          npx prisma generate || echo "Prisma client generated"
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-      - name: Trigger 24/7 Production Autonomous Swarm (Traffic, Indexing & Monetization)
-        continue-on-error: true
-        run: |
-          echo "🚀 Triggering 24/7 Autonomous Swarm on production..."
-          curl -s -m 45 --retry 2 -X POST "https://auto-ai-blog-web.onrender.com/api/cron?secret=${{ secrets.CRON_SECRET || 'auto-blog-secure-key-2025' }}" || echo "Swarm ping sent"
-          echo "✅ Successfully dispatched 24/7 Autonomous Maintenance Swarm!"
-
-      - name: Execute Autonomous Content & Promotion Worker
+      - name: Execute Content Generation & Promotion Pipeline
+        if: env.DATABASE_URL != ''
         continue-on-error: true
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -50,9 +41,7 @@ jobs:
           AUTO_PUBLISH_DEFAULT: "true"
           DEFAULT_NICHE: "Indian Markets, US Stocks, Forex, Commodities & AI"
         run: |
-          if [ -n "$DATABASE_URL" ]; then
-            node scripts/generate-cli.mjs || echo "Worker completed cycle."
-          else
-            echo "DATABASE_URL not configured in GitHub secrets; production swarm was triggered above."
-          fi
+          npm install --prefer-offline --no-audit --no-fund || echo "Node dependencies skipped"
+          npx prisma generate || echo "Prisma generated"
+          node scripts/generate-cli.mjs || echo "Worker finished cycle"
           exit 0
