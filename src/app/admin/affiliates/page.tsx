@@ -455,49 +455,68 @@ export default function AffiliateTrackingDashboardPage() {
           </div>
 
           <div className="space-y-3">
-            {conversions.map((conv: any) => (
-              <div
-                key={conv.id}
-                className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4 hover:border-indigo-500/40 transition-all"
-              >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center font-bold text-xs shadow-md shrink-0 font-mono">
-                    {conv.customerName
-                      ? conv.customerName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()
-                      : conv.platform.slice(0, 2).toUpperCase()}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs sm:text-sm font-black text-slate-900 dark:text-white font-serif">
-                        {conv.customerName || "Verified Buyer"}
-                      </span>
-                      <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-bold text-[9px] uppercase tracking-wider">
-                        {conv.status}
-                      </span>
-                    </div>
-                    <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium mt-0.5">
-                      {conv.offerName}
-                    </div>
-                    <div className="text-[10px] text-slate-400 flex items-center gap-2 mt-0.5 font-mono">
-                      <span className="text-indigo-500 dark:text-indigo-400 font-semibold">{conv.customerRef}</span>
-                      <span>•</span>
-                      <span className="text-slate-500">{conv.platform}</span>
-                      <span>•</span>
-                      <span className="text-emerald-500 font-bold">{conv.referrerSource}</span>
-                    </div>
-                  </div>
+            {conversions.length === 0 ? (
+              <div className="p-8 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-center space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800 text-indigo-500 mx-auto flex items-center justify-center">
+                  <ShieldCheck className="w-6 h-6" />
                 </div>
-
-                <div className="text-right shrink-0">
-                  <div className="text-sm sm:text-base font-black text-emerald-600 dark:text-emerald-400 font-serif">
-                    +${conv.amountUSD.toFixed(2)}
-                  </div>
-                  <div className="text-[10px] text-slate-400 font-mono">
-                    {new Date(conv.timestamp).toLocaleDateString([], { month: "short", day: "numeric" })} • {new Date(conv.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                  </div>
+                <div>
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                    Strict Live Partner Mode Active
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto mt-1">
+                    No simulated entries. Real partner receipts (Funded Trader Markets, Atlas Funded, AquaFunded, Pocket Option) will stream here automatically upon verified customer checkout.
+                  </p>
+                </div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-mono font-bold">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> 100% Verified Telemetry Ledger
                 </div>
               </div>
-            ))}
+            ) : (
+              conversions.map((conv: any) => (
+                <div
+                  key={conv.id}
+                  className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4 hover:border-indigo-500/40 transition-all"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center font-bold text-xs shadow-md shrink-0 font-mono">
+                      {conv.customerName
+                        ? conv.customerName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()
+                        : conv.platform.slice(0, 2).toUpperCase()}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs sm:text-sm font-black text-slate-900 dark:text-white font-serif">
+                          {conv.customerName || "Verified Buyer"}
+                        </span>
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-bold text-[9px] uppercase tracking-wider">
+                          {conv.status}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium mt-0.5">
+                        {conv.offerName}
+                      </div>
+                      <div className="text-[10px] text-slate-400 flex items-center gap-2 mt-0.5 font-mono">
+                        <span className="text-indigo-500 dark:text-indigo-400 font-semibold">{conv.customerRef}</span>
+                        <span>•</span>
+                        <span className="text-slate-500">{conv.platform}</span>
+                        <span>•</span>
+                        <span className="text-emerald-500 font-bold">{conv.referrerSource}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-right shrink-0">
+                    <div className="text-sm sm:text-base font-black text-emerald-600 dark:text-emerald-400 font-serif">
+                      +${conv.amountUSD.toFixed(2)}
+                    </div>
+                    <div className="text-[10px] text-slate-400 font-mono">
+                      {new Date(conv.timestamp).toLocaleDateString([], { month: "short", day: "numeric" })} • {new Date(conv.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
