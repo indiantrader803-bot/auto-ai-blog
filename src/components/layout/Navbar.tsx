@@ -42,13 +42,13 @@ interface NavbarProps {
 }
 
 const DEFAULT_CATEGORIES: NavCategory[] = [
-  { name: "🇮🇳 Indian Markets", slug: "indian-markets", isHot: true },
-  { name: "🇺🇸 US Markets", slug: "us-markets", isHot: true },
-  { name: "Forex (USD/INR)", slug: "forex-and-currencies", isHot: true },
-  { name: "Commodities", slug: "commodities", isHot: true },
-  { name: "AI & Tech", slug: "artificial-intelligence", isHot: true },
-  { name: "Software Eng", slug: "development-and-engineering", isHot: false },
-  { name: "Telecom & 5G", slug: "telecom-and-connectivity", isHot: false },
+  { name: "⚡ Technology", slug: "technology", isHot: true, count: 96 },
+  { name: "🤖 Artificial Intelligence", slug: "artificial-intelligence", isHot: true, count: 77 },
+  { name: "📱 Tech & Gadgets", slug: "tech-and-gadgets", isHot: true, count: 20 },
+  { name: "🪙 Commodities", slug: "commodities", isHot: true, count: 5 },
+  { name: "💻 Development", slug: "development-and-engineering", isHot: true, count: 4 },
+  { name: "🇮🇳 Indian Markets", slug: "indian-markets", isHot: true, count: 3 },
+  { name: "📡 Telecom & 5G", slug: "telecom-and-connectivity", isHot: false, count: 2 },
 ];
 
 export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps) {
@@ -59,10 +59,29 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
   const [categories, setCategories] = useState<NavCategory[]>(trendingCategories || DEFAULT_CATEGORIES);
   const [tickerPost, setTickerPost] = useState<{ title: string; slug: string }>(
     hotTopicPost || {
-      title: "Nifty 50 & Sensex Technical Outlook: FII Inflows, DII Liquidity & Key Breakout Levels",
-      slug: "nifty-50-sensex-record-highs-fii-dii-liquidity-breakout",
+      title: "Astra for Coding: Why Are We Doing This Again?",
+      slug: "astra-for-coding-why-are-we-doing-this-again",
     }
   );
+
+  // Fetch live prioritized categories from real DB
+  useEffect(() => {
+    const fetchLiveNavData = async () => {
+      try {
+        const res = await fetch("/api/categories");
+        const json = await res.json();
+        if (json.success && json.categories?.length > 0) {
+          setCategories(json.categories);
+        }
+        if (json.topTrendingPost && !hotTopicPost) {
+          setTickerPost(json.topTrendingPost);
+        }
+      } catch (err) {
+        console.warn("Notice loading dynamic nav categories:", err);
+      }
+    };
+    fetchLiveNavData();
+  }, [hotTopicPost]);
 
   useEffect(() => {
     if (trendingCategories && trendingCategories.length > 0) {

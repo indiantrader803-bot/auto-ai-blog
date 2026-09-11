@@ -128,8 +128,31 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9768860457233655"
           crossOrigin="anonymous"
         />
+
+        {/* Global Google Translate Initialization */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              function googleTranslateElementInit() {
+                try {
+                  new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'en,bn,hi,es,fr,de,zh-CN,zh-TW,ja,ko,ar,pt,ru,it,nl,tr,vi,th,id,pl,mr,te,ta,gu,kn,pa,ur',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                  }, 'google_translate_element');
+                } catch(e) {}
+              }
+            `,
+          }}
+        />
+        <script
+          async
+          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+        />
       </head>
       <body className="min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white font-sans">
+        <div id="google_translate_element" style={{ display: "none" }} />
         {children}
         <ExitIntentModal />
         <FloatingSubscribeButton />

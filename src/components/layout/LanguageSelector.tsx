@@ -31,20 +31,39 @@ export default function LanguageSelector() {
   const [currentLang, setCurrentLang] = useState("en");
 
   useEffect(() => {
-    // Check if Google Translate widget is loaded or cookie set
-    const match = document.cookie.match(/googtrans=\/en\/([a-z-A-Z]+)/);
-    if (match && match[1]) {
-      setCurrentLang(match[1]);
-    }
+    const checkLangCookie = () => {
+      const match = document.cookie.match(/googtrans=\/en\/([a-zA-Z_-]+)/);
+      if (match && match[1]) {
+        setCurrentLang(match[1]);
+      } else {
+        setCurrentLang("en");
+      }
+    };
+    checkLangCookie();
   }, []);
 
   const changeLanguage = (langCode: string) => {
     setCurrentLang(langCode);
     setIsOpen(false);
 
-    // Set google translate cookie
-    document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
-    document.cookie = `googtrans=/en/${langCode}; path=/`;
+    // If English, clear or set default
+    if (langCode === "en") {
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
+      document.cookie = `googtrans=/en/en; path=/;`;
+      document.cookie = `googtrans=/en/en; path=/; domain=${window.location.hostname};`;
+    } else {
+      // Set google translate cookie for current domain and root path
+      document.cookie = `googtrans=/en/${langCode}; path=/;`;
+      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname};`;
+      
+      // Also try parent domain if applicable
+      const hostParts = window.location.hostname.split(".");
+      if (hostParts.length > 2) {
+        const parentDomain = hostParts.slice(-2).join(".");
+        document.cookie = `googtrans=/en/${langCode}; path=/; domain=.${parentDomain};`;
+      }
+    }
 
     // Trigger Google Translate frame if available or reload to apply translation
     const element = document.querySelector(".goog-te-combo") as HTMLSelectElement;
