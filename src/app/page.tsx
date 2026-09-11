@@ -298,6 +298,95 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* 🌟 PropFlow 2026 Prop Trading Leaderboard & Live Calculator Showcase */}
+        <section className="mb-14 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/30 shadow-2xl space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="px-3 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-[10px] uppercase tracking-wider border border-emerald-500/30">
+                  2026 Verified Prop Firm Directory
+                </span>
+                <span className="text-xs text-amber-400 font-mono font-bold">
+                  ★ Exclusive Partner Discount Codes Active
+                </span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black font-serif tracking-tight">
+                Best Prop Trading Firms &amp; Instant Fee Savings
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 max-w-2xl">
+                Compare evaluation rules, zero time limit scaling programs, and calculate your exact 90% monthly payout with partner promo codes.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0 flex-wrap">
+              <Link
+                href="/tools"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 text-white font-bold text-xs uppercase tracking-wider shadow-lg transition-all flex items-center gap-2 active:scale-95"
+              >
+                <span>Calculate Fee Savings</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href="/best-prop-firms"
+                className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider border border-white/20 transition-all"
+              >
+                <span>Full Leaderboard</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* 3 Featured Prop Firm Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+            {/* FTM */}
+            <div className="p-5 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-indigo-500/50 transition-all space-y-3 flex flex-col justify-between">
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-amber-400 font-mono">CODE: arnab</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold uppercase">10% OFF</span>
+                </div>
+                <h3 className="text-base font-bold text-white font-serif">Funded Trader Markets</h3>
+                <p className="text-xs text-slate-300">Zero time limits on challenge phases, up to 90% profit split, and on-demand bi-weekly payouts.</p>
+              </div>
+              <div className="pt-2 flex items-center justify-between gap-2 border-t border-slate-700/60">
+                <Link href="/reviews/funded-trader-markets" className="text-xs text-indigo-400 hover:text-indigo-300 font-bold">Read Audit →</Link>
+                <a href="https://fundedtradermarkets.com/ref/arnab" target="_blank" rel="noopener noreferrer nofollow" className="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-[11px]">Claim Deal</a>
+              </div>
+            </div>
+
+            {/* Atlas Funded */}
+            <div className="p-5 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-emerald-500/50 transition-all space-y-3 flex flex-col justify-between">
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-emerald-400 font-mono">CODE: 12275</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold uppercase">20% OFF</span>
+                </div>
+                <h3 className="text-base font-bold text-white font-serif">Atlas Funded</h3>
+                <p className="text-xs text-slate-300">TradeLocker execution with instant pass tokens ($5 FTPs) and rapid scaling up to $300,000.</p>
+              </div>
+              <div className="pt-2 flex items-center justify-between gap-2 border-t border-slate-700/60">
+                <Link href="/reviews/atlas-funded" className="text-xs text-emerald-400 hover:text-emerald-300 font-bold">Read Audit →</Link>
+                <a href="https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN" target="_blank" rel="noopener noreferrer nofollow" className="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-[11px]">Claim Deal</a>
+              </div>
+            </div>
+
+            {/* AquaFunded */}
+            <div className="p-5 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-cyan-500/50 transition-all space-y-3 flex flex-col justify-between">
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-cyan-400 font-mono">CODE: 6e9</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-bold uppercase">20% REBATE</span>
+                </div>
+                <h3 className="text-base font-bold text-white font-serif">AquaFunded</h3>
+                <p className="text-xs text-slate-300">1-Step rapid evaluation, fastest 14-day initial payout cycle, and 90% profit split guarantee.</p>
+              </div>
+              <div className="pt-2 flex items-center justify-between gap-2 border-t border-slate-700/60">
+                <Link href="/reviews/aquafunded" className="text-xs text-cyan-400 hover:text-cyan-300 font-bold">Read Audit →</Link>
+                <a href="https://www.aquafunded.com/?afmc=6e9" target="_blank" rel="noopener noreferrer nofollow" className="px-3 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-white font-bold text-[11px]">Claim Deal</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* 4. Main Two-Column Layout: Latest Deep Dives + SmartMag Sticky Sidebar */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-16">
           {/* Main Feed (8 Cols) */}

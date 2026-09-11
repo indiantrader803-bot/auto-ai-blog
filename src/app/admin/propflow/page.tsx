@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -29,6 +29,14 @@ import {
   BarChart3,
   Sliders,
   FileCode2,
+  Award,
+  Calculator,
+  Globe,
+  Link2,
+  Tag,
+  ArrowRight,
+  Tv,
+  MessageSquare,
 } from "lucide-react";
 
 export default function PropFlowAdminDashboard() {
@@ -36,7 +44,21 @@ export default function PropFlowAdminDashboard() {
   const [loading, setLoading] = useState<boolean>(true);
   const [isTriggering, setIsTriggering] = useState<boolean>(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"SWARM" | "HUMAN_REVIEW" | "AB_TESTS" | "UTM_BUILDER">("SWARM");
+  const [activeTab, setActiveTab] = useState<
+    "MULTI_WEBSITES" | "UTM_GENERATOR" | "ARTICLE_PROMOTER" | "SWARM" | "HUMAN_REVIEW" | "AB_TESTS" | "KEYWORD_LANDERS"
+  >("MULTI_WEBSITES");
+
+  // UTM Generator State
+  const [selectedTarget, setSelectedTarget] = useState<string>("/reviews/funded-trader-markets");
+  const [selectedPlatform, setSelectedPlatform] = useState<string>("twitter");
+  const [campaignName, setCampaignName] = useState<string>("discount_arnab");
+  const [selectedOfferCode, setSelectedOfferCode] = useState<string>("arnab");
+
+  // Article Promoter State
+  const [selectedArticleTitle, setSelectedArticleTitle] = useState<string>(
+    "Best Prop Trading Firms 2026: Leaderboard & Verified Coupon Codes"
+  );
+  const [selectedArticleUrl, setSelectedArticleUrl] = useState<string>("/best-prop-firms");
 
   const fetchPropFlowData = async () => {
     try {
@@ -87,68 +109,521 @@ export default function PropFlowAdminDashboard() {
   const abTests = report.abTestStatus || [];
   const keywords = report.keywordsScouted || [];
 
+  const baseUrl = "https://auto-ai-blog-web.onrender.com";
+  const generatedUtmUrl = `${baseUrl}${selectedTarget}?utm_source=${selectedPlatform}&utm_medium=social&utm_campaign=${campaignName}&coupon=${selectedOfferCode}`;
+
+  const popularWebsites = [
+    {
+      name: "Reddit (r/Forex & r/Daytrading)",
+      category: "Trader Community (1.4M+ Members)",
+      icon: "🔴",
+      audience: "Active Challenge Buyers",
+      strategy: "Post breakdown of 0-time-limit rules & share FTM vs FTMO savings matrix.",
+      directShareUrl: `https://www.reddit.com/submit?title=${encodeURIComponent("Comprehensive 2026 Prop Firm Audit: Why Zero Time Limits & 10% Discount beats FTMO")}&url=${encodeURIComponent(generatedUtmUrl)}`,
+    },
+    {
+      name: "Twitter / X (Finance & Forex)",
+      category: "Viral Micro-Blogging",
+      icon: "🐦",
+      audience: "25M+ Daily Finance Impressions",
+      strategy: "Tweet thread on saving $95+ on prop evaluations with verified partner codes.",
+      directShareUrl: `https://twitter.com/intent/tweet?text=${encodeURIComponent("🔥 If you're buying a prop trading challenge in 2026, don't pay full price. Use code 'arnab' for 10% instant checkout discount at Funded Trader Markets + zero time limits:\n\n" + generatedUtmUrl + "\n\n#Forex #PropFirm #Trading")}`,
+    },
+    {
+      name: "Telegram Forex Channels & Groups",
+      category: "Instant Messenger VIP",
+      icon: "✈️",
+      audience: "High-Converting Signal Subscribers",
+      strategy: "Broadcast flash coupon alert: '10% OFF FTM (Code: arnab) + 20% OFF Atlas Funded (Code: 12275)'.",
+      directShareUrl: `https://t.me/share/url?url=${encodeURIComponent(generatedUtmUrl)}&text=${encodeURIComponent("🚀 Verified Prop Firm Discount Alert:\n• Funded Trader Markets: 10% OFF with code 'arnab'\n• Atlas Funded: 20% OFF with code '12275'\n\nCalculate your exact fees & payout savings here:")}`,
+    },
+    {
+      name: "Quora Q&A",
+      category: "High-Intent Search Traffic",
+      icon: "❓",
+      audience: "Traders asking 'What is the best prop firm?'",
+      strategy: "Answer popular queries about passing challenges and link to the /tools fee calculator.",
+      directShareUrl: "https://www.quora.com/search?q=best+prop+trading+firms+2026",
+    },
+    {
+      name: "LinkedIn Pulse & Finance Groups",
+      category: "Professional & Institutional",
+      icon: "💼",
+      audience: "High-ticket capital allocators",
+      strategy: "Publish case study on prop trading risk management and payout scalability.",
+      directShareUrl: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(generatedUtmUrl)}`,
+    },
+    {
+      name: "WhatsApp Trading Communities",
+      category: "Direct Messaging",
+      icon: "💬",
+      audience: "Private Masterminds & Groups",
+      strategy: "Share direct calculator tool link with instant discount savings.",
+      directShareUrl: `https://api.whatsapp.com/send?text=${encodeURIComponent("Check out this 2026 Prop Firm Leaderboard & Fee Savings Calculator (Save up to 20% on challenges): " + generatedUtmUrl)}`,
+    },
+  ];
+
   return (
-    <div className="space-y-8 font-sans pb-12">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/30 shadow-2xl relative overflow-hidden">
-        <div className="relative z-10 space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 font-black text-[10px] uppercase tracking-wider border border-indigo-500/30">
+    <div className="space-y-8 font-sans pb-16 max-w-7xl mx-auto w-full">
+      {/* 1. Header & Live Agent Telemetry */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/30 shadow-2xl relative overflow-hidden">
+        <div className="relative z-10 space-y-3 max-w-2xl">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-400 font-black text-[10px] uppercase tracking-wider border border-indigo-500/30 flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
               PropFlow-AI Mission Control
             </span>
-            <span className="flex items-center gap-1 text-[10px] text-emerald-400 font-mono">
+            <span className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-mono bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20 font-bold">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> 15 Autonomous Agents Active
             </span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold font-serif tracking-tight">
-            AI Affiliate Sales &amp; Orchestration Swarm
+
+          <h1 className="text-2xl sm:text-4xl font-extrabold font-serif tracking-tight leading-tight">
+            AI Affiliate Growth, Link Promotion &amp; Multi-Platform Syndication
           </h1>
-          <p className="text-xs sm:text-sm text-slate-300 max-w-2xl">
-            Autonomous market intelligence, buyer-intent SEO landers, viral short scripts, 5-part email nurture funnels, and real-time A/B conversion optimization for FTM, Atlas Funded &amp; AquaFunded.
+
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Autonomous multi-website promotion engine designed to turn clicks into sales across Reddit, Twitter/X, Telegram, Quora, and YouTube Shorts for <strong>FTM</strong>, <strong>Atlas Funded</strong>, and <strong>AquaFunded</strong>.
           </p>
+
+          <div className="flex items-center gap-3 pt-2 text-[11px] text-slate-400 font-mono flex-wrap">
+            <span className="flex items-center gap-1 text-amber-400">
+              <Tag className="w-3.5 h-3.5" /> FTM: <strong>arnab</strong> (10% OFF)
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1 text-emerald-400">
+              <Tag className="w-3.5 h-3.5" /> Atlas: <strong>12275</strong> (20% OFF)
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1 text-cyan-400">
+              <Tag className="w-3.5 h-3.5" /> Aqua: <strong>6e9</strong> (Rebate)
+            </span>
+          </div>
         </div>
 
-        <div className="relative z-10 flex items-center gap-3">
+        <div className="relative z-10 flex flex-col sm:flex-row lg:flex-col items-stretch sm:items-center lg:items-end gap-3 shrink-0">
           <button
             onClick={handleTriggerSwarm}
             disabled={isTriggering}
-            className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 hover:from-indigo-400 text-white font-bold text-xs uppercase tracking-wider shadow-lg transition-all active:scale-95 disabled:opacity-50"
+            className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 hover:from-indigo-400 text-white font-black text-xs uppercase tracking-wider shadow-xl shadow-indigo-500/25 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
           >
             <RefreshCw className={`w-4 h-4 ${isTriggering ? "animate-spin" : ""}`} />
             <span>{isTriggering ? "Orchestrating 15 Agents..." : "Run 15-Agent Swarm"}</span>
           </button>
+
+          <Link
+            href="/tools"
+            target="_blank"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-xs font-bold text-slate-200 border border-slate-700 transition-all text-center"
+          >
+            <Calculator className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Open Public Calculator</span>
+            <ExternalLink className="w-3 h-3 text-slate-400" />
+          </Link>
         </div>
       </div>
 
-      {/* Navigation Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 overflow-x-auto text-xs font-bold uppercase tracking-wider scrollbar-none">
+      {/* 2. Key Metrics Bar */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
+          <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Promotion Channels</span>
+          <div className="text-xl font-black text-indigo-600 dark:text-indigo-400 font-serif">10+ Major Sites</div>
+          <span className="text-[10px] text-slate-500">Reddit, X, Telegram, Quora</span>
+        </div>
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
+          <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Targeted Buyer Keywords</span>
+          <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-serif">{keywords.length || 5} Commercial Queries</div>
+          <span className="text-[10px] text-slate-500">High-intent discount searches</span>
+        </div>
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
+          <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Max Partner Discount</span>
+          <div className="text-xl font-black text-amber-500 font-serif">20% Flat OFF</div>
+          <span className="text-[10px] text-slate-500">Atlas Funded (12275)</span>
+        </div>
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
+          <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Live Sales Funnels</span>
+          <div className="text-xl font-black text-cyan-600 dark:text-cyan-400 font-serif">6 High-Trust Pages</div>
+          <span className="text-[10px] text-slate-500">Reviews, tools &amp; comparisons</span>
+        </div>
+      </div>
+
+      {/* 3. Navigation Tabs */}
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-3 overflow-x-auto text-xs font-bold uppercase tracking-wider scrollbar-none">
+        <button
+          onClick={() => setActiveTab("MULTI_WEBSITES")}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all ${
+            activeTab === "MULTI_WEBSITES"
+              ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20 font-black"
+              : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+          }`}
+        >
+          <Globe className="w-4 h-4" />
+          <span>🚀 Multi-Website Promoter</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("UTM_GENERATOR")}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all ${
+            activeTab === "UTM_GENERATOR"
+              ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20 font-black"
+              : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+          }`}
+        >
+          <Link2 className="w-4 h-4" />
+          <span>🔗 Shortlink &amp; UTM Builder</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("ARTICLE_PROMOTER")}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all ${
+            activeTab === "ARTICLE_PROMOTER"
+              ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20 font-black"
+              : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+          }`}
+        >
+          <FileCode2 className="w-4 h-4" />
+          <span>📢 Article Cross-Promoter</span>
+        </button>
+
         <button
           onClick={() => setActiveTab("SWARM")}
-          className={`px-4 py-2 rounded-xl transition-all ${activeTab === "SWARM" ? "bg-indigo-600 text-white shadow-md" : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all ${
+            activeTab === "SWARM"
+              ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20 font-black"
+              : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+          }`}
         >
-          🤖 15 Agents Swarm
+          <Bot className="w-4 h-4" />
+          <span>🤖 15 Agents Swarm</span>
         </button>
+
         <button
           onClick={() => setActiveTab("HUMAN_REVIEW")}
-          className={`px-4 py-2 rounded-xl transition-all ${activeTab === "HUMAN_REVIEW" ? "bg-indigo-600 text-white shadow-md" : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all ${
+            activeTab === "HUMAN_REVIEW"
+              ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20 font-black"
+              : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+          }`}
         >
-          👤 Human Review Loop ({socialPosts.length})
+          <Share2 className="w-4 h-4" />
+          <span>👤 Social Copy ({socialPosts.length})</span>
         </button>
+
         <button
           onClick={() => setActiveTab("AB_TESTS")}
-          className={`px-4 py-2 rounded-xl transition-all ${activeTab === "AB_TESTS" ? "bg-indigo-600 text-white shadow-md" : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all ${
+            activeTab === "AB_TESTS"
+              ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20 font-black"
+              : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+          }`}
         >
-          🧪 A/B Testing Suite
+          <Sliders className="w-4 h-4" />
+          <span>🧪 A/B Tests</span>
         </button>
+
         <button
-          onClick={() => setActiveTab("UTM_BUILDER")}
-          className={`px-4 py-2 rounded-xl transition-all ${activeTab === "UTM_BUILDER" ? "bg-indigo-600 text-white shadow-md" : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"}`}
+          onClick={() => setActiveTab("KEYWORD_LANDERS")}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all ${
+            activeTab === "KEYWORD_LANDERS"
+              ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20 font-black"
+              : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+          }`}
         >
-          🎯 Buyer Keywords &amp; Landers
+          <Target className="w-4 h-4" />
+          <span>🎯 Keywords &amp; Landers</span>
         </button>
       </div>
 
-      {/* Tab 1: 15 Agents Swarm Status */}
+      {/* ========================================================================= */}
+      {/* TAB 1: MULTI-WEBSITE PROMOTION HUB                                        */}
+      {/* ========================================================================= */}
+      {activeTab === "MULTI_WEBSITES" && (
+        <div className="space-y-6">
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white font-serif">
+                  Popular Websites Viral Syndication Engine
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Pre-filled 1-click posting blueprints targeted to high-traffic trader platforms. Click to open and publish directly.
+                </p>
+              </div>
+              <span className="text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1 rounded-full">
+                7 Major Networks Active
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {popularWebsites.map((site, idx) => (
+                <div
+                  key={idx}
+                  className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 transition-all space-y-3 flex flex-col justify-between"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl">{site.icon}</span>
+                        <div>
+                          <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                            {site.name}
+                          </h4>
+                          <span className="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold block">
+                            {site.category}
+                          </span>
+                        </div>
+                      </div>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">
+                        {site.audience}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                      {site.strategy}
+                    </p>
+                  </div>
+
+                  <div className="pt-2 flex items-center gap-2">
+                    <a
+                      href={site.directShareUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs text-center transition-all flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/20 active:scale-95"
+                    >
+                      <span>Launch &amp; Post Now</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                    <button
+                      onClick={() => handleCopy(generatedUtmUrl, `site_${idx}`)}
+                      className="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs font-bold transition-all"
+                      title="Copy Tracked Link"
+                    >
+                      {copiedId === `site_${idx}` ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* TAB 2: DYNAMIC SHORTLINK & UTM CAMPAIGN BUILDER                           */}
+      {/* ========================================================================= */}
+      {activeTab === "UTM_GENERATOR" && (
+        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+          <div className="border-b border-slate-100 dark:border-slate-800 pb-4">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white font-serif">
+              Dynamic Shortlink &amp; Campaign Attribution Builder
+            </h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Generate precise, sub-ID tagged tracking links for every landing page, review, calculator, and article to trace every sale back to its traffic source.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Target Page Selector */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                Select Destination Landing Page / Tool
+              </label>
+              <select
+                value={selectedTarget}
+                onChange={(e) => setSelectedTarget(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500"
+              >
+                <option value="/reviews/funded-trader-markets">Funded Trader Markets Review (/reviews/funded-trader-markets)</option>
+                <option value="/reviews/atlas-funded">Atlas Funded Review (/reviews/atlas-funded)</option>
+                <option value="/reviews/aquafunded">AquaFunded Review (/reviews/aquafunded)</option>
+                <option value="/tools">Fee &amp; Payout Calculator Tool (/tools)</option>
+                <option value="/compare/ftmo-vs-ftm">FTMO vs FTM Battle Matrix (/compare/ftmo-vs-ftm)</option>
+                <option value="/best-prop-firms">2026 Prop Firm Leaderboard (/best-prop-firms)</option>
+                <option value="/">Main Blog Homepage (/)</option>
+              </select>
+            </div>
+
+            {/* Platform / Source Selector */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                Promotion Channel / Source
+              </label>
+              <select
+                value={selectedPlatform}
+                onChange={(e) => setSelectedPlatform(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500"
+              >
+                <option value="twitter">Twitter / X (twitter)</option>
+                <option value="reddit">Reddit (reddit)</option>
+                <option value="youtube_shorts">YouTube Shorts / TikTok (youtube_shorts)</option>
+                <option value="telegram">Telegram VIP Channels (telegram)</option>
+                <option value="quora">Quora Q&amp;A (quora)</option>
+                <option value="linkedin">LinkedIn Pulse (linkedin)</option>
+                <option value="newsletter">Email Newsletter (newsletter)</option>
+                <option value="whatsapp">WhatsApp Communities (whatsapp)</option>
+              </select>
+            </div>
+
+            {/* Campaign Name */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                Campaign Name / Angle
+              </label>
+              <input
+                type="text"
+                value={campaignName}
+                onChange={(e) => setCampaignName(e.target.value)}
+                placeholder="e.g. discount_arnab or zero_time_limit"
+                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+
+            {/* Partner Promo Code */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                Partner Coupon Code
+              </label>
+              <select
+                value={selectedOfferCode}
+                onChange={(e) => setSelectedOfferCode(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500"
+              >
+                <option value="arnab">arnab (FTM - 10% OFF)</option>
+                <option value="12275">12275 (Atlas Funded - 20% OFF + $5 FTPs)</option>
+                <option value="6e9">6e9 (AquaFunded - 20% Rebate)</option>
+                <option value="50START">50START (Pocket Option - 50% Bonus)</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Generated Result Box */}
+          <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/30 space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-1.5">
+                <Link2 className="w-4 h-4" /> Ready-to-Promote Tracked URL
+              </span>
+              <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono font-bold">
+                100% Sub-ID Attribution Active
+              </span>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-mono text-emerald-400 break-all select-all">
+              {generatedUtmUrl}
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+              <button
+                onClick={() => handleCopy(generatedUtmUrl, "utm_link")}
+                className="w-full sm:w-auto flex-1 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 text-white font-bold text-xs uppercase tracking-wider shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+              >
+                {copiedId === "utm_link" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                <span>{copiedId === "utm_link" ? "Link Copied to Clipboard!" : "Copy Tracked Shortlink"}</span>
+              </button>
+
+              <a
+                href={generatedUtmUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs text-center border border-slate-700 transition-all flex items-center justify-center gap-1.5"
+              >
+                <span>Test Link Live</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* TAB 3: ARTICLE & BLOG CROSS-PROMOTER                                      */}
+      {/* ========================================================================= */}
+      {activeTab === "ARTICLE_PROMOTER" && (
+        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+          <div className="border-b border-slate-100 dark:border-slate-800 pb-4">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white font-serif">
+              Omnichannel Blog Post &amp; New Article Cross-Promoter
+            </h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Instantly generate viral snippets, hashtags, and social post blurbs for any published article to syndicate across external networks.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                Article Title
+              </label>
+              <input
+                type="text"
+                value={selectedArticleTitle}
+                onChange={(e) => setSelectedArticleTitle(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                Article Relative Path / URL
+              </label>
+              <input
+                type="text"
+                value={selectedArticleUrl}
+                onChange={(e) => setSelectedArticleUrl(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+          </div>
+
+          {/* Social Snippets */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+            <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase font-mono">
+                  Twitter / X Thread Hook
+                </span>
+                <button
+                  onClick={() => handleCopy(`🚨 NEW AUDIT: ${selectedArticleTitle}\n\nKey takeaways & verified discount codes inside:\n${baseUrl}${selectedArticleUrl}?utm_source=twitter\n\n#PropFirm #Forex #Trading`, "tweet_art")}
+                  className="p-1.5 rounded-lg bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:text-indigo-600 text-xs cursor-pointer"
+                >
+                  {copiedId === "tweet_art" ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                </button>
+              </div>
+              <pre className="p-3 rounded-xl bg-white dark:bg-slate-900 text-xs text-slate-600 dark:text-slate-300 whitespace-pre-wrap font-sans border border-slate-100 dark:border-slate-800">
+{`🚨 NEW AUDIT: ${selectedArticleTitle}
+
+Key takeaways & verified discount codes inside:
+${baseUrl}${selectedArticleUrl}?utm_source=twitter
+
+#PropFirm #Forex #Trading`}
+              </pre>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase font-mono">
+                  Reddit r/Forex Post Text
+                </span>
+                <button
+                  onClick={() => handleCopy(`[Audit & Guide] ${selectedArticleTitle}\n\nHere is a complete breakdown of rules, scaling programs, and how to claim the maximum challenge discount:\n${baseUrl}${selectedArticleUrl}?utm_source=reddit`, "reddit_art")}
+                  className="p-1.5 rounded-lg bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:text-indigo-600 text-xs cursor-pointer"
+                >
+                  {copiedId === "reddit_art" ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                </button>
+              </div>
+              <pre className="p-3 rounded-xl bg-white dark:bg-slate-900 text-xs text-slate-600 dark:text-slate-300 whitespace-pre-wrap font-sans border border-slate-100 dark:border-slate-800">
+{`[Audit & Guide] ${selectedArticleTitle}
+
+Here is a complete breakdown of rules, scaling programs, and how to claim the maximum challenge discount:
+${baseUrl}${selectedArticleUrl}?utm_source=reddit`}
+              </pre>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* TAB 4: 15-AGENT SWARM STATUS                                              */}
+      {/* ========================================================================= */}
       {activeTab === "SWARM" && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
@@ -156,10 +631,10 @@ export default function PropFlowAdminDashboard() {
               <Target className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white font-serif">
-              Trending &amp; Keyword Scout
+              Layer 1: Market Intelligence
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Scouted {report.dailyOpportunitiesFound || 4} trending opportunities and {keywords.length} low-competition buyer keywords for maximum SEO conversion.
+              Trending Opportunity Scout (Agent 1), Keyword Hunter (Agent 2), and Competitor Intelligence (Agent 3).
             </p>
             <div className="text-[11px] font-mono text-emerald-500 font-bold">
               Status: 100% OPERATIONAL
@@ -171,10 +646,10 @@ export default function PropFlowAdminDashboard() {
               <Share2 className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white font-serif">
-              Multi-Channel Distribution
+              Layer 2: Viral Distribution
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Generated {socialPosts.length} ready-to-blast campaigns across Reddit, Twitter/X, LinkedIn, Quora, and 5-day email sequence.
+              Shorts/Reels Scriptwriter (Agent 6), Social Swarm (Agents 7, 8, 10, 11), and 5-Part Email Specialist (Agent 9).
             </p>
             <div className="text-[11px] font-mono text-emerald-500 font-bold">
               Status: READY FOR BROADCAST
@@ -186,10 +661,10 @@ export default function PropFlowAdminDashboard() {
               <Sliders className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white font-serif">
-              A/B &amp; Funnel Optimization
+              Layer 3: Growth &amp; Attribution
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Running {abTests.length} active headline and CTA experiments with automated winner selection to maximize conversion rate.
+              A/B Testing (Agent 12), Analytics &amp; Attribution (Agent 13), Funnel Optimizer (Agent 14), and Offer Manager (Agent 15).
             </p>
             <div className="text-[11px] font-mono text-emerald-500 font-bold">
               Status: LIVE ATTRIBUTION SYNC
@@ -198,7 +673,9 @@ export default function PropFlowAdminDashboard() {
         </div>
       )}
 
-      {/* Tab 2: Human Review Loop */}
+      {/* ========================================================================= */}
+      {/* TAB 5: HUMAN REVIEW LOOP                                                  */}
+      {/* ========================================================================= */}
       {activeTab === "HUMAN_REVIEW" && (
         <div className="space-y-4">
           <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
@@ -233,17 +710,17 @@ export default function PropFlowAdminDashboard() {
                     {post.headline}
                   </h4>
 
-                  <pre className="p-3 rounded-xl bg-white dark:bg-slate-900 text-xs text-slate-600 dark:text-slate-300 whitespace-pre-wrap font-sans border border-slate-100 dark:border-slate-800">
+                  <pre className="p-3 rounded-xl bg-white dark:bg-slate-900 text-xs text-slate-600 dark:text-slate-300 whitespace-pre-wrap font-sans border border-slate-100 dark:border-slate-800 max-h-40 overflow-y-auto">
                     {post.content}
                   </pre>
 
                   <div className="flex items-center justify-between pt-2">
                     <span className="text-[11px] font-mono text-slate-400">
-                      Codes: {post.promoCode}
+                      Partner Code: <strong className="text-amber-500">{post.promoCode}</strong>
                     </span>
                     <button
                       onClick={() => handleCopy(post.content, `post_${idx}`)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow transition-all"
+                      className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow transition-all cursor-pointer active:scale-95"
                     >
                       {copiedId === `post_${idx}` ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                       <span>{copiedId === `post_${idx}` ? "Copied to Clipboard!" : "Copy Post Text"}</span>
@@ -256,7 +733,9 @@ export default function PropFlowAdminDashboard() {
         </div>
       )}
 
-      {/* Tab 3: A/B Testing Experiments */}
+      {/* ========================================================================= */}
+      {/* TAB 6: A/B TESTING EXPERIMENTS                                            */}
+      {/* ========================================================================= */}
       {activeTab === "AB_TESTS" && (
         <div className="space-y-4">
           <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
@@ -293,8 +772,10 @@ export default function PropFlowAdminDashboard() {
         </div>
       )}
 
-      {/* Tab 4: Buyer Keywords & Landers */}
-      {activeTab === "UTM_BUILDER" && (
+      {/* ========================================================================= */}
+      {/* TAB 7: BUYER KEYWORDS & LANDERS                                           */}
+      {/* ========================================================================= */}
+      {activeTab === "KEYWORD_LANDERS" && (
         <div className="space-y-4">
           <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
             <h3 className="text-base font-bold text-slate-900 dark:text-white font-serif">
