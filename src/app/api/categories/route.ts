@@ -45,6 +45,10 @@ export async function GET() {
         const emojiMap: Record<string, string> = {
           "artificial-intelligence": "🤖",
           "technology": "⚡",
+          "travel-and-expeditions": "✈️",
+          "festivals-and-culture": "🎉",
+          "travel-and-tourism": "🌍",
+          "culture-and-lifestyle": "🏮",
           "tech-and-gadgets": "📱",
           "commodities": "🪙",
           "development-and-engineering": "💻",

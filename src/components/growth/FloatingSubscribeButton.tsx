@@ -28,7 +28,7 @@ export default function FloatingSubscribeButton() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-40">
+    <div className="fixed bottom-6 left-6 z-40 hidden md:block">
       {isExpanded ? (
         <div className="w-80 p-5 rounded-3xl bg-slate-900/95 backdrop-blur-xl border border-indigo-500/30 text-white shadow-2xl space-y-4 animate-in slide-in-from-bottom-5 duration-300">
           <div className="flex items-center justify-between">

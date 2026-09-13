@@ -5,6 +5,11 @@ const parser = new Parser({
 });
 
 const DEFAULT_NICHE_TOPICS = [
+  "The Ultimate Solo Traveller's Guide: Exploring Hidden Wonders, Mountain Expeditions & Budget Backpacking",
+  "The World's Most Mesmerizing Cultural Festivals: From India's Radiant Diwali & Holi to Rio Carnival and Kyoto Gion Matsuri",
+  "Digital Nomad Travel Blueprint: High-Speed Satellite Internet, Packing Light & Remote Work Across 30 Countries",
+  "Himalayan High-Altitude Trekking: Safety Protocols, Acclimatization & Trail Packing Checklist",
+  "Global Festival Tourism: Experiencing Sacred Traditions, Heritage Celebrations & Street Carnivals",
   "Viral Social Media Algorithms in 2026: Cracking TikTok, YouTube Shorts & Instagram Reels Distribution",
   "AI Influencers & Digital Creators: How Autonomous Synthetic Avatars Are Generating Millions in Brand Sponsorships",
   "Social Media Monetization Blueprint: Scaling High-Ticket Affiliate Funnels Across Twitter/X and LinkedIn",
@@ -88,6 +93,12 @@ function cleanRssTitle(raw: string): string {
 
 function categorizeTopic(title: string): string {
   const lower = title.toLowerCase();
+  if (lower.includes("travel") || lower.includes("traveller") || lower.includes("backpack") || lower.includes("trek") || lower.includes("nomad") || lower.includes("expedition") || lower.includes("tourism") || lower.includes("itinerary") || lower.includes("destination") || lower.includes("hiking") || lower.includes("flight")) {
+    return "Travel & Expeditions";
+  }
+  if (lower.includes("festival") || lower.includes("festivle") || lower.includes("diwali") || lower.includes("holi") || lower.includes("carnival") || lower.includes("matsuri") || lower.includes("tradition") || lower.includes("celebration") || lower.includes("culture") || lower.includes("oktoberfest") || lower.includes("ritual")) {
+    return "Festivals & Culture";
+  }
   if (lower.includes("nifty") || lower.includes("sensex") || lower.includes("bse") || lower.includes("nse") || lower.includes("rupee") || lower.includes("sebi") || lower.includes("fii") || lower.includes("dii")) {
     return "Indian Markets";
   }

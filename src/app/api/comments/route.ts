@@ -10,6 +10,106 @@ export const dynamic = "force-dynamic";
 function getArticleSpecificSeedComments(title: string, slug: string) {
   const lower = (title + " " + slug).toLowerCase();
 
+  if (lower.includes("travel") || lower.includes("traveller") || lower.includes("expedition") || lower.includes("backpack") || lower.includes("kashmir") || lower.includes("ladakh") || lower.includes("kerala") || lower.includes("destination") || lower.includes("itinerary") || lower.includes("tourist")) {
+    return [
+      {
+        id: "c_seed_trv_1",
+        author: "Tenzin Norbu",
+        avatarBg: "from-sky-500 to-indigo-600",
+        date: "2 hours ago",
+        role: "Himalayan Expedition Lead & Trekker",
+        content: "The route sequencing for Ladakh via Khardung La before Pangong Tso is medically the best way to acclimatize. Most travellers make the mistake of rushing directly to Pangong on Day 2 and suffer from AMS. Fantastic safety tips!",
+      },
+      {
+        id: "c_seed_trv_reply",
+        author: "Arya Sharma",
+        avatarBg: "from-emerald-500 via-teal-600 to-indigo-600",
+        date: "1 hour ago",
+        role: "Senior Travel & Culture Editor",
+        isAiResponse: true,
+        replyTo: "Tenzin Norbu",
+        content: "Spot on, Tenzin! Spending at least 48 hours resting in Leh (3,500m) while drinking 4+ liters of water with electrolytes before ascending 5,300m+ passes saves lives and prevents emergency oxygen evacuations. Glad you appreciated the pacing advice!",
+      },
+      {
+        id: "c_seed_trv_2",
+        author: "Sarah Jenkins",
+        avatarBg: "from-purple-500 to-pink-600",
+        date: "4 hours ago",
+        role: "Digital Nomad & Solo Backpacker",
+        content: "What is the real-world satellite eSIM coverage like in remote regions like Turtuk, Spiti Valley, or Kerala backwaters when balancing remote Zoom meetings?",
+      },
+      {
+        id: "c_seed_trv_2_reply",
+        author: "Arya Sharma",
+        avatarBg: "from-emerald-500 via-teal-600 to-indigo-600",
+        date: "3 hours ago",
+        role: "Senior Travel & Culture Editor",
+        isAiResponse: true,
+        replyTo: "Sarah Jenkins",
+        content: "Great practical question, Sarah! In Kerala (Varkala, Kochi, Alleppey), fiber Wi-Fi and 5G are blazing fast (100Mbps+). In Ladakh and Kashmir, local postpaid Airtel/Jio eSIMs give solid 4G/5G in Leh, Srinagar, and Diskit, but drop in mountain passes. For guaranteed remote work in Turtuk or Spiti, stay at eco-homestays with dedicated Starlink/BSNL optical hubs and always carry a 65W power bank!",
+      },
+      {
+        id: "c_seed_trv_3",
+        author: "Rahul Varma",
+        avatarBg: "from-amber-500 to-orange-600",
+        date: "6 hours ago",
+        role: "Weekend Adventurer",
+        content: "Can you recommend the best 5-day itinerary if I'm planning a budget family vacation to South India in December?",
+      },
+      {
+        id: "c_seed_trv_3_reply",
+        author: "Arya Sharma",
+        avatarBg: "from-emerald-500 via-teal-600 to-indigo-600",
+        date: "5 hours ago",
+        role: "Senior Travel & Culture Editor",
+        isAiResponse: true,
+        replyTo: "Rahul Varma",
+        content: "Hi Rahul! The 5-day Kochi -> Munnar (2 nights in tea hills) -> Alleppey (1 night deluxe backwater houseboat) -> Kochi departure is unmatched for families in December. You can also use our site-wide SmartTravel AI Chatbot (bottom right of screen) to generate a customized day-by-day plan with cost breakdowns instantly!",
+      },
+    ];
+  }
+
+  if (lower.includes("festival") || lower.includes("festivle") || lower.includes("diwali") || lower.includes("holi") || lower.includes("carnival") || lower.includes("culture") || lower.includes("tradition") || lower.includes("matsuri")) {
+    return [
+      {
+        id: "c_seed_fest_1",
+        author: "Priyamvada Sen",
+        avatarBg: "from-pink-500 to-rose-600",
+        date: "2 hours ago",
+        role: "Cultural Heritage Researcher",
+        content: "Dev Deepawali on the Varanasi Ghats is truly one of the most magical sights in human civilization. The photography tips regarding low-light shutter speeds and respectful distancing from sacred aarti ceremonies are invaluable.",
+      },
+      {
+        id: "c_seed_fest_reply",
+        author: "Arya Sharma",
+        avatarBg: "from-emerald-500 via-teal-600 to-indigo-600",
+        date: "1 hour ago",
+        role: "Senior Travel & Culture Editor",
+        isAiResponse: true,
+        replyTo: "Priyamvada Sen",
+        content: "Thank you, Priyamvada! Respecting sacred space while capturing the glow of over 1.2 million clay diyas along the Ganga is an art. Booking a wooden rowboat 3 weeks in advance for sunrise and dusk is definitely the golden insider tip.",
+      },
+      {
+        id: "c_seed_fest_2",
+        author: "Mateo Silva",
+        avatarBg: "from-amber-500 to-orange-600",
+        date: "5 hours ago",
+        role: "Documentary Photographer",
+        content: "For Rio Carnival, would you recommend booking Sambadrome Sector 9 grandstand tickets or exploring the street blocos across Ipanema?",
+      },
+      {
+        id: "c_seed_fest_2_reply",
+        author: "Arya Sharma",
+        avatarBg: "from-emerald-500 via-teal-600 to-indigo-600",
+        date: "3 hours ago",
+        role: "Senior Travel & Culture Editor",
+        isAiResponse: true,
+        replyTo: "Mateo Silva",
+        content: "Both offer distinctly unforgettable experiences, Mateo! Sector 9 gives you allocated numbered seating with prime panoramic views of the elite samba school floats. However, the true heartbeat of Rio lives in free street blocos like 'Cordão do Bola Preta'. We suggest doing 1 evening at Sambadrome and daytime blocos!",
+      },
+    ];
+  }
+
   if (lower.includes("telecom") || lower.includes("airtel") || lower.includes("5g") || lower.includes("starlink")) {
     return [
       {

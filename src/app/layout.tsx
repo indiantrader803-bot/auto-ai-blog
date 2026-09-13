@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import ExitIntentModal from "@/components/growth/ExitIntentModal";
 import FloatingSubscribeButton from "@/components/growth/FloatingSubscribeButton";
+import GlobalBlogAssistant from "@/components/chat/GlobalBlogAssistant";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -157,6 +158,7 @@ export default function RootLayout({
         {children}
         <ExitIntentModal />
         <FloatingSubscribeButton />
+        <GlobalBlogAssistant />
       </body>
     </html>
   );

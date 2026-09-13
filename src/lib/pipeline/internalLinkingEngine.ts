@@ -57,6 +57,35 @@ const SEMANTIC_KEYWORD_MAP: Record<string, string[]> = {
     "Partial Prerendering",
     "React Server Components",
   ],
+  "ultimate-solo-travellers-guide-hidden-wonders-expeditions": [
+    "solo travel",
+    "travellers guide",
+    "backpacking",
+    "Himalayan treks",
+    "digital nomad",
+    "adventure expeditions",
+    "solo expeditions",
+  ],
+  "worlds-most-mesmerizing-cultural-festivals-traditions-guide": [
+    "cultural festivals",
+    "festivals guide",
+    "Diwali",
+    "Holi festival",
+    "Rio Carnival",
+    "Kyoto Gion Matsuri",
+    "world traditions",
+    "cultural celebrations",
+  ],
+  "definitive-global-travel-and-india-discovery-destinations-guide": [
+    "India tourist places",
+    "world travel destinations",
+    "Kerala itinerary",
+    "Ladakh trip",
+    "Kashmir travel",
+    "Rajasthan forts",
+    "Japan travel itinerary",
+    "travel destinations",
+  ],
 };
 
 export async function applySmartInternalLinks(
