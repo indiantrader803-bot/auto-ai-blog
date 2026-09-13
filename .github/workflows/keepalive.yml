@@ -1,0 +1,25 @@
+name: Autonomous Keepalive & Swarm Heartbeat
+
+on:
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping Auto-AI-Blog Live Health Endpoint
+        run: |
+          echo "Pinging Auto-AI-Blog health endpoint..."
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://auto-ai-blog-web.onrender.com/api/health)
+          echo "HTTP status code: $RESPONSE"
+
+      - name: Ping Ads.txt & Sitemap
+        run: |
+          echo "Pinging ads.txt..."
+          curl -s https://auto-ai-blog-web.onrender.com/ads.txt | head -n 5
+          echo "Pinging sitemap..."
+          curl -s -o /dev/null -w "%{http_code}" https://auto-ai-blog-web.onrender.com/sitemap.xml
