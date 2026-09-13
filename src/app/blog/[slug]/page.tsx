@@ -24,6 +24,9 @@ import TrendingAlertBox from "@/components/blog/TrendingAlertBox";
 import ReadingProgressBar from "@/components/blog/ReadingProgressBar";
 import NextStoryFlyout from "@/components/blog/NextStoryFlyout";
 import FloatingDealStickyBar from "@/components/growth/FloatingDealStickyBar";
+import KeyTakeaways from "@/components/blog/KeyTakeaways";
+import FactCheckedBadge from "@/components/blog/FactCheckedBadge";
+import InstantSavingsChip from "@/components/blog/InstantSavingsChip";
 import { getTrendingStoryRecommendation } from "@/lib/pipeline/internalLinkingEngine";
 import { generateStructuredSchema } from "@/lib/pipeline/seoAffiliateEngine";
 import {
@@ -410,6 +413,9 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         </header>
 
+        {/* E-E-A-T Editorial Standards & Fact-Checked Seal */}
+        <FactCheckedBadge category={post.category?.name} authorName="SmartMag Editorial Board" />
+
         {/* Featured Hero Photo */}
         {post.featuredImage && (
           <figure className="max-w-5xl mx-auto mb-12 rounded-3xl overflow-hidden shadow-2xl bg-slate-950 border border-slate-200/80 dark:border-slate-800">
@@ -446,11 +452,22 @@ export default async function BlogPostPage({ params }: Props) {
             {/* AI Voice Audio Player */}
             <ArticleAudioPlayer title={post.title} content={post.content} />
 
+            {/* Executive Summary & Key Takeaways for Google Position #0 Snippets */}
+            <KeyTakeaways
+              title={post.title}
+              excerpt={post.excerpt}
+              category={post.category?.name}
+              readTimeMinutes={post.readTimeMinutes}
+            />
+
             {/* In-Article Sponsor / Ad Placement */}
             <AdBanner slot="article-top" className="my-2" />
 
             {/* Markdown Body */}
             <MarkdownRenderer content={post.content} />
+
+            {/* Contextual Trader & Developer Instant Savings Chip */}
+            <InstantSavingsChip category={post.category?.name} />
 
             {/* Embedded YouTube Video Explainer */}
             {post.youtubeVideoId && (
