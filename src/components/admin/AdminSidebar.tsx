@@ -52,61 +52,90 @@ export default function AdminSidebar() {
       shortLabel: "Dashboard",
       icon: LayoutDashboard,
       exact: true,
+      color: "text-indigo-400",
+      activeBg: "bg-gradient-to-r from-indigo-600 to-indigo-700",
+      iconBg: "bg-indigo-500/15 text-indigo-400",
     },
     {
       href: "/admin/propflow",
       label: "PropFlow-AI Sales Engine",
       shortLabel: "PropFlow",
       icon: Bot,
-      badge: "15 Agents",
+      color: "text-cyan-400",
+      activeBg: "bg-gradient-to-r from-cyan-600 to-teal-600",
+      iconBg: "bg-cyan-500/15 text-cyan-400",
     },
     {
       href: "/admin/swarm",
       label: "Autonomous Swarm",
       shortLabel: "Swarm",
       icon: Cpu,
+      color: "text-violet-400",
+      activeBg: "bg-gradient-to-r from-violet-600 to-purple-600",
+      iconBg: "bg-violet-500/15 text-violet-400",
     },
     {
       href: "/admin/generator",
       label: "AI Generation Studio",
       shortLabel: "Studio",
       icon: Wand2,
+      color: "text-amber-400",
+      activeBg: "bg-gradient-to-r from-amber-600 to-orange-600",
+      iconBg: "bg-amber-500/15 text-amber-400",
     },
     {
       href: "/admin/monetization",
       label: "Monetization & Ads",
       shortLabel: "Revenue",
       icon: DollarSign,
+      color: "text-emerald-400",
+      activeBg: "bg-gradient-to-r from-emerald-600 to-teal-600",
+      iconBg: "bg-emerald-500/15 text-emerald-400",
     },
     {
       href: "/admin/affiliates",
       label: "Affiliate Tracker & CR",
       shortLabel: "Affiliates",
       icon: TrendingUp,
+      color: "text-rose-400",
+      activeBg: "bg-gradient-to-r from-rose-600 to-pink-600",
+      iconBg: "bg-rose-500/15 text-rose-400",
     },
     {
       href: "/admin/posts",
       label: "Posts & Content",
       shortLabel: "Posts",
       icon: FileText,
+      color: "text-blue-400",
+      activeBg: "bg-gradient-to-r from-blue-600 to-indigo-600",
+      iconBg: "bg-blue-500/15 text-blue-400",
     },
     {
       href: "/admin/promoter",
       label: "Viral Promotion Hub",
       shortLabel: "Promote",
       icon: Share2,
+      color: "text-fuchsia-400",
+      activeBg: "bg-gradient-to-r from-fuchsia-600 to-pink-600",
+      iconBg: "bg-fuchsia-500/15 text-fuchsia-400",
     },
     {
       href: "/admin/logs",
       label: "Pipeline Logs",
       shortLabel: "Logs",
       icon: Activity,
+      color: "text-sky-400",
+      activeBg: "bg-gradient-to-r from-sky-600 to-blue-600",
+      iconBg: "bg-sky-500/15 text-sky-400",
     },
     {
       href: "/admin/settings",
       label: "Settings & API Keys",
       shortLabel: "Settings",
       icon: Settings,
+      color: "text-purple-400",
+      activeBg: "bg-gradient-to-r from-slate-700 to-slate-800",
+      iconBg: "bg-purple-500/15 text-purple-400",
     },
   ];
 
@@ -134,16 +163,16 @@ export default function AdminSidebar() {
           </button>
 
           <Link href="/admin" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
               <span className="font-black text-sm text-slate-900 dark:text-white font-serif tracking-tight">
-                AutoAI <span className="text-indigo-600 dark:text-indigo-400">Admin</span>
+                AutoAI <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Admin</span>
               </span>
               <span className="flex items-center gap-1 text-[9px] uppercase font-bold text-emerald-500 tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Fleet Active
+                Control Fleet
               </span>
             </div>
           </Link>
@@ -191,7 +220,7 @@ export default function AdminSidebar() {
                   onClick={() => setIsMobileDrawerOpen(false)}
                   className="flex items-center gap-2.5"
                 >
-                  <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold shadow-md shadow-indigo-500/20">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center text-white font-bold shadow-md shadow-indigo-500/20">
                     <Sparkles className="w-4 h-4" />
                   </div>
                   <div>
@@ -225,25 +254,19 @@ export default function AdminSidebar() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setIsMobileDrawerOpen(false)}
-                      className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                      className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
                         isActive
-                          ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20 font-bold"
+                          ? `${item.activeBg} text-white shadow-lg shadow-indigo-500/15 font-bold`
                           : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
-                      <div className="flex items-center gap-3">
-                        <Icon className="w-4 h-4 shrink-0" />
+                      <div className="flex items-center gap-2.5">
+                        <div className={`p-1.5 rounded-lg ${isActive ? "bg-white/20 text-white" : item.iconBg}`}>
+                          <Icon className="w-4 h-4 shrink-0" />
+                        </div>
                         <span>{item.label}</span>
                       </div>
-                      {item.badge ? (
-                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider ${
-                          isActive ? "bg-white/20 text-white" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
-                        }`}>
-                          {item.badge}
-                        </span>
-                      ) : (
-                        <ChevronRight className={`w-3.5 h-3.5 opacity-50 ${isActive ? "text-white" : ""}`} />
-                      )}
+                      <ChevronRight className={`w-3.5 h-3.5 opacity-50 ${isActive ? "text-white" : ""}`} />
                     </Link>
                   );
                 })}
@@ -278,16 +301,16 @@ export default function AdminSidebar() {
           {/* Brand */}
           <div className="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <Link href="/admin" className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-                <Sparkles className="w-4 h-4" />
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform duration-300">
+                <Sparkles className="w-5 h-5" />
               </div>
               <div>
                 <span className="font-black text-base text-slate-900 dark:text-white font-serif tracking-tight">
-                  AutoAI <span className="text-indigo-600 dark:text-indigo-400">Engine</span>
+                  AutoAI <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Engine</span>
                 </span>
                 <span className="block text-[10px] uppercase font-bold text-emerald-500 tracking-wider flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Admin Fleet Active
+                  Control Fleet Active
                 </span>
               </div>
             </Link>
@@ -296,10 +319,11 @@ export default function AdminSidebar() {
           {/* Navigation Items */}
           <div className="p-3 space-y-4">
             <div>
-              <div className="px-3 py-1 text-[10px] font-black uppercase text-slate-400 tracking-wider">
-                Management Modules
+              <div className="px-3 py-1 text-[10px] font-black uppercase text-slate-400 tracking-wider flex items-center justify-between">
+                <span>Management Modules</span>
+                <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono">10 Modules</span>
               </div>
-              <nav className="space-y-1 mt-1">
+              <nav className="space-y-1 mt-2">
                 {navItems.map((item) => {
                   const isActive = item.exact
                     ? pathname === item.href
@@ -309,23 +333,19 @@ export default function AdminSidebar() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                      className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all group ${
                         isActive
-                          ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20 font-bold"
-                          : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white"
+                          ? `${item.activeBg} text-white shadow-md font-bold scale-[1.01]`
+                          : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/90 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
-                        <Icon className="w-4 h-4 shrink-0" />
-                        <span>{item.label}</span>
+                        <div className={`p-1.5 rounded-lg transition-transform group-hover:scale-110 ${isActive ? "bg-white/20 text-white" : item.iconBg}`}>
+                          <Icon className="w-4 h-4 shrink-0" />
+                        </div>
+                        <span className="tracking-tight">{item.label}</span>
                       </div>
-                      {item.badge && (
-                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider ${
-                          isActive ? "bg-white/20 text-white" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
-                        }`}>
-                          {item.badge}
-                        </span>
-                      )}
+                      <ChevronRight className={`w-3.5 h-3.5 opacity-40 group-hover:opacity-100 transition-opacity ${isActive ? "text-white opacity-90" : ""}`} />
                     </Link>
                   );
                 })}
