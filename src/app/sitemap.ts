@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = (
     process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.RENDER_EXTERNAL_URL ? `https://${process.env.RENDER_EXTERNAL_URL}` : "https://auto-ai-blog-web.onrender.com")
+    "https://thesmartmag.com"
   ).replace(/\/$/, "");
 
   let dbPosts: any[] = [];
@@ -85,6 +85,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "always",
       priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/travel`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/best-prop-firms`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/tools`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/store`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/about`,
