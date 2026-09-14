@@ -286,6 +286,113 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
     url: "https://www.amazon.in/s?k=samsung+990+pro+nvme+ssd&tag=autoaiblog-21",
     label: "High-Speed NVMe SSD Storage on Amazon",
   },
+
+  // ✈️ 3. Travel, Expeditions & Destination Affiliate Deals (Amazon tag: autoaiblog-21)
+  {
+    keyword: "travel backpack",
+    url: "https://www.amazon.in/s?k=travel+backpack+trekking+rucksack+50L+60L&tag=autoaiblog-21",
+    label: "Top-Rated Trekking & Travel Backpacks on Amazon (Tag: autoaiblog-21)",
+  },
+  {
+    keyword: "trekking gear",
+    url: "https://www.amazon.in/s?k=trekking+gear+hiking+poles+waterproof+jacket&tag=autoaiblog-21",
+    label: "Check Complete Trekking & Camping Gear on Amazon",
+  },
+  {
+    keyword: "hiking boots",
+    url: "https://www.amazon.in/s?k=waterproof+trekking+shoes+hiking+boots+men+women&tag=autoaiblog-21",
+    label: "Best All-Terrain Hiking & Trekking Boots on Amazon",
+  },
+  {
+    keyword: "GoPro",
+    url: "https://www.amazon.in/s?k=gopro+hero+action+camera+4k&tag=autoaiblog-21",
+    label: "GoPro & Action Cameras for Travel Photography on Amazon",
+  },
+  {
+    keyword: "action camera",
+    url: "https://www.amazon.in/s?k=action+camera+waterproof+4k+gopro+dji&tag=autoaiblog-21",
+    label: "Top 4K Waterproof Action Cameras on Amazon",
+  },
+  {
+    keyword: "travel luggage",
+    url: "https://www.amazon.in/s?k=samsonite+american+tourister+trolley+luggage+set&tag=autoaiblog-21",
+    label: "Browse Premium Travel Luggage & Suitcases on Amazon",
+  },
+  {
+    keyword: "travel adapter",
+    url: "https://www.amazon.in/s?k=universal+travel+adapter+all+in+one+fast+charging&tag=autoaiblog-21",
+    label: "Universal All-in-One Worldwide Travel Adapter on Amazon",
+  },
+  {
+    keyword: "power bank",
+    url: "https://www.amazon.in/s?k=power+bank+20000mah+65w+fast+charging&tag=autoaiblog-21",
+    label: "High-Capacity 20,000mAh Fast Charging Power Banks on Amazon",
+  },
+  {
+    keyword: "noise cancelling headphones",
+    url: "https://www.amazon.in/s?k=sony+wh-1000xm5+bose+noise+cancelling+headphones&tag=autoaiblog-21",
+    label: "Top Flight & Travel Noise-Cancelling Headphones on Amazon",
+  },
+  {
+    keyword: "travel insurance",
+    url: "https://www.booking.com/index.html?aid=2026803",
+    label: "Compare Comprehensive Worldwide Travel & Medical Insurance",
+  },
+  {
+    keyword: "hotel booking",
+    url: "https://www.booking.com/index.html?aid=2026803",
+    label: "Book Top-Rated Hotels & Luxury Resorts with Free Cancellation",
+  },
+  {
+    keyword: "flight booking",
+    url: "https://www.skyscanner.com",
+    label: "Find Lowest Airfare & Flight Deals Across 1000+ Airlines",
+  },
+  {
+    keyword: "Kerala",
+    url: "https://www.booking.com/city/in/kochi.html?aid=2026803",
+    label: "Explore Top Heritage Resorts & Alleppey Houseboat Stays in Kerala",
+  },
+  {
+    keyword: "Ladakh",
+    url: "https://www.amazon.in/s?k=high+altitude+cold+weather+thermal+jacket+ladakh&tag=autoaiblog-21",
+    label: "Best Ladakh High-Altitude Winter Gear & Thermal Layers on Amazon",
+  },
+  {
+    keyword: "Kashmir",
+    url: "https://www.booking.com/city/in/srinagar.html?aid=2026803",
+    label: "Book Traditional Dal Lake Houseboats & Gulmarg Resorts in Kashmir",
+  },
+  {
+    keyword: "Goa",
+    url: "https://www.booking.com/region/in/goa.html?aid=2026803",
+    label: "Top Beachfront Resorts & Boutique Villas in North & South Goa",
+  },
+  {
+    keyword: "Rajasthan",
+    url: "https://www.booking.com/region/in/rajasthan.html?aid=2026803",
+    label: "Book Royal Heritage Palace Hotels in Jaipur, Udaipur & Jodhpur",
+  },
+  {
+    keyword: "Japan",
+    url: "https://www.booking.com/country/jp.html?aid=2026803",
+    label: "Browse Best Ryokans & City Hotels in Tokyo, Kyoto & Osaka",
+  },
+  {
+    keyword: "Switzerland",
+    url: "https://www.booking.com/country/ch.html?aid=2026803",
+    label: "Book Swiss Alps Alpine Chalets & Scenic Panoramic Train Passes",
+  },
+  {
+    keyword: "Iceland",
+    url: "https://www.booking.com/country/is.html?aid=2026803",
+    label: "Top Northern Lights Hotels & Golden Circle Tour Stays in Iceland",
+  },
+  {
+    keyword: "Bali",
+    url: "https://www.booking.com/region/id/bali.html?aid=2026803",
+    label: "Explore Private Jungle Pool Villas in Ubud & Beach Clubs in Seminyak",
+  },
 ];
 
 export function enrichSeoAndAffiliates(

@@ -180,10 +180,46 @@ export const VERIFIED_SPONSORS: SponsorDeal[] = [
     categoryMatch: ["Software & Cloud", "Technology", "Artificial Intelligence"],
     cpcTier: "HIGH",
   },
+  {
+    id: "sp_booking_hotels",
+    sponsorName: "Booking.com & Agoda Travel Partner",
+    badge: "EXCLUSIVE TRAVEL & HOTEL DEALS",
+    tagline: "Save Up to 40% on Luxury Resorts, Heritage Homestays & Boutique Stays",
+    description: "Book verified accommodations across India (Kerala, Ladakh, Goa, Rajasthan) and worldwide (Japan, Switzerland, Italy, Bali) with free cancellation and price match guarantee.",
+    ctaText: "Explore Top Hotel & Resort Deals →",
+    ctaUrl: "https://www.booking.com/index.html?aid=2026803",
+    discountCode: "TRAVEL2026",
+    categoryMatch: ["Travel & Expeditions", "Festivals & Culture", "Lifestyle", "Culture & Heritage"],
+    cpcTier: "ULTRA",
+  },
+  {
+    id: "sp_amazon_travel_gear",
+    sponsorName: "Amazon Prime Travel & Trekking Gear",
+    badge: "OFFICIAL AMAZON ASSOCIATE",
+    tagline: "Top-Rated Trekking Rucksacks, 4K GoPro Cameras, Hiking Boots & Accessories",
+    description: "Equip your adventures with waterproof backpacks, cold-weather thermal layers, high-capacity power banks, and durable luggage with fast 1-day Prime delivery.",
+    ctaText: "Shop Verified Travel Gear on Amazon →",
+    ctaUrl: "https://www.amazon.in/s?k=travel+backpack+trekking+rucksack+gopro&tag=autoaiblog-21",
+    discountCode: "PRIMEGEAR",
+    categoryMatch: ["Travel & Expeditions", "Festivals & Culture", "Lifestyle"],
+    cpcTier: "HIGH",
+  },
+  {
+    id: "sp_viator_tours",
+    sponsorName: "Viator & GetYourGuide Experiences",
+    badge: "VERIFIED LOCAL TOURS & EXPEDITIONS",
+    tagline: "Skip-the-Line Monument Passes, Cultural Workshops & Guided Treks",
+    description: "Instant digital booking for world-famous festivals (Kyoto Gion Matsuri, Venice Carnival), Alleppey houseboat cruises, Ladakh bike expeditions, and desert safaris.",
+    ctaText: "Book Verified Tours & Experiences →",
+    ctaUrl: "https://www.booking.com/index.html?aid=2026803",
+    discountCode: "EXPLORE2026",
+    categoryMatch: ["Travel & Expeditions", "Festivals & Culture"],
+    cpcTier: "HIGH",
+  },
 ];
 
 /**
- * 💰 Sponsor & Prop Firm Monetization Matcher
+ * 💰 Sponsor & Prop Firm & Travel Monetization Matcher
  */
 export function matchSponsorForArticle(
   topic: string,
@@ -192,7 +228,31 @@ export function matchSponsorForArticle(
 ): SponsorDeal {
   const combined = `${topic} ${category} ${keywords.join(" ")}`.toLowerCase();
 
-  // 1. Futures / Prop Firm / Trading / Breakout Match
+  // 1. Travel / Expedition / Festival / Destination Match
+  if (
+    combined.includes("travel") ||
+    combined.includes("expedition") ||
+    combined.includes("festival") ||
+    combined.includes("kerala") ||
+    combined.includes("ladakh") ||
+    combined.includes("kashmir") ||
+    combined.includes("goa") ||
+    combined.includes("japan") ||
+    combined.includes("kyoto") ||
+    combined.includes("switzerland") ||
+    combined.includes("iceland") ||
+    combined.includes("bali") ||
+    combined.includes("tourist") ||
+    combined.includes("destination") ||
+    combined.includes("itinerary") ||
+    combined.includes("culture")
+  ) {
+    return VERIFIED_SPONSORS.find((s) => s.id === "sp_booking_hotels") ||
+      VERIFIED_SPONSORS.find((s) => s.id === "sp_amazon_travel_gear") ||
+      VERIFIED_SPONSORS[0];
+  }
+
+  // 2. Futures / Prop Firm / Trading / Breakout Match
   if (
     combined.includes("future") ||
     combined.includes("prop") ||
@@ -202,10 +262,10 @@ export function matchSponsorForArticle(
     combined.includes("sensex") ||
     combined.includes("breakout")
   ) {
-    return VERIFIED_SPONSORS[0]; // MFFU
+    return VERIFIED_SPONSORS[0]; // MFFU / PocketOption
   }
 
-  // 2. Forex / Currencies / Gold / Commodities
+  // 3. Forex / Currencies / Gold / Commodities
   if (
     combined.includes("forex") ||
     combined.includes("usd/inr") ||
@@ -214,14 +274,15 @@ export function matchSponsorForArticle(
     combined.includes("crude") ||
     combined.includes("guardian")
   ) {
-    return VERIFIED_SPONSORS[1]; // Blue Guardian
+    return VERIFIED_SPONSORS[1];
   }
 
-  // 3. AI & GPUs
-  if (combined.includes("gpu") || combined.includes("llm") || combined.includes("ai")) {
-    return VERIFIED_SPONSORS[5]; // HyperCompute
+  // 4. AI & GPUs / Developer Tools
+  if (combined.includes("gpu") || combined.includes("llm") || combined.includes("ai") || combined.includes("software")) {
+    const techSponsor = VERIFIED_SPONSORS.find((s) => s.id === "sp_amazon_tech" || s.id === "sp_cloud_gpu");
+    return techSponsor || VERIFIED_SPONSORS[0];
   }
 
-  // 4. Default to MFFU or Blue Guardian high-payout prop trading
-  return Math.random() > 0.5 ? VERIFIED_SPONSORS[0] : VERIFIED_SPONSORS[1];
+  // 5. Default high-payout sponsor
+  return VERIFIED_SPONSORS[0];
 }

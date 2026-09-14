@@ -35,6 +35,7 @@ You are a warm, highly knowledgeable, articulate expert who can help users with:
 1. ✈️ CUSTOM TRAVEL ITINERARIES & DESTINATION GUIDES:
    - Generate exhaustive, customized day-by-day itineraries for ANY place in India (Kashmir, Ladakh, Kerala, Rajasthan, Goa, Varanasi, Meghalaya, Himachal, Uttarakhand, Andaman, etc.) and ANY destination outside India / around the world (Japan, Switzerland, Italy, Bali, Peru, Iceland, Greece, France, Egypt, Vietnam, etc.).
    - Include: Morning, Afternoon, Evening breakdown for each day, Stay recommendations (budget/mid/luxury), Must-try local food & restaurants, Transportation/transit hacks, Best seasons, and Estimated total cost.
+   - Proactively recommend verified travel bookings & gear (Amazon Associate tag: autoaiblog-21, Booking.com hotel reservations, Skyscanner flight search).
 2. 📚 BLOG KNOWLEDGE & ARTICLE RECOMMENDATIONS:
    - Answer any question about artificial intelligence, coding, trading & financial markets, semiconductors, telecom, cultural festivals, and travel.
    - Contextualize answers and link to our published blog articles using markdown links [Article Title](/blog/slug).
@@ -202,6 +203,11 @@ Here is a curated day-by-day travel plan covering the best tea hills, tranquil b
 - **Comfort / Family**: ₹20,000 – ₹35,000 per couple ($240–$420)
 - **Luxury**: ₹45,000 – ₹80,000 per couple ($550–$950)
 
+🎒 **Recommended Bookings & Travel Gear**:
+- 🏨 [Book Top Kerala Heritage Resorts & Houseboats](https://www.booking.com/city/in/kochi.html?aid=2026803) (Free cancellation & best rates)
+- 🎒 [Waterproof 50L/60L Travel Rucksack on Amazon](https://www.amazon.in/s?k=travel+backpack+trekking+rucksack+50L+60L&tag=autoaiblog-21)
+- 📸 [4K Waterproof Action Camera for Backwaters](https://www.amazon.in/s?k=gopro+hero+action+camera+4k&tag=autoaiblog-21)
+
 📖 *Read our full travel guide:* [The Definitive Global Travel & India Discovery Bible](/blog/definitive-global-travel-and-india-discovery-destinations-guide)`;
   }
 
@@ -253,7 +259,10 @@ A medically acclimatized, breathtaking route across trans-Himalayan passes, sacr
 
 ---
 
-💡 **Essential Checklist**: Inner Line Permits (ILP) are required for Nubra & Pangong (can be arranged online or through local operators in Leh). Keep Diamox tablets handy and carry warm thermal layers even in peak summer!
+💡 **Essential Checklist & Gear Recommendations**:
+- 🧥 [High-Altitude Thermal Windproof Jackets on Amazon](https://www.amazon.in/s?k=high+altitude+cold+weather+thermal+jacket+ladakh&tag=autoaiblog-21)
+- 🥾 [Waterproof High-Ankle Trekking Boots on Amazon](https://www.amazon.in/s?k=waterproof+trekking+shoes+hiking+boots+men+women&tag=autoaiblog-21)
+- 🏨 [Book Leh Heritage Hotels & Pangong Luxury Camps](https://www.booking.com/city/in/leh.html?aid=2026803)
 
 📖 *Read our full breakdown:* [The Ultimate Solo Traveller's Guide](/blog/ultimate-solo-travellers-guide-hidden-wonders-expeditions)`;
   }
@@ -271,6 +280,11 @@ An unforgettable week blending hyper-futuristic neon metropolises and thousand-y
 - **Day 4 - 5 (Kyoto)**: Walk the 10,000 vermilion Torii gates of **Fushimi Inari Taisha** at sunrise, visit the Golden Pavilion (**Kinkaku-ji**), wander the whispering **Arashiyama Bamboo Grove**, and take an evening stroll through historic **Gion** in search of geiko/maiko.
 - **Day 6 (Nara & Uji Day Trip)**: Greet the sacred bowing deer in **Nara Park**, marvel at the Great Bronze Buddha in **Todai-ji Temple**, and taste authentic ceremonial matcha in **Uji**.
 - **Day 7 (Osaka Street Food & Departure)**: Sample piping-hot Takoyaki and Okonomiyaki along Osaka's neon-lit Dotonbori canal before transferring to Kansai International Airport (KIX).
+
+✈️ **Recommended Japan Travel Bookings**:
+- 🏨 [Book Tokyo & Kyoto Ryokans on Booking.com](https://www.booking.com/country/jp.html?aid=2026803)
+- 🔌 [Universal All-in-One Travel Adapter with Fast USB-C](https://www.amazon.in/s?k=universal+travel+adapter+all+in+one+fast+charging&tag=autoaiblog-21)
+- 🔋 [20,000mAh Portable Power Bank for Long Sightseeing Days](https://www.amazon.in/s?k=power+bank+20000mah+65w+fast+charging&tag=autoaiblog-21)
 
 📖 *Read more:* [World's Most Mesmerizing Cultural Festivals & Traditions](/blog/worlds-most-mesmerizing-cultural-festivals-traditions-guide)`;
   }
@@ -298,6 +312,11 @@ Here is an optimal framework for exploring **${matchedDest}** with balanced paci
 1. **Best Timing**: Avoid monsoon / extreme heat windows; spring and autumn offer optimal lighting for photography.
 2. **Transit**: Download offline maps on [Maps.me](https://maps.me) and install an international eSIM profile before landing.
 3. **Accommodation**: Stay in family-run guesthouses or heritage boutique properties to support local communities.
+
+🎒 **Recommended Bookings & Essentials for ${matchedDest}**:
+- 🏨 [Book Top-Rated Hotels in ${matchedDest} on Booking.com](https://www.booking.com/index.html?aid=2026803) (Free cancellation)
+- 🎒 [Browse Verified Travel & Trekking Backpacks on Amazon](https://www.amazon.in/s?k=travel+backpack+trekking+rucksack+50L+60L&tag=autoaiblog-21)
+- ✈️ [Check Flight Deals on Skyscanner](https://www.skyscanner.com)
 
 💬 *Feel free to tell me your exact travel dates, duration, budget, or preferred activities (trekking, food, relaxation, family), and I will generate a customized day-by-day itinerary with hotel suggestions!*`;
   }
