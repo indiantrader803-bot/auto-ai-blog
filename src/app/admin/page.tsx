@@ -52,12 +52,19 @@ export default function AdminDashboardPage() {
 
   const revenue = data?.revenueLedger || {
     actualAdRevenue: "$1,329.75",
+    actualAdRevenueInr: "₹1,15,023.38",
     estimatedAdRevenue: "$1,795.16",
+    estimatedAdRevenueInr: "₹1,55,281.34",
     affiliateRevenue: "$480.00",
+    affiliateRevenueInr: "₹41,520.00",
     sponsorRevenue: "$750.00",
+    sponsorRevenueInr: "₹64,875.00",
     totalActualRevenue: "$2,559.75",
+    totalActualRevenueInr: "₹2,21,418.38",
     pageRpm: "$18.96",
+    pageRpmInr: "₹1,640.04",
     averageRevenuePerArticle: "$52.24",
+    averageRevenuePerArticleInr: "₹4,518.76",
     clickThroughRate: "2.40%",
     totalClicks: 324,
   };
@@ -260,7 +267,7 @@ export default function AdminDashboardPage() {
               Revenue Engine Ledger
             </h2>
           </div>
-          <span className="text-xs text-slate-400">Blended Platform RPM: <strong className="text-emerald-500 font-mono text-sm">{revenue.pageRpm}</strong></span>
+          <span className="text-xs text-slate-400">Blended Platform RPM: <strong className="text-emerald-500 font-mono text-sm">{revenue.pageRpm} <span className="text-slate-400 font-normal text-xs">({revenue.pageRpmInr})</span></strong></span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -273,12 +280,17 @@ export default function AdminDashboardPage() {
                 Ledger Verified
               </span>
             </div>
-            <div className="text-3xl sm:text-4xl font-black tracking-tight font-serif">
-              {revenue.totalActualRevenue}
+            <div>
+              <div className="text-3xl sm:text-4xl font-black tracking-tight font-serif">
+                {revenue.totalActualRevenue}
+              </div>
+              <div className="text-sm font-bold text-emerald-100 font-mono mt-0.5">
+                {revenue.totalActualRevenueInr}
+              </div>
             </div>
             <div className="pt-2 border-t border-white/15 flex items-center justify-between text-xs text-emerald-100">
-              <span>Avg per Article: <strong>{revenue.averageRevenuePerArticle}</strong></span>
-              <span className="flex items-center gap-1"><TrendingUp className="w-3.5 h-3.5" /> +28.4%</span>
+              <span className="truncate">Avg/Article: <strong>{revenue.averageRevenuePerArticle} <span className="text-[11px] opacity-90">({revenue.averageRevenuePerArticleInr})</span></strong></span>
+              <span className="flex items-center gap-1 shrink-0 ml-2"><TrendingUp className="w-3.5 h-3.5" /> +28.4%</span>
             </div>
           </div>
 
@@ -290,12 +302,17 @@ export default function AdminDashboardPage() {
                 Google AdSense
               </span>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-              {revenue.actualAdRevenue}
+            <div>
+              <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
+                {revenue.actualAdRevenue}
+              </div>
+              <div className="text-xs font-bold text-indigo-600 dark:text-indigo-400 font-mono mt-0.5">
+                {revenue.actualAdRevenueInr}
+              </div>
             </div>
             <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-              <span>30-Day Est: <strong>{revenue.estimatedAdRevenue}</strong></span>
-              <span className="text-indigo-500 font-semibold font-mono">CPM Active</span>
+              <span className="truncate">30-Day Est: <strong>{revenue.estimatedAdRevenue} <span className="text-[10px] text-slate-400 font-mono">({revenue.estimatedAdRevenueInr})</span></strong></span>
+              <span className="text-indigo-500 font-semibold font-mono shrink-0 ml-1">CPM Active</span>
             </div>
           </div>
 
@@ -307,8 +324,13 @@ export default function AdminDashboardPage() {
                 CPA Conversions
               </span>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-              {revenue.affiliateRevenue}
+            <div>
+              <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
+                {revenue.affiliateRevenue}
+              </div>
+              <div className="text-xs font-bold text-amber-600 dark:text-amber-400 font-mono mt-0.5">
+                {revenue.affiliateRevenueInr}
+              </div>
             </div>
             <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
               <span>Tracked Clicks: <strong>{revenue.totalClicks}</strong></span>
@@ -324,8 +346,13 @@ export default function AdminDashboardPage() {
                 8 Active Deals
               </span>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-              {revenue.sponsorRevenue}
+            <div>
+              <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
+                {revenue.sponsorRevenue}
+              </div>
+              <div className="text-xs font-bold text-purple-600 dark:text-purple-400 font-mono mt-0.5">
+                {revenue.sponsorRevenueInr}
+              </div>
             </div>
             <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
               <span>Placement Fill: <strong>100%</strong></span>
@@ -382,11 +409,21 @@ export default function AdminDashboardPage() {
                     <td className="py-3 text-right font-mono text-slate-600 dark:text-slate-400">
                       {geo.pageViews.toLocaleString()}
                     </td>
-                    <td className="py-3 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">
-                      {geo.rpm}
+                    <td className="py-3 text-right">
+                      <div className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                        {geo.rpm}
+                      </div>
+                      <div className="text-[10px] text-slate-400 font-mono">
+                        {geo.rpmInr || ""}
+                      </div>
                     </td>
-                    <td className="py-3 text-right font-mono font-bold text-slate-900 dark:text-white">
-                      {geo.estimatedRevenue}
+                    <td className="py-3 text-right">
+                      <div className="font-mono font-bold text-slate-900 dark:text-white">
+                        {geo.estimatedRevenue}
+                      </div>
+                      <div className="text-[10px] text-slate-400 font-mono">
+                        {geo.estimatedRevenueInr || ""}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -429,8 +466,8 @@ export default function AdminDashboardPage() {
                   <span className="text-sm font-black font-mono text-emerald-600 dark:text-emerald-400 block">
                     {cat.rpm}
                   </span>
-                  <span className="text-[10px] text-slate-400 uppercase font-semibold">
-                    Page RPM
+                  <span className="text-[10px] text-slate-400 font-mono">
+                    {cat.rpmInr || "Page RPM"}
                   </span>
                 </div>
               </div>
@@ -626,13 +663,23 @@ export default function AdminDashboardPage() {
                   </td>
 
                   {/* RPM */}
-                  <td className="py-4 text-right font-mono text-slate-600 dark:text-slate-400 font-semibold">
-                    {article.rpm}
+                  <td className="py-4 text-right">
+                    <div className="font-mono text-slate-700 dark:text-slate-300 font-semibold">
+                      {article.rpm}
+                    </div>
+                    <div className="text-[10px] text-slate-400 font-mono">
+                      {article.rpmInr || ""}
+                    </div>
                   </td>
 
                   {/* Generated Revenue */}
-                  <td className="py-4 text-right font-mono font-black text-emerald-600 dark:text-emerald-400 text-sm">
-                    {article.revenue}
+                  <td className="py-4 text-right">
+                    <div className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-sm">
+                      {article.revenue}
+                    </div>
+                    <div className="text-[10px] text-emerald-600/90 dark:text-emerald-400/90 font-mono font-bold">
+                      {article.revenueInr || ""}
+                    </div>
                   </td>
 
                   {/* Link */}

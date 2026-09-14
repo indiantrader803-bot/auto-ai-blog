@@ -4,6 +4,7 @@ import "./globals.css";
 import ExitIntentModal from "@/components/growth/ExitIntentModal";
 import FloatingSubscribeButton from "@/components/growth/FloatingSubscribeButton";
 import GlobalBlogAssistant from "@/components/chat/GlobalBlogAssistant";
+import GoogleTranslateProvider from "@/components/layout/GoogleTranslateProvider";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -133,23 +134,6 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Global Google Translate Initialization */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              function googleTranslateElementInit() {
-                try {
-                  new google.translate.TranslateElement({
-                    pageLanguage: 'en',
-                    includedLanguages: 'en,bn,hi,es,fr,de,zh-CN,zh-TW,ja,ko,ar,pt,ru,it,nl,tr,vi,th,id,pl,mr,te,ta,gu,kn,pa,ur',
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                    autoDisplay: false
-                  }, 'google_translate_element');
-                } catch(e) {}
-              }
-            `,
-          }}
-        />
         {/* Travelpayouts Global Affiliate & Travel Widget Script */}
         <script
           // @ts-ignore
@@ -174,7 +158,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white font-sans">
-        <div id="google_translate_element" style={{ display: "none" }} />
+        <GoogleTranslateProvider />
         {children}
         <ExitIntentModal />
         <FloatingSubscribeButton />

@@ -326,16 +326,40 @@ export default function MonetizationHubPage() {
       promoCode: "arnab",
     },
     {
+      id: "aff_fundedsquad",
+      keyword: "FundedSquad / B1G2 Prop",
+      product: "FundedSquad Instant & Evaluation (Code CHARGE)",
+      url: "https://fundedsquad.com/?campaign=thesmartmag&squad=3552",
+      cpa: "Up to 30% RevShare",
+      clicks: 68,
+      earnings: "$225.00 (3 Sales)",
+      status: "ACTIVE",
+      badge: "HOT OFFER",
+      promoCode: "CHARGE",
+    },
+    {
+      id: "aff_equityedge",
+      keyword: "Equity Edge / Prop Trading",
+      product: "Equity Edge Evaluation & Scaling (Code THESMARTMAG)",
+      url: "https://app.equityedge.io/signup/THESMARTMAG/",
+      cpa: "30% RevShare",
+      clicks: 35,
+      earnings: "$90.00 (Est.)",
+      status: "ACTIVE",
+      badge: "PARTNER",
+      promoCode: "THESMARTMAG",
+    },
+    {
       id: "aff_bg",
       keyword: "Blue Guardian / Guardian Shield",
-      product: "Blue Guardian Unlimited Evaluation",
-      url: "https://blueguardian.com",
+      product: "Blue Guardian Unlimited & Reserve",
+      url: "https://blueguardian.com/?afmc=1tgf",
       cpa: "15% Payout",
       clicks: 42,
       earnings: "$110.00 (Est.)",
       status: "ACTIVE",
       badge: "VERIFIED",
-      promoCode: "GUARDIAN",
+      promoCode: "1tgf",
     },
     {
       id: "aff_mffu",
@@ -501,11 +525,16 @@ export default function MonetizationHubPage() {
             <span className="text-xs font-bold uppercase tracking-wider">Total Value Engine</span>
             <DollarSign className="w-4 h-4 text-purple-500" />
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-            {realMetrics?.revenueLedger?.estimatedNetworkValue || "$622.50"}
+          <div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
+              {realMetrics?.revenueLedger?.estimatedNetworkValue || "$622.50"}
+            </div>
+            <div className="text-xs font-bold text-purple-600 dark:text-purple-400 font-mono mt-0.5">
+              {realMetrics?.revenueLedger?.estimatedNetworkValueInr || "₹53,846.25"}
+            </div>
           </div>
           <div className="text-[11px] font-semibold text-purple-600 flex items-center gap-1">
-            <span>Est. Network Accruals</span> • <span>Real DB: {realTotalEarnings}</span>
+            <span>Est. Network Accruals</span> • <span>Real DB: {realTotalEarnings} ({realMetrics?.revenueLedger?.totalActualRevenueInr || "₹0.00"})</span>
           </div>
         </div>
       </div>
@@ -557,14 +586,17 @@ export default function MonetizationHubPage() {
                       <div className="text-xs font-bold text-slate-900 dark:text-white">
                         Header &amp; In-Article Display Ads
                       </div>
-                      <div className="text-[11px] text-slate-400">198k impressions • $24.80 RPM</div>
+                      <div className="text-[11px] text-slate-400">198k impressions • $24.80 (₹2,145.20) RPM</div>
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="text-sm font-bold text-slate-900 dark:text-white font-serif">
                       $1,480.00
                     </div>
-                    <div className="text-[10px] text-emerald-500 font-semibold">Active</div>
+                    <div className="text-[10px] text-slate-400 font-mono">
+                      ₹1,28,020.00
+                    </div>
+                    <div className="text-[10px] text-emerald-500 font-semibold mt-0.5">Active</div>
                   </div>
                 </div>
 
@@ -584,7 +616,10 @@ export default function MonetizationHubPage() {
                     <div className="text-sm font-bold text-slate-900 dark:text-white font-serif">
                       $2,180.00
                     </div>
-                    <div className="text-[10px] text-emerald-500 font-semibold">Highest Earner</div>
+                    <div className="text-[10px] text-slate-400 font-mono">
+                      ₹1,88,570.00
+                    </div>
+                    <div className="text-[10px] text-emerald-500 font-semibold mt-0.5">Highest Earner</div>
                   </div>
                 </div>
 
@@ -604,7 +639,10 @@ export default function MonetizationHubPage() {
                     <div className="text-sm font-bold text-slate-900 dark:text-white font-serif">
                       $1,250.00
                     </div>
-                    <div className="text-[10px] text-emerald-500 font-semibold">Guaranteed</div>
+                    <div className="text-[10px] text-slate-400 font-mono">
+                      ₹1,08,125.00
+                    </div>
+                    <div className="text-[10px] text-emerald-500 font-semibold mt-0.5">Guaranteed</div>
                   </div>
                 </div>
               </div>

@@ -76,3 +76,30 @@ body {
 .hero-glow {
   background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15), transparent 70%);
 }
+
+/* Google Translate Integration & Clean Layout */
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+#google_translate_element {
+  display: none !important;
+}
+
+.skiptranslate:not(.goog-te-combo) {
+  display: none !important;
+}
+

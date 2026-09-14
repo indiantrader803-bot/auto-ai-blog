@@ -411,6 +411,29 @@ export default function SocialSidebar({
           </div>
         </a>
 
+        {/* Offer: FundedSquad */}
+        <a
+          href="https://fundedsquad.com/?campaign=thesmartmag&squad=3552"
+          onClick={() => trackAffiliateClick("FundedSquad", "https://fundedsquad.com/?campaign=thesmartmag&squad=3552")}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          className="group block p-3.5 rounded-2xl bg-gradient-to-br from-purple-950/60 to-indigo-950/60 hover:from-purple-900/80 hover:to-indigo-900/80 border border-purple-500/40 hover:border-purple-400/80 transition-all shadow-lg"
+        >
+          <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
+            <span className="group-hover:text-amber-300 transition-colors flex items-center gap-1">
+              <span>🔥 FundedSquad</span>
+            </span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold">B1G2 FREE</span>
+          </div>
+          <p className="text-[11px] text-slate-300 leading-snug mb-2">
+            Buy 1 Get 2 FREE on $25k+ tiers + 35% Instant Off. Code: <strong className="text-amber-300 font-mono">CHARGE</strong>
+          </p>
+          <div className="flex items-center gap-1 text-[11px] text-purple-300 group-hover:text-white font-bold">
+            <span>Claim 3 Accounts for 1</span>
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </a>
+
         {/* Offer 2: MFFU */}
         <a
           href="https://mffu.com/f/85f1f73f30"
@@ -440,14 +463,14 @@ export default function SocialSidebar({
           className="group block p-3.5 rounded-2xl bg-white/5 hover:bg-indigo-600/20 border border-white/10 hover:border-indigo-500/50 transition-all"
         >
           <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
-            <span className="group-hover:text-amber-300 transition-colors">Blue Guardian Forex</span>
-            <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">$400k Max</span>
+            <span className="group-hover:text-amber-300 transition-colors">Blue Guardian Prop Firm</span>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">From $48</span>
           </div>
           <p className="text-[11px] text-slate-300 leading-snug mb-2">
-            Unlimited trading days & Guardian Protector risk shield. Code: <strong className="text-amber-300 font-mono">GUARDIAN803</strong>
+            New Reserve plans (25k @ $48, 5X bundles @ $41/ea) + optional No Daily Loss Limit. Partner Ref: <strong className="text-amber-300 font-mono">1tgf</strong>
           </p>
           <div className="flex items-center gap-1 text-[11px] text-indigo-400 group-hover:text-white font-bold">
-            <span>Start Forex Challenge</span>
+            <span>Claim Reserve Deal</span>
             <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
           </div>
         </a>

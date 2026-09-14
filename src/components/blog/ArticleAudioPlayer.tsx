@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Play, Pause, Volume2, VolumeX, RotateCcw, Sparkles, Languages, Radio, Check } from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Play, Pause, Volume2, VolumeX, RotateCcw, Sparkles, Languages, Radio, AlertCircle } from "lucide-react";
+import { LANGUAGES } from "../layout/LanguageSelector";
 
 interface Props {
   title: string;
@@ -13,8 +14,12 @@ export default function ArticleAudioPlayer({ title, content }: Props) {
   const [isPaused, setIsPaused] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [rate, setRate] = useState(1); // 1x, 1.25x, 1.5x
-  const [supported, setSupported] = useState(true);
-  const [detectedLanguage, setDetectedLanguage] = useState("English (US)");
+  const [activeLangInfo, setActiveLangInfo] = useState<{ code: string; name: string; ttsCode: string; bcp47: string }>({
+    code: "en",
+    name: "English (US)",
+    ttsCode: "en",
+    bcp47: "en-US",
+  });
   const [currentChunkIndex, setCurrentChunkIndex] = useState(0);
   const [totalChunks, setTotalChunks] = useState(0);
   const [audioEngine, setAudioEngine] = useState<"NEURAL_CLOUD" | "BROWSER_SPEECH">("NEURAL_CLOUD");
@@ -22,25 +27,72 @@ export default function ArticleAudioPlayer({ title, content }: Props) {
   const chunksRef = useRef<string[]>([]);
   const chunkIndexRef = useRef<number>(0);
   const isPlayingRef = useRef<boolean>(false);
+  const isPausedRef = useRef<boolean>(false);
   const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
   const currentAudioElRef = useRef<HTMLAudioElement | null>(null);
+  const heartbeatTimerRef = useRef<any>(null);
+
+  // Sync available speech synthesis voices
+  const populateVoices = useCallback(() => {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      voicesRef.current = window.speechSynthesis.getVoices();
+    }
+  }, []);
+
+  // Detect current active language from cookie or localStorage
+  const detectLanguage = useCallback(() => {
+    let langCode = "en";
+
+    // 1. Check googtrans cookie
+    if (typeof document !== "undefined") {
+      const match = document.cookie.match(/googtrans=\/(?:en|auto)\/([a-zA-Z_-]+)/);
+      if (match && match[1]) {
+        langCode = match[1];
+      } else {
+        const saved = localStorage.getItem("smartmag_user_lang");
+        if (saved) langCode = saved;
+      }
+    }
+
+    const matched = LANGUAGES.find((l) => l.code.toLowerCase() === langCode.toLowerCase()) || LANGUAGES[0];
+    setActiveLangInfo({
+      code: matched.code,
+      name: matched.name,
+      ttsCode: matched.ttsCode,
+      bcp47: matched.bcp47,
+    });
+    return matched;
+  }, []);
 
   useEffect(() => {
+    populateVoices();
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      const loadVoices = () => {
-        voicesRef.current = window.speechSynthesis.getVoices();
-      };
-      loadVoices();
-      window.speechSynthesis.onvoiceschanged = loadVoices;
+      window.speechSynthesis.onvoiceschanged = populateVoices;
     }
+    detectLanguage();
+
+    // Listen for language changes from Navbar
+    const onLangChanged = () => {
+      stopAllAudio();
+      detectLanguage();
+    };
+
+    window.addEventListener("smartmag_language_changed", onLangChanged);
 
     return () => {
       stopAllAudio();
+      window.removeEventListener("smartmag_language_changed", onLangChanged);
+      if (heartbeatTimerRef.current) clearInterval(heartbeatTimerRef.current);
     };
-  }, []);
+  }, [detectLanguage, populateVoices]);
 
   const stopAllAudio = () => {
     isPlayingRef.current = false;
+    isPausedRef.current = false;
+    if (heartbeatTimerRef.current) {
+      clearInterval(heartbeatTimerRef.current);
+      heartbeatTimerRef.current = null;
+    }
     if (currentAudioElRef.current) {
       currentAudioElRef.current.pause();
       currentAudioElRef.current.src = "";
@@ -56,82 +108,53 @@ export default function ArticleAudioPlayer({ title, content }: Props) {
       .replace(/```[\s\S]*?```/g, " ")
       .replace(/`([^`]+)`/g, "$1")
       .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-      .replace(/[#*_-]/g, " ")
+      .replace(/[#*_\-\~]/g, " ")
       .replace(/https?:\/\/\S+/g, " ")
-      .replace(/[\{\}\[\]\<\>\/\\~|\^]/g, " ")
+      .replace(/[\{\}\[\]\<\>\/\\|\^]/g, " ")
       .replace(/\s+/g, " ")
       .trim();
   };
 
-  const getActiveTextAndLanguage = () => {
-    let textToRead = "";
+  const getLiveArticleText = () => {
     const articleTitleEl = document.querySelector("h1");
     const articleBodyEl = document.querySelector(".prose") || document.querySelector("article");
 
     const liveTitle = articleTitleEl ? articleTitleEl.innerText.trim() : title;
     const liveBody = articleBodyEl ? (articleBodyEl as HTMLElement).innerText.trim() : cleanTextForSpeech(content);
 
-    textToRead = `${liveTitle}. ${liveBody}`;
-
-    const match = document.cookie.match(/googtrans=\/en\/([a-zA-Z_-]+)/);
-    const langCode = match && match[1] ? match[1].toLowerCase() : "en";
-
-    const langMap: Record<string, { bcp47: string; name: string; ttsCode: string }> = {
-      bn: { bcp47: "bn-IN", name: "বাংলা (Bengali)", ttsCode: "bn" },
-      hi: { bcp47: "hi-IN", name: "हिन्दी (Hindi)", ttsCode: "hi" },
-      es: { bcp47: "es-ES", name: "Español (Spanish)", ttsCode: "es" },
-      fr: { bcp47: "fr-FR", name: "Français (French)", ttsCode: "fr" },
-      de: { bcp47: "de-DE", name: "Deutsch (German)", ttsCode: "de" },
-      "zh-cn": { bcp47: "zh-CN", name: "中文 (Chinese)", ttsCode: "zh-CN" },
-      "zh-tw": { bcp47: "zh-TW", name: "繁體中文 (Chinese)", ttsCode: "zh-TW" },
-      ja: { bcp47: "ja-JP", name: "日本語 (Japanese)", ttsCode: "ja" },
-      ko: { bcp47: "ko-KR", name: "한국어 (Korean)", ttsCode: "ko" },
-      ar: { bcp47: "ar-SA", name: "العربية (Arabic)", ttsCode: "ar" },
-      pt: { bcp47: "pt-BR", name: "Português (Portuguese)", ttsCode: "pt" },
-      ru: { bcp47: "ru-RU", name: "Русский (Russian)", ttsCode: "ru" },
-      it: { bcp47: "it-IT", name: "Italiano (Italian)", ttsCode: "it" },
-      nl: { bcp47: "nl-NL", name: "Nederlands (Dutch)", ttsCode: "nl" },
-      tr: { bcp47: "tr-TR", name: "Türkçe (Turkish)", ttsCode: "tr" },
-      vi: { bcp47: "vi-VN", name: "Tiếng Việt (Vietnamese)", ttsCode: "vi" },
-      th: { bcp47: "th-TH", name: "ไทย (Thai)", ttsCode: "th" },
-      id: { bcp47: "id-ID", name: "Bahasa Indonesia", ttsCode: "id" },
-      pl: { bcp47: "pl-PL", name: "Polski (Polish)", ttsCode: "pl" },
-      en: { bcp47: "en-US", name: "English (US)", ttsCode: "en" },
-    };
-
-    const target = langMap[langCode] || { bcp47: "en-US", name: "English (US)", ttsCode: "en" };
-    setDetectedLanguage(target.name);
-
-    return { text: cleanTextForSpeech(textToRead), bcp47: target.bcp47, ttsCode: target.ttsCode, baseLang: langCode };
+    const fullRaw = `${liveTitle}. ${liveBody}`;
+    return cleanTextForSpeech(fullRaw);
   };
 
   const createChunks = (text: string): string[] => {
-    // Split by standard punctuation including Bengali/Hindi purna viram (।), Asian full stops (。), and commas
-    const sentences = text.match(/[^.!?\n।。]+[.!?\n।。]+/g) || [text];
+    // Sentence segmentation supporting multiple scripts (Latin, Devanagari ।, Bengali ।, CJK 。！？)
+    const sentences = text.match(/[^.!?\n।。！？]+[.!?\n।。！？]+/g) || [text];
     const chunks: string[] = [];
-    let currentChunk = "";
+    let current = "";
 
-    for (const sentence of sentences) {
-      const clean = sentence.trim();
-      if (!clean) continue;
+    for (const s of sentences) {
+      const trimmed = s.trim();
+      if (!trimmed) continue;
 
-      if ((currentChunk + " " + clean).length > 140) {
-        if (currentChunk.trim()) chunks.push(currentChunk.trim());
-        currentChunk = clean;
+      if ((current + " " + trimmed).length > 150) {
+        if (current.trim()) chunks.push(current.trim());
+        current = trimmed;
       } else {
-        currentChunk = currentChunk ? `${currentChunk} ${clean}` : clean;
+        current = current ? `${current} ${trimmed}` : trimmed;
       }
     }
-    if (currentChunk.trim()) chunks.push(currentChunk.trim());
-    return chunks.length > 0 ? chunks : [text.slice(0, 200)];
+    if (current.trim()) chunks.push(current.trim());
+    return chunks.length > 0 ? chunks : [text.slice(0, 180)];
   };
 
-  // 1. Studio Neural Cloud TTS Streamer (Flawless Native Accent for All Languages)
-  const playNeuralCloudChunk = (index: number, ttsCode: string, bcp47: string, baseLang: string) => {
-    if (!isPlayingRef.current || index >= chunksRef.current.length) {
-      setIsPlaying(false);
-      setIsPaused(false);
-      isPlayingRef.current = false;
+  // 1. Neural Cloud TTS Audio Player
+  const playNeuralAudioChunk = (index: number, ttsCode: string, bcp47: string) => {
+    if (!isPlayingRef.current || isPausedRef.current || index >= chunksRef.current.length) {
+      if (index >= chunksRef.current.length) {
+        setIsPlaying(false);
+        setIsPaused(false);
+        isPlayingRef.current = false;
+      }
       return;
     }
 
@@ -139,37 +162,37 @@ export default function ArticleAudioPlayer({ title, content }: Props) {
     setCurrentChunkIndex(index);
 
     const chunkText = chunksRef.current[index];
-    const encodedText = encodeURIComponent(chunkText.slice(0, 160));
-    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${ttsCode}&client=tw-ob&q=${encodedText}`;
+    const audioUrl = `/api/tts?lang=${encodeURIComponent(ttsCode)}&text=${encodeURIComponent(chunkText.slice(0, 180))}`;
 
     const audio = new Audio(audioUrl);
     audio.playbackRate = rate;
-    audio.volume = isMuted ? 0 : 1;
+    audio.muted = isMuted;
     currentAudioElRef.current = audio;
 
     audio.onended = () => {
-      if (isPlayingRef.current) {
-        playNeuralCloudChunk(index + 1, ttsCode, bcp47, baseLang);
+      if (isPlayingRef.current && !isPausedRef.current) {
+        playNeuralAudioChunk(index + 1, ttsCode, bcp47);
       }
     };
 
     audio.onerror = () => {
-      // Fallback to browser voice if network audio stream is blocked
-      console.warn("Neural audio stream note, switching to browser synthesis voice...");
-      playBrowserVoiceChunk(index, bcp47, baseLang);
+      console.warn("Neural audio chunk error, falling back to browser speech synthesis...");
+      playBrowserVoiceChunk(index, bcp47);
     };
 
     audio.play().catch(() => {
-      playBrowserVoiceChunk(index, bcp47, baseLang);
+      playBrowserVoiceChunk(index, bcp47);
     });
   };
 
-  // 2. High-Fidelity Browser Speech Synthesis Engine
-  const playBrowserVoiceChunk = (index: number, bcp47: string, baseLang: string) => {
-    if (!isPlayingRef.current || index >= chunksRef.current.length) {
-      setIsPlaying(false);
-      setIsPaused(false);
-      isPlayingRef.current = false;
+  // 2. Browser Speech Synthesis Player (with Chrome Heartbeat keep-alive)
+  const playBrowserVoiceChunk = (index: number, bcp47: string) => {
+    if (!isPlayingRef.current || isPausedRef.current || index >= chunksRef.current.length) {
+      if (index >= chunksRef.current.length) {
+        setIsPlaying(false);
+        setIsPaused(false);
+        isPlayingRef.current = false;
+      }
       return;
     }
 
@@ -179,33 +202,46 @@ export default function ArticleAudioPlayer({ title, content }: Props) {
     const chunkText = chunksRef.current[index];
     const utterance = new SpeechSynthesisUtterance(chunkText);
     utterance.lang = bcp47;
-    utterance.rate = rate === 1 ? 0.95 : rate; // slightly paced for clear natural diction
+    utterance.rate = rate === 1 ? 0.95 : rate;
     utterance.pitch = 1.0;
     utterance.volume = isMuted ? 0 : 1;
 
-    // Pick top native voice for this specific language
+    // Pick top native voice for this language
     const voices = voicesRef.current.length > 0 ? voicesRef.current : window.speechSynthesis.getVoices();
+    const langPrefix = bcp47.split("-")[0].toLowerCase();
+
     const matchedVoice = voices.find(
       (v) =>
-        v.lang.toLowerCase().startsWith(baseLang) ||
-        v.lang.toLowerCase().replace("_", "-") === bcp47.toLowerCase() ||
-        v.name.toLowerCase().includes(baseLang)
+        v.lang.toLowerCase() === bcp47.toLowerCase() ||
+        v.lang.toLowerCase().startsWith(langPrefix) ||
+        v.lang.toLowerCase().replace("_", "-") === bcp47.toLowerCase()
     );
+
     if (matchedVoice) {
       utterance.voice = matchedVoice;
     }
 
     utterance.onend = () => {
-      if (isPlayingRef.current) {
-        playBrowserVoiceChunk(index + 1, bcp47, baseLang);
+      if (isPlayingRef.current && !isPausedRef.current) {
+        playBrowserVoiceChunk(index + 1, bcp47);
       }
     };
 
     utterance.onerror = () => {
-      if (isPlayingRef.current) {
-        playBrowserVoiceChunk(index + 1, bcp47, baseLang);
+      if (isPlayingRef.current && !isPausedRef.current) {
+        playBrowserVoiceChunk(index + 1, bcp47);
       }
     };
+
+    // Chromium pause/resume heartbeat keepalive
+    if (!heartbeatTimerRef.current) {
+      heartbeatTimerRef.current = setInterval(() => {
+        if (isPlayingRef.current && !isPausedRef.current && window.speechSynthesis.speaking) {
+          window.speechSynthesis.pause();
+          window.speechSynthesis.resume();
+        }
+      }, 10000);
+    }
 
     window.speechSynthesis.speak(utterance);
   };
@@ -213,37 +249,45 @@ export default function ArticleAudioPlayer({ title, content }: Props) {
   const handlePlayPause = () => {
     if (isPlaying) {
       if (isPaused) {
+        // Resume
+        setIsPaused(false);
+        isPausedRef.current = false;
         if (audioEngine === "NEURAL_CLOUD" && currentAudioElRef.current) {
           currentAudioElRef.current.play();
-        } else if (window.speechSynthesis) {
+        } else if (typeof window !== "undefined" && "speechSynthesis" in window) {
           window.speechSynthesis.resume();
         }
-        setIsPaused(false);
       } else {
+        // Pause
+        setIsPaused(true);
+        isPausedRef.current = true;
         if (audioEngine === "NEURAL_CLOUD" && currentAudioElRef.current) {
           currentAudioElRef.current.pause();
-        } else if (window.speechSynthesis) {
+        } else if (typeof window !== "undefined" && "speechSynthesis" in window) {
           window.speechSynthesis.pause();
         }
-        setIsPaused(true);
       }
     } else {
+      // Start Playing from beginning
       stopAllAudio();
-      const { text, bcp47, ttsCode, baseLang } = getActiveTextAndLanguage();
-      const chunks = createChunks(text);
+      const currentLang = detectLanguage();
+      const liveText = getLiveArticleText();
+      const chunks = createChunks(liveText);
+
       chunksRef.current = chunks;
       setTotalChunks(chunks.length);
       chunkIndexRef.current = 0;
       setCurrentChunkIndex(0);
 
       isPlayingRef.current = true;
+      isPausedRef.current = false;
       setIsPlaying(true);
       setIsPaused(false);
 
       if (audioEngine === "NEURAL_CLOUD") {
-        playNeuralCloudChunk(0, ttsCode, bcp47, baseLang);
+        playNeuralAudioChunk(0, currentLang.ttsCode, currentLang.bcp47);
       } else {
-        playBrowserVoiceChunk(0, bcp47, baseLang);
+        playBrowserVoiceChunk(0, currentLang.bcp47);
       }
     }
   };
@@ -256,9 +300,10 @@ export default function ArticleAudioPlayer({ title, content }: Props) {
   };
 
   const toggleMute = () => {
-    setIsMuted(!isMuted);
+    const nextMuted = !isMuted;
+    setIsMuted(nextMuted);
     if (currentAudioElRef.current) {
-      currentAudioElRef.current.muted = !isMuted;
+      currentAudioElRef.current.muted = nextMuted;
     }
   };
 
@@ -278,7 +323,7 @@ export default function ArticleAudioPlayer({ title, content }: Props) {
   return (
     <div className="my-6 p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/30 shadow-2xl font-sans relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-transparent pointer-events-none" />
-      
+
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
         {/* Left: Player Info & Active Translation Badge */}
         <div className="flex items-center gap-3.5">
@@ -291,14 +336,14 @@ export default function ArticleAudioPlayer({ title, content }: Props) {
                 AI Voice Audio Edition
               </span>
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-[10px] border border-emerald-500/30">
-                <Languages className="w-3 h-3" /> {detectedLanguage}
+                <Languages className="w-3 h-3" /> {activeLangInfo.name}
               </span>
               <span className="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-mono">
-                Studio Quality
+                {audioEngine === "NEURAL_CLOUD" ? "Neural Cloud Voice" : "Native OS Voice"}
               </span>
             </div>
             <p className="text-xs text-slate-300 mt-1 font-medium line-clamp-1">
-              Crystal-clear native accent narration in your selected language
+              Crystal-clear native narration in your selected translation
             </p>
           </div>
         </div>
@@ -316,7 +361,7 @@ export default function ArticleAudioPlayer({ title, content }: Props) {
             title="Switch Voice Engine"
           >
             <Radio className="w-3.5 h-3.5 text-indigo-400" />
-            <span>{audioEngine === "NEURAL_CLOUD" ? "Studio Neural AI" : "Browser Voice"}</span>
+            <span>{audioEngine === "NEURAL_CLOUD" ? "Neural AI Voice" : "Browser TTS"}</span>
           </button>
 
           {/* Speed Toggle */}

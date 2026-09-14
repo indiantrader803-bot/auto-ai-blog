@@ -7,8 +7,8 @@ import { Star, ShieldCheck, Tag, ExternalLink, ArrowRight, Sparkles, CheckCircle
 
 export const metadata: Metadata = {
   title: "Best Prop Trading Firms 2026: Leaderboard, Rules & Verified Discount Codes",
-  description: "Ranked list of the best prop trading firms for 2026. Compare Funded Trader Markets, Atlas Funded, AquaFunded, and Pocket Option with verified discount codes.",
-  keywords: ["best prop firms 2026", "prop trading leaderboard", "cheap prop challenges", "atlas funded coupon", "FTM discount code"],
+  description: "Ranked list of the best prop trading firms for 2026. Compare Blue Guardian (Reserve from $48), Funded Trader Markets, Atlas Funded, AquaFunded, and Pocket Option with verified discount codes.",
+  keywords: ["best prop firms 2026", "blue guardian reserve pricing", "blue guardian discount code 1tgf", "prop trading leaderboard", "cheap prop challenges", "atlas funded coupon", "FTM discount code"],
 };
 
 export default function BestPropFirmsPage() {

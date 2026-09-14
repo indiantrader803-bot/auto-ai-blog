@@ -104,6 +104,10 @@ export async function GET() {
       "telecom-and-connectivity": 16.0,
     };
 
+    const USD_INR_RATE = 86.5;
+    const toInr = (usd: number) =>
+      "₹" + (usd * USD_INR_RATE).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
     // 3. Country Analytics & Geographic RPM Breakdown
     const countryData = [
       {
@@ -114,8 +118,10 @@ export async function GET() {
         visitors: Math.floor(uniqueVisitors * 0.34),
         pageViews: Math.floor(totalViews * 0.34),
         rpm: "$42.50",
+        rpmInr: toInr(42.5),
         rpmVal: 42.5,
         estimatedRevenue: `$${((Math.floor(totalViews * 0.34) * 42.5) / 1000).toFixed(2)}`,
+        estimatedRevenueInr: toInr((Math.floor(totalViews * 0.34) * 42.5) / 1000),
       },
       {
         country: "India",
@@ -125,8 +131,10 @@ export async function GET() {
         visitors: Math.floor(uniqueVisitors * 0.38),
         pageViews: Math.floor(totalViews * 0.38),
         rpm: "$18.20",
+        rpmInr: toInr(18.2),
         rpmVal: 18.2,
         estimatedRevenue: `$${((Math.floor(totalViews * 0.38) * 18.2) / 1000).toFixed(2)}`,
+        estimatedRevenueInr: toInr((Math.floor(totalViews * 0.38) * 18.2) / 1000),
       },
       {
         country: "United Kingdom",
@@ -136,8 +144,10 @@ export async function GET() {
         visitors: Math.floor(uniqueVisitors * 0.12),
         pageViews: Math.floor(totalViews * 0.12),
         rpm: "$36.00",
+        rpmInr: toInr(36.0),
         rpmVal: 36.0,
         estimatedRevenue: `$${((Math.floor(totalViews * 0.12) * 36.0) / 1000).toFixed(2)}`,
+        estimatedRevenueInr: toInr((Math.floor(totalViews * 0.12) * 36.0) / 1000),
       },
       {
         country: "Germany / EU",
@@ -147,8 +157,10 @@ export async function GET() {
         visitors: Math.floor(uniqueVisitors * 0.08),
         pageViews: Math.floor(totalViews * 0.08),
         rpm: "$29.00",
+        rpmInr: toInr(29.0),
         rpmVal: 29.0,
         estimatedRevenue: `$${((Math.floor(totalViews * 0.08) * 29.0) / 1000).toFixed(2)}`,
+        estimatedRevenueInr: toInr((Math.floor(totalViews * 0.08) * 29.0) / 1000),
       },
       {
         country: "Canada",
@@ -158,8 +170,10 @@ export async function GET() {
         visitors: Math.floor(uniqueVisitors * 0.05),
         pageViews: Math.floor(totalViews * 0.05),
         rpm: "$31.50",
+        rpmInr: toInr(31.5),
         rpmVal: 31.5,
         estimatedRevenue: `$${((Math.floor(totalViews * 0.05) * 31.5) / 1000).toFixed(2)}`,
+        estimatedRevenueInr: toInr((Math.floor(totalViews * 0.05) * 31.5) / 1000),
       },
       {
         country: "UAE & Singapore",
@@ -169,8 +183,10 @@ export async function GET() {
         visitors: Math.floor(uniqueVisitors * 0.03),
         pageViews: Math.floor(totalViews * 0.03),
         rpm: "$35.00",
+        rpmInr: toInr(35.0),
         rpmVal: 35.0,
         estimatedRevenue: `$${((Math.floor(totalViews * 0.03) * 35.0) / 1000).toFixed(2)}`,
+        estimatedRevenueInr: toInr((Math.floor(totalViews * 0.03) * 35.0) / 1000),
       },
     ];
 
@@ -184,6 +200,7 @@ export async function GET() {
         color: c.color || "#6366f1",
         articleCount: count,
         rpm: `$${rpm.toFixed(2)}`,
+        rpmInr: toInr(rpm),
         rpmVal: rpm,
       };
     });
@@ -209,7 +226,8 @@ export async function GET() {
       const views = post.views || 0;
       const catSlug = post.category?.slug || "general";
       const baseRpm = CATEGORY_RPM[catSlug] || 20.0;
-      const articleRevenue = ((views * baseRpm) / 1000).toFixed(2);
+      const articleRevNum = (views * baseRpm) / 1000;
+      const articleRevenue = articleRevNum.toFixed(2);
       const articleCtr = totalViews > 0 ? ((totalClicks / totalViews) * 100).toFixed(2) : "0.00";
       const rankStatus = searchRankStatuses[idx % searchRankStatuses.length];
 
@@ -222,8 +240,10 @@ export async function GET() {
         views,
         shares: post.shares || 0,
         revenue: `$${articleRevenue}`,
-        revenueVal: parseFloat(articleRevenue),
+        revenueInr: toInr(articleRevNum),
+        revenueVal: articleRevNum,
         rpm: `$${baseRpm.toFixed(2)}`,
+        rpmInr: toInr(baseRpm),
         ctr: `${articleCtr}%`,
         searchRank: rankStatus,
         publishedAt: post.publishedAt || post.createdAt,
@@ -238,26 +258,40 @@ export async function GET() {
       .sort((a, b) => b.revenueVal - a.revenueVal)
       .slice(0, 10);
 
+    const avgRevPerArt = estTotalNetworkValue / Math.max(1, publishedPosts);
+    const rpmNum = parseFloat(globalPageRpm) || 0;
+
     return NextResponse.json({
       revenueLedger: {
         actualAdRevenue: `$${realAdRevenueVal.toFixed(2)}`,
+        actualAdRevenueInr: toInr(realAdRevenueVal),
         actualAdRevenueVal: realAdRevenueVal,
         estimatedAdRevenue: `$${estAdSenseVal.toFixed(2)}`,
+        estimatedAdRevenueInr: toInr(estAdSenseVal),
         estimatedAffiliateRevenue: `$${estAffiliateVal.toFixed(2)}`,
+        estimatedAffiliateRevenueInr: toInr(estAffiliateVal),
         estimatedNetworkValue: `$${estTotalNetworkValue.toFixed(2)}`,
+        estimatedNetworkValueInr: toInr(estTotalNetworkValue),
         estimatedNetworkValueVal: estTotalNetworkValue,
         affiliateRevenue: `$${realAffiliateEarningsVal.toFixed(2)}`,
+        affiliateRevenueInr: toInr(realAffiliateEarningsVal),
         digitalStoreRevenue: `$${realStoreRevenueVal.toFixed(2)}`,
+        digitalStoreRevenueInr: toInr(realStoreRevenueVal),
         digitalStoreSalesCount: digitalSalesEvents.length,
         sponsorRevenue: `$${realSponsorRevenueVal.toFixed(2)}`,
+        sponsorRevenueInr: toInr(realSponsorRevenueVal),
         totalActualRevenue: `$${realTotalRevenueVal.toFixed(2)}`,
+        totalActualRevenueInr: toInr(realTotalRevenueVal),
         totalActualRevenueVal: realTotalRevenueVal,
         pageRpm: `$${globalPageRpm}`,
-        averageRevenuePerArticle: `$${(estTotalNetworkValue / Math.max(1, publishedPosts)).toFixed(2)}`,
+        pageRpmInr: toInr(rpmNum),
+        averageRevenuePerArticle: `$${avgRevPerArt.toFixed(2)}`,
+        averageRevenuePerArticleInr: toInr(avgRevPerArt),
         clickThroughRate: `${globalCtr}%`,
         totalClicks,
         affiliateClicks: affiliateClicksCount,
         sponsorClicks: sponsorClicksCount,
+        usdToInrRate: USD_INR_RATE,
       },
       trafficIntelligence: {
         totalPageViews: totalViews,
