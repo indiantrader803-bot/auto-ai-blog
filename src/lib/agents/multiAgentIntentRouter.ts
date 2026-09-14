@@ -1,5 +1,12 @@
 import { getAllCatalogArticles } from "@/lib/content/articles";
 import { VERIFIED_SPONSORS } from "@/lib/pipeline/agents/sponsorAgent";
+import {
+  getBookingHotelUrl,
+  getAgodaHotelUrl,
+  getAmazonProductUrl,
+  getFlightSearchUrl,
+  AFFILIATE_CONFIG,
+} from "@/lib/affiliate/links";
 
 export type AgentIntent =
   | "BOOKING"
@@ -187,7 +194,7 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
         priceTag: "From ₹8,500 / night",
         badge: "VERIFIED TOP PICK",
         features: ["Private Chef & Butler", "Air Conditioned Bedrooms", "Traditional Karimeen Dinner", "Free Cancellation"],
-        affiliateUrl: "https://www.booking.com/city/in/kochi.html?aid=2026803",
+        affiliateUrl: getBookingHotelUrl("Alleppey Kerala"),
         imageUrl: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=600&auto=format&fit=crop&q=80",
       },
       {
@@ -198,7 +205,7 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
         priceTag: "From ₹5,200 / night",
         badge: "SCENIC VALLEY VIEW",
         features: ["Tea Garden Guided Walks", "Ayurvedic Spa Onsite", "Complimentary Breakfast", "Campfire"],
-        affiliateUrl: "https://www.booking.com/city/in/kochi.html?aid=2026803",
+        affiliateUrl: getBookingHotelUrl("Munnar Kerala"),
         imageUrl: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=600&auto=format&fit=crop&q=80",
       }
     ];
@@ -213,7 +220,7 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
         priceTag: "From ₹9,000 / night",
         badge: "OXYGEN-ENRICHED ROOMS",
         features: ["Full Altitude Acclimatization Setup", "Stok Kangri Mountain Views", "Tibetan Gourmet Cuisine", "Free Airport Transfer"],
-        affiliateUrl: "https://www.booking.com/city/in/leh.html?aid=2026803",
+        affiliateUrl: getBookingHotelUrl("Leh Ladakh"),
         imageUrl: "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?w=600&auto=format&fit=crop&q=80",
       },
       {
@@ -224,7 +231,7 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
         priceTag: "From ₹6,500 / night",
         badge: "LAKESIDE STARGAZING",
         features: ["Heated Blankets & Fireplaces", "Unobstructed Lake Views", "Night Sky Astro-Photography Setup", "Hot Meals"],
-        affiliateUrl: "https://www.booking.com/city/in/leh.html?aid=2026803",
+        affiliateUrl: getBookingHotelUrl("Pangong Lake Ladakh"),
         imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop&q=80",
       }
     ];
@@ -239,11 +246,13 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
         priceTag: "From $180 / night",
         badge: "AUTHENTIC ONSEN",
         features: ["Private Open-Air Hot Springs", "Multi-Course Kaiseki Dinner", "Tatami Rooms & Yukatas", "Steps to Bamboo Forest"],
-        affiliateUrl: "https://www.booking.com/country/jp.html?aid=2026803",
+        affiliateUrl: getBookingHotelUrl("Kyoto Japan"),
         imageUrl: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&auto=format&fit=crop&q=80",
       }
     ];
   } else {
+    const extractedDest = query.replace(/(book|hotel|resort|stay|in|for|flights|vacation|trip|deals)/gi, "").trim() || "Global";
+    destination = extractedDest;
     deals = [
       {
         id: "bk_global_partner",
@@ -252,8 +261,8 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
         rating: 4.8,
         priceTag: "Best Price Match Guarantee",
         badge: "FREE CANCELLATION",
-        features: ["Instant Instant Confirmation", "Exclusive 2026 Member Discounts", "24/7 Concierge Support", "Verified Guest Reviews"],
-        affiliateUrl: "https://www.booking.com/index.html?aid=2026803",
+        features: ["Instant Confirmation", "Exclusive 2026 Member Discounts", "24/7 Concierge Support", "Verified Guest Reviews"],
+        affiliateUrl: getBookingHotelUrl(destination),
         imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format&fit=crop&q=80",
       }
     ];
@@ -266,9 +275,9 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
     markdownContent: `### 🏨 Verified Stays & Booking Deals for ${destination}\n\nHere are our top-rated accommodations curated with verified pricing, free cancellation, and member benefits:`,
     bookingDeals: deals,
     affiliateCta: {
-      title: "Explore 10,000+ Verified Stays with Free Cancellation",
+      title: `Explore 10,000+ Verified Stays in ${destination} with Free Cancellation`,
       description: "Book directly through our official Booking.com & Agoda partner link with guaranteed lowest rates.",
-      url: "https://www.booking.com/index.html?aid=2026803",
+      url: getBookingHotelUrl(destination),
       buttonText: "Browse All Hotel Deals →",
       promoCode: "TRAVEL2026",
     },
