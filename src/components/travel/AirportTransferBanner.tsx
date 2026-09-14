@@ -48,43 +48,43 @@ export default function AirportTransferBanner() {
   };
 
   return (
-    <div className="my-10 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 bg-slate-900 font-sans">
+    <section className="w-full rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transition-colors font-sans">
       {/* Top Banner Header */}
-      <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-emerald-600 px-6 sm:px-8 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-white">
+      <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-emerald-600 px-5 sm:px-8 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-white">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm">
-            <Car className="w-5 h-5 text-white" />
+          <div className="p-2.5 rounded-2xl bg-white/20 backdrop-blur-md shrink-0 shadow-sm">
+            <Car className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h3 className="text-base sm:text-lg font-black tracking-wide">
+            <h2 className="text-base sm:text-xl font-black tracking-tight font-serif text-white">
               Global Airport Transfers &amp; Private Chauffeurs
-            </h3>
-            <p className="text-xs text-amber-100 font-medium">
+            </h2>
+            <p className="text-xs sm:text-sm text-amber-100 font-medium mt-0.5">
               Guaranteed fixed prices in 175+ countries • Name-sign meet &amp; greet in arrivals
             </p>
           </div>
         </div>
-        <span className="self-start sm:self-auto px-3 py-1 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider backdrop-blur-sm flex items-center gap-1.5">
-          <Sparkles className="w-3 h-3" /> Best Price Bidding
+        <span className="self-start sm:self-auto px-3.5 py-1.5 rounded-full bg-white/20 text-white text-[11px] font-black uppercase tracking-wider backdrop-blur-md flex items-center gap-1.5 shadow-sm">
+          <Sparkles className="w-3.5 h-3.5" /> Best Price Guarantee
         </span>
       </div>
 
       {/* Main Search Box */}
-      <div className="p-6 sm:p-8 bg-slate-950/80">
+      <div className="p-5 sm:p-8 bg-slate-50/50 dark:bg-slate-950/80 transition-colors">
         <form onSubmit={handleSearch} className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-center">
             {/* From Input */}
             <div className="lg:col-span-4 relative">
-              <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-amber-400" />
+              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
                 From (Airport, City or Train Station)
               </label>
               <input
                 type="text"
-                placeholder="e.g. JFK Airport, Heathrow, Tokyo Haneda..."
+                placeholder="e.g. JFK Airport, London Heathrow, Tokyo Haneda..."
                 value={fromLocation}
                 onChange={(e) => setFromLocation(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-xl bg-slate-900 border border-slate-700/80 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all font-medium"
+                className="w-full px-4 py-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:border-amber-500 dark:focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 transition-all font-medium shadow-sm"
               />
             </div>
 
@@ -94,7 +94,7 @@ export default function AirportTransferBanner() {
                 type="button"
                 onClick={handleSwap}
                 title="Swap pickup and destination"
-                className="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-400 flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-md"
+                className="w-11 h-11 rounded-full bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-amber-600 dark:text-amber-400 flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-md cursor-pointer"
               >
                 <ArrowLeftRight className="w-4 h-4" />
               </button>
@@ -102,8 +102,8 @@ export default function AirportTransferBanner() {
 
             {/* To Input */}
             <div className="lg:col-span-4 relative">
-              <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
                 To (Hotel, Resort or City Address)
               </label>
               <input
@@ -111,7 +111,7 @@ export default function AirportTransferBanner() {
                 placeholder="e.g. Manhattan Hotel, Central Paris, Shinjuku..."
                 value={toLocation}
                 onChange={(e) => setToLocation(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-xl bg-slate-900 border border-slate-700/80 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all font-medium"
+                className="w-full px-4 py-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 dark:focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20 transition-all font-medium shadow-sm"
               />
             </div>
 
@@ -119,7 +119,7 @@ export default function AirportTransferBanner() {
             <div className="lg:col-span-3 lg:pt-6">
               <button
                 type="submit"
-                className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
+                className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
               >
                 <Search className="w-4 h-4" />
                 <span>Find Transfer</span>
@@ -128,71 +128,71 @@ export default function AirportTransferBanner() {
           </div>
 
           {/* Quick Date and Passenger Row */}
-          <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-slate-400">
-            <div className="flex items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
-              <Calendar className="w-3.5 h-3.5 text-amber-400" />
-              <span>Pickup Date:</span>
+          <div className="flex flex-wrap items-center gap-3 pt-2 text-xs text-slate-600 dark:text-slate-400">
+            <div className="flex items-center gap-2 bg-white dark:bg-slate-900 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <Calendar className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
+              <span className="font-semibold text-slate-700 dark:text-slate-300">Pickup Date:</span>
               <input
                 type="date"
                 value={pickupDate}
                 onChange={(e) => setPickupDate(e.target.value)}
-                className="bg-transparent text-white focus:outline-none text-xs"
+                className="bg-transparent text-slate-900 dark:text-white focus:outline-none text-xs font-medium cursor-pointer"
               />
             </div>
-            <div className="flex items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
-              <Users className="w-3.5 h-3.5 text-sky-400" />
-              <span>Passengers:</span>
+            <div className="flex items-center gap-2 bg-white dark:bg-slate-900 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <Users className="w-3.5 h-3.5 text-sky-500 dark:text-sky-400" />
+              <span className="font-semibold text-slate-700 dark:text-slate-300">Passengers:</span>
               <select
                 value={passengers}
                 onChange={(e) => setPassengers(e.target.value)}
-                className="bg-transparent text-white focus:outline-none text-xs"
+                className="bg-transparent text-slate-900 dark:text-white focus:outline-none text-xs font-medium cursor-pointer"
               >
-                <option value="1" className="bg-slate-900">1 Person</option>
-                <option value="2" className="bg-slate-900">2 People</option>
-                <option value="3" className="bg-slate-900">3-4 People (Sedan)</option>
-                <option value="6" className="bg-slate-900">5-8 People (Minivan)</option>
-                <option value="12" className="bg-slate-900">Group Minibus</option>
+                <option value="1" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">1 Person</option>
+                <option value="2" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">2 People</option>
+                <option value="3" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">3-4 People (Sedan)</option>
+                <option value="6" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">5-8 People (Minivan)</option>
+                <option value="12" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Group Minibus</option>
               </select>
             </div>
-            <span className="text-[11px] text-slate-500 ml-auto flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Direct driver confirmation
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 ml-auto flex items-center gap-1 font-medium">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" /> Direct driver confirmation
             </span>
           </div>
         </form>
 
         {/* 3 Value Pillars */}
-        <div className="mt-6 pt-6 border-t border-slate-800/80 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-slate-900/50 border border-slate-800">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
-              <ShieldCheck className="w-5 h-5 text-amber-400" />
+        <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800/80 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="flex items-center gap-3.5 p-4 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div className="w-11 h-11 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-5 h-5 text-amber-500 dark:text-amber-400" />
             </div>
             <div>
-              <div className="text-xs font-bold text-white">Free cancellation</div>
-              <div className="text-[11px] text-slate-400">Up to 24 hours before pickup</div>
+              <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">Free cancellation</div>
+              <div className="text-[11px] text-slate-500 dark:text-slate-400">Up to 24 hours before pickup</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-slate-900/50 border border-slate-800">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
-              <Clock className="w-5 h-5 text-emerald-400" />
+          <div className="flex items-center gap-3.5 p-4 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div className="w-11 h-11 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+              <Clock className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
             </div>
             <div>
-              <div className="text-xs font-bold text-white">90 mins free airport waiting</div>
-              <div className="text-[11px] text-slate-400">Flight delay tracking included</div>
+              <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">90 mins free waiting</div>
+              <div className="text-[11px] text-slate-500 dark:text-slate-400">Flight delay tracking included</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-slate-900/50 border border-slate-800">
-            <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center shrink-0">
-              <Headphones className="w-5 h-5 text-sky-400" />
+          <div className="flex items-center gap-3.5 p-4 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div className="w-11 h-11 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center shrink-0">
+              <Headphones className="w-5 h-5 text-sky-500 dark:text-sky-400" />
             </div>
             <div>
-              <div className="text-xs font-bold text-white">24/7 support service</div>
-              <div className="text-[11px] text-slate-400">Multilingual dispatch support</div>
+              <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">24/7 support service</div>
+              <div className="text-[11px] text-slate-500 dark:text-slate-400">Multilingual dispatch assistance</div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

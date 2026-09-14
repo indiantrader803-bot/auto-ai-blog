@@ -50,49 +50,49 @@ export default function TravelEssentialsHub() {
   const getCategoryIcon = (iconType: TravelpayoutsProgram["iconType"]) => {
     switch (iconType) {
       case "plane":
-        return <Plane className="w-4 h-4 text-sky-400" />;
+        return <Plane className="w-4 h-4 text-sky-500 dark:text-sky-400" />;
       case "shield":
-        return <Shield className="w-4 h-4 text-emerald-400" />;
+        return <Shield className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />;
       case "wifi":
-        return <Wifi className="w-4 h-4 text-indigo-400" />;
+        return <Wifi className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />;
       case "ticket":
-        return <Ticket className="w-4 h-4 text-amber-400" />;
+        return <Ticket className="w-4 h-4 text-amber-500 dark:text-amber-400" />;
       case "car":
-        return <Car className="w-4 h-4 text-blue-400" />;
+        return <Car className="w-4 h-4 text-blue-500 dark:text-blue-400" />;
       case "bike":
-        return <Bike className="w-4 h-4 text-teal-400" />;
+        return <Bike className="w-4 h-4 text-teal-500 dark:text-teal-400" />;
       case "taxi":
-        return <Navigation className="w-4 h-4 text-purple-400" />;
+        return <Navigation className="w-4 h-4 text-purple-500 dark:text-purple-400" />;
       case "luggage":
-        return <Luggage className="w-4 h-4 text-rose-400" />;
+        return <Luggage className="w-4 h-4 text-rose-500 dark:text-rose-400" />;
       default:
-        return <Sparkles className="w-4 h-4 text-amber-400" />;
+        return <Sparkles className="w-4 h-4 text-amber-500 dark:text-amber-400" />;
     }
   };
 
   return (
-    <section className="my-12 rounded-3xl bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 border border-slate-800 p-6 sm:p-10 text-white shadow-2xl relative overflow-hidden font-sans">
+    <section className="w-full rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 sm:p-10 text-slate-900 dark:text-white shadow-2xl relative overflow-hidden font-sans transition-colors">
       {/* Background Glow */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header Banner */}
-      <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-slate-800/80">
+      <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-slate-200 dark:border-slate-800/80">
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <span className="px-3.5 py-1 rounded-full bg-gradient-to-r from-sky-500/20 via-indigo-500/20 to-purple-500/20 border border-sky-500/30 text-sky-300 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-sky-400 animate-pulse" />
+            <span className="px-3.5 py-1 rounded-full bg-sky-500/10 dark:bg-sky-500/20 border border-sky-500/30 text-sky-600 dark:text-sky-300 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-sky-500 dark:text-sky-400 animate-pulse" />
               Verified Travel Partner Hub • Campaign: travelpayouts
             </span>
-            <span className="hidden sm:inline-flex text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold items-center gap-1">
+            <span className="hidden sm:inline-flex text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold items-center gap-1">
               <ShieldCheck className="w-3 h-3" /> 100% Best Price Guarantee
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-4xl font-black font-serif text-white tracking-tight leading-tight">
+          <h2 className="text-xl sm:text-3xl lg:text-4xl font-black font-serif text-slate-900 dark:text-white tracking-tight leading-tight">
             Global Travel Essentials &amp; Exclusive Deals
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 mt-2 max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-2 max-w-2xl leading-relaxed">
             Curated flight search, eSIM data, skip-the-line passes, car rentals, luggage storage, and up to €600 flight compensation claims.
           </p>
         </div>
@@ -105,7 +105,7 @@ export default function TravelEssentialsHub() {
             placeholder="Search flights, eSIM, car hire..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-800/70 border border-slate-700/80 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition-all shadow-inner"
+            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700/80 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition-all shadow-inner"
           />
         </div>
       </div>
@@ -116,10 +116,10 @@ export default function TravelEssentialsHub() {
           <button
             key={cat.id}
             onClick={() => setSelectedCategory(cat.id)}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
               selectedCategory === cat.id
                 ? "bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/25 scale-105"
-                : "bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/50"
+                : "bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/50"
             }`}
           >
             <span>{cat.label}</span>
@@ -133,50 +133,50 @@ export default function TravelEssentialsHub() {
         {filteredPrograms.map((program) => (
           <div
             key={program.id}
-            className="group rounded-2xl bg-slate-950/80 border border-slate-800 hover:border-indigo-500/50 p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10 relative overflow-hidden"
+            className="group rounded-2xl bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10 relative overflow-hidden shadow-sm"
           >
             {/* Top Row: Icon, Category & Badge */}
             <div>
               <div className="flex items-center justify-between gap-2 mb-3.5">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center shadow-sm">
                     {getCategoryIcon(program.iconType)}
                   </div>
-                  <span className="text-[11px] font-bold text-slate-400">{program.category}</span>
+                  <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400">{program.category}</span>
                 </div>
 
                 {program.discountBadge && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-black text-[10px] uppercase tracking-wide flex items-center gap-1">
-                    <Flame className="w-3 h-3 text-emerald-400" />
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-black text-[10px] uppercase tracking-wide flex items-center gap-1">
+                    <Flame className="w-3 h-3 text-emerald-500 dark:text-emerald-400" />
                     {program.discountBadge}
                   </span>
                 )}
               </div>
 
               {/* Title & Ratings */}
-              <h3 className="text-base font-black text-white group-hover:text-sky-300 transition-colors mb-1.5 leading-snug">
+              <h3 className="text-base font-black text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-300 transition-colors mb-1.5 leading-snug">
                 {program.name}
               </h3>
 
-              <div className="flex items-center gap-1 mb-3 text-amber-400 text-xs">
+              <div className="flex items-center gap-1 mb-3 text-amber-500 text-xs">
                 <div className="flex items-center">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
+                    <Star key={i} className="w-3 h-3 fill-amber-500 text-amber-500" />
                   ))}
                 </div>
-                <span className="font-bold text-white ml-1">{program.rating}</span>
-                <span className="text-[10px] text-slate-400">({program.reviews} reviews)</span>
+                <span className="font-bold text-slate-900 dark:text-white ml-1">{program.rating}</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400">({program.reviews} reviews)</span>
               </div>
 
-              <p className="text-xs text-slate-300 mb-4 leading-relaxed line-clamp-2">
+              <p className="text-xs text-slate-600 dark:text-slate-300 mb-4 leading-relaxed line-clamp-2">
                 {program.description}
               </p>
 
               {/* Features List */}
-              <ul className="space-y-1.5 mb-5 text-[11px] text-slate-400">
+              <ul className="space-y-1.5 mb-5 text-[11px] text-slate-600 dark:text-slate-400">
                 {program.features.map((feat, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
                     <span className="line-clamp-1">{feat}</span>
                   </li>
                 ))}
@@ -184,7 +184,7 @@ export default function TravelEssentialsHub() {
             </div>
 
             {/* CTA Button */}
-            <div className="pt-4 border-t border-slate-800/80">
+            <div className="pt-4 border-t border-slate-200 dark:border-slate-800/80">
               <a
                 href={program.url}
                 target="_blank"

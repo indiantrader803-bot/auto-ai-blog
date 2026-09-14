@@ -104,23 +104,23 @@ export default function TrendingDestinations() {
   };
 
   return (
-    <section className="my-14 rounded-3xl bg-slate-900 border border-slate-800 p-6 sm:p-10 text-white shadow-2xl relative overflow-hidden font-sans">
+    <section className="w-full rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 sm:p-10 text-slate-900 dark:text-white shadow-2xl relative overflow-hidden font-sans transition-colors">
       {/* Background Decor */}
       <div className="absolute top-0 right-1/3 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-slate-800 relative z-10">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800 relative z-10">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="px-3 py-1 rounded-full bg-sky-500/20 border border-sky-500/30 text-sky-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-sky-400" />
+            <span className="px-3 py-1 rounded-full bg-sky-500/10 dark:bg-sky-500/20 border border-sky-500/30 text-sky-600 dark:text-sky-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-sky-500 dark:text-sky-400" />
               Top Global Destinations
             </span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black font-serif text-white tracking-tight">
+          <h2 className="text-xl sm:text-3xl lg:text-4xl font-black font-serif text-slate-900 dark:text-white tracking-tight">
             Trending Holiday &amp; Weekend Getaways
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
             Compare discounted flight routes, verified boutique stays, and instant mobile attraction tickets.
           </p>
         </div>
@@ -131,7 +131,7 @@ export default function TrendingDestinations() {
         {DESTINATIONS.map((dest, idx) => (
           <div
             key={idx}
-            className="group rounded-2xl bg-slate-950 border border-slate-800 hover:border-sky-500/50 overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:shadow-sky-500/10 flex flex-col justify-between"
+            className="group rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-sky-500/50 overflow-hidden shadow-md transition-all duration-300 hover:shadow-2xl hover:shadow-sky-500/10 flex flex-col justify-between"
           >
             {/* Image Thumbnail */}
             <div className="relative aspect-[16/10] overflow-hidden">
@@ -148,7 +148,7 @@ export default function TrendingDestinations() {
               <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
                 <div>
                   <h3 className="text-xl font-black text-white font-serif">{dest.city}</h3>
-                  <p className="text-xs text-slate-300 flex items-center gap-1">
+                  <p className="text-xs text-slate-200 flex items-center gap-1">
                     <MapPin className="w-3 h-3 text-sky-400" />
                     {dest.country}
                   </p>
@@ -159,23 +159,23 @@ export default function TrendingDestinations() {
             {/* Body */}
             <div className="p-5 space-y-3">
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/80">
-                  <div className="text-[10px] text-slate-400 font-bold uppercase flex items-center gap-1">
-                    <Plane className="w-3 h-3 text-sky-400" /> Flights
+                <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 shadow-sm">
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase flex items-center gap-1">
+                    <Plane className="w-3 h-3 text-sky-500 dark:text-sky-400" /> Flights
                   </div>
-                  <div className="text-sm font-black text-white mt-0.5">{dest.flightPrice}</div>
+                  <div className="text-sm font-black text-slate-900 dark:text-white mt-0.5">{dest.flightPrice}</div>
                 </div>
 
-                <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/80">
-                  <div className="text-[10px] text-slate-400 font-bold uppercase flex items-center gap-1">
-                    <Building2 className="w-3 h-3 text-emerald-400" /> Hotels
+                <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 shadow-sm">
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase flex items-center gap-1">
+                    <Building2 className="w-3 h-3 text-emerald-500 dark:text-emerald-400" /> Hotels
                   </div>
-                  <div className="text-sm font-black text-white mt-0.5">{dest.hotelPrice}</div>
+                  <div className="text-sm font-black text-slate-900 dark:text-white mt-0.5">{dest.hotelPrice}</div>
                 </div>
               </div>
 
-              <div className="text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/60 flex items-center gap-2">
-                <Ticket className="w-4 h-4 text-amber-400 shrink-0" />
+              <div className="text-xs text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800/60 flex items-center gap-2">
+                <Ticket className="w-4 h-4 text-amber-500 shrink-0" />
                 <span className="line-clamp-1 font-medium">{dest.topAttraction}</span>
               </div>
 
@@ -183,18 +183,18 @@ export default function TrendingDestinations() {
               <div className="grid grid-cols-2 gap-2 pt-2">
                 <button
                   onClick={() => handleClick(dest, "flight")}
-                  className="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-300 hover:text-white font-bold text-xs flex items-center justify-center gap-1 transition-all"
+                  className="py-2.5 px-3 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-sky-300 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer"
                 >
-                  <Plane className="w-3 h-3" />
+                  <Plane className="w-3.5 h-3.5" />
                   <span>Flights</span>
                 </button>
 
                 <button
                   onClick={() => handleClick(dest, "tours")}
-                  className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-md transition-all hover:scale-[1.02]"
+                  className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-md transition-all hover:scale-[1.02] cursor-pointer"
                 >
-                  <Ticket className="w-3 h-3" />
-                  <span>Tours &amp; Passes</span>
+                  <Ticket className="w-3.5 h-3.5" />
+                  <span>Tours</span>
                 </button>
               </div>
             </div>

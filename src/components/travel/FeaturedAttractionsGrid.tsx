@@ -179,7 +179,6 @@ export default function FeaturedAttractionsGrid() {
     window.open(item.affiliateUrl, "_blank", "noopener,noreferrer");
   };
 
-  // Interactive Mini Calendar Days for Tower of London Card
   const calendarDays = [
     { day: "Mon", date: 31, inactive: true },
     { day: "Tue", date: 1 },
@@ -205,27 +204,27 @@ export default function FeaturedAttractionsGrid() {
   ];
 
   return (
-    <section className="my-14 rounded-3xl bg-slate-900 border border-slate-800 p-6 sm:p-10 text-white shadow-2xl relative overflow-hidden font-sans">
+    <section className="w-full rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 sm:p-10 text-slate-900 dark:text-white shadow-2xl relative overflow-hidden font-sans transition-colors">
       {/* Background Decor */}
       <div className="absolute top-0 left-1/3 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-slate-800 relative z-10">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-slate-200 dark:border-slate-800 relative z-10">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-amber-400" />
+            <span className="px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-600 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-amber-500 dark:text-amber-400" />
               Verified Attraction Partners (Klook &amp; Tiqets)
             </span>
-            <span className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
+            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
               <ShieldCheck className="w-3 h-3" /> 100% Official Mobile Vouchers
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-4xl font-black font-serif text-white tracking-tight">
+          <h2 className="text-xl sm:text-3xl lg:text-4xl font-black font-serif text-slate-900 dark:text-white tracking-tight">
             Popular Experiences, Tours &amp; Skip-The-Line Tickets
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
             Book top-rated theme park passes, museum admissions, and culinary buffets with instant mobile QR delivery and free cancellation.
           </p>
         </div>
@@ -242,10 +241,10 @@ export default function FeaturedAttractionsGrid() {
             <button
               key={btn.id}
               onClick={() => setActiveFilter(btn.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                 activeFilter === btn.id
                   ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-orange-500/25"
-                  : "bg-slate-800 hover:bg-slate-700 text-slate-300"
+                  : "bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300"
               }`}
             >
               {btn.label}
@@ -259,11 +258,11 @@ export default function FeaturedAttractionsGrid() {
         {filteredItems.map((item) => (
           <div
             key={item.id}
-            className="group rounded-2xl bg-white text-slate-900 border border-slate-200/80 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden relative"
+            className="group rounded-2xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden relative"
           >
             {/* Top Media / Thumbnail */}
             <div>
-              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-900">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -285,11 +284,11 @@ export default function FeaturedAttractionsGrid() {
 
               {/* Card Body */}
               <div className="p-4">
-                <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-2 leading-snug group-hover:text-amber-600 transition-colors">
+                <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                   {item.title}
                 </h4>
 
-                <div className="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
                   <span>{item.location}</span>
                 </div>
 
@@ -299,15 +298,15 @@ export default function FeaturedAttractionsGrid() {
                     <Star className="w-2.5 h-2.5 fill-white text-white" />
                     {item.rating}
                   </span>
-                  <span className="text-[11px] text-slate-500">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">
                     ({item.reviews} Reviews)
                   </span>
                 </div>
 
                 {/* Mini Calendar Preview if item has calendar (Tower of London) */}
                 {item.hasCalendar && (
-                  <div className="mt-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                    <div className="flex items-center justify-between text-[10px] font-bold text-slate-700 mb-1.5">
+                  <div className="mt-3 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                    <div className="flex items-center justify-between text-[10px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                       <ChevronLeft className="w-3 h-3 text-slate-400 cursor-pointer" />
                       <span>September 2026</span>
                       <ChevronRight className="w-3 h-3 text-slate-400 cursor-pointer" />
@@ -322,10 +321,10 @@ export default function FeaturedAttractionsGrid() {
                           onClick={() => setSelectedCalendarDate(c.date)}
                           className={`py-0.5 rounded cursor-pointer transition-colors ${
                             c.inactive
-                              ? "text-slate-300"
+                              ? "text-slate-300 dark:text-slate-600"
                               : c.date === selectedCalendarDate
                               ? "bg-amber-500 text-white font-black"
-                              : "hover:bg-slate-200 text-slate-700"
+                              : "hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
                           }`}
                         >
                           {c.date}
@@ -338,10 +337,10 @@ export default function FeaturedAttractionsGrid() {
             </div>
 
             {/* Price & CTA Footer */}
-            <div className="p-4 pt-0 border-t border-slate-100 mt-2 flex items-center justify-between gap-2">
+            <div className="p-4 pt-0 border-t border-slate-100 dark:border-slate-800 mt-2 flex items-center justify-between gap-2">
               <div>
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-base sm:text-lg font-black text-rose-600">
+                  <span className="text-base sm:text-lg font-black text-rose-600 dark:text-rose-400">
                     {item.currency} {item.price.toFixed(2)}
                   </span>
                   {item.originalPrice && item.originalPrice > item.price && (
@@ -365,14 +364,14 @@ export default function FeaturedAttractionsGrid() {
         ))}
       </div>
 
-      {/* "See More" Button (Matching user screenshot 2) */}
+      {/* "See More" Button */}
       <div className="mt-8 flex justify-center relative z-10">
         <a
           href="https://tp.media/r?campaign_id=137&marker=777349&p=4110&trs=573745&u=https%3A%2F%2Fklook.com"
           target="_blank"
           rel="noopener noreferrer nofollow"
           onClick={() => trackTravelpayoutsClick("klook", { action: "SEE_MORE_ACTIVITIES" })}
-          className="inline-flex items-center gap-2 px-8 py-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs uppercase tracking-wider shadow-xl shadow-orange-500/25 transition-all hover:scale-105 active:scale-95"
+          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs uppercase tracking-wider shadow-xl shadow-orange-500/25 transition-all hover:scale-105 active:scale-95"
         >
           <span>See More 500,000+ Activities &amp; Passes</span>
           <ArrowRight className="w-4 h-4" />

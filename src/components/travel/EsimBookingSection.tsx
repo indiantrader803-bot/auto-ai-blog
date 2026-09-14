@@ -143,23 +143,23 @@ export default function EsimBookingSection() {
   };
 
   return (
-    <section className="my-14 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 bg-slate-900 font-sans">
+    <section className="w-full rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 font-sans transition-colors">
       {/* Top Banner (Matching user screenshot 3: Airalo / Saily Banner) */}
-      <div className="bg-white text-slate-900 p-6 sm:p-8 border-b border-slate-200">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white p-5 sm:p-8 border-b border-slate-200 dark:border-slate-800 transition-colors">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
-            <h3 className="text-xl sm:text-3xl font-black font-serif text-slate-900 tracking-tight">
+            <h3 className="text-xl sm:text-3xl font-black font-serif text-slate-900 dark:text-white tracking-tight">
               Local, regional and global eSIMs for travellers
             </h3>
-            <p className="text-xs sm:text-sm text-slate-600">
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
               Stay connected, wherever you travel, at affordable rates • 1-Minute instant QR activation
             </p>
           </div>
 
           {/* Airalo / Saily Brand Mark */}
-          <div className="flex items-center gap-2 self-start md:self-auto bg-slate-100 px-3.5 py-1.5 rounded-xl border border-slate-200">
+          <div className="flex items-center gap-2 self-start md:self-auto bg-slate-100 dark:bg-slate-800 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700">
             <Wifi className="w-4 h-4 text-rose-500" />
-            <span className="text-xs font-black tracking-wide text-slate-800">
+            <span className="text-xs font-black tracking-wide text-slate-800 dark:text-slate-200">
               Saily &amp; Airalo Partners
             </span>
           </div>
@@ -174,7 +174,7 @@ export default function EsimBookingSection() {
               placeholder="Search data packs for 200+ countries and regions (e.g., Japan, Europe, USA...)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all font-medium"
+              className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all font-medium shadow-sm"
             />
           </div>
 
@@ -183,7 +183,7 @@ export default function EsimBookingSection() {
             target="_blank"
             rel="noopener noreferrer nofollow"
             onClick={() => trackTravelpayoutsClick("saily", { query: searchQuery })}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#f2685f] hover:bg-[#e0564d] text-white font-black text-sm uppercase tracking-wider shadow-md shadow-rose-500/20 transition-all hover:scale-105 active:scale-95 text-center shrink-0 cursor-pointer"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-[#f2685f] hover:bg-[#e0564d] text-white font-black text-sm uppercase tracking-wider shadow-md shadow-rose-500/25 transition-all hover:scale-105 active:scale-95 text-center shrink-0 cursor-pointer"
           >
             Search
           </a>
@@ -191,23 +191,23 @@ export default function EsimBookingSection() {
       </div>
 
       {/* Main Content Area */}
-      <div className="p-6 sm:p-8 bg-slate-950/90 text-white">
+      <div className="p-5 sm:p-8 bg-slate-50/50 dark:bg-slate-950/90 text-slate-900 dark:text-white transition-colors">
         {/* Country Selector Pills */}
         <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 scrollbar-none">
           {filteredPacks.map((pkg) => (
             <button
               key={pkg.id}
               onClick={() => setSelectedCountryId(pkg.id)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 ${
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 cursor-pointer ${
                 selectedCountryId === pkg.id
                   ? "bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-lg shadow-rose-500/20 scale-105"
-                  : "bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800"
+                  : "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800"
               }`}
             >
               <span className="text-base">{pkg.flag}</span>
               <span>{pkg.country}</span>
               {pkg.popular && (
-                <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-400 text-slate-950 font-black uppercase">
+                <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black uppercase">
                   Popular
                 </span>
               )}
@@ -216,45 +216,45 @@ export default function EsimBookingSection() {
         </div>
 
         {/* Selected Country Plans Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {activePack.dataOptions.map((opt, idx) => (
             <div
               key={idx}
-              className="rounded-2xl bg-slate-900 border border-slate-800 hover:border-rose-500/50 p-5 flex flex-col justify-between transition-all hover:shadow-xl hover:shadow-rose-500/10 group"
+              className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-rose-500/50 p-5 flex flex-col justify-between transition-all hover:shadow-xl hover:shadow-rose-500/10 group shadow-sm"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="text-2xl font-black text-white font-mono">{opt.data}</span>
-                  <span className="text-[10px] font-bold text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full">
+                  <span className="text-2xl font-black text-slate-900 dark:text-white font-mono">{opt.data}</span>
+                  <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
                     {opt.days}
                   </span>
                 </div>
 
-                <div className="text-xs text-slate-400 flex items-center gap-1 mb-4">
-                  <Smartphone className="w-3.5 h-3.5 text-rose-400" />
+                <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mb-4 font-medium">
+                  <Smartphone className="w-3.5 h-3.5 text-rose-500" />
                   <span>{activePack.operator}</span>
                 </div>
 
-                <ul className="space-y-1 text-[11px] text-slate-400 mb-5">
+                <ul className="space-y-1.5 text-[11px] text-slate-600 dark:text-slate-400 mb-5">
                   <li className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                     <span>Instant QR Email Delivery</span>
                   </li>
                   <li className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                     <span>Keep WhatsApp Number</span>
                   </li>
                   <li className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                     <span>No Roaming Charges</span>
                   </li>
                 </ul>
               </div>
 
-              <div className="pt-3 border-t border-slate-800">
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-800">
                 <div className="flex items-baseline justify-between mb-3">
-                  <span className="text-xs text-slate-400">Total Price</span>
-                  <span className="text-lg font-black text-white font-mono">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Total Price</span>
+                  <span className="text-xl font-black text-slate-900 dark:text-white font-mono">
                     ${opt.price.toFixed(2)}
                   </span>
                 </div>
@@ -272,29 +272,29 @@ export default function EsimBookingSection() {
         </div>
 
         {/* 3 Step Activation Guide */}
-        <div className="mt-8 pt-6 border-t border-slate-800/80 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-          <div className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800">
-            <div className="w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center mx-auto mb-2 text-xs">
+        <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800/80 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+          <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div className="w-8 h-8 rounded-full bg-rose-500/10 text-rose-500 font-bold flex items-center justify-center mx-auto mb-2 text-xs">
               1
             </div>
-            <div className="text-xs font-bold text-white">Choose Your Destination</div>
-            <div className="text-[11px] text-slate-400 mt-0.5">Select country data package</div>
+            <div className="text-xs font-bold text-slate-900 dark:text-white">Choose Your Destination</div>
+            <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Select country data package</div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800">
-            <div className="w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center mx-auto mb-2 text-xs">
+          <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div className="w-8 h-8 rounded-full bg-rose-500/10 text-rose-500 font-bold flex items-center justify-center mx-auto mb-2 text-xs">
               2
             </div>
-            <div className="text-xs font-bold text-white">Scan Instant QR Code</div>
-            <div className="text-[11px] text-slate-400 mt-0.5">Delivered to email in 60 seconds</div>
+            <div className="text-xs font-bold text-slate-900 dark:text-white">Scan Instant QR Code</div>
+            <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Delivered to email in 60 seconds</div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800">
-            <div className="w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center mx-auto mb-2 text-xs">
+          <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div className="w-8 h-8 rounded-full bg-rose-500/10 text-rose-500 font-bold flex items-center justify-center mx-auto mb-2 text-xs">
               3
             </div>
-            <div className="text-xs font-bold text-white">Connect on Landing</div>
-            <div className="text-[11px] text-slate-400 mt-0.5">Instant local 5G/4G connectivity</div>
+            <div className="text-xs font-bold text-slate-900 dark:text-white">Connect on Landing</div>
+            <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Instant local 5G/4G connectivity</div>
           </div>
         </div>
       </div>
