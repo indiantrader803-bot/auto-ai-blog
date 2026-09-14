@@ -1,13 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Mail, Sparkles, X, CheckCircle2, Gift } from "lucide-react";
 
 export default function FloatingSubscribeButton() {
+  const pathname = usePathname();
   const [isExpanded, setIsExpanded] = useState(false);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  if (pathname?.startsWith("/travel")) {
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
