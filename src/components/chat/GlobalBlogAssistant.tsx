@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   MessageSquare,
   Sparkles,
@@ -32,7 +33,12 @@ import {
   Plane,
   Building,
   BarChart3,
-  Cpu
+  Cpu,
+  BookOpen,
+  Navigation,
+  Car,
+  Wifi,
+  Luggage,
 } from "lucide-react";
 import { BookingDeal, AffiliateComparisonOffer, VideoSearchResult } from "@/lib/agents/multiAgentIntentRouter";
 
@@ -57,22 +63,43 @@ interface Message {
   recommendedBlogSlugs?: Array<{ title: string; slug: string }> | null;
 }
 
-const QUICK_PROMPTS = [
-  { icon: "🎙️", text: "Voice Greeting", query: "Hello Voice Agent, what services and bookings can you help me with?" },
-  { icon: "🏨", text: "Kerala Backwaters & Houseboat", query: "Find me the best luxury houseboat stays and booking deals in Alleppey Kerala." },
-  { icon: "🏔️", text: "7-Day Ladakh & Kashmir Plan", query: "Create a 7-day high altitude travel plan for Ladakh and Kashmir with Khardung La and Pangong Tso." },
-  { icon: "📊", text: "Compare Prop Trading Firms", query: "Compare the best prop trading firms and funded account offers with promo codes." },
-  { icon: "🎥", text: "AI Swarm Video Workshop", query: "Show me a video tutorial and workshop on Autonomous AI Agent Swarms." },
-  { icon: "🤖", text: "Best AI Developer Tools", query: "What are the best AI developer IDEs, cloud GPUs, and prompt toolkits available in 2026?" },
-  { icon: "🎌", text: "7-Day Japan Golden Route", query: "Create a 7-day itinerary for Japan covering Tokyo, Hakone Mt Fuji, and Kyoto." },
+const TRAVEL_PROMPTS = [
+  { icon: "🏨", text: "Kerala Houseboats & Resorts", query: "Find me verified luxury houseboat stays and booking deals in Alleppey and Munnar Kerala." },
+  { icon: "🏔️", text: "7-Day Ladakh & Kashmir Plan", query: "Create a 7-day high-altitude travel itinerary for Ladakh and Kashmir with Khardung La and Pangong Lake." },
+  { icon: "🎥", text: "Japan Golden Route 4K Video", query: "Show me YouTube 4K video travel guides and itineraries for Tokyo, Kyoto, and Mt. Fuji Japan." },
+  { icon: "🚕", text: "Airport Taxi & Private Transfers", query: "How do I book guaranteed private airport transfers and chauffeur pickups with GetTransfer?" },
+  { icon: "📱", text: "Travel eSIM Data Packages", query: "What are the best international eSIM mobile data plans for travel in India, Europe, and Asia?" },
+  { icon: "🏖️", text: "4-Day Goa Beach & Heritage", query: "Give me a 4-day verified Goa itinerary covering North & South Goa beaches, water sports, and heritage." },
+  { icon: "🏰", text: "Dubai 5-Day Luxury & Desert", query: "Plan a 5-day Dubai trip covering Burj Khalifa, desert safari, and luxury marina dinner cruises." },
+  { icon: "✈️", text: "Cheap Flights & Route Search", query: "Compare the best flight comparison engines and flight deals on Aviasales with lowest price guarantee." },
+];
+
+const BLOG_PROMPTS = [
+  { icon: "📊", text: "Compare Best Prop Trading Firms", query: "Compare the best prop trading firms (FTM, Atlas Funded, Blue Guardian, FundedSquad, Equity Edge) with promo codes." },
+  { icon: "🤖", text: "Top AI Coding Tools & IDEs", query: "What are the top AI developer IDEs, Cloud GPU providers, and prompt toolkits in 2026?" },
+  { icon: "📰", text: "Summarize AI Swarms Article", query: "Summarize the key breakthroughs from the article on Autonomous AI Agent Swarms and LangGraph architectures." },
+  { icon: "📈", text: "Nifty 50 & US Markets Outlook", query: "What is the technical market outlook for Nifty 50, Sensex, and US tech stocks with key support and resistance levels?" },
+  { icon: "🏷️", text: "Claim 10%-20% Discount Codes", query: "Give me the full list of verified partner coupon codes for prop firms, crypto desks, and AI tools." },
+  { icon: "💡", text: "Quant Trading Risk Architecture", query: "Explain institutional position sizing, drawdown shields, and multi-agent risk management for traders." },
 ];
 
 export default function GlobalBlogAssistant() {
+  const pathname = usePathname();
+  const isTravelPage = pathname?.startsWith("/travel") || false;
+  
+  const [activeMode, setActiveMode] = useState<"BLOG" | "TRAVEL">(isTravelPage ? "TRAVEL" : "BLOG");
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+
+  // Sync mode with route if user navigates
+  useEffect(() => {
+    if (pathname?.startsWith("/travel")) {
+      setActiveMode("TRAVEL");
+    }
+  }, [pathname]);
 
   // Voice & Speech State
   const [isListening, setIsListening] = useState(false);
@@ -80,25 +107,46 @@ export default function GlobalBlogAssistant() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [activeVideoModal, setActiveVideoModal] = useState<string | null>(null);
 
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "welcome",
-      role: "assistant",
-      content: `🎙️ **Welcome to SmartMag Voice & Multi-Agent Concierge!**
+  const getWelcomeMessage = (mode: "BLOG" | "TRAVEL"): Message => {
+    if (mode === "TRAVEL") {
+      return {
+        id: "welcome_travel",
+        role: "assistant",
+        content: `✈️ **Welcome to SmartMag Travel AI Voice Concierge!**
 
-I am your autonomous 24/7 AI Voice Agent. How can I assist you today?
-- 🏨 **Booking Concierge**: Verified hotel, resort, and houseboat reservations.
-- 📊 **Affiliate Comparison**: Compare funded prop firms, crypto terminals, and travel gear with exclusive discount promo codes.
-- 🎥 **Video Search**: Watch curated masterclasses, tutorials, and travel documentaries.
-- 🤖 **AI Tools & Digital Store**: Discover top IDEs, Cloud GPUs, and quantitative scripts.
-- 🗺️ **Global Itineraries**: Custom day-by-day travel plans for India and 100+ countries worldwide.
+I am your 100% verified Global Travel Planner & Booking Assistant. How can I craft your trip today?
+- 🏨 **Verified Hotel Bookings**: Direct partner reservations on Booking.com & Agoda.
+- 🗺️ **100% Verified Day-by-Day Itineraries**: Custom plans with morning, afternoon, evening schedules, and authentic food recommendations.
+- 🎥 **YouTube Video Suggestions**: Curated 4K travel documentaries and visual road-trip guides.
+- 🚕 **Airport Transfers & Taxis**: Fixed-price private chauffeurs with GetTransfer & Intui.travel.
+- 📱 **eSIM Data & Flights**: Global roaming data eSIMs and Aviasales 1,000+ airline comparisons.
 
-*Click the 🎙️ **Microphone button** to speak your query, or type below:*`,
-      timestamp: "Just now",
-      source: "Voice Agent Concierge",
-      speechText: "Welcome to SmartMag Voice Concierge. I can help you with hotel bookings, offer comparisons, video search, or custom travel itineraries. How may I assist you today?",
+*Click the 🎙️ **Microphone button** to speak your travel destination, or select a quick prompt below:*`,
+        timestamp: "Just now",
+        source: "SmartMag Travel Concierge",
+        speechText: "Welcome to SmartMag Travel Concierge. I can help you with hotel bookings, verified day by day itineraries, airport transfers, or YouTube travel video guides. What destination are you planning?",
+      };
     }
-  ]);
+
+    return {
+      id: "welcome_blog",
+      role: "assistant",
+      content: `🎙️ **Welcome to SmartMag Editorial & AI Voice Assistant!**
+
+I am your autonomous research agent for frontier Artificial Intelligence, software architecture, and quant finance:
+- 📰 **Article Summaries & Insights**: Deep breakdowns of all SmartMag articles and technologies.
+- 📊 **Prop Firm Offer Comparisons**: Side-by-side reviews with verified discount codes (FTM, Atlas Funded, Blue Guardian, FundedSquad, Equity Edge).
+- 🤖 **AI Developer Store & IDEs**: Discover Cursor IDE, Cloud GPUs, and quantitative scripts.
+- 📈 **Market Intelligence**: Institutional risk rules and technical analysis.
+
+*Click the 🎙️ **Microphone button** to speak or type your question below:*`,
+      timestamp: "Just now",
+      source: "SmartMag Editorial Assistant",
+      speechText: "Welcome to SmartMag Editorial Voice Assistant. I can summarize articles, compare prop trading firms with exclusive promo codes, and analyze AI tools. How may I help you today?",
+    };
+  };
+
+  const [messages, setMessages] = useState<Message[]>([getWelcomeMessage(isTravelPage ? "TRAVEL" : "BLOG")]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -209,6 +257,7 @@ I am your autonomous 24/7 AI Voice Agent. How can I assist you today?
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userQuery: userMsg.content,
+          mode: activeMode,
           messages: [...messages, userMsg].map((m) => ({
             role: m.role,
             content: m.content,
@@ -229,7 +278,7 @@ I am your autonomous 24/7 AI Voice Agent. How can I assist you today?
         affiliateCta: data.affiliateCta,
         recommendedBlogSlugs: data.recommendedBlogSlugs,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        source: data.source || data.agentName || "Voice Agent Concierge",
+        source: data.source || (activeMode === "TRAVEL" ? "SmartMag Travel Concierge" : "SmartMag Editorial Assistant"),
       };
 
       setMessages((prev) => [...prev, assistantMsg]);
@@ -265,20 +314,27 @@ I am your autonomous 24/7 AI Voice Agent. How can I assist you today?
     setTimeout(() => setCopiedCode(null), 2500);
   };
 
+  const handleSwitchMode = (newMode: "BLOG" | "TRAVEL") => {
+    setActiveMode(newMode);
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+    const welcome = getWelcomeMessage(newMode);
+    setMessages([welcome]);
+    if (speechEnabled) {
+      speakText(welcome.speechText || welcome.content);
+    }
+  };
+
   const handleReset = () => {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
     }
-    setMessages([
-      {
-        id: "welcome_reset",
-        role: "assistant",
-        content: `🎙️ **Voice Concierge reset!** How can I assist you with bookings, offer comparisons, video search, or travel itineraries?`,
-        timestamp: "Just now",
-        source: "Voice Agent Concierge",
-      }
-    ]);
+    const welcome = getWelcomeMessage(activeMode);
+    setMessages([welcome]);
   };
+
+  const currentPrompts = activeMode === "TRAVEL" ? TRAVEL_PROMPTS : BLOG_PROMPTS;
 
   return (
     <>
@@ -289,7 +345,7 @@ I am your autonomous 24/7 AI Voice Agent. How can I assist you today?
             <div className="p-3 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-white">
               <span className="text-xs font-bold flex items-center gap-2">
                 <Video className="w-4 h-4 text-rose-500" />
-                Featured Video Workshop
+                Featured Video Workshop &amp; Guide
               </span>
               <button
                 onClick={() => setActiveVideoModal(null)}
@@ -319,7 +375,11 @@ I am your autonomous 24/7 AI Voice Agent. How can I assist you today?
               setIsOpen(true);
               if (speechEnabled) speakText(messages[0].speechText || messages[0].content);
             }}
-            className="group relative flex items-center gap-2.5 px-4 py-3.5 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 text-white shadow-2xl shadow-indigo-500/50 hover:shadow-indigo-500/80 hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-indigo-400/40 cursor-pointer"
+            className={`group relative flex items-center gap-2.5 px-4 py-3.5 rounded-full text-white shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 cursor-pointer ${
+              activeMode === "TRAVEL"
+                ? "bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-700 shadow-emerald-500/50 hover:shadow-emerald-500/80 border-emerald-400/40"
+                : "bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 shadow-indigo-500/50 hover:shadow-indigo-500/80 border-indigo-400/40"
+            }`}
             aria-label="Open AI Voice Agent & Concierge"
           >
             <span className="relative flex h-3 w-3">
@@ -329,7 +389,7 @@ I am your autonomous 24/7 AI Voice Agent. How can I assist you today?
 
             <div className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wider">
               <Mic className="w-4 h-4 text-amber-300 animate-bounce" />
-              <span>🎙️ AI Voice Agent</span>
+              <span>{activeMode === "TRAVEL" ? "✈️ Travel AI Voice" : "🎙️ Blog AI Voice"}</span>
             </div>
 
             <span className="px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] uppercase shadow-xs">
@@ -341,83 +401,132 @@ I am your autonomous 24/7 AI Voice Agent. How can I assist you today?
 
       {/* Floating Chat Modal / Drawer */}
       {isOpen && (
-        <div className="fixed bottom-6 right-4 sm:right-6 z-[999] w-[94vw] sm:w-[480px] md:w-[560px] h-[86vh] max-h-[740px] bg-white dark:bg-slate-950 rounded-3xl shadow-2xl border-2 border-indigo-500/30 dark:border-indigo-500/40 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
+        <div className={`fixed bottom-6 right-4 sm:right-6 z-[999] w-[94vw] sm:w-[480px] md:w-[560px] h-[86vh] max-h-[740px] bg-white dark:bg-slate-950 rounded-3xl shadow-2xl border-2 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300 ${
+          activeMode === "TRAVEL"
+            ? "border-emerald-500/30 dark:border-emerald-500/40"
+            : "border-indigo-500/30 dark:border-indigo-500/40"
+        }`}>
           
           {/* Header */}
-          <div className="p-3.5 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border-b border-indigo-900/50 flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-2.5">
-              <div className="relative w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-rose-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/30">
-                <Compass className="w-5 h-5 text-amber-300" />
-                {isSpeaking && (
-                  <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
-                  </span>
-                )}
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-black text-white tracking-tight">
-                    Voice Agent &amp; Intent Concierge
-                  </h3>
-                  <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[9px] font-bold border border-emerald-500/30">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    ONLINE
-                  </span>
+          <div className={`p-3.5 text-white border-b flex flex-col gap-2.5 shrink-0 ${
+            activeMode === "TRAVEL"
+              ? "bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 border-teal-900/50"
+              : "bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-900/50"
+          }`}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className={`relative w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-md ${
+                  activeMode === "TRAVEL"
+                    ? "bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 shadow-emerald-500/30"
+                    : "bg-gradient-to-tr from-indigo-500 via-purple-500 to-rose-500 shadow-indigo-500/30"
+                }`}>
+                  {activeMode === "TRAVEL" ? <Plane className="w-5 h-5 text-amber-300" /> : <Bot className="w-5 h-5 text-amber-300" />}
+                  {isSpeaking && (
+                    <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
+                    </span>
+                  )}
                 </div>
-                <p className="text-[10px] text-indigo-200 font-medium">
-                  Bookings • Offers • Video Search • Itineraries
-                </p>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-black text-white tracking-tight">
+                      {activeMode === "TRAVEL" ? "Travel AI Voice Concierge" : "Editorial & AI Voice Assistant"}
+                    </h3>
+                    <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[9px] font-bold border border-emerald-500/30">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      100% VERIFIED
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-slate-300 font-medium">
+                    {activeMode === "TRAVEL"
+                      ? "Verified Bookings • Itineraries • YouTube 4K Guides • Transfers"
+                      : "Article Research • Prop Firm Comparisons • AI Tools • Quant"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1">
+                {/* Voice Mute / Unmute Toggle */}
+                <button
+                  onClick={() => {
+                    if (speechEnabled) {
+                      window.speechSynthesis?.cancel();
+                      setSpeechEnabled(false);
+                    } else {
+                      setSpeechEnabled(true);
+                    }
+                  }}
+                  title={speechEnabled ? "Mute Voice Audio" : "Enable Voice Audio"}
+                  className={`p-1.5 rounded-xl transition-colors text-xs ${
+                    speechEnabled ? "bg-indigo-600/60 text-amber-300 hover:bg-indigo-600" : "hover:bg-white/10 text-slate-400"
+                  }`}
+                >
+                  {speechEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                </button>
+
+                <button
+                  onClick={handleReset}
+                  title="Reset conversation"
+                  className="p-1.5 rounded-xl hover:bg-white/10 text-slate-300 hover:text-white transition-colors text-xs"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => {
+                    window.speechSynthesis?.cancel();
+                    setIsOpen(false);
+                  }}
+                  title="Close chat"
+                  className="p-1.5 rounded-xl hover:bg-white/10 text-slate-300 hover:text-white transition-colors text-xs"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               </div>
             </div>
 
-            <div className="flex items-center gap-1">
-              {/* Voice Mute / Unmute Toggle */}
+            {/* Mode Switcher Tabs */}
+            <div className="flex items-center gap-1 bg-black/40 backdrop-blur-md p-1 rounded-xl border border-white/10 text-xs font-bold">
               <button
-                onClick={() => {
-                  if (speechEnabled) {
-                    window.speechSynthesis?.cancel();
-                    setSpeechEnabled(false);
-                  } else {
-                    setSpeechEnabled(true);
-                  }
-                }}
-                title={speechEnabled ? "Mute Voice Audio" : "Enable Voice Audio"}
-                className={`p-1.5 rounded-xl transition-colors text-xs ${
-                  speechEnabled ? "bg-indigo-600/60 text-amber-300 hover:bg-indigo-600" : "hover:bg-white/10 text-slate-400"
+                type="button"
+                onClick={() => handleSwitchMode("BLOG")}
+                className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg transition-all ${
+                  activeMode === "BLOG"
+                    ? "bg-indigo-600 text-white shadow-xs font-black"
+                    : "text-slate-400 hover:text-slate-200"
                 }`}
               >
-                {speechEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>📰 Blog &amp; Articles</span>
               </button>
 
               <button
-                onClick={handleReset}
-                title="Reset conversation"
-                className="p-1.5 rounded-xl hover:bg-white/10 text-slate-300 hover:text-white transition-colors text-xs"
+                type="button"
+                onClick={() => handleSwitchMode("TRAVEL")}
+                className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg transition-all ${
+                  activeMode === "TRAVEL"
+                    ? "bg-emerald-600 text-white shadow-xs font-black"
+                    : "text-slate-400 hover:text-slate-200"
+                }`}
               >
-                <RotateCcw className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => {
-                  window.speechSynthesis?.cancel();
-                  setIsOpen(false);
-                }}
-                title="Close chat"
-                className="p-1.5 rounded-xl hover:bg-white/10 text-slate-300 hover:text-white transition-colors text-xs"
-              >
-                <X className="w-4 h-4" />
+                <Plane className="w-3.5 h-3.5" />
+                <span>✈️ Travel &amp; Bookings</span>
               </button>
             </div>
           </div>
 
           {/* Quick Prompt Carousel / Pills */}
           <div className="bg-slate-50 dark:bg-slate-900/80 p-2.5 border-b border-slate-200/80 dark:border-slate-800/80 overflow-x-auto scrollbar-none flex items-center gap-2 shrink-0">
-            {QUICK_PROMPTS.map((p, idx) => (
+            {currentPrompts.map((p, idx) => (
               <button
                 key={idx}
                 onClick={() => handleSend(p.query)}
                 disabled={loading}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 hover:text-indigo-600 dark:hover:text-indigo-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-400/50 text-[11px] font-medium whitespace-nowrap transition-all shadow-2xs group"
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border text-[11px] font-medium whitespace-nowrap transition-all shadow-2xs group ${
+                  activeMode === "TRAVEL"
+                    ? "hover:bg-emerald-50 dark:hover:bg-emerald-950/60 hover:text-emerald-600 dark:hover:text-emerald-300 border-slate-200 dark:border-slate-700 hover:border-emerald-400/50"
+                    : "hover:bg-indigo-50 dark:hover:bg-indigo-950/60 hover:text-indigo-600 dark:hover:text-indigo-300 border-slate-200 dark:border-slate-700 hover:border-indigo-400/50"
+                }`}
               >
                 <span>{p.icon}</span>
                 <span>{p.text}</span>

@@ -463,6 +463,110 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
         imageUrl: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=600&auto=format&fit=crop&q=80",
       }
     ];
+  } else if (lower.includes("goa")) {
+    destination = "Goa, India";
+    deals = [
+      {
+        id: "bk_goa_beach_resort",
+        title: "Heritage Village Resort & Spa South Goa",
+        location: "Arossim Beach, South Goa",
+        rating: 4.8,
+        priceTag: "From ₹6,200 / night",
+        badge: "BEACHFRONT LUXURY",
+        features: ["Direct Beach Access", "Ayurvedic Wellness Spa", "All-Inclusive Dining Options", "Free Cancellation"],
+        affiliateUrl: getBookingHotelUrl("Goa India"),
+        imageUrl: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "bk_goa_klook_cruise",
+        title: "Klook Mandovi River Sunset Catamaran & Dinner Cruise",
+        location: "Panaji, Goa",
+        rating: 4.9,
+        priceTag: "From ₹999 / person",
+        badge: "TOP GOA ACTIVITY",
+        features: ["Live Goan Folk Dance & DJ", "Buffet Dinner & Drinks Included", "Dolphin Sighting Route", "Instant E-Ticket"],
+        affiliateUrl: getKlookUrl("Goa Sunset Cruise and Water Sports"),
+        imageUrl: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&auto=format&fit=crop&q=80",
+      }
+    ];
+  } else if (lower.includes("dubai") || lower.includes("uae")) {
+    destination = "Dubai, UAE";
+    deals = [
+      {
+        id: "bk_dubai_marina_hotel",
+        title: "Address Dubai Marina 5-Star Luxury Suites",
+        location: "Dubai Marina Promenade, UAE",
+        rating: 4.9,
+        priceTag: "From $220 / night",
+        badge: "INFINITY POOL & MARINA VIEW",
+        features: ["Direct Mall & Yacht Access", "World-Class Fine Dining", "Private Balconies", "Free Airport Transfer"],
+        affiliateUrl: getBookingHotelUrl("Dubai UAE"),
+        imageUrl: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "bk_dubai_klook_burj",
+        title: "Klook Burj Khalifa Level 124/125 + Red Dune Desert Safari Combo",
+        location: "Downtown Dubai & Lahbab Desert",
+        rating: 4.9,
+        priceTag: "From $75 / person",
+        badge: "KLOOK SUPER COMBO",
+        features: ["Fast-Track Observation Deck Access", "4x4 Dune Bashing & Sandboarding", "BBQ Dinner & Tanoura Show", "Free Hotel Pickup"],
+        affiliateUrl: getKlookUrl("Dubai Burj Khalifa and Desert Safari"),
+        imageUrl: "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=600&auto=format&fit=crop&q=80",
+      }
+    ];
+  } else if (lower.includes("bali") || lower.includes("indonesia")) {
+    destination = "Bali, Indonesia";
+    deals = [
+      {
+        id: "bk_bali_ubud_resort",
+        title: "Maya Ubud Resort & Spa Rainforest Haven",
+        location: "Ubud Petanu Valley, Bali",
+        rating: 4.9,
+        priceTag: "From $160 / night",
+        badge: "RAINFOREST INFINITY POOL",
+        features: ["Private Plunge Pool Villas", "Complimentary Morning Yoga", "River Valley Balcony Views", "Free Shuttle to Ubud Centre"],
+        affiliateUrl: getBookingHotelUrl("Ubud Bali"),
+        imageUrl: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "bk_bali_klook_nusa",
+        title: "Klook Nusa Penida Speedboat Island Tour & Snorkeling Pass",
+        location: "Sanur & Nusa Penida, Bali",
+        rating: 4.9,
+        priceTag: "From $35 / person",
+        badge: "INSTANT MOBILE VOUCHER",
+        features: ["Round-Trip Fast Ferry Transfer", "Kelingking Beach & Broken Beach", "Snorkel with Manta Rays", "Private Driver Included"],
+        affiliateUrl: getKlookUrl("Nusa Penida Bali Day Tour"),
+        imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80",
+      }
+    ];
+  } else if (lower.includes("switzerland") || lower.includes("swiss")) {
+    destination = "Switzerland (Interlaken & Zermatt)";
+    deals = [
+      {
+        id: "bk_swiss_zermatt_hotel",
+        title: "Matterhorn View Alpine Heritage Grand Hotel",
+        location: "Zermatt, Valais, Switzerland",
+        rating: 4.9,
+        priceTag: "From $240 / night",
+        badge: "UNOBSTRUCTED MATTERHORN VIEW",
+        features: ["Ski-in / Ski-out Access", "Thermal Alpine Mineral Spa", "Swiss Fondue Dining", "Free Electric Taxi Transfer"],
+        affiliateUrl: getBookingHotelUrl("Zermatt Switzerland"),
+        imageUrl: "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "bk_swiss_klook_jungfrau",
+        title: "Klook Jungfraujoch Top of Europe Mountain Rail Pass",
+        location: "Interlaken / Grindelwald, Switzerland",
+        rating: 4.9,
+        priceTag: "From $185 / person",
+        badge: "TOP OF EUROPE EXCLUSIVE",
+        features: ["Eiger Express Gondola + Cogwheel Train", "Ice Palace & Sphinx Observatory Access", "Aletsch Glacier Panorama", "Instant Pass Confirmation"],
+        affiliateUrl: getKlookUrl("Jungfraujoch Top of Europe Rail Pass"),
+        imageUrl: "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=600&auto=format&fit=crop&q=80",
+      }
+    ];
   } else {
     const extractedDest = query.replace(/(book|hotel|resort|stay|in|for|flights|vacation|trip|deals|tour|activities|klook)/gi, "").trim() || "Global";
     destination = extractedDest;
@@ -686,7 +790,7 @@ export function handleVideoSearchAgent(query: string): MultiAgentResponse {
 
   let videoResults: VideoSearchResult[] = [];
 
-  if (lower.includes("ai") || lower.includes("agent") || lower.includes("swarm") || lower.includes("robot") || lower.includes("code")) {
+  if (lower.includes("ai") || lower.includes("agent") || lower.includes("swarm") || lower.includes("robot") || lower.includes("code") || lower.includes("software")) {
     videoResults = [
       {
         id: "vid_ai_swarms",
@@ -719,7 +823,97 @@ export function handleVideoSearchAgent(query: string): MultiAgentResponse {
         }
       }
     ];
-  } else if (lower.includes("travel") || lower.includes("kerala") || lower.includes("ladakh") || lower.includes("japan") || lower.includes("festival")) {
+  } else if (lower.includes("japan") || lower.includes("tokyo") || lower.includes("kyoto")) {
+    videoResults = [
+      {
+        id: "vid_travel_japan",
+        title: "Japan 4K Travel Guide: Tokyo, Mt. Fuji & Kyoto 7-Day Golden Route",
+        videoId: "C3E32qJ0hE8",
+        channel: "Global Wanderlust 4K",
+        duration: "26:40",
+        thumbnailUrl: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&auto=format&fit=crop&q=80",
+        summary: "Complete 4K visual guide to navigating the Shinkansen bullet train, Gion geisha districts, Shibuya Crossing, and authentic Uji tea ceremonies.",
+        relatedBlogSlug: "definitive-global-travel-and-india-discovery-destinations-guide",
+        relatedBlogTitle: "The Definitive Global Travel & India Discovery Guide: 25 Iconic Destinations",
+        affiliateCta: {
+          text: "Book Kyoto Traditional Ryokans on Booking.com",
+          url: "https://www.booking.com/city/jp/kyoto.html?aid=2026803",
+        }
+      }
+    ];
+  } else if (lower.includes("dubai") || lower.includes("uae")) {
+    videoResults = [
+      {
+        id: "vid_travel_dubai",
+        title: "Dubai 4K Ultra HD Ultimate City & Desert Safari Guide",
+        videoId: "T3lS2L1qM4M",
+        channel: "Arabian Horizons",
+        duration: "21:15",
+        thumbnailUrl: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&auto=format&fit=crop&q=80",
+        summary: "Full visual itinerary exploring Burj Khalifa observation decks, luxury yacht cruises in Dubai Marina, and Red Dune desert safaris with dune bashing.",
+        relatedBlogSlug: "definitive-global-travel-and-india-discovery-destinations-guide",
+        relatedBlogTitle: "The Definitive Global Travel & India Discovery Guide: 25 Iconic Destinations",
+        affiliateCta: {
+          text: "Book Dubai Desert Safari & Burj Khalifa Fast-Track on Klook",
+          url: "https://klook.tp.st/u59M3x",
+        }
+      }
+    ];
+  } else if (lower.includes("bali") || lower.includes("indonesia")) {
+    videoResults = [
+      {
+        id: "vid_travel_bali",
+        title: "Bali Complete Travel Guide: Ubud, Uluwatu & Nusa Penida Island Tour",
+        videoId: "W6h8cQ_1YpI",
+        channel: "Island Escapes",
+        duration: "24:50",
+        thumbnailUrl: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&auto=format&fit=crop&q=80",
+        summary: "Experience the magic of Tegallalang rice terraces, cliffside sunset fire dance at Uluwatu, and Kelingking beach speedboat day-trips in Nusa Penida.",
+        relatedBlogSlug: "ultimate-solo-travellers-guide-hidden-wonders-expeditions",
+        relatedBlogTitle: "The Ultimate Solo Traveller's Guide: Exploring Hidden Wonders & Remote Expeditions",
+        affiliateCta: {
+          text: "Book Bali Private Pool Villas on Agoda",
+          url: "https://agoda.tp.st/a927gV",
+        }
+      }
+    ];
+  } else if (lower.includes("switzerland") || lower.includes("swiss") || lower.includes("alps")) {
+    videoResults = [
+      {
+        id: "vid_travel_swiss",
+        title: "Switzerland by Scenic Train: Glacier Express, Zermatt & Jungfraujoch 4K",
+        videoId: "linlz7-Pnvw",
+        channel: "Alpine Journeys",
+        duration: "31:20",
+        thumbnailUrl: "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=600&auto=format&fit=crop&q=80",
+        summary: "Epic high-alpine railway expedition across panoramic Swiss mountain passes, Matterhorn viewpoints, and Lauterbrunnen 72-waterfall valley.",
+        relatedBlogSlug: "definitive-global-travel-and-india-discovery-destinations-guide",
+        relatedBlogTitle: "The Definitive Global Travel & India Discovery Guide: 25 Iconic Destinations",
+        affiliateCta: {
+          text: "Book Swiss Travel Pass & Mountain Trains with Free Cancellation",
+          url: "https://www.booking.com/index.html?aid=2026803",
+        }
+      }
+    ];
+  } else if (lower.includes("goa")) {
+    videoResults = [
+      {
+        id: "vid_travel_goa",
+        title: "Goa Complete 4K Travel Guide: North vs South Goa, Water Sports & Heritage",
+        videoId: "w4Tj2a_t9_E",
+        channel: "Coastal Chronicles",
+        duration: "19:40",
+        thumbnailUrl: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&auto=format&fit=crop&q=80",
+        summary: "Visual guide detailing Old Goa Portuguese churches, Palolem beach kayaking, Dudhsagar waterfall trek, and beach shack seafood dining.",
+        relatedBlogSlug: "definitive-global-travel-and-india-discovery-destinations-guide",
+        relatedBlogTitle: "The Definitive Global Travel & India Discovery Guide: 25 Iconic Destinations",
+        affiliateCta: {
+          text: "Book Beachfront Resorts in Goa on Booking.com",
+          url: "https://www.booking.com/city/in/goa.html?aid=2026803",
+        }
+      }
+    ];
+  } else if (lower.includes("travel") || lower.includes("kerala") || lower.includes("ladakh") || lower.includes("kashmir") || lower.includes("festival")) {
     videoResults = [
       {
         id: "vid_travel_kerala",
