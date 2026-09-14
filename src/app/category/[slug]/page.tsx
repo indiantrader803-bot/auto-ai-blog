@@ -7,6 +7,7 @@ import PostCard from "@/components/blog/PostCard";
 import SocialSidebar from "@/components/blog/SocialSidebar";
 import AdBanner from "@/components/monetization/AdBanner";
 import NewsletterBanner from "@/components/monetization/NewsletterBanner";
+import InteractiveTravelBookingBar from "@/components/travel/InteractiveTravelBookingBar";
 import { ChevronRight, Sparkles, Layers, Compass } from "lucide-react";
 import { getAllCatalogArticles } from "@/lib/content/articles";
 
@@ -149,6 +150,14 @@ export default async function CategoryPage({ params }: Props) {
             </p>
           </div>
         </header>
+
+        {/* Interactive Travel Search Engine if on Travel/Culture Categories */}
+        {(cleanSlug.includes("travel") ||
+          cleanSlug.includes("festival") ||
+          cleanSlug.includes("culture") ||
+          cleanSlug.includes("expedition")) && (
+          <InteractiveTravelBookingBar className="mb-12" />
+        )}
 
         <AdBanner slot="category-top" className="mb-10" />
 

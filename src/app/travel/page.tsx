@@ -17,6 +17,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import TravelEssentialsHub from "@/components/travel/TravelEssentialsHub";
+import InteractiveTravelBookingBar from "@/components/travel/InteractiveTravelBookingBar";
 
 export const metadata: Metadata = {
   title: "Travel Deals, Flights, eSIMs & City Passes | SmartMag Travel Hub",
@@ -72,6 +73,10 @@ export default function TravelHubPage() {
 
       {/* Main Interactive Hub Component */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        {/* Real-time Embedded Booking Widgets */}
+        <InteractiveTravelBookingBar />
+
+        {/* Full Travel Partner Suite */}
         <TravelEssentialsHub />
 
         {/* Why Book Through Our Travel Partners Section */}
