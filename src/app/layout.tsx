@@ -60,6 +60,7 @@ export const metadata: Metadata = {
   },
   verification: {
     google: [
+      "-PKXYTi8BG4RF03is2wZFBpFZD949436znZp5h9agKI",
       "4rMlrKZ5JALf5abCB0z2hxmP7sqgeFEoQVzhWosm3b0",
       "googlea87b1dee8479f0e4",
     ],
@@ -82,6 +83,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="google-site-verification" content="-PKXYTi8BG4RF03is2wZFBpFZD949436znZp5h9agKI" />
         <meta name="google-site-verification" content="4rMlrKZ5JALf5abCB0z2hxmP7sqgeFEoQVzhWosm3b0" />
         <meta name="google-site-verification" content="googlea87b1dee8479f0e4" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
