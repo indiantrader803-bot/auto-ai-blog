@@ -163,6 +163,11 @@ export default function RootLayout({
                   var script = document.createElement("script");
                   script.async = true;
                   script.setAttribute("data-cmp-ab","2");
+                  script.setAttribute("data-noptimize","1");
+                  script.setAttribute("data-cfasync","false");
+                  script.setAttribute("data-wpfc-render","false");
+                  script.setAttribute("seraph-accel-crit","1");
+                  script.setAttribute("data-no-defer","1");
                   script.src = 'https://tpembars.com/NTczNzkw.js?t=573790';
                   document.head.appendChild(script);
               })();
