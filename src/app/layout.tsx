@@ -9,26 +9,44 @@ import GoogleTranslateProvider from "@/components/layout/GoogleTranslateProvider
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    template: "%s | SmartMag Tech Chronicle",
-    default: "SmartMag Tech - Frontier AI & Engineering Chronicle",
+    template: "%s | TheSmartMag",
+    default: "TheSmartMag | AI Tech Innovations, Quant Trading, Prop Firms & Luxury Travel",
   },
   description:
-    "Autonomous editorial technology publication covering breakthroughs in artificial intelligence, engineering architecture, hardware benchmarks, and future trends.",
+    "TheSmartMag is a premier digital publication and AI-powered intelligence platform delivering in-depth insights on artificial intelligence, algorithmic trading, prop firm comparisons & promo codes, software engineering, and verified worldwide luxury travel itineraries & booking deals.",
   keywords: [
+    "TheSmartMag",
     "SmartMag Tech",
-    "AI News",
-    "Artificial Intelligence",
-    "Autonomous Agents",
-    "Machine Learning",
-    "Tech Reviews",
-    "Software Engineering",
-    "Cloud Architecture",
+    "SmartMag Travel",
+    "Artificial Intelligence News",
+    "AI Agents and LLMs",
+    "Prop Trading Firm Reviews",
+    "Best Prop Firms 2026",
+    "FTMO vs FTM",
+    "Funded Trader Markets Discount Code",
+    "Atlas Funded Promo Code",
+    "Blue Guardian Affiliate Code",
+    "FundedSquad Promo Code",
+    "Equity Edge Promo Code",
+    "AquaFunded Discount",
+    "Algorithmic Trading Strategies",
+    "Quantitative Finance",
+    "Luxury Travel Itineraries",
+    "Verified Hotel Booking Deals",
+    "Airport Transfers",
+    "Agoda Booking Discounts",
+    "Software Engineering Trends",
+    "Machine Learning Tutorials",
   ],
+  authors: [{ name: "TheSmartMag Editorial Team", url: siteUrl }],
+  creator: "TheSmartMag",
+  publisher: "TheSmartMag Media Network",
+  category: "technology",
   alternates: {
     canonical: "/",
     types: {
@@ -36,17 +54,32 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "SmartMag Tech - Frontier AI & Engineering Chronicle",
-    description: "Autonomous editorial technology publication covering breakthroughs in artificial intelligence and engineering.",
+    title: "TheSmartMag | AI Tech Innovations, Quant Trading, Prop Firms & Luxury Travel",
+    description:
+      "Premier digital publication & AI intelligence hub featuring artificial intelligence breakthroughs, prop trading firm reviews & promo codes, algorithmic finance, and verified luxury travel itineraries.",
     url: siteUrl,
-    siteName: "SmartMag Tech Chronicle",
+    siteName: "TheSmartMag",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
+        width: 1200,
+        height: 630,
+        alt: "TheSmartMag - Frontier AI, Quant Trading & Luxury Travel",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "SmartMag Tech - Frontier AI & Engineering Chronicle",
-    description: "Autonomous editorial technology publication covering breakthroughs in artificial intelligence and engineering.",
+    title: "TheSmartMag | AI Tech Innovations, Quant Trading, Prop Firms & Luxury Travel",
+    description:
+      "Premier digital publication & AI intelligence hub featuring artificial intelligence breakthroughs, prop trading firm reviews & promo codes, algorithmic finance, and verified luxury travel itineraries.",
+    creator: "@thesmartmag",
+    site: "@thesmartmag",
+    images: [
+      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
+    ],
   },
   robots: {
     index: true,
@@ -132,6 +165,49 @@ export default function RootLayout({
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9768860457233655"
           crossOrigin="anonymous"
+        />
+
+        {/* JSON-LD Schema.org SEO Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  "@id": `${siteUrl}/#website`,
+                  url: siteUrl,
+                  name: "TheSmartMag",
+                  description:
+                    "TheSmartMag is a premier digital publication and AI-powered intelligence platform delivering in-depth insights on artificial intelligence, algorithmic trading, prop firm comparisons & promo codes, software engineering, and verified worldwide luxury travel itineraries & booking deals.",
+                  publisher: {
+                    "@id": `${siteUrl}/#organization`,
+                  },
+                  inLanguage: "en-US",
+                  potentialAction: {
+                    "@type": "SearchAction",
+                    target: `${siteUrl}/search?q={search_term_string}`,
+                    "query-input": "required name=search_term_string",
+                  },
+                },
+                {
+                  "@type": "Organization",
+                  "@id": `${siteUrl}/#organization`,
+                  name: "TheSmartMag",
+                  url: siteUrl,
+                  logo: {
+                    "@type": "ImageObject",
+                    url: `${siteUrl}/icon-512.png`,
+                  },
+                  sameAs: [
+                    "https://twitter.com/thesmartmag",
+                    "https://github.com/indiantrader803-bot/auto-ai-blog",
+                  ],
+                },
+              ],
+            }),
+          }}
         />
 
         {/* Travelpayouts Global Affiliate & Travel Widget Script */}

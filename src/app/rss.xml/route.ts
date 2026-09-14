@@ -70,9 +70,9 @@ export async function GET() {
   const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>SmartMag Tech Chronicle</title>
+    <title>TheSmartMag | AI Innovations, Quant Trading, Prop Firms &amp; Luxury Travel</title>
     <link>${siteUrl}</link>
-    <description>Frontier Artificial Intelligence, Software Engineering &amp; Modern Innovation</description>
+    <description>TheSmartMag is a premier digital publication &amp; AI intelligence hub featuring in-depth analysis on artificial intelligence, algorithmic trading, prop firm comparisons, and verified luxury travel itineraries.</description>
     <language>en-us</language>
     <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml"/>
     ${rssItemsXml}

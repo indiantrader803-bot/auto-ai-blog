@@ -1,10 +1,10 @@
 {
-  "name": "AutoAI Chronicle",
-  "short_name": "AutoAI",
-  "description": "Autonomous AI-curated technology, science, finance, and future trends.",
+  "name": "TheSmartMag",
+  "short_name": "TheSmartMag",
+  "description": "TheSmartMag - AI Innovations, Quant Trading, Prop Firms & Luxury Travel Itineraries",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#090d16",
+  "background_color": "#070b14",
   "theme_color": "#4f46e5",
   "icons": [
     {
