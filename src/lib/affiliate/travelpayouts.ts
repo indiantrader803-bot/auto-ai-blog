@@ -1,7 +1,7 @@
 /**
  * ✈️ Travelpayouts Centralized Affiliate Campaign Registry
  * Campaign: travelpayouts
- * Marker / Tracking ID: 573745 / 777349
+ * Marker / Tracking ID: 573790 / 777349
  */
 
 export interface TravelpayoutsProgram {

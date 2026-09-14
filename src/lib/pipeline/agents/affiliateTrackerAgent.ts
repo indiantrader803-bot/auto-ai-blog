@@ -401,7 +401,7 @@ export const MASTER_AFFILIATE_PROGRAMS: AffiliateProgramData[] = [
     platform: "Klook",
     name: "Klook Attractions, Passes & Adventure Tours",
     category: "Travel & Flights",
-    targetUrl: "https://tp.media/r?campaign_id=137&marker=777349&p=4110&trs=573745&u=https%3A%2F%2Fklook.com",
+    targetUrl: "https://tp.media/r?campaign_id=137&marker=777349&p=4110&trs=573790&u=https%3A%2F%2Fklook.com",
     promoCode: "KLOOK2026",
     payoutModel: "Up to 5% Commission on All Bookings",
     baseCpa: 12.0,

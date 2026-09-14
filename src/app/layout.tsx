@@ -163,7 +163,7 @@ export default function RootLayout({
                   var script = document.createElement("script");
                   script.async = true;
                   script.setAttribute("data-cmp-ab","2");
-                  script.src = 'https://tpembars.com/NTczNzQ1.js?t=573745';
+                  script.src = 'https://tpembars.com/NTczNzkw.js?t=573790';
                   document.head.appendChild(script);
               })();
             `,

@@ -7,13 +7,13 @@ export const AFFILIATE_CONFIG = {
   bookingComAid: process.env.BOOKING_COM_AID || process.env.NEXT_PUBLIC_BOOKING_AID || "2026803",
   agodaCid: process.env.AGODA_CID || process.env.NEXT_PUBLIC_AGODA_CID || "1894212",
   amazonAssociateTag: process.env.AMAZON_ASSOCIATE_TAG || process.env.NEXT_PUBLIC_AMAZON_TAG || "autoaiblog-21",
-  travelpayoutsMarker: process.env.TRAVELPAYOUTS_MARKER || "573745",
+  travelpayoutsMarker: process.env.TRAVELPAYOUTS_MARKER || "573790",
   klook: {
     campaignId: process.env.KLOOK_CAMPAIGN_ID || "137",
     marker: process.env.KLOOK_MARKER || "777349",
-    trs: process.env.KLOOK_TRS || "573745",
+    trs: process.env.KLOOK_TRS || "573790",
     promoId: "4110",
-    defaultUrl: "https://tp.media/r?campaign_id=137&marker=777349&p=4110&trs=573745&u=https%3A%2F%2Fklook.com",
+    defaultUrl: "https://tp.media/r?campaign_id=137&marker=777349&p=4110&trs=573790&u=https%3A%2F%2Fklook.com",
   },
   propFirms: {
     ftm: {
