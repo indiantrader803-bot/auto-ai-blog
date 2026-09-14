@@ -58,7 +58,7 @@ export function runSeoMasterAgent(options: {
   const siteUrl = (
     options.siteUrl ||
     process.env.NEXT_PUBLIC_SITE_URL ||
-    "https://auto-ai-blog-web.onrender.com"
+    "https://thesmartmag.com"
   ).replace(/\/$/, "");
 
   // 1. Slug & Canonical URL Hygiene

@@ -453,7 +453,7 @@ export function generateStructuredSchema(
   publishedAt: Date | string,
   featuredImage?: string,
   faq?: Array<{ question: string; answer: string }>,
-  siteUrl: string = "https://auto-ai-blog-web.onrender.com"
+  siteUrl: string = "https://thesmartmag.com"
 ) {
   const articleSchema = {
     "@context": "https://schema.org",

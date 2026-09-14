@@ -93,7 +93,7 @@ export async function runPromotionAgent(
   const explabsKey = process.env.EXPLABS_API_KEY || process.env.EXPERIENTIALLABS_API_KEY;
   const explabsBaseUrl = process.env.EXPLABS_BASE_URL || "https://api.experientiallabs.ai";
   const apiKey = process.env.GEMINI_API_KEY;
-  const siteUrl = input.siteUrl || process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com";
+  const siteUrl = input.siteUrl || process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
   const fullArticleUrl = `${siteUrl}/blog/${input.slug}`;
 
   // Build Comprehensive Offline/Algorithmic Campaign
@@ -281,7 +281,7 @@ export async function runFleetPromotionAgent(
       const camp = await runPromotionAgent(article);
       campaigns.push(camp);
     } catch (err: any) {
-      campaigns.push(buildExpandedSocialCampaign(article, `${article.siteUrl || "https://auto-ai-blog-web.onrender.com"}/blog/${article.slug}`));
+      campaigns.push(buildExpandedSocialCampaign(article, `${article.siteUrl || "https://thesmartmag.com"}/blog/${article.slug}`));
     }
   }
   return { processed: campaigns.length, campaigns };

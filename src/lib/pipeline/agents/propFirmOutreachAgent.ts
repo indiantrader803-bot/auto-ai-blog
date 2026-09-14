@@ -27,7 +27,7 @@ export const TOP_PROP_FIRMS_TARGETS: PropFirmPartner[] = [
     proposedCommission: "20% Purchases + $5 Access FTPs",
     outreachPitchDeck: {
       subjectLine: "Partnership & High Volume Traffic: SmartMag Tech Chronicle x Atlas Funded",
-      emailBody: `Hi Atlas Funded Team,\n\nWe feature Atlas Funded on SmartMag Tech Chronicle (https://auto-ai-blog-web.onrender.com) across our high-intent quantitative trading readership.\n\nBest regards,\nSmartMag Growth & Monetization`,
+      emailBody: `Hi Atlas Funded Team,\n\nWe feature Atlas Funded on SmartMag Tech Chronicle (https://thesmartmag.com) across our high-intent quantitative trading readership.\n\nBest regards,\nSmartMag Growth & Monetization`,
       monthlyAudienceReach: "75,000+ Active Funded Traders",
     },
     partnershipStatus: "ACTIVE_AFFILIATE",
@@ -42,7 +42,7 @@ export const TOP_PROP_FIRMS_TARGETS: PropFirmPartner[] = [
     proposedCommission: "20% RevShare per Funded Account",
     outreachPitchDeck: {
       subjectLine: "Partnership: SmartMag Tech x AquaFunded",
-      emailBody: `Hi AquaFunded Team,\n\nWe are actively driving high-intent trading volume to AquaFunded via https://auto-ai-blog-web.onrender.com.\n\nBest,\nSmartMag Team`,
+      emailBody: `Hi AquaFunded Team,\n\nWe are actively driving high-intent trading volume to AquaFunded via https://thesmartmag.com.\n\nBest,\nSmartMag Team`,
       monthlyAudienceReach: "65,000+ Active Traders",
     },
     partnershipStatus: "ACTIVE_AFFILIATE",
@@ -57,7 +57,7 @@ export const TOP_PROP_FIRMS_TARGETS: PropFirmPartner[] = [
     proposedCommission: "15% - 25% CPA per Challenge Pass",
     outreachPitchDeck: {
       subjectLine: "Partnership Inquiry: SmartMag Chronicle x Funded Trader Markets",
-      emailBody: `Hi Funded Trader Markets Team,\n\nWe feature Funded Trader Markets on SmartMag Tech Chronicle (https://auto-ai-blog-web.onrender.com) across our quant trading audience and institutional market analysis reports.\n\nBest regards,\nSmartMag Editorial & Growth`,
+      emailBody: `Hi Funded Trader Markets Team,\n\nWe feature Funded Trader Markets on SmartMag Tech Chronicle (https://thesmartmag.com) across our quant trading audience and institutional market analysis reports.\n\nBest regards,\nSmartMag Editorial & Growth`,
       monthlyAudienceReach: "60,000+ Active Funded Traders",
     },
     partnershipStatus: "ACTIVE_AFFILIATE",
@@ -72,7 +72,7 @@ export const TOP_PROP_FIRMS_TARGETS: PropFirmPartner[] = [
     proposedCommission: "15% - 20% Lifetime Recurring CPA",
     outreachPitchDeck: {
       subjectLine: "Partnership Inquiry: SmartMag Tech Chronicle (50,000+ Quant & Futures Traders)",
-      emailBody: `Hi MFFU Partnerships Team,\n\nWe run SmartMag Tech Chronicle (https://auto-ai-blog-web.onrender.com), an autonomous publication covering institutional algorithmic trading, Nifty/US equity breakouts, and futures risk management.\n\nOur readership consists of active futures and derivatives traders looking for capital scaling. We are actively featuring MyFundedFutures as our premier funded futures partner.\n\nBest,\nSmartMag Editorial & Partnerships`,
+      emailBody: `Hi MFFU Partnerships Team,\n\nWe run SmartMag Tech Chronicle (https://thesmartmag.com), an autonomous publication covering institutional algorithmic trading, Nifty/US equity breakouts, and futures risk management.\n\nOur readership consists of active futures and derivatives traders looking for capital scaling. We are actively featuring MyFundedFutures as our premier funded futures partner.\n\nBest,\nSmartMag Editorial & Partnerships`,
       monthlyAudienceReach: "50,000+ Monthly Unique Traders",
     },
     partnershipStatus: "ACTIVE_AFFILIATE",

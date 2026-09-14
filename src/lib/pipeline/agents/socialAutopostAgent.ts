@@ -172,7 +172,7 @@ Key takeaways and full breakdown available here: ${payload.slug}`;
  * 1. Dispatches an automated post to Twitter / X for @Theindainta9go
  */
 export async function autopostToTwitter(payload: AutopostPayload): Promise<AutopostResult> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
   const utmUrl = `${siteUrl}/blog/${payload.slug}?utm_source=twitter&utm_medium=autopost_agent&utm_campaign=theindainta9go`;
   const targetAccount = "@Theindainta9go";
   const tweetText = generateSocialContent({ ...payload, slug: utmUrl }, "twitter");
@@ -232,7 +232,7 @@ export async function autopostToTwitter(payload: AutopostPayload): Promise<Autop
  * 2. Dispatches an automated post to LinkedIn for Indian Trader
  */
 export async function autopostToLinkedIn(payload: AutopostPayload): Promise<AutopostResult> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
   const utmUrl = `${siteUrl}/blog/${payload.slug}?utm_source=linkedin&utm_medium=autopost_agent&utm_campaign=indian_trader`;
   const targetAccount = "Indian Trader (https://www.linkedin.com/in/indian-trader-804333436/)";
   const postText = generateSocialContent({ ...payload, slug: utmUrl }, "linkedin");
@@ -280,7 +280,7 @@ export async function autopostToLinkedIn(payload: AutopostPayload): Promise<Auto
  * 3. Dispatches an automated post to Facebook for Indian Trader
  */
 export async function autopostToFacebook(payload: AutopostPayload): Promise<AutopostResult> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
   const utmUrl = `${siteUrl}/blog/${payload.slug}?utm_source=facebook&utm_medium=autopost_agent&utm_campaign=indiantrader_fb`;
   const targetAccount = "Indian Trader (https://www.facebook.com/profile.php?id=61594475423154)";
   const fbPostText = generateSocialContent({ ...payload, slug: utmUrl }, "facebook");
@@ -328,7 +328,7 @@ export async function autopostToFacebook(payload: AutopostPayload): Promise<Auto
  * 4. Dispatches an automated post to Instagram
  */
 export async function autopostToInstagram(payload: AutopostPayload): Promise<AutopostResult> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
   const utmUrl = `${siteUrl}/blog/${payload.slug}?utm_source=instagram&utm_medium=autopost_agent&utm_campaign=indiantrader8032026`;
   const targetAccount = "@indiantrader8032026 (https://www.instagram.com/indiantrader8032026/)";
   const igCaption = generateSocialContent({ ...payload, slug: utmUrl }, "instagram");
@@ -376,7 +376,7 @@ export async function autopostToInstagram(payload: AutopostPayload): Promise<Aut
  * 5. Dispatches an automated post to Reddit
  */
 export async function autopostToReddit(payload: AutopostPayload): Promise<AutopostResult> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
   const utmUrl = `${siteUrl}/blog/${payload.slug}?utm_source=reddit&utm_medium=autopost_agent&utm_campaign=indiantrader803_reddit`;
   const targetAccount = "u/Indiantrader803 (https://www.reddit.com/user/Indiantrader803/)";
   const redditText = generateSocialContent({ ...payload, slug: utmUrl }, "reddit");

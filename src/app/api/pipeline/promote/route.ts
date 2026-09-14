@@ -40,7 +40,8 @@ export async function POST(req: Request) {
 
     // Action 2: Rapid Search Engine Pinging (Google, Bing, IndexNow)
     if (action === "INDEX_PING") {
-      const results = await pingSearchEngines(slug ? [`https://auto-ai-blog-web.onrender.com/blog/${slug}`] : undefined);
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
+      const results = await pingSearchEngines(slug ? [`${siteUrl}/blog/${slug}`] : undefined);
       return NextResponse.json({
         success: true,
         message: "Search engine indexing ping dispatched to Google, Bing & IndexNow",

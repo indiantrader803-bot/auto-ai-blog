@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 🎯 Autonomous 24/7 Ad & Banner Intelligence Agent
  * 
  * Automatically scouts high-yield offers, dynamically generates high-CTR banner creatives,
@@ -176,7 +176,7 @@ export async function runAdBannerIntelligenceAgent(): Promise<AdIntelligenceRepo
       targetSubredditOrTag: "r/PropFirm & r/Forex & r/Daytrading",
       hookHeadline: "Comprehensive Comparison: Atlas Funded vs AquaFunded vs FTM (2025 Evaluation Rules & Discounts)",
       copyBody: "If you are looking to get funded this quarter, here are the verified working promo codes for the top 3 firms:\n\n1. Atlas Funded: Code '12275' (20% Off +  Challenge passes)\n2. AquaFunded: Code '6e9' (Up to 20% discount + 90% profit split)\n3. Funded Trader Markets: Code 'arnab' (10% rebate + 0 time limit)\n\nFull rule breakdown & spreads comparison on our live blog!",
-      callToActionUrl: "https://auto-ai-blog-web.onrender.com/blog",
+      callToActionUrl: "https://thesmartmag.com/blog",
       promoCodeNotice: "12275 | 6e9 | arnab",
       urgencyLevel: "HIGH",
       estimatedReach: "5,000 - 15,000 impressions / post",
@@ -185,8 +185,8 @@ export async function runAdBannerIntelligenceAgent(): Promise<AdIntelligenceRepo
       platform: "Twitter/X",
       targetSubredditOrTag: "#PropFirm #TradingSetup #ForexTrader #PocketOption #CryptoTrading",
       hookHeadline: "⚡ Flash Promo Alert: 50% Deposit Match + Top Prop Firm Challenge Discounts Active!",
-      copyBody: "Boost your trading capital this week:\n🔥 Atlas Funded: 20% OFF (Code: 12275)\n🚀 AquaFunded: Instant Scaling (Code: 6e9)\n📈 Pocket Option: 50% Match Bonus (Code: 50START)\n\nCheck live reviews & links: https://auto-ai-blog-web.onrender.com/blog",
-      callToActionUrl: "https://auto-ai-blog-web.onrender.com/blog",
+      copyBody: "Boost your trading capital this week:\n🔥 Atlas Funded: 20% OFF (Code: 12275)\n🚀 AquaFunded: Instant Scaling (Code: 6e9)\n📈 Pocket Option: 50% Match Bonus (Code: 50START)\n\nCheck live reviews & links: https://thesmartmag.com/blog",
+      callToActionUrl: "https://thesmartmag.com/blog",
       promoCodeNotice: "50START & 12275",
       urgencyLevel: "FLASH_SALE",
       estimatedReach: "1,200 - 4,000 impressions",
@@ -195,8 +195,8 @@ export async function runAdBannerIntelligenceAgent(): Promise<AdIntelligenceRepo
       platform: "Telegram",
       targetSubredditOrTag: "Forex & Crypto Signal Groups / Prop Trader Hubs",
       hookHeadline: "💰 Verified Trader Discounts & Instant Evaluation Deals (Updated Live)",
-      copyBody: "Direct verified links for this week's trading evaluations:\n\n• Atlas Funded (Code: 12275) -> 20% Off Challenge\n• AquaFunded (Code: 6e9) -> 20% Challenge Rebate\n• Pocket Option (Code: 50START) -> 50% Deposit Bonus + Free  Demo\n• Amazon Trading Setups -> Top Multi-Monitors on Sale\n\nFull analysis: https://auto-ai-blog-web.onrender.com/blog",
-      callToActionUrl: "https://auto-ai-blog-web.onrender.com/blog",
+      copyBody: "Direct verified links for this week's trading evaluations:\n\n• Atlas Funded (Code: 12275) -> 20% Off Challenge\n• AquaFunded (Code: 6e9) -> 20% Challenge Rebate\n• Pocket Option (Code: 50START) -> 50% Deposit Bonus + Free  Demo\n• Amazon Trading Setups -> Top Multi-Monitors on Sale\n\nFull analysis: https://thesmartmag.com/blog",
+      callToActionUrl: "https://thesmartmag.com/blog",
       promoCodeNotice: "Verified Partner Links",
       urgencyLevel: "HIGH",
       estimatedReach: "3,000 - 8,000 active group members",
@@ -206,7 +206,7 @@ export async function runAdBannerIntelligenceAgent(): Promise<AdIntelligenceRepo
       targetSubredditOrTag: "Questions about: 'Which prop firm has the best payout rules in 2025?'",
       hookHeadline: "Expert Guide: Top 4 Prop Firms Compared for Spreads, Drawdown, and Payout Speed",
       copyBody: "When choosing a prop firm, consider payout speed and challenge pricing. Firms like Atlas Funded (Code 12275 for 20% off) and AquaFunded (Code 6e9) offer instant scaling and no minimum trading days... Read our comprehensive guide on auto-ai-blog.",
-      callToActionUrl: "https://auto-ai-blog-web.onrender.com/blog",
+      callToActionUrl: "https://thesmartmag.com/blog",
       promoCodeNotice: "Code 12275 & 6e9",
       urgencyLevel: "MEDIUM",
       estimatedReach: "800 - 2,500 monthly search readers",
