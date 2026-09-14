@@ -152,22 +152,20 @@ export default function RootLayout({
         />
         {/* Travelpayouts Global Affiliate & Travel Widget Script */}
         <script
+          // @ts-ignore
+          nowprocket=""
           data-noptimize="1"
           data-cfasync="false"
           data-wpfc-render="false"
+          seraph-accel-crit="1"
           data-no-defer="1"
           data-cmp-ab="2"
           dangerouslySetInnerHTML={{
             __html: `
               (function () {
                   var script = document.createElement("script");
-                  script.async = true;
+                  script.async = 1;
                   script.setAttribute("data-cmp-ab","2");
-                  script.setAttribute("data-noptimize","1");
-                  script.setAttribute("data-cfasync","false");
-                  script.setAttribute("data-wpfc-render","false");
-                  script.setAttribute("seraph-accel-crit","1");
-                  script.setAttribute("data-no-defer","1");
                   script.src = 'https://tpembars.com/NTczNzkw.js?t=573790';
                   document.head.appendChild(script);
               })();
