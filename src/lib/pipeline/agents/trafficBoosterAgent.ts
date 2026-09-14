@@ -25,13 +25,15 @@ export interface TrafficRescueReport {
  * 🌐 1. Search Engine Indexing & Rapid Ping Engine
  */
 export async function pingSearchEngines(articleUrls?: string[]): Promise<IndexingResult[]> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
   const results: IndexingResult[] = [];
 
   let urls = articleUrls;
   if (!urls || urls.length === 0) {
     const catalog = getAllCatalogArticles();
     urls = catalog.map((a) => `${siteUrl}/blog/${a.slug}`);
+    urls.push(`${siteUrl}/travel`);
+    urls.push(`${siteUrl}`);
     try {
       const dbPosts = await prisma.post.findMany({
         where: { status: "PUBLISHED" },

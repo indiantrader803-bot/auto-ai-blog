@@ -1,25 +1,6 @@
 import { Metadata } from "next";
-import Link from "next/link";
-import {
-  Compass,
-  Plane,
-  Shield,
-  Wifi,
-  Ticket,
-  Car,
-  Bike,
-  Navigation,
-  Luggage,
-  Sparkles,
-  ArrowRight,
-  ShieldCheck,
-  CheckCircle2,
-  TrendingUp,
-  CreditCard,
-  Tag,
-  Headphones,
-  Flame,
-} from "lucide-react";
+import TravelNavbar from "@/components/travel/TravelNavbar";
+import TravelFooter from "@/components/travel/TravelFooter";
 import AirportTransferBanner from "@/components/travel/AirportTransferBanner";
 import InteractiveTravelBookingBar from "@/components/travel/InteractiveTravelBookingBar";
 import FeaturedAttractionsGrid from "@/components/travel/FeaturedAttractionsGrid";
@@ -27,11 +8,12 @@ import EsimBookingSection from "@/components/travel/EsimBookingSection";
 import FlightCompensationCalculator from "@/components/travel/FlightCompensationCalculator";
 import TrendingDestinations from "@/components/travel/TrendingDestinations";
 import TravelEssentialsHub from "@/components/travel/TravelEssentialsHub";
+import { ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Official Travel Booking Hub: Airport Transfers, Flights, Hotels, eSIMs & City Passes | SmartMag Travel",
+  title: "SmartMag Travel: Airport Transfers, Cheap Flights, eSIMs & Attraction Passes",
   description:
-    "Instant booking for global airport transfers, cheap flights, worldwide eSIM cellular data, skip-the-line attraction passes, car rentals, and €600 flight delay compensation.",
+    "Instant booking for global airport transfers in 175+ countries, cheap flight comparison, 200+ eSIM cellular data packages, skip-the-line museum tickets, and €600 flight delay compensation.",
   alternates: {
     canonical: "https://thesmartmag.com/travel",
   },
@@ -39,31 +21,46 @@ export const metadata: Metadata = {
 
 export default function TravelHubPage() {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-indigo-500 selection:text-white pt-6 pb-24 transition-colors">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-sky-500 selection:text-white flex flex-col justify-between transition-colors">
+      {/* 🧭 Dedicated Standalone Travel Brand Navbar */}
+      <TravelNavbar />
+
       {/* 🚀 Main Travel Booking Suite (Starts with Airport Transfers Hero as First Section) */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        {/* 1. Global Airport Transfers & Private Chauffeurs (Top First Hero Section) */}
-        <div className="pt-2">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 flex-1 w-full">
+        {/* 1. Global Airport Transfers & Private Chauffeurs (Hero First Section) */}
+        <section id="transfers" className="scroll-mt-24">
           <AirportTransferBanner />
-        </div>
+        </section>
 
         {/* 2. Real-time Live Flight, Hotel, Klook, Car, Tiqets & AirHelp Widget Engine */}
-        <InteractiveTravelBookingBar />
+        <section id="flights" className="scroll-mt-24">
+          <InteractiveTravelBookingBar />
+        </section>
 
         {/* 3. Popular Attraction Passes & Skip-The-Line Tickets (Klook & Tiqets) */}
-        <FeaturedAttractionsGrid />
+        <section id="attractions" className="scroll-mt-24">
+          <FeaturedAttractionsGrid />
+        </section>
 
         {/* 4. Airalo & Saily Global eSIM Data Packs (200+ Countries) */}
-        <EsimBookingSection />
+        <section id="esim" className="scroll-mt-24">
+          <EsimBookingSection />
+        </section>
 
         {/* 5. Flight Delay Claim Calculator (€600 Legal Compensation) */}
-        <FlightCompensationCalculator />
+        <section id="compensation" className="scroll-mt-24">
+          <FlightCompensationCalculator />
+        </section>
 
         {/* 6. Trending Holiday Destinations & Bundles */}
-        <TrendingDestinations />
+        <section id="destinations" className="scroll-mt-24">
+          <TrendingDestinations />
+        </section>
 
         {/* 7. Comprehensive Travel Partner Directory & Search Filter */}
-        <TravelEssentialsHub />
+        <section id="essentials" className="scroll-mt-24">
+          <TravelEssentialsHub />
+        </section>
 
         {/* 8. Verified Booking Protection & Trust Banner */}
         <section className="my-14 p-6 sm:p-10 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-xl transition-colors">
@@ -101,7 +98,7 @@ export default function TravelHubPage() {
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800/80 space-y-3 shadow-sm">
+            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-800/80 space-y-3 shadow-sm">
               <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-600 dark:text-purple-400 font-bold">
                 03
               </div>
@@ -113,6 +110,9 @@ export default function TravelHubPage() {
           </div>
         </section>
       </main>
+
+      {/* 🗺️ Dedicated Standalone Travel Brand Footer */}
+      <TravelFooter />
     </div>
   );
 }
