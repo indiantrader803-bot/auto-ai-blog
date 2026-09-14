@@ -409,7 +409,12 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             </div>
 
-            <SocialShare title={post.title} />
+            <SocialShare
+              title={post.title}
+              slug={post.slug}
+              category={post.category?.name}
+              excerpt={post.excerpt}
+            />
           </div>
         </header>
 
@@ -609,6 +614,16 @@ export default async function BlogPostPage({ params }: Props) {
                   </h5>
                 </Link>
               )}
+            </div>
+
+            {/* High-Conversion Bottom Social Share Bar */}
+            <div className="my-8">
+              <SocialShare
+                title={post.title}
+                slug={post.slug}
+                category={post.category?.name}
+                excerpt={post.excerpt}
+              />
             </div>
 
             {/* Community Discussion & AI Expert Auto-Reply Agent */}
