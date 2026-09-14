@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getAllCatalogArticles } from "@/lib/content/articles";
+import { runMultiAgentIntentPipeline, detectUserIntent } from "@/lib/agents/multiAgentIntentRouter";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +20,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Message query is required." }, { status: 400 });
     }
 
+    // Run the multi-agent intent pipeline
+    const agentResult = await runMultiAgentIntentPipeline(query);
+
     const explabsKey = process.env.EXPLABS_API_KEY || process.env.EXPERIENTIALLABS_API_KEY || "";
     const explabsBaseUrl = process.env.EXPLABS_BASE_URL || "https://api.experientiallabs.ai";
     const explabsModel = process.env.EXPLABS_MODEL || "claude-sonnet-4.5";
@@ -30,13 +34,17 @@ export async function POST(req: Request) {
       .map((a) => `- [${a.title}](/blog/${a.slug}): ${a.excerpt.slice(0, 100)}... (Category: ${a.category.name})`)
       .join("\n");
 
-    const systemPrompt = `You are "SmartTravel & Editorial AI Assistant" on SmartMag Chronicle — an autonomous publication and travel/knowledge platform.
+    const systemPrompt = `You are "SmartTravel & Editorial AI Voice Concierge" on SmartMag Chronicle — an autonomous publication and travel/knowledge platform.
 You are a warm, highly knowledgeable, articulate expert who can help users with:
 1. ✈️ CUSTOM TRAVEL ITINERARIES & DESTINATION GUIDES:
    - Generate exhaustive, customized day-by-day itineraries for ANY place in India (Kashmir, Ladakh, Kerala, Rajasthan, Goa, Varanasi, Meghalaya, Himachal, Uttarakhand, Andaman, etc.) and ANY destination outside India / around the world (Japan, Switzerland, Italy, Bali, Peru, Iceland, Greece, France, Egypt, Vietnam, etc.).
    - Include: Morning, Afternoon, Evening breakdown for each day, Stay recommendations (budget/mid/luxury), Must-try local food & restaurants, Transportation/transit hacks, Best seasons, and Estimated total cost.
    - Proactively recommend verified travel bookings & gear (Amazon Associate tag: autoaiblog-21, Booking.com hotel reservations, Skyscanner flight search).
-2. 📚 BLOG KNOWLEDGE & ARTICLE RECOMMENDATIONS:
+2. 📊 PRO TRADING OFFERS & AFFILIATE SEARCH:
+   - Compare funded trading firms (FTM with code 'arnab', Atlas Funded with code '12275', Pocket Option with code '50START', AquaFunded with code '6e9').
+3. 🎥 VIDEO WORKSHOPS & AI TOOLS:
+   - Recommend tutorials, Cursor AI Pro, and Cloud GPUs.
+4. 📚 BLOG KNOWLEDGE & ARTICLE RECOMMENDATIONS:
    - Answer any question about artificial intelligence, coding, trading & financial markets, semiconductors, telecom, cultural festivals, and travel.
    - Contextualize answers and link to our published blog articles using markdown links [Article Title](/blog/slug).
 
@@ -45,8 +53,11 @@ ${catalogSummary}
 
 GUIDELINES:
 - Use clean Markdown with headers (### Day 1:, ### Day 2:), bullet points, bold highlights, and clear tables.
-- Keep tone welcoming, inspiring, professional, and practical.
-- Always provide actionable, real-world travel tips (permits, altitude acclimatization, train booking windows, local hidden spots).`;
+- Keep tone welcoming, inspiring, professional, and practical.`;
+
+    let customReply = "";
+    let modelUsed = "Autonomous Multi-Agent Router";
+    let sourceUsed = agentResult.agentName;
 
     // 1. Try ExperientialLabs
     if (explabsKey) {
@@ -71,11 +82,9 @@ GUIDELINES:
           const data = await res.json();
           const reply = data.choices?.[0]?.message?.content;
           if (reply) {
-            return NextResponse.json({
-              reply,
-              model: explabsModel,
-              source: "ExperientialLabs",
-            });
+            customReply = reply;
+            modelUsed = explabsModel;
+            sourceUsed = "ExperientialLabs Claude 4.5";
           }
         }
       } catch (err: any) {
@@ -84,7 +93,7 @@ GUIDELINES:
     }
 
     // 2. Try Google Gemini
-    if (geminiKey) {
+    if (!customReply && geminiKey) {
       try {
         const genAI = new GoogleGenerativeAI(geminiKey);
         const model = genAI.getGenerativeModel({
@@ -95,11 +104,9 @@ GUIDELINES:
         const result = await model.generateContent(query);
         const reply = result.response.text();
         if (reply) {
-          return NextResponse.json({
-            reply,
-            model: "gemini-1.5-flash",
-            source: "Google Gemini",
-          });
+          customReply = reply;
+          modelUsed = "gemini-1.5-flash";
+          sourceUsed = "Google Gemini";
         }
       } catch (err: any) {
         console.warn("[Chat API] Gemini error:", err.message);
@@ -107,7 +114,7 @@ GUIDELINES:
     }
 
     // 3. Try OpenAI
-    if (openaiKey) {
+    if (!customReply && openaiKey) {
       try {
         const res = await fetch("https://api.openai.com/v1/chat/completions", {
           method: "POST",
@@ -129,11 +136,9 @@ GUIDELINES:
           const data = await res.json();
           const reply = data.choices?.[0]?.message?.content;
           if (reply) {
-            return NextResponse.json({
-              reply,
-              model: "gpt-4o-mini",
-              source: "OpenAI",
-            });
+            customReply = reply;
+            modelUsed = "gpt-4o-mini";
+            sourceUsed = "OpenAI";
           }
         }
       } catch (err: any) {
@@ -141,12 +146,21 @@ GUIDELINES:
       }
     }
 
-    // 4. Built-in High-Accuracy Neural Knowledge & Itinerary Generator Fallback
-    const fallbackReply = generateIntelligentChatResponse(query, catalog);
+    // 4. Built-in High-Accuracy Neural Knowledge & Agent Pipeline Fallback
+    const finalReply = customReply || agentResult.markdownContent || generateIntelligentChatResponse(query, catalog);
+
     return NextResponse.json({
-      reply: fallbackReply,
-      model: "SmartTravel Autonomous Knowledge Engine",
-      source: "Native Expert Engine",
+      reply: finalReply,
+      speechText: agentResult.speechText || finalReply.slice(0, 200).replace(/[*#_\[\]()]/g, ""),
+      intent: agentResult.intent,
+      agentName: agentResult.agentName,
+      bookingDeals: agentResult.bookingDeals || null,
+      comparisonOffers: agentResult.comparisonOffers || null,
+      videoResults: agentResult.videoResults || null,
+      affiliateCta: agentResult.affiliateCta || null,
+      recommendedBlogSlugs: agentResult.recommendedBlogSlugs || null,
+      model: modelUsed,
+      source: sourceUsed,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
