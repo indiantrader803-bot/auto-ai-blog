@@ -7,7 +7,7 @@ export const AFFILIATE_CONFIG = {
   bookingComAid: process.env.BOOKING_COM_AID || process.env.NEXT_PUBLIC_BOOKING_AID || "2026803",
   agodaCid: process.env.AGODA_CID || process.env.NEXT_PUBLIC_AGODA_CID || "1894212",
   amazonAssociateTag: process.env.AMAZON_ASSOCIATE_TAG || process.env.NEXT_PUBLIC_AMAZON_TAG || "autoaiblog-21",
-  travelpayoutsMarker: process.env.TRAVELPAYOUTS_MARKER || "523412",
+  travelpayoutsMarker: process.env.TRAVELPAYOUTS_MARKER || "573745",
   propFirms: {
     ftm: {
       url: "https://fundedtradermarkets.com/ref/arnab",
@@ -54,6 +54,15 @@ export function getAgodaHotelUrl(destination?: string): string {
   }
   const cleanDest = encodeURIComponent(destination.trim().toLowerCase());
   return `https://www.agoda.com/search?city=${cleanDest}&cid=${cid}`;
+}
+
+/**
+ * Generate Travelpayouts affiliate search URL
+ */
+export function getTravelpayoutsUrl(destination?: string): string {
+  const marker = AFFILIATE_CONFIG.travelpayoutsMarker;
+  const cleanDest = encodeURIComponent(destination?.trim() || "all");
+  return `https://tp.media/r?marker=${marker}&trs=297491&p=4114&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%3Fdestination%3D${cleanDest}`;
 }
 
 /**

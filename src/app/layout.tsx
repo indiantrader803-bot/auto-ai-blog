@@ -148,9 +148,24 @@ export default function RootLayout({
             `,
           }}
         />
+        {/* Travelpayouts Global Affiliate & Travel Widget Script */}
         <script
-          async
-          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+          data-noptimize="1"
+          data-cfasync="false"
+          data-wpfc-render="false"
+          data-no-defer="1"
+          data-cmp-ab="2"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                  var script = document.createElement("script");
+                  script.async = true;
+                  script.setAttribute("data-cmp-ab","2");
+                  script.src = 'https://tpembars.com/NTczNzQ1.js?t=573745';
+                  document.head.appendChild(script);
+              })();
+            `,
+          }}
         />
       </head>
       <body className="min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white font-sans">
