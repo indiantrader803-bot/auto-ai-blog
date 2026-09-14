@@ -22,6 +22,8 @@ export async function notifyAdminUserLead(payload: UserLeadPayload): Promise<{ s
   // 1. If Resend API Key is configured in environment
   if (process.env.RESEND_API_KEY) {
     try {
+      const fromEmail = process.env.EMAIL_FROM || "The SmartMag <contact@thesmartmag.com>";
+
       // Send Welcome Confirmation to Subscriber
       const welcomeRes = await fetch("https://api.resend.com/emails", {
         method: "POST",
@@ -30,18 +32,18 @@ export async function notifyAdminUserLead(payload: UserLeadPayload): Promise<{ s
           Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: "onboarding@resend.dev",
+          from: fromEmail,
           to: [payload.email],
-          subject: "🎉 Welcome to SmartMag Tech Daily Briefing!",
+          subject: "🎉 Welcome to The SmartMag Daily Briefing!",
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #0f172a; color: #ffffff;">
-              <h1 style="color: #818cf8; margin-top: 0; font-size: 24px;">Welcome to SmartMag Tech Chronicle!</h1>
+              <h1 style="color: #818cf8; margin-top: 0; font-size: 24px;">Welcome to The SmartMag!</h1>
               <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6;">Thank you for subscribing to our daily autonomous AI & Engineering briefing.</p>
-              <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6;">You will now receive breaking coverage on frontier LLMs, system architecture, quant finance, and tech reviews.</p>
+              <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6;">You will now receive breaking coverage on frontier LLMs, system architecture, quant finance, travel deals, and tech reviews.</p>
               <div style="margin: 24px 0;">
-                <a href="https://auto-ai-blog-web.onrender.com" style="display: inline-block; padding: 12px 24px; background-color: #4f46e5; color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 10px;">Explore Today's Dispatch →</a>
+                <a href="https://thesmartmag.com" style="display: inline-block; padding: 12px 24px; background-color: #4f46e5; color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 10px;">Explore Today's Dispatch →</a>
               </div>
-              <p style="font-size: 12px; color: #64748b; margin-top: 32px;">SmartMag Tech Chronicle • Delivered to ${payload.email}</p>
+              <p style="font-size: 12px; color: #64748b; margin-top: 32px;">The SmartMag • Delivered to ${payload.email} • support@thesmartmag.com</p>
             </div>
           `,
         }),
@@ -60,7 +62,7 @@ export async function notifyAdminUserLead(payload: UserLeadPayload): Promise<{ s
           Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: "onboarding@resend.dev",
+          from: fromEmail,
           to: [recipient],
           subject: `🔥 [SmartMag Lead] New ${payload.type.replace(/_/g, " ")}: ${payload.email}`,
           html: `

@@ -62,7 +62,7 @@ export async function GET() {
               .map(
                 (p) => `
               <div class="article">
-                <a href="https://auto-ai-blog-web.onrender.com/blog/${p.slug}" class="article-title">${p.title}</a>
+                <a href="https://thesmartmag.com/blog/${p.slug}" class="article-title">${p.title}</a>
                 <p class="article-excerpt">${p.excerpt}</p>
               </div>
             `
@@ -70,8 +70,8 @@ export async function GET() {
               .join("")}
 
             <div class="footer">
-              Sent to ${subscribers} SmartMag VIP subscribers. <br/>
-              © ${new Date().getFullYear()} SmartMag Tech Chronicle. All rights reserved.
+              Sent to ${subscribers} The SmartMag VIP subscribers. <br/>
+              © ${new Date().getFullYear()} The SmartMag. All rights reserved. • support@thesmartmag.com
             </div>
           </div>
         </body>
