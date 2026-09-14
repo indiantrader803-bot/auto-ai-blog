@@ -41,6 +41,13 @@ export const AFFILIATE_CONFIG = {
     url: process.env.COUPERT_AFFILIATE_URL || "https://www.coupert.com/?invite_code=EA59BA&inviter_source=web5",
     inviteCode: "EA59BA",
     bonus: "$20 Welcome Cashback + Auto Coupons",
+  },
+  monetag: {
+    url: process.env.MONETAG_REF_URL || "https://monetag.com/?ref_id=tJVZ",
+    refId: "tJVZ",
+    tagZoneId: "11802110",
+    swZoneId: "11802075",
+    description: "High-eCPM multi-format monetization network for publishers & website owners",
   }
 };
 
@@ -120,3 +127,11 @@ export function getFlightSearchUrl(origin = "DEL", destination = "COK"): string 
 export function getCoupertUrl(): string {
   return AFFILIATE_CONFIG.coupert.url;
 }
+
+/**
+ * Generate Monetag Publisher Referral URL
+ */
+export function getMonetagUrl(): string {
+  return AFFILIATE_CONFIG.monetag.url;
+}
+
