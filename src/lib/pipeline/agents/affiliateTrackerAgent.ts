@@ -4,7 +4,7 @@ export interface AffiliateProgramData {
   id: string;
   platform: string;
   name: string;
-  category: "Trading & Binary" | "Crypto Derivatives" | "Crypto INR" | "Prop Trading" | "SaaS & Tools" | "E-Commerce" | "Travel & Flights";
+  category: "Trading & Binary" | "Crypto Derivatives" | "Crypto INR" | "Prop Trading" | "SaaS & Tools" | "E-Commerce" | "Travel & Flights" | "Cashback & Coupons";
   targetUrl: string;
   promoCode?: string;
   payoutModel: string;
@@ -623,6 +623,25 @@ export const MASTER_AFFILIATE_PROGRAMS: AffiliateProgramData[] = [
     totalEarningsINR: 0,
     payoutStatus: "AVAILABLE",
     badge: "INSURANCE",
+  },
+  {
+    id: "aff_coupert",
+    platform: "Coupert",
+    name: "Coupert Automatic Coupons & Cashback ($20 Welcome Bonus)",
+    category: "Cashback & Coupons",
+    targetUrl: "https://www.coupert.com/?invite_code=EA59BA&inviter_source=web5",
+    promoCode: "EA59BA",
+    payoutModel: "$5.00 - $20.00 Per Referral + Cashback RevShare",
+    baseCpa: 10.0,
+    clicks: 0,
+    uniqueClicks: 0,
+    purchases: 0,
+    conversionRate: 0,
+    epc: 0,
+    totalEarningsUSD: 0,
+    totalEarningsINR: 0,
+    payoutStatus: "AVAILABLE",
+    badge: "$20 BONUS",
   },
 ];
 

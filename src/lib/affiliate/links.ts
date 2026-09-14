@@ -36,6 +36,11 @@ export const AFFILIATE_CONFIG = {
       promoCode: "6e9",
       payoutSplit: "90%",
     }
+  },
+  coupert: {
+    url: process.env.COUPERT_AFFILIATE_URL || "https://www.coupert.com/?invite_code=EA59BA&inviter_source=web5",
+    inviteCode: "EA59BA",
+    bonus: "$20 Welcome Cashback + Auto Coupons",
   }
 };
 
@@ -107,4 +112,11 @@ export function getAmazonProductUrl(keyword: string, region: "in" | "com" = "in"
  */
 export function getFlightSearchUrl(origin = "DEL", destination = "COK"): string {
   return `https://www.skyscanner.com/transport/flights/${origin.toLowerCase()}/${destination.toLowerCase()}/`;
+}
+
+/**
+ * Generate Coupert cashback and coupon referral URL
+ */
+export function getCoupertUrl(): string {
+  return AFFILIATE_CONFIG.coupert.url;
 }
