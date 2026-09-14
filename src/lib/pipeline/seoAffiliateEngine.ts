@@ -205,9 +205,39 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
     label: "Funded Trader Markets (Instant Evaluation & Scaling)",
   },
   {
+    keyword: "Blue Guardian",
+    url: "https://blueguardian.com/?afmc=1tgf",
+    label: "Blue Guardian Prop Firm - Unlimited Evaluation & Guardian Protector (Code: 1tgf)",
+  },
+  {
+    keyword: "blue guardian",
+    url: "https://blueguardian.com/?afmc=1tgf",
+    label: "Blue Guardian Funded Accounts (Code: 1tgf)",
+  },
+  {
+    keyword: "FundedSquad",
+    url: "https://fundedsquad.com/?campaign=thesmartmag&squad=3552",
+    label: "FundedSquad Prop Firm - 1-Step Evaluation & Fast Payouts (Code: CHARGE)",
+  },
+  {
+    keyword: "fundedsquad",
+    url: "https://fundedsquad.com/?campaign=thesmartmag&squad=3552",
+    label: "FundedSquad Instant Scaling Challenges (Code: CHARGE)",
+  },
+  {
+    keyword: "Equity Edge",
+    url: "https://app.equityedge.io/signup/THESMARTMAG/",
+    label: "Equity Edge Prop Trading - Scale to $2M with No Time Limits (Code: THESMARTMAG)",
+  },
+  {
+    keyword: "equity edge",
+    url: "https://app.equityedge.io/signup/THESMARTMAG/",
+    label: "Equity Edge Funded Evaluation Portal (Code: THESMARTMAG)",
+  },
+  {
     keyword: "capital scaling",
-    url: "https://app.ckcapital.co.uk/signup/ALPROP/",
-    label: "CK Capital Institutional Capital Program (Code: ALPROP)",
+    url: "https://app.equityedge.io/signup/THESMARTMAG/",
+    label: "Equity Edge Scaling Program (Code: THESMARTMAG)",
   },
   {
     keyword: "futures trading",

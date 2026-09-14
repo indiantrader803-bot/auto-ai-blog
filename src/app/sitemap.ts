@@ -61,10 +61,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Categories
   const categorySlugs = new Set<string>([
-    "artificial-intelligence",
-    "development-and-engineering",
-    "finance-and-markets",
     "technology",
+    "artificial-intelligence",
+    "festivals-and-culture",
+    "travel-and-expeditions",
+    "finance-and-markets",
+    "development-and-engineering",
+    "tech-and-gadgets",
+    "commodities",
+    "indian-markets",
+    "telecom-and-connectivity",
   ]);
 
   for (const cat of dbCategories) {

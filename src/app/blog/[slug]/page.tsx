@@ -57,10 +57,10 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cleanSlug = decodeURIComponent(params.slug || "");
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
   const canonicalUrl = `${siteUrl}/blog/${cleanSlug}`;
 
-  let title = "Article | SmartMag Tech Chronicle";
+  let title = "Article | TheSmartMag";
   let description = "Deep-dive technical report and architectural analysis.";
   let image = `${siteUrl}/default-og.jpg`;
   let publishedTime = new Date().toISOString();
