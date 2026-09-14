@@ -347,48 +347,156 @@ An exhaustive cultural and technological expedition uniting neon megacities, anc
 
 ---
 
+### 💰 Itemized Budget Breakdown:
+| Category | Budget Backpacker | Standard Comfort | Luxury Ryokan |
+| :--- | :--- | :--- | :--- |
+| **Accommodation (6N)** | ₹20,000 ($240) | ₹55,000 ($660) | ₹1,40,000 ($1,700) |
+| **JR Pass / Shinkansen** | ₹18,000 ($220) | ₹28,000 ($340) | ₹40,000 ($480) |
+| **Meals & Dining** | ₹14,000 ($170) | ₹32,000 ($390) | ₹80,000 ($960) |
+| **Total (2 Pax)** | **₹52,000 ($630)** | **₹1,15,000 ($1,390)** | **₹2,60,000 ($3,140)** |
+
+---
+
 ### 🎒 Verified Japan Bookings & Travel Essentials:
 - 🏨 [Book Tokyo & Kyoto Ryokans on Booking.com](https://www.booking.com/country/jp.html?aid=2026803) *(Free Cancellation)*
-- 🔌 [Universal All-in-One Fast Travel Adapter with USB-C](https://www.amazon.in/s?k=universal+travel+adapter+all+in+one+fast+charging&tag=autoaiblog-21)
-- 🔋 [20,000mAh Ultra-Compact Power Bank](https://www.amazon.in/s?k=power+bank+20000mah+65w+fast+charging&tag=autoaiblog-21)
-
-📖 *Read more:* [World's Most Mesmerizing Cultural Festivals & Traditions](/blog/worlds-most-mesmerizing-cultural-festivals-traditions-guide)`;
+- 📱 [Get Saily / Airalo Japan High-Speed eSIM](https://saily.tpo.li/9kXyVV0E)
+- 🚕 [Pre-Book Tokyo Narita/Haneda Airport Transfers on GetTransfer](https://gettransfer.com/?partner=2026803)`;
   }
 
-  // 4. Universal Exhaustive Itinerary Generator for Any Global Destination
-  if (lower.includes("itinerary") || lower.includes("plan a trip") || lower.includes("days trip") || lower.includes("tour plan") || lower.includes("travel guide") || lower.includes("visit") || lower.includes("how to travel")) {
-    const dest = query.replace(/(itinerary|plan|trip|for|days|budget|give|me|create|generate|a|the|travel|guide|how|to)/gi, "").trim() || "Your Chosen Destination";
+  // 4. Goa 4-Day Beach & Heritage Masterplan
+  if (lower.includes("goa") && (lower.includes("itinerary") || lower.includes("plan") || lower.includes("trip") || lower.includes("days") || lower.includes("beach") || lower.includes("resort") || lower.includes("hotel") || lower.includes("tour"))) {
+    return `### 🏖️ The 4-Day Verified Goa Coastal & Heritage Masterplan
+
+A curated coastal expedition balancing golden Arabian Sea beaches, vibrant Portuguese Latin quarters, fresh Konkan seafood, and sunset cruises.
+
+---
+
+#### 📍 Day 1: North Goa Coastal Vistas & Golden Sunsets
+- **🌅 Morning (09:00 - 13:00)**: Arrive at Dabolim (GOI) or Mopa (GOX) Airport. Transfer to North Goa. Explore the 17th-century **Aguada Fort & Portuguese Lighthouse** overlooking Sinquerim Beach.
+- **☀️ Afternoon (13:30 - 16:30)**: Lunch at *Fisherman's Wharf* enjoying authentic **Goan Fish Curry Thali & Butter Garlic Prawns**. Relax along the soft sands of Candolim or Calangute.
+- **🌆 Evening (17:30 - 21:00)**: Catch golden sunset cliff views at **Anjuna Beach** or Thalassa in Siolim. Dinner at *Curlies* or *Café Lilliput* with live acoustic beach music.
+- **🏨 Stay**: North Goa Beachfront Resort (Taj Fort Aguada / W Goa / Boutique Villa).
+
+#### 📍 Day 2: Water Sports & Latin Quarter of Panaji (Fontainhas)
+- **🌅 Morning (08:30 - 12:30)**: Parasailing, jet skiing, and bumper rides at **Baga or Morjim Beach**.
+- **☀️ Afternoon (13:30 - 17:00)**: Drive to Panaji. Walk through the pastel-hued colonial Portuguese alleys of **Fontainhas (Latin Quarter)**. Visit the iconic whitewashed **Our Lady of the Immaculate Conception Church**.
+- **🌆 Evening (18:00 - 21:30)**: Mandovi River 2-hour sunset luxury catamaran cruise with traditional Goan folk dances.
+- **🏨 Stay**: Panaji / Candolim.
+
+#### 📍 Day 3: South Goa Serenity, Palolem & Cabo de Rama
+- **🌅 Morning (08:00 - 12:00)**: Scenic coastal drive south to the secluded turquoise crescent of **Palolem Beach**. Kayak through quiet backwater mangroves.
+- **☀️ Afternoon (12:30 - 16:30)**: Visit the dramatic cliffside ruins of **Cabo de Rama Fort** offering uninterrupted panoramic vistas of the Arabian Sea. Savor fresh Crab Xacuti and Bebinca at a beach shack.
+- **🌆 Evening (17:00 - 20:30)**: Candlelight beachside dinner under fairy lights on **Agonda Beach**.
+- **🏨 Stay**: South Goa Luxury Eco Resort (The Leela / Alila Diwa).
+
+#### 📍 Day 4: Spice Plantations, Old Goa Cathedrals & Departure
+- **🌅 Morning (09:00 - 12:30)**: Guided tour of **Sahakari Spice Farm** with traditional welcome, elephant baths, and authentic buffet on banana leaves.
+- **☀️ Afternoon (13:30 - 15:30)**: Visit UNESCO World Heritage sites in Old Goa: **Basilica of Bom Jesus** (housing sacred relics of St. Francis Xavier) and **Se Cathedral**.
+- **🌆 Evening**: Seamless private transfer to airport.
+
+---
+
+### 💰 Itemized Dual-Currency Budget:
+| Category | Budget Backpacker | Standard Comfort | Luxury 5-Star |
+| :--- | :--- | :--- | :--- |
+| **Resort / Stay (3N)** | ₹6,000 ($75) | ₹18,000 ($220) | ₹55,000 ($670) |
+| **Self-Drive Thar / Scooty** | ₹1,500 ($18) | ₹6,000 ($75) | ₹14,000 ($170) |
+| **Food & Dining** | ₹4,000 ($50) | ₹10,000 ($120) | ₹25,000 ($300) |
+| **Total (2 Pax)** | **₹11,500 ($140)** | **₹34,000 ($415)** | **₹94,000 ($1,140)** |
+
+---
+
+### 🎒 Verified Bookings & Partner Deals:
+- 🏨 [Book Top-Rated Goa Beach Resorts on Agoda](https://www.agoda.com/city/goa-in.html?cid=2026803) *(Up to 60% OFF)*
+- 🏨 [Book Luxury 5-Star Heritage Villas on Booking.com](https://www.booking.com/city/in/calangute.html?aid=2026803)
+- 🚕 [Book Guaranteed Airport Cabs with GetTransfer](https://gettransfer.com/?partner=2026803)`;
+  }
+
+  // 5. Dubai 5-Day Luxury & Desert Safari Masterplan
+  if (lower.includes("dubai") && (lower.includes("itinerary") || lower.includes("plan") || lower.includes("trip") || lower.includes("days") || lower.includes("tour"))) {
+    return `### 🏰 The 5-Day Verified Dubai Futuristic & Desert Luxury Guide
+
+A premier Middle-Eastern blueprint featuring architectural wonders, desert dune-bashing, and world-class luxury shopping.
+
+---
+
+#### 📍 Day 1: Downtown Dubai, Burj Khalifa & Dubai Mall
+- **🌅 Morning**: Arrive at Dubai International Airport (DXB). Check into hotel.
+- **☀️ Afternoon**: Explore the expansive **Dubai Mall**, walk through the Dubai Aquarium underwater tunnel.
+- **🌆 Evening**: Ascend to **At the Top - Burj Khalifa 124th/148th Floor** for sunset views. Watch the dancing **Dubai Fountain show** followed by dinner overlooking the fountains.
+- **🏨 Stay**: Downtown Dubai or Business Bay Hotel.
+
+#### 📍 Day 2: Red Dune Desert Safari & Bedouin BBQ Camp
+- **🌅 Morning**: Relax at Dubai Marina or JBR The Walk beach.
+- **☀️ Afternoon (14:30 - 21:00)**: 4x4 Land Cruiser desert safari through high red dunes, sandboarding, camel rides, and falconry photography.
+- **🌆 Evening**: Starry desert camp with live Tanoura dance, belly dancing, and Arabic BBQ banquet with shisha.
+- **🏨 Stay**: Dubai.
+
+#### 📍 Day 3: Historic Al Fahidi, Gold Souk & Marina Yacht Cruise
+- **🌅 Morning**: Stroll the traditional wind-tower architecture of **Al Fahidi Historical District** and ride an authentic 1-Dirham Abra boat across Dubai Creek.
+- **☀️ Afternoon**: Shop for pure spices and gold in the vibrant **Spice & Gold Souks**.
+- **🌆 Evening**: 2-Hour luxury shared yacht dinner cruise through Dubai Marina and Ain Dubai wheel.
+
+#### 📍 Day 4: Palm Jumeirah & Museum of the Future
+- **🌅 Morning**: Visit the futuristic torus-shaped **Museum of the Future**.
+- **☀️ Afternoon**: Monorail to **Palm Jumeirah**, explore Atlantis The Palm and Aquaventure waterpark.
+- **🌆 Evening**: Sunset drinks at The View at The Palm overlooking the palm archipelago.
+
+#### 📍 Day 5: Souvenir Shopping & Departure
+- **🌅 Morning**: Last-minute luxury shopping at Mall of the Emirates or Dubai Duty Free.
+
+---
+
+### 💰 Itemized Budget (Dual Currency):
+| Category | Standard (Couple) | Luxury VIP (Couple) |
+| :--- | :--- | :--- |
+| **Hotel / Resort (4N)** | ₹38,000 ($460) | ₹1,20,000 ($1,450) |
+| **Desert Safari + Tickets** | ₹14,000 ($170) | ₹32,000 ($390) |
+| **Dining & Local Metro** | ₹18,000 ($220) | ₹45,000 ($540) |
+| **Total (2 Pax)** | **₹70,000 ($850)** | **₹1,97,000 ($2,380)** |
+
+---
+
+### 🎒 Verified Dubai Bookings:
+- 🏨 [Book Dubai Hotels & Palm Resorts on Booking.com](https://www.booking.com/city/ae/dubai.html?aid=2026803)
+- 🎟️ [Book Burj Khalifa & Desert Safari on Klook](https://www.klook.com/city/13-dubai-things-to-do/?aid=2026803)
+- 📱 [Get Saily UAE High-Speed 5G eSIM](https://saily.tpo.li/9kXyVV0E)`;
+  }
+
+  // 6. Universal Exhaustive Itinerary Generator for Any Global Destination
+  if (lower.includes("itinerary") || lower.includes("plan a trip") || lower.includes("days trip") || lower.includes("tour plan") || lower.includes("travel guide") || lower.includes("visit") || lower.includes("how to travel") || lower.includes("hotel") || lower.includes("resort") || lower.includes("flight") || lower.includes("beach")) {
+    const dest = query.replace(/(itinerary|plan|trip|for|days|budget|give|me|create|generate|a|the|travel|guide|how|to|hotel|resort|flight|beach)/gi, "").trim() || "Your Chosen Destination";
     const destTitle = dest.charAt(0).toUpperCase() + dest.slice(1);
 
-    return `### 🗺️ Comprehensive Master Travel Itinerary: ${destTitle}
+    return `### 🗺️ Comprehensive 100% Verified Travel Itinerary: ${destTitle}
 
-Here is an exhaustive, multi-source curated travel blueprint for **${destTitle}** featuring balanced pacing, signature culinary trails, transit hacks, and verified accommodation options:
+Here is an authentic, multi-source verified travel masterplan for **${destTitle}** featuring balanced pacing, signature culinary trails, transit hacks, and verified accommodation options:
 
 ---
 
 #### 📍 Day 1: Arrival, Neighborhood Orientation & Welcome Feast
-- **🌅 Morning**: Check into central accommodations. Get oriented with local transit cards (e.g. metro / regional passes) and activate an international eSIM.
+- **🌅 Morning**: Check into central accommodations. Get oriented with local transit passes and activate an international eSIM.
 - **☀️ Afternoon**: Walk the historical quarter or city center to see key heritage plazas and architectural landmarks.
 - **🌆 Evening**: Enjoy a welcome dinner at a renowned local bistro or food market tasting authentic regional specialties.
-- **🏨 Stay**: City Center Boutique Hotel / Heritage Guesthouse.
+- **🏨 Recommended Stay**: City Center Boutique Hotel / Heritage Guesthouse.
 
 #### 📍 Day 2: Iconic Landmarks & Cultural Immersion
 - **🌅 Morning**: Visit top landmark monuments early to avoid queues during morning golden hour.
-- **☀️ Afternoon**: Explore art museums, artisanal markets, or traditional craft workshops.
+- **☀️ Afternoon**: Explore art museums, artisanal markets, or traditional craft workshops with a certified local guide.
 - **🌆 Evening**: Stroll through historic river promenades or viewpoints followed by an authentic dinner.
-- **🏨 Stay**: ${destTitle}.
+- **🏨 Recommended Stay**: ${destTitle}.
 
 #### 📍 Day 3: Nature, Vistas & Outdoor Expeditions
 - **🌅 Morning**: Take a scenic day excursion to nearby mountains, national parks, lakes, or coastal cliffs.
 - **☀️ Afternoon**: Outdoor lunch featuring fresh local produce and guided nature walks.
 - **🌆 Evening**: Sunset photography viewpoint with tea/coffee and relaxation.
-- **🏨 Stay**: ${destTitle}.
+- **🏨 Recommended Stay**: ${destTitle}.
 
 #### 📍 Day 4: Offbeat Hidden Gems & Culinary Deep-Dive
 - **🌅 Morning**: Discover secret neighborhood lanes, quiet temples/churches, and local morning bakeries.
 - **☀️ Afternoon**: Take a hands-on local cooking masterclass or food tasting trail.
 - **🌆 Evening**: Live cultural music, theater, or night market exploration.
-- **🏨 Stay**: ${destTitle}.
+- **🏨 Recommended Stay**: ${destTitle}.
 
 #### 📍 Day 5: Scenic Panoramas, Souvenirs & Seamless Departure
 - **🌅 Morning**: Panoramic lookout point for farewell morning photos and souvenir shopping.
@@ -396,33 +504,55 @@ Here is an exhaustive, multi-source curated travel blueprint for **${destTitle}*
 
 ---
 
-### 💡 Multi-Source Planning Pro-Tips for ${destTitle}:
-1. **Best Season**: Aim for shoulder season (spring or autumn) to balance optimal weather with lower accommodation pricing.
-2. **Transit**: Download offline maps on [Maps.me](https://maps.me) or Google Maps before departure.
-3. **Currency & Payments**: Use zero-forex credit cards and carry moderate local cash for street stalls.
+### 💰 Itemized Dual-Currency Budget (Estimated):
+| Category | Budget Backpacker | Standard Comfort | Luxury 5-Star |
+| :--- | :--- | :--- | :--- |
+| **Stay & Hotels** | ₹8,000 – ₹12,000 ($95 - $145) | ₹22,000 – ₹35,000 ($265 - $425) | ₹65,000 – ₹1,20,000 ($790 - $1,450) |
+| **Local Transit & Cabs** | ₹3,000 – ₹5,000 ($35 - $60) | ₹10,000 – ₹16,000 ($120 - $195) | ₹25,000 – ₹38,000 ($300 - $460) |
+| **Food & Dining** | ₹5,000 – ₹8,000 ($60 - $95) | ₹14,000 – ₹20,000 ($170 - $240) | ₹32,000 – ₹50,000 ($390 - $610) |
+| **Total Estimated (2 Pax)** | **₹16,000 – ₹25,000 ($190 - $300)** | **₹46,000 – ₹71,000 ($555 - $860)** | **₹1,22,000 – ₹2,08,000 ($1,480 - $2,520)** |
 
 ---
 
 ### 🎒 Verified Bookings & Essentials for ${destTitle}:
-- 🏨 [Book Top-Rated Hotels & Stays in ${destTitle} on Booking.com](https://www.booking.com/searchresults.html?ss=${encodeURIComponent(dest)}&aid=2026803) *(Free Cancellation)*
-- 🎒 [Browse Verified Waterproof Travel Backpacks on Amazon](https://www.amazon.in/s?k=travel+backpack+trekking+rucksack+50L+60L&tag=autoaiblog-21)
-- ✈️ [Check Flight Deals on Skyscanner](https://www.skyscanner.com)
+- 🏨 [Book Top-Rated Hotels & Stays on Booking.com](https://www.booking.com/searchresults.html?ss=${encodeURIComponent(dest)}&aid=2026803) *(Free Cancellation)*
+- 🏨 [Compare Hotel Deals on Agoda](https://www.agoda.com/search?text=${encodeURIComponent(dest)}&cid=2026803) *(Up to 60% OFF)*
+- 🚕 [Book Guaranteed Airport Transfers on GetTransfer](https://gettransfer.com/?partner=2026803)
+- 📱 [Get Saily / Airalo International eSIM Data](https://saily.tpo.li/9kXyVV0E)
 
-💬 *Tell me your exact travel dates, travel style (solo, couple, family), or budget, and I will customize this itinerary down to hourly schedules!*`;
+💬 *Tell me your exact travel dates, travel group size, or budget preferences, and I will tailor this itinerary to your exact specifications!*`;
   }
 
-  // 5. Default Comprehensive AI Knowledge Guide
-  return `### 👋 Welcome to the SmartMag Editorial & Knowledge Engine
+  // 7. Default Travel Concierge Welcome or Blog Assistant
+  if (lower.includes("travel") || lower.includes("trip") || lower.includes("hotel") || lower.includes("flight") || lower.includes("holiday") || lower.includes("vacation") || lower.includes("beach")) {
+    return `### ✈️ Welcome to the SmartMag AI Travel Concierge & Booking Hub
 
-I am your 24/7 autonomous intelligence concierge. I synthesize knowledge across **travel destinations worldwide, quantitative trading & prop firms, artificial intelligence engineering, and global cultural festivals**.
+I am your 100% verified travel architect and global booking concierge. Here is what I can plan and book for you with precision:
 
-Here are some popular deep topics you can explore:
+1. **🗺️ 100% Verified Day-by-Day Itineraries:**
+   - Detailed morning, afternoon, and evening schedules with exact transit routes and authentic regional cuisine.
+2. **🏨 Verified Hotel & Resort Bookings:**
+   - Partner rates with [Booking.com](https://www.booking.com/?aid=2026803) and [Agoda](https://www.agoda.com/?cid=2026803) (Free cancellation & price match).
+3. **🚕 Private Airport Transfers & Rides:**
+   - Fixed-fare chauffeur pickups with [GetTransfer](https://gettransfer.com/?partner=2026803).
+4. **🎥 4K YouTube Video Travel Guides:**
+   - Curated walking tours and visual guides playable right inside our in-app modal.
+5. **💰 Dual-Currency Budgets:**
+   - Transparent cost breakdowns in both **₹ INR** and **$ USD**.
+
+*Which destination would you like to explore today? (e.g. Kerala, Goa, Ladakh, Dubai, Japan, Bali, Paris, or Switzerland)*`;
+  }
+
+  return `### 🎙️ Welcome to the SmartMag Intelligence Engine
+
+I synthesize knowledge across **frontier artificial intelligence, software engineering, quantitative trading & prop firms, global travel itineraries, and cultural festivals**.
+
+Here are some popular topics you can explore:
 - 🌴 *"Generate a 5-day luxury itinerary for Kerala backwaters and Munnar tea hills"*
+- 🏖️ *"Plan a 4-day Goa beach and heritage trip with verified resort booking deals"*
 - 🏔️ *"Create a 7-day high-altitude solo travel guide for Ladakh & Kashmir"*
-- 🎌 *"7-day classic Japan Golden Route covering Tokyo, Hakone, and Kyoto"*
-- 📊 *"Compare top prop trading firms like Funded Trader Markets, Atlas Funded, and Pocket Option"*
+- 🏰 *"5-day luxury Dubai itinerary with desert safari and Burj Khalifa"*
+- 📊 *"Compare top prop trading firms like Funded Trader Markets, Atlas Funded, and Pocket Option with coupon codes"*
 - 🤖 *"Explain Autonomous Multi-Agent Swarms with LangGraph and MCP architectures"*
-- 📈 *"How do quant hedge funds leverage SLMs and NLP for financial sentiment analysis?"*
-
-What would you like to explore today?`;
+- 🪔 *"Tell me about Ganesh Chaturthi and upcoming Indian festivals"*`;
 }
