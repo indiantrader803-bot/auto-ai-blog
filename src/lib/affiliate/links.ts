@@ -8,6 +8,13 @@ export const AFFILIATE_CONFIG = {
   agodaCid: process.env.AGODA_CID || process.env.NEXT_PUBLIC_AGODA_CID || "1894212",
   amazonAssociateTag: process.env.AMAZON_ASSOCIATE_TAG || process.env.NEXT_PUBLIC_AMAZON_TAG || "autoaiblog-21",
   travelpayoutsMarker: process.env.TRAVELPAYOUTS_MARKER || "573745",
+  klook: {
+    campaignId: process.env.KLOOK_CAMPAIGN_ID || "137",
+    marker: process.env.KLOOK_MARKER || "777349",
+    trs: process.env.KLOOK_TRS || "573745",
+    promoId: "4110",
+    defaultUrl: "https://tp.media/r?campaign_id=137&marker=777349&p=4110&trs=573745&u=https%3A%2F%2Fklook.com",
+  },
   propFirms: {
     ftm: {
       url: "https://fundedtradermarkets.com/ref/arnab",
@@ -54,6 +61,26 @@ export function getAgodaHotelUrl(destination?: string): string {
   }
   const cleanDest = encodeURIComponent(destination.trim().toLowerCase());
   return `https://www.agoda.com/search?city=${cleanDest}&cid=${cid}`;
+}
+
+/**
+ * Generate Klook Attractions, Activities & Tours Affiliate URL (Travelpayouts Campaign 137)
+ */
+export function getKlookUrl(destinationOrActivity?: string): string {
+  const { campaignId, marker, p, trs } = {
+    campaignId: AFFILIATE_CONFIG.klook.campaignId,
+    marker: AFFILIATE_CONFIG.klook.marker,
+    p: AFFILIATE_CONFIG.klook.promoId,
+    trs: AFFILIATE_CONFIG.klook.trs,
+  };
+
+  if (!destinationOrActivity || destinationOrActivity === "all" || destinationOrActivity === "global") {
+    return `https://tp.media/r?campaign_id=${campaignId}&marker=${marker}&p=${p}&trs=${trs}&u=https%3A%2F%2Fklook.com`;
+  }
+
+  const cleanQuery = encodeURIComponent(destinationOrActivity.trim());
+  const targetKlook = `https://www.klook.com/search?query=${cleanQuery}`;
+  return `https://tp.media/r?campaign_id=${campaignId}&marker=${marker}&p=${p}&trs=${trs}&u=${encodeURIComponent(targetKlook)}`;
 }
 
 /**

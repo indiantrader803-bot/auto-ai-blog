@@ -3,6 +3,7 @@ import { VERIFIED_SPONSORS } from "@/lib/pipeline/agents/sponsorAgent";
 import {
   getBookingHotelUrl,
   getAgodaHotelUrl,
+  getKlookUrl,
   getAmazonProductUrl,
   getFlightSearchUrl,
   AFFILIATE_CONFIG,
@@ -207,6 +208,17 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
         features: ["Tea Garden Guided Walks", "Ayurvedic Spa Onsite", "Complimentary Breakfast", "Campfire"],
         affiliateUrl: getBookingHotelUrl("Munnar Kerala"),
         imageUrl: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "bk_kerala_klook_activity",
+        title: "Klook Alleppey Backwater Kayaking & Village Tour",
+        location: "Alleppey & Kochi, Kerala",
+        rating: 4.9,
+        priceTag: "From ₹1,499 / person",
+        badge: "KLOOK TOP EXPERIENCE",
+        features: ["Certified Local Guide", "Sunrise Kayaking Paddle", "Village Coconut Feast", "Instant Mobile Voucher"],
+        affiliateUrl: getKlookUrl("Kerala Alleppey Kayaking and Tours"),
+        imageUrl: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=600&auto=format&fit=crop&q=80",
       }
     ];
   } else if (lower.includes("ladakh") || lower.includes("leh") || lower.includes("kashmir")) {
@@ -233,6 +245,17 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
         features: ["Heated Blankets & Fireplaces", "Unobstructed Lake Views", "Night Sky Astro-Photography Setup", "Hot Meals"],
         affiliateUrl: getBookingHotelUrl("Pangong Lake Ladakh"),
         imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "bk_ladakh_klook_tour",
+        title: "Klook Ladakh Monasteries & Khardung La Pass Safari",
+        location: "Leh & Nubra Valley, Ladakh",
+        rating: 4.9,
+        priceTag: "From ₹3,200 / person",
+        badge: "KLOOK ADVENTURE PASS",
+        features: ["4x4 Mountain Vehicle with Driver", "Permit Assistance Included", "Diskit & Thiksey Monasteries", "Lowest Price Guarantee"],
+        affiliateUrl: getKlookUrl("Ladakh Day Tours and Sightseeing"),
+        imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop&q=80",
       }
     ];
   } else if (lower.includes("japan") || lower.includes("kyoto") || lower.includes("tokyo")) {
@@ -248,10 +271,21 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
         features: ["Private Open-Air Hot Springs", "Multi-Course Kaiseki Dinner", "Tatami Rooms & Yukatas", "Steps to Bamboo Forest"],
         affiliateUrl: getBookingHotelUrl("Kyoto Japan"),
         imageUrl: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "bk_japan_klook_pass",
+        title: "Klook Kyoto UNESCO Temples, Bamboo Grove & Tea Ceremony",
+        location: "Kyoto, Japan",
+        rating: 4.9,
+        priceTag: "From $48 / person",
+        badge: "KLOOK BESTSELLER",
+        features: ["English Speaking Historian Guide", "Authentic Uji Matcha Ceremony", "Skip-The-Line Temple Access", "Instant Confirmation"],
+        affiliateUrl: getKlookUrl("Kyoto UNESCO Temples Tea Ceremony Tour"),
+        imageUrl: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=600&auto=format&fit=crop&q=80",
       }
     ];
   } else {
-    const extractedDest = query.replace(/(book|hotel|resort|stay|in|for|flights|vacation|trip|deals)/gi, "").trim() || "Global";
+    const extractedDest = query.replace(/(book|hotel|resort|stay|in|for|flights|vacation|trip|deals|tour|activities|klook)/gi, "").trim() || "Global";
     destination = extractedDest;
     deals = [
       {
@@ -264,6 +298,17 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
         features: ["Instant Confirmation", "Exclusive 2026 Member Discounts", "24/7 Concierge Support", "Verified Guest Reviews"],
         affiliateUrl: getBookingHotelUrl(destination),
         imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "bk_global_klook",
+        title: `Klook Sightseeing Passes, Tours & Entry Tickets for ${destination}`,
+        location: destination,
+        rating: 4.9,
+        priceTag: "Save up to 30% with Klook",
+        badge: "KLOOK EXPERIENCES",
+        features: ["Skip-The-Line Fast Track", "Mobile E-Ticket Ready", "Over 500,000 Activities Worldwide", "Earn Klook Reward Credits"],
+        affiliateUrl: getKlookUrl(destination),
+        imageUrl: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&auto=format&fit=crop&q=80",
       }
     ];
   }
@@ -297,7 +342,47 @@ export function handleAffiliateComparisonAgent(query: string): MultiAgentRespons
   let niche = "Trading & Financial Capital";
   let offers: AffiliateComparisonOffer[] = [];
 
-  if (lower.includes("backpack") || lower.includes("trekking") || lower.includes("boots") || lower.includes("gopro") || lower.includes("camera") || lower.includes("travel gear")) {
+  if (lower.includes("tour") || lower.includes("activity") || lower.includes("attraction") || lower.includes("klook") || lower.includes("ticket") || lower.includes("pass") || lower.includes("experience") || lower.includes("sightseeing")) {
+    niche = "Global Travel Attractions & Experiences";
+    offers = [
+      {
+        id: "aff_klook_experiences",
+        name: "Klook Attractions, Passes & Adventure Tours",
+        niche: "Travel Experiences & Entry Tickets",
+        badge: "EXCLUSIVE TRAVEL DISCOUNT",
+        payoutSplit: "Instant Mobile E-Ticket Confirmation",
+        startingPrice: "Deals from ₹499 / $10",
+        discountCode: "KLOOK2026",
+        affiliateUrl: getKlookUrl(),
+        isBestMatch: true,
+        features: ["Skip-The-Line Attraction Tickets", "Over 500,000 Activities Worldwide", "Earn & Redeem Klook Reward Credits", "Free Cancellation on Select Bookings"],
+      },
+      {
+        id: "aff_booking_stays",
+        name: "Booking.com Global Hotel & Resort Network",
+        niche: "Hotel & Luxury Stays",
+        badge: "VERIFIED LOWEST RATES",
+        payoutSplit: "Free Cancellation on 90% Stays",
+        startingPrice: "From ₹1,200 / $25 / night",
+        discountCode: "TRAVEL2026",
+        affiliateUrl: getBookingHotelUrl(),
+        isBestMatch: false,
+        features: ["Over 28 Million Reported Listings", "Instant Confirmation with No Prepayment", "Genius Member Loyalty Discounts", "24/7 Global Guest Service"],
+      },
+      {
+        id: "aff_agoda_stays",
+        name: "Agoda Express Stays & Flight Bundles",
+        niche: "Asia & Global Hotels",
+        badge: "AGODA VIP SAVINGS",
+        payoutSplit: "Cashback & Reward Points",
+        startingPrice: "Special App-Only Pricing",
+        discountCode: "AGODA5",
+        affiliateUrl: getAgodaHotelUrl(),
+        isBestMatch: false,
+        features: ["Unbeatable Asia & Global Rates", "Bundle & Save (Hotel + Flight)", "Verified Real Guest Reviews", "Price Match Guarantee"],
+      }
+    ];
+  } else if (lower.includes("backpack") || lower.includes("trekking") || lower.includes("boots") || lower.includes("gopro") || lower.includes("camera") || lower.includes("travel gear")) {
     niche = "Travel & Expedition Gear";
     offers = [
       {
