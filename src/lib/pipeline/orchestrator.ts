@@ -206,74 +206,150 @@ export async function runBlogPipeline(
       );
     }
 
-    // Resolve Category
-    const categoryName = aiResult.category || options.category || "Technology";
-    const categorySlug = generateSlug(categoryName);
+    // Resolve Category Safely & Resiliently
+    const rawCatName = (aiResult.category || options.category || "Technology").trim();
+    const categoryName = rawCatName.length > 50 ? rawCatName.slice(0, 50) : rawCatName;
+    const categorySlug = generateSlug(categoryName) || "technology";
 
     const shouldPublish =
       options.autoPublish !== undefined
         ? options.autoPublish
         : process.env.AUTO_PUBLISH_DEFAULT !== "false";
 
-    // Attempt to save to database
-    let post: any = null;
-    const dbCategory = await safeDb("category.upsert", () =>
-      prisma.category.upsert({
-        where: { slug: categorySlug },
-        update: {},
-        create: { name: categoryName, slug: categorySlug },
-      })
-    );
+    // Attempt to safely resolve or create Category
+    let dbCategory: any = null;
+    try {
+      dbCategory = await prisma.category.findFirst({
+        where: {
+          OR: [
+            { slug: categorySlug },
+            { name: { equals: categoryName, mode: "insensitive" } },
+          ],
+        },
+      });
 
-    if (dbCategory) {
-      post = await safeDb("post.create", () =>
-        prisma.post.create({
+      if (!dbCategory) {
+        try {
+          dbCategory = await prisma.category.create({
+            data: { name: categoryName, slug: categorySlug },
+          });
+        } catch (_) {
+          // Fallback if concurrent insert or duplicate name/slug collision
+          dbCategory = await prisma.category.findFirst({
+            where: {
+              OR: [
+                { slug: categorySlug },
+                { name: { equals: categoryName, mode: "insensitive" } },
+              ],
+            },
+          });
+        }
+      }
+
+      if (!dbCategory) {
+        dbCategory = await prisma.category.findFirst();
+      }
+    } catch (catErr) {
+      console.warn("[PIPELINE] Category resolution non-fatal warning:", catErr);
+      try {
+        dbCategory = await prisma.category.findFirst();
+      } catch (_) {}
+    }
+
+    // Attempt to save post to database
+    let post: any = null;
+    try {
+      post = await prisma.post.create({
+        data: {
+          title: aiResult.title,
+          slug: finalSlug,
+          excerpt: aiResult.excerpt,
+          content: processedContent,
+          featuredImage: mediaResult.featuredImage,
+          imageAlt: mediaResult.imageAlt,
+          imagePhotographer: mediaResult.imagePhotographer,
+          imagePhotographerUrl: mediaResult.imagePhotographerUrl,
+          youtubeVideoId: mediaResult.youtubeVideoId,
+          youtubeVideoTitle: mediaResult.youtubeVideoTitle,
+          seoTitle: aiResult.seoTitle,
+          seoDescription: aiResult.seoDescription,
+          seoKeywords: seoKeywords.join(", "),
+          faqJson,
+          readTimeMinutes,
+          status: shouldPublish ? "PUBLISHED" : "DRAFT",
+          categoryId: dbCategory?.id || null,
+        },
+      });
+    } catch (postErr: any) {
+      console.warn("[PIPELINE] Post creation initial attempt warning:", postErr?.message);
+      try {
+        const fallbackSlug = `${finalSlug}-${Date.now().toString().slice(-4)}`;
+        post = await prisma.post.create({
           data: {
             title: aiResult.title,
-            slug: finalSlug,
+            slug: fallbackSlug,
             excerpt: aiResult.excerpt,
             content: processedContent,
             featuredImage: mediaResult.featuredImage,
             imageAlt: mediaResult.imageAlt,
-            imagePhotographer: mediaResult.imagePhotographer,
-            imagePhotographerUrl: mediaResult.imagePhotographerUrl,
-            youtubeVideoId: mediaResult.youtubeVideoId,
-            youtubeVideoTitle: mediaResult.youtubeVideoTitle,
-            seoTitle: aiResult.seoTitle,
-            seoDescription: aiResult.seoDescription,
-            seoKeywords: seoKeywords.join(", "),
-            faqJson,
-            readTimeMinutes,
             status: shouldPublish ? "PUBLISHED" : "DRAFT",
-            categoryId: dbCategory.id,
+            readTimeMinutes,
           },
-        })
-      );
-
-      // Resolve Tags
-      if (post && aiResult.tags && Array.isArray(aiResult.tags)) {
-        for (const tagName of aiResult.tags) {
-          const tagSlug = generateSlug(tagName);
-          if (!tagSlug) continue;
-          const tag = await safeDb(`tag.upsert:${tagSlug}`, () =>
-            prisma.tag.upsert({
-              where: { slug: tagSlug },
-              update: {},
-              create: { name: tagName, slug: tagSlug },
-            })
-          );
-
-          if (tag) {
-            await safeDb(`postTag.create:${tagSlug}`, () =>
-              prisma.postTag.create({
-                data: { postId: post.id, tagId: tag.id },
-              })
-            );
-          }
-        }
+        });
+      } catch (fatalPostErr: any) {
+        console.error("[PIPELINE] Post creation failed in DB:", fatalPostErr?.message);
       }
+    }
 
-      // 8. Auto-Trigger Viral Social Promotion Campaign
+    // Resolve Tags Resiliently
+    if (post && post.id && !post.id.startsWith("local_") && aiResult.tags && Array.isArray(aiResult.tags)) {
+      for (const rawTagName of aiResult.tags) {
+        const tagName = String(rawTagName || "").trim().slice(0, 40);
+        const tagSlug = generateSlug(tagName);
+        if (!tagSlug) continue;
+
+        try {
+          let tag = await prisma.tag.findFirst({
+            where: {
+              OR: [
+                { slug: tagSlug },
+                { name: { equals: tagName, mode: "insensitive" } },
+              ],
+            },
+          });
+
+          if (!tag) {
+            try {
+              tag = await prisma.tag.create({
+                data: { name: tagName, slug: tagSlug },
+              });
+            } catch (_) {
+              tag = await prisma.tag.findFirst({
+                where: {
+                  OR: [
+                    { slug: tagSlug },
+                    { name: { equals: tagName, mode: "insensitive" } },
+                  ],
+                },
+              });
+            }
+          }
+
+          if (tag && post.id) {
+            await prisma.postTag.upsert({
+              where: {
+                postId_tagId: { postId: post.id, tagId: tag.id },
+              },
+              update: {},
+              create: { postId: post.id, tagId: tag.id },
+            }).catch(() => {});
+          }
+        } catch (_) {}
+      }
+    }
+
+    // 8. Auto-Trigger Viral Social Promotion Campaign
+    if (post && post.title) {
       try {
         await runPromotionAgent({
           title: post.title,
