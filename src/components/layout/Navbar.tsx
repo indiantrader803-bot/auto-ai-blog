@@ -301,20 +301,6 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
             </Link>
-
-            <button
-              onClick={() => {
-                if (typeof window !== "undefined") {
-                  window.dispatchEvent(new CustomEvent("open-smarttravel-chat"));
-                }
-              }}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:border-emerald-500 hover:bg-emerald-500/20 text-xs font-black uppercase tracking-wider transition-all shadow-sm group cursor-pointer"
-              title="Open 24/7 AI Travel & Itinerary Assistant"
-            >
-              <Compass className="w-3.5 h-3.5 text-emerald-500 group-hover:rotate-45 transition-transform" />
-              <span>AI Travel Chatbot</span>
-              <span className="px-1.5 py-0.2 rounded-full bg-emerald-500 text-white text-[9px] font-black">24/7</span>
-            </button>
           </div>
 
           {/* Right Actions Bar */}
@@ -412,18 +398,6 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
             >
               💬 Community Discussions
             </Link>
-            <button
-              onClick={() => {
-                setIsMenuOpen(false);
-                if (typeof window !== "undefined") {
-                  window.dispatchEvent(new CustomEvent("open-smarttravel-chat"));
-                }
-              }}
-              className="w-full text-left text-sm font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center justify-between"
-            >
-              <span>🧭 AI Travel &amp; Itinerary Chatbot</span>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">24/7</span>
-            </button>
             {categories.map((cat) => (
               <Link
                 key={cat.slug}
