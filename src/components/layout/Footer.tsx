@@ -149,7 +149,7 @@ export default function Footer() {
           {/* Col 3: Editorial & Trust */}
           <div className="space-y-4">
             <h4 className="text-xs font-black uppercase tracking-wider text-white border-b border-slate-800 pb-2">
-              Editorial Standards
+              Editorial &amp; Contact
             </h4>
             <ul className="space-y-2.5 text-xs text-slate-400">
               <li>
@@ -163,14 +163,14 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
-                  <Mail className="w-3.5 h-3.5 text-amber-400" /> Press Inquiries &amp; Corrections
-                </Link>
+                <a href="mailto:contact@thesmartmag.com" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
+                  <Mail className="w-3.5 h-3.5 text-amber-400" /> contact@thesmartmag.com
+                </a>
               </li>
               <li>
-                <Link href="/privacy" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" /> Privacy &amp; Data Ethics
-                </Link>
+                <a href="mailto:support@thesmartmag.com" className="hover:text-emerald-400 transition-colors flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> support@thesmartmag.com
+                </a>
               </li>
             </ul>
           </div>

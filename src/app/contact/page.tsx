@@ -53,6 +53,48 @@ export default function ContactPage() {
           </p>
         </header>
 
+        {/* Official Email Channels */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <a
+            href="mailto:contact@thesmartmag.com"
+            className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between space-y-2"
+          >
+            <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
+              <Mail className="w-4 h-4" />
+              <span className="text-[11px] font-black uppercase tracking-wider">General & Press</span>
+            </div>
+            <div className="text-xs font-bold text-slate-900 dark:text-white font-mono group-hover:text-indigo-500 transition-colors">
+              contact@thesmartmag.com
+            </div>
+          </a>
+
+          <a
+            href="mailto:support@thesmartmag.com"
+            className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between space-y-2"
+          >
+            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+              <MessageSquare className="w-4 h-4" />
+              <span className="text-[11px] font-black uppercase tracking-wider">Help & Support</span>
+            </div>
+            <div className="text-xs font-bold text-slate-900 dark:text-white font-mono group-hover:text-emerald-500 transition-colors">
+              support@thesmartmag.com
+            </div>
+          </a>
+
+          <a
+            href="mailto:query@thesmartmag.com"
+            className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-purple-500/50 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between space-y-2"
+          >
+            <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400">
+              <Mail className="w-4 h-4" />
+              <span className="text-[11px] font-black uppercase tracking-wider">Editorial Queries</span>
+            </div>
+            <div className="text-xs font-bold text-slate-900 dark:text-white font-mono group-hover:text-purple-500 transition-colors">
+              query@thesmartmag.com
+            </div>
+          </a>
+        </div>
+
         <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
           {submitted ? (
             <div className="text-center py-8 space-y-3">
