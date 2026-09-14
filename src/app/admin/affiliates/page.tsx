@@ -91,7 +91,7 @@ export default function AffiliateTrackingDashboardPage() {
   const conversions = data?.recentConversions || [];
   const report = data?.report || {};
 
-  const categories = ["ALL", "Trading & Binary", "Crypto Derivatives", "Crypto INR", "Prop Trading", "SaaS & Tools"];
+  const categories = ["ALL", "Travel & Flights", "Trading & Binary", "Crypto Derivatives", "Crypto INR", "Prop Trading", "SaaS & Tools"];
 
   const filteredPrograms = programs.filter((p: any) => {
     const matchesCat = filterCategory === "ALL" || p.category === filterCategory;

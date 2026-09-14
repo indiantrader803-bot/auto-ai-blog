@@ -137,6 +137,12 @@ export default function Footer() {
                   <span className="px-2 py-0.5 rounded-full bg-slate-900 text-[10px] text-slate-500">15</span>
                 </Link>
               </li>
+              <li>
+                <Link href="/travel" className="hover:text-sky-400 text-sky-300 transition-colors flex items-center justify-between">
+                  <span>✈️ Travel &amp; Flight Deals</span>
+                  <span className="px-2 py-0.5 rounded-full bg-sky-950 text-[10px] text-sky-400 font-bold">17 PARTNERS</span>
+                </Link>
+              </li>
             </ul>
           </div>
 

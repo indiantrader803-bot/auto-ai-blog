@@ -8,6 +8,10 @@ import {
   getFlightSearchUrl,
   AFFILIATE_CONFIG,
 } from "@/lib/affiliate/links";
+import {
+  TRAVELPAYOUTS_PROGRAMS,
+  getBestTravelpayoutsPartner,
+} from "@/lib/affiliate/travelpayouts";
 
 export type AgentIntent =
   | "BOOKING"
@@ -184,7 +188,182 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
   let destination = "Global Destination";
   let deals: BookingDeal[] = [];
 
-  if (lower.includes("kerala") || lower.includes("kochi") || lower.includes("munnar") || lower.includes("alleppey")) {
+  if (lower.includes("esim") || lower.includes("sim card") || lower.includes("roaming") || lower.includes("international data") || lower.includes("saily") || lower.includes("drimsim")) {
+    destination = "Global Mobile Connectivity";
+    deals = [
+      {
+        id: "tp_saily_esim",
+        title: "Saily Global Travel eSIM (by Nord Security)",
+        location: "150+ Countries Worldwide",
+        rating: 4.9,
+        priceTag: "Data Plans from $3.99",
+        badge: "NORD SECURITY BACKED",
+        features: ["1-Minute QR Activation", "Keep Original WhatsApp Number", "Ultra Fast 5G/4G Speeds", "24/7 Live Support"],
+        affiliateUrl: "https://saily.tpo.li/9kXyVV0E",
+        imageUrl: "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "tp_drimsim",
+        title: "Drimsim Universal Physical SIM & eSIM",
+        location: "197 Countries Coverage",
+        rating: 4.7,
+        priceTag: "Pay-As-You-Go Rates",
+        badge: "ZERO ROAMING SURCHARGE",
+        features: ["Direct Local Telecom Prices", "Real-time Mobile Balance App", "No Expiration on Unused Funds", "Free Incoming SMS"],
+        affiliateUrl: "https://drimsim.tpo.li/UyiqPwB5",
+        imageUrl: "https://images.unsplash.com/photo-1563770660941-20978e870e26?w=600&auto=format&fit=crop&q=80",
+      }
+    ];
+  } else if (lower.includes("claim") || lower.includes("delay") || lower.includes("compensation") || lower.includes("airhelp") || lower.includes("compensair") || lower.includes("cancelled flight") || lower.includes("refund")) {
+    destination = "Flight Delay & Cancellation Compensation";
+    deals = [
+      {
+        id: "tp_airhelp",
+        title: "AirHelp Flight Compensation Claims (EU/UK/US)",
+        location: "Global Airlines & Flights",
+        rating: 4.9,
+        priceTag: "Up to €600 / $650 per Passenger",
+        badge: "NO WIN NO FEE",
+        features: ["Covers Delays over 3 Hours", "Cancelled Flight Payouts", "Missed Connections", "2.3M+ Passengers Paid"],
+        affiliateUrl: "https://airhelp.tpo.li/fpMMLvXF",
+        imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "tp_compensair",
+        title: "Compensair Airline Compensation Claim Service",
+        location: "All Major International Airlines",
+        rating: 4.8,
+        priceTag: "Fast Bank Wire Settlement",
+        badge: "ZERO RISK CLAIM",
+        features: ["Free Payout Calculator", "Covers Flights Past 6 Years", "Direct Legal Team Handling", "No Upfront Costs"],
+        affiliateUrl: "https://compensair.tpo.li/nwEzrtjW",
+        imageUrl: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&auto=format&fit=crop&q=80",
+      }
+    ];
+  } else if (lower.includes("car rental") || lower.includes("rent car") || lower.includes("car hire") || lower.includes("road trip") || lower.includes("drive")) {
+    destination = "Worldwide Car Rental";
+    deals = [
+      {
+        id: "tp_economybookings",
+        title: "EconomyBookings Worldwide Car Rental Comparison",
+        location: "20,000+ Locations Worldwide",
+        rating: 4.8,
+        priceTag: "Best Price Match Guarantee",
+        badge: "FREE CANCELLATION",
+        features: ["All Major Brands (Hertz, Avis, Sixt)", "Zero Credit Card Fees", "Airport & Downtown Pickup", "24/7 Multilingual Support"],
+        affiliateUrl: "https://economybookings.tpo.li/fbYsWyaE",
+        imageUrl: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "tp_autoeurope",
+        title: "Auto Europe Premium & European Road Trips",
+        location: "180 Countries & 24,000 Hubs",
+        rating: 4.8,
+        priceTag: "No Change Fees Guarantee",
+        badge: "60+ YEARS EXPERIENCE",
+        features: ["Zero Deductible Insurance Options", "Motorhomes & Luxury Fleets", "Cross-Border Driving Permits", "Instant Confirmation"],
+        affiliateUrl: "https://autoeurope.tpo.li/7U28ek89",
+        imageUrl: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "tp_qeeq",
+        title: "QEEQ Smart Car Rental & Price Drop Protection",
+        location: "Global Rental Marketplace",
+        rating: 4.7,
+        priceTag: "Automatic Price Drop Rebooking",
+        badge: "DIAMOND CLUB SAVINGS",
+        features: ["Auto-Rebook if Price Drops", "Crypto & UPI Supported", "Free Flight Delay Insurance", "7M+ Verified Renters"],
+        affiliateUrl: "https://qeeq.tpo.li/Vlx3Gi5t",
+        imageUrl: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&auto=format&fit=crop&q=80",
+      }
+    ];
+  } else if (lower.includes("bike") || lower.includes("scooter") || lower.includes("motorcycle") || lower.includes("scooter rental")) {
+    destination = "Motorbike & Scooter Rentals";
+    deals = [
+      {
+        id: "tp_bikesbooking",
+        title: "BikesBooking Motorcycle, Scooter & Quad Hire",
+        location: "2,000+ Locations in 70 Countries",
+        rating: 4.8,
+        priceTag: "From $10 / day",
+        badge: "WORLD'S #1 BIKE RENTAL",
+        features: ["950+ Verified Suppliers", "Helmets & Insurance Included", "Vespa, Harley & Adventure Bikes", "Free 48h Cancellation"],
+        affiliateUrl: "https://bikesbooking.tpo.li/hRkGiF2p",
+        imageUrl: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=600&auto=format&fit=crop&q=80",
+      }
+    ];
+  } else if (lower.includes("transfer") || lower.includes("cab") || lower.includes("taxi") || lower.includes("chauffeur") || lower.includes("airport ride")) {
+    destination = "Airport Transfers & Private Rides";
+    deals = [
+      {
+        id: "tp_gettransfer",
+        title: "GetTransfer Airport Private Chauffeurs & Limousines",
+        location: "180+ Countries Worldwide",
+        rating: 4.8,
+        priceTag: "Custom Driver Bids from $15",
+        badge: "FREE 60 MIN WAITING TIME",
+        features: ["Nameplate Airport Meet & Greet", "Mercedes Benz VIP to Economy", "No Surge Pricing Delays", "Fixed Guaranteed Price"],
+        affiliateUrl: "https://gettransfer.tpo.li/SHZAx1VF",
+        imageUrl: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "tp_intui",
+        title: "Intui.travel Resort & Hotel Door-to-Door Shuttles",
+        location: "175 Countries & 40,000 Resorts",
+        rating: 4.7,
+        priceTag: "Direct Hotel Drop-off",
+        badge: "SHARED & PRIVATE SHUTTLES",
+        features: ["Family Minivans & Child Seats", "No Hidden Baggage Fees", "Direct to Resort Doorstep", "English-speaking Drivers"],
+        affiliateUrl: "https://intui.tpo.li/KXD4PNCN",
+        imageUrl: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&auto=format&fit=crop&q=80",
+      }
+    ];
+  } else if (lower.includes("luggage") || lower.includes("bag") || lower.includes("storage") || lower.includes("locker")) {
+    destination = "Luggage & Bag Storage";
+    deals = [
+      {
+        id: "tp_radicalstorage",
+        title: "Radical Storage Certified Luggage Lockers",
+        location: "5,000+ Spots in 500+ Cities",
+        rating: 4.9,
+        priceTag: "Fixed $5 / €5 per Day per Bag",
+        badge: "€3,000 BAG GUARANTEE",
+        features: ["No Size or Weight Restrictions", "Located near Train Stations & Airports", "3-Minute Instant App Booking", "Verified Hotel & Shop Partners"],
+        affiliateUrl: "https://radicalstorage.tpo.li/o2vAfWY9",
+        imageUrl: "https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=600&auto=format&fit=crop&q=80",
+      }
+    ];
+  } else if (lower.includes("insurance") || lower.includes("medical") || lower.includes("schengen visa")) {
+    destination = "International Travel Insurance";
+    deals = [
+      {
+        id: "tp_ektatraveling",
+        title: "EKTA Traveling Comprehensive Medical & Trip Insurance",
+        location: "Worldwide Coverage",
+        rating: 4.8,
+        priceTag: "Instant Visa-Approved Policy",
+        badge: "SCHENGEN APPROVED",
+        features: ["COVID-19 & Medical Emergency Cover", "Luggage Loss & Delay Protection", "Ages 2 Months to 100 Years", "Direct Hospital Bill Settlement"],
+        affiliateUrl: "https://ektatraveling.tpo.li/Az2rwDBw",
+        imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80",
+      }
+    ];
+  } else if (lower.includes("flight") || lower.includes("plane") || lower.includes("airfare") || lower.includes("aviasales")) {
+    destination = "Flight Search & Airfare Comparison";
+    deals = [
+      {
+        id: "tp_aviasales",
+        title: "Aviasales 1,000+ Airline Flight Comparison",
+        location: "Global Flights & Routes",
+        rating: 4.9,
+        priceTag: "Lowest Price Match Guarantee",
+        badge: "ZERO BOOKING FEES",
+        features: ["Price Alert Tracking", "Direct Airline Ticket Matching", "Multi-City Routing", "Save up to 35% on Airfare"],
+        affiliateUrl: "https://aviasales.tpo.li/ZeF7BjUt",
+        imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop&q=80",
+      }
+    ];
+  } else if (lower.includes("kerala") || lower.includes("kochi") || lower.includes("munnar") || lower.includes("alleppey")) {
     destination = "Kerala, India";
     deals = [
       {

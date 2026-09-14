@@ -24,6 +24,7 @@ import {
   MessageSquare,
   Bot,
   Compass,
+  Plane,
 } from "lucide-react";
 import SearchModal from "./SearchModal";
 import LanguageSelector from "./LanguageSelector";
@@ -279,8 +280,17 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
             </div>
           </Link>
 
-          {/* Center / Right Prominent Interactive Hubs: AI Store & Community */}
+          {/* Center / Right Prominent Interactive Hubs: Travel Deals, AI Store & Community */}
           <div className="hidden sm:flex items-center gap-2">
+            <Link
+              href="/travel"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-sky-500/10 via-indigo-500/10 to-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/30 hover:border-sky-500 hover:bg-sky-500/20 text-xs font-black uppercase tracking-wider transition-all shadow-sm group cursor-pointer"
+            >
+              <Plane className="w-3.5 h-3.5 text-sky-500 group-hover:scale-125 transition-transform" />
+              <span>Travel Deals</span>
+              <span className="px-1.5 py-0.2 rounded-full bg-sky-500 text-slate-950 text-[9px] font-black">DEALS</span>
+            </Link>
+
             <Link
               href="/store"
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 hover:border-amber-500 hover:bg-amber-500/20 text-xs font-black uppercase tracking-wider transition-all shadow-sm group cursor-pointer"
@@ -390,6 +400,14 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               className="block text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white"
             >
               Featured Stories
+            </Link>
+            <Link
+              href="/travel"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-sm font-bold uppercase tracking-wider text-sky-500 flex items-center justify-between"
+            >
+              <span>✈️ Travel Deals &amp; Passes</span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950">HOT</span>
             </Link>
             <Link
               href="/community"
