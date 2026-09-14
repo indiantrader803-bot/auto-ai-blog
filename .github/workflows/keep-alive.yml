@@ -10,13 +10,14 @@ jobs:
   ping-keep-alive:
     name: Ping 24/7 Keep-Alive
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Ping Production Health & Core Pages
         run: |
           echo "⚡ Sending keep-alive heartbeat pulses to Render instance..."
-          curl -s -m 20 -o /dev/null -w "Health: %{http_code}\n" "https://auto-ai-blog-web.onrender.com/api/health" || echo "Health check pinged"
-          curl -s -m 20 -o /dev/null -w "Home: %{http_code}\n" "https://auto-ai-blog-web.onrender.com/" || echo "Home pinged"
-          curl -s -m 20 -o /dev/null -w "Community: %{http_code}\n" "https://auto-ai-blog-web.onrender.com/community" || echo "Community pinged"
-          curl -s -m 20 -o /dev/null -w "Store: %{http_code}\n" "https://auto-ai-blog-web.onrender.com/store" || echo "Store pinged"
+          curl -s -L --retry 2 --max-time 20 -o /dev/null -w "Health: %{http_code}\n" "https://auto-ai-blog-web.onrender.com/api/health" 2>/dev/null || true
+          curl -s -L --retry 2 --max-time 20 -o /dev/null -w "Home: %{http_code}\n" "https://auto-ai-blog-web.onrender.com/" 2>/dev/null || true
+          curl -s -L --retry 2 --max-time 20 -o /dev/null -w "Community: %{http_code}\n" "https://auto-ai-blog-web.onrender.com/community" 2>/dev/null || true
+          curl -s -L --retry 2 --max-time 20 -o /dev/null -w "Store: %{http_code}\n" "https://auto-ai-blog-web.onrender.com/store" 2>/dev/null || true
           echo "✅ All 24/7 keep-alive heartbeats dispatched successfully!"
           exit 0

@@ -14,12 +14,14 @@ jobs:
       - name: Ping Auto-AI-Blog Live Health Endpoint
         run: |
           echo "Pinging Auto-AI-Blog health endpoint..."
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://auto-ai-blog-web.onrender.com/api/health)
-          echo "HTTP status code: $RESPONSE"
+          STATUS=$(curl -s -L --retry 3 --max-time 30 -o /dev/null -w "%{http_code}" https://auto-ai-blog-web.onrender.com/api/health 2>/dev/null || echo "000")
+          echo "HTTP health status code: $STATUS"
 
       - name: Ping Ads.txt & Sitemap
         run: |
           echo "Pinging ads.txt..."
-          curl -s https://auto-ai-blog-web.onrender.com/ads.txt | head -n 5
+          curl -s -L --retry 2 --max-time 20 https://auto-ai-blog-web.onrender.com/ads.txt 2>/dev/null | head -n 5 || true
           echo "Pinging sitemap..."
-          curl -s -o /dev/null -w "%{http_code}" https://auto-ai-blog-web.onrender.com/sitemap.xml
+          curl -s -L --retry 2 --max-time 20 -o /dev/null -w "%{http_code}" https://auto-ai-blog-web.onrender.com/sitemap.xml 2>/dev/null || true
+          echo "✅ Keepalive cycle completed."
+          exit 0
