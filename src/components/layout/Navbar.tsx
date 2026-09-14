@@ -394,6 +394,11 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
         {/* Mobile Navigation Drawer */}
         {isMenuOpen && (
           <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-6 py-6 space-y-4 shadow-xl animate-in slide-in-from-top-2 duration-200">
+            <div className="pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Select Language:</span>
+              <LanguageSelector />
+            </div>
+
             <Link
               href="/"
               onClick={() => setIsMenuOpen(false)}

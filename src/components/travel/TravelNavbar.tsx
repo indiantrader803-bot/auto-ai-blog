@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import LanguageSelector from "@/components/layout/LanguageSelector";
 import {
   Plane,
   Car,
@@ -133,6 +134,9 @@ export default function TravelNavbar() {
 
             {/* ⚙️ Right Utility Controls */}
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              {/* Language Selector */}
+              <LanguageSelector />
+
               {/* Currency Selector */}
               <div className="relative">
                 <button
@@ -146,7 +150,7 @@ export default function TravelNavbar() {
 
                 {isCurrencyOpen && (
                   <div className="absolute right-0 mt-2 w-32 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-1.5 z-50 text-xs font-bold animate-in fade-in slide-in-from-top-2">
-                    {["USD ($)", "EUR (€)", "GBP (£)", "AUD ($)", "CAD ($)", "INR (₹)"].map((curr) => {
+                    {["USD ($)", "EUR (€)", "GBP (£)", "AUD ($)", "CAD ($)", "INR (₹)", "JPY (¥)", "AED (د.إ)"].map((curr) => {
                       const code = curr.split(" ")[0];
                       return (
                         <button
@@ -201,6 +205,11 @@ export default function TravelNavbar() {
         {/* 📱 Mobile Navigation Drawer */}
         {isMenuOpen && (
           <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-5 py-5 space-y-2 shadow-2xl animate-in slide-in-from-top-2 duration-200 font-sans">
+            <div className="pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-500">Language:</span>
+              <LanguageSelector />
+            </div>
+
             {navLinks.map((link) => {
               const LinkIcon = link.icon;
               return (
