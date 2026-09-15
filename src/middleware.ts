@@ -10,6 +10,18 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(targetUrl, 301);
   }
 
+  // Seamless Subdomain Routing for travel.thesmartmag.com
+  if (host.startsWith("travel.")) {
+    // If root '/', rewrite directly to '/travel'
+    if (pathname === "/") {
+      return NextResponse.rewrite(new URL(`/travel${search}`, req.url));
+    }
+    // If visiting destination routes directly like '/japan' on travel subdomain, rewrite to '/travel/japan'
+    if (!pathname.startsWith("/travel") && !pathname.startsWith("/api") && !pathname.startsWith("/_next")) {
+      return NextResponse.rewrite(new URL(`/travel${pathname}${search}`, req.url));
+    }
+  }
+
   return NextResponse.next();
 }
 
