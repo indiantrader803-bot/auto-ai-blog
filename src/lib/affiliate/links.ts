@@ -504,15 +504,17 @@ export function getGetTransferUrl(param?: string | TransferSearchParams): string
 
 /**
  * Generate Saily 5G Global eSIM Deep Destination URL
- * Links directly to the country-specific eSIM package with affiliate tracking attached.
+ * Links directly to Saily with affiliate tracking attached via Travelpayouts verified CDN gateway.
  */
 export function getSailyEsimUrl(countryOrRegion = "global"): string {
-  const countrySlug = resolveSailyCountrySlug(countryOrRegion);
-  if (countrySlug) {
-    const targetUrl = `https://saily.com/esim-${countrySlug}/`;
-    return `https://go.saily.site/aff_c?aff_id=8014&offer_id=126&url=${encodeURIComponent(targetUrl)}`;
-  }
   return `https://saily.tpo.li/9kXyVV0E`;
+}
+
+/**
+ * Generate Drimsim Universal Data & Voice SIM/eSIM URL
+ */
+export function getDrimsimUrl(): string {
+  return `https://drimsim.tpo.li/UyiqPwB5`;
 }
 
 /**

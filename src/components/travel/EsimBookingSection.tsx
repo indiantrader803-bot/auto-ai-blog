@@ -16,7 +16,7 @@ import {
   Share2,
   Lock,
 } from "lucide-react";
-import { getSailyEsimUrl } from "@/lib/affiliate/links";
+import { getSailyEsimUrl, getDrimsimUrl } from "@/lib/affiliate/links";
 import { trackTravelpayoutsClick } from "@/lib/affiliate/travelpayouts";
 import { useTravelCurrency } from "@/context/TravelCurrencyContext";
 
@@ -401,7 +401,7 @@ export default function EsimBookingSection() {
     });
 
     const directAffUrl =
-      pkg.provider === "saily" ? getSailyEsimUrl(pkg.country) : "https://drimsim.tpo.li/UyiqPwB5";
+      pkg.provider === "saily" ? getSailyEsimUrl(pkg.country) : getDrimsimUrl();
     window.open(directAffUrl, "_blank", "noopener,noreferrer");
   };
 
