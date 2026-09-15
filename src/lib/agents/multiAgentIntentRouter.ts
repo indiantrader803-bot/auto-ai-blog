@@ -5,13 +5,109 @@ import {
   getAgodaHotelUrl,
   getKlookUrl,
   getAmazonProductUrl,
-  getFlightSearchUrl,
+  getAviasalesFlightUrl,
+  getGetTransferUrl,
+  getSailyEsimUrl,
+  getEconomyBookingsUrl,
+  getAirHelpUrl,
+  resolveIataCode,
   AFFILIATE_CONFIG,
 } from "@/lib/affiliate/links";
 import {
   TRAVELPAYOUTS_PROGRAMS,
   getBestTravelpayoutsPartner,
 } from "@/lib/affiliate/travelpayouts";
+
+/**
+ * 🧭 Smart Natural Language Trip Parameter Parser
+ * Extracts destination, departure city, passenger count, and travel dates from user prompts
+ */
+export function parseTripParameters(query: string) {
+  const lower = query.toLowerCase();
+
+  // 1. Passenger Count
+  let adults = 2;
+  const paxMatch = lower.match(/(\d+)\s*(adults?|travelers?|travellers?|persons?|people|pax|guests?)/i);
+  if (paxMatch && paxMatch[1]) {
+    adults = Math.max(1, parseInt(paxMatch[1], 10));
+  } else if (lower.includes("solo") || lower.includes("single") || lower.includes("myself") || lower.includes("1 person") || lower.includes("1 pax")) {
+    adults = 1;
+  } else if (lower.includes("family") || lower.includes("group") || lower.includes("friends")) {
+    adults = 4;
+  }
+
+  // 2. Origin / Departure City
+  let origin = "Delhi";
+  const originMatch = lower.match(/(?:from|departing from|leaving from|origin(?:ating)? from)\s+([a-zA-Z\s]+?)(?=\s+(?:to|for|in|on|with|next|this|during|\d|$))/i);
+  if (originMatch && originMatch[1]) {
+    const rawOrigin = originMatch[1].trim();
+    if (rawOrigin.length > 2) {
+      origin = rawOrigin;
+    }
+  } else if (lower.includes("from mumbai")) {
+    origin = "Mumbai";
+  } else if (lower.includes("from kolkata") || lower.includes("from calcutta")) {
+    origin = "Kolkata";
+  } else if (lower.includes("from bangalore") || lower.includes("from bengaluru")) {
+    origin = "Bangalore";
+  } else if (lower.includes("from chennai") || lower.includes("from madras")) {
+    origin = "Chennai";
+  } else if (lower.includes("from hyderabad")) {
+    origin = "Hyderabad";
+  }
+
+  // 3. Destination City
+  let destination = "Goa";
+  if (lower.includes("kerala") || lower.includes("kochi") || lower.includes("munnar") || lower.includes("alleppey") || lower.includes("wayanad")) {
+    destination = "Kerala";
+  } else if (lower.includes("ladakh") || lower.includes("leh") || lower.includes("kashmir") || lower.includes("srinagar") || lower.includes("gulmarg")) {
+    destination = "Ladakh";
+  } else if (lower.includes("japan") || lower.includes("tokyo") || lower.includes("kyoto") || lower.includes("osaka")) {
+    destination = "Japan";
+  } else if (lower.includes("goa") || lower.includes("panaji") || lower.includes("calangute") || lower.includes("baga")) {
+    destination = "Goa";
+  } else if (lower.includes("dubai") || lower.includes("uae") || lower.includes("abu dhabi")) {
+    destination = "Dubai";
+  } else if (lower.includes("bali") || lower.includes("indonesia") || lower.includes("ubud") || lower.includes("seminyak")) {
+    destination = "Bali";
+  } else if (lower.includes("switzerland") || lower.includes("swiss") || lower.includes("zermatt") || lower.includes("interlaken") || lower.includes("zurich")) {
+    destination = "Switzerland";
+  } else if (lower.includes("maldives") || lower.includes("male")) {
+    destination = "Maldives";
+  } else if (lower.includes("thailand") || lower.includes("bangkok") || lower.includes("phuket") || lower.includes("pattaya")) {
+    destination = "Thailand";
+  } else if (lower.includes("singapore")) {
+    destination = "Singapore";
+  } else if (lower.includes("paris") || lower.includes("france")) {
+    destination = "Paris";
+  } else if (lower.includes("london") || lower.includes("uk") || lower.includes("england")) {
+    destination = "London";
+  } else if (lower.includes("manali") || lower.includes("himachal") || lower.includes("shimla") || lower.includes("dharamsala")) {
+    destination = "Manali";
+  } else if (lower.includes("jaipur") || lower.includes("rajasthan") || lower.includes("udaipur") || lower.includes("jodhpur")) {
+    destination = "Rajasthan";
+  } else if (lower.includes("vietnam") || lower.includes("hanoi") || lower.includes("da nang")) {
+    destination = "Vietnam";
+  } else {
+    // Attempt regex extraction
+    const destMatch = lower.match(/(?:to|in|for|explore|visit|plan|book)\s+([a-zA-Z\s]+?)(?=\s+(?:from|on|for|with|next|this|flight|hotel|tour|trip|\d|$))/i);
+    if (destMatch && destMatch[1]) {
+      const candidate = destMatch[1].trim();
+      if (candidate.length > 2 && !["a", "the", "me", "our", "my", "best", "cheap", "luxury", "any", "this"].includes(candidate.toLowerCase())) {
+        destination = candidate.charAt(0).toUpperCase() + candidate.slice(1);
+      }
+    }
+  }
+
+  // 4. Default Departure & Return Dates (14 days from now, 7-day duration)
+  const now = new Date();
+  const departObj = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+  const returnObj = new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000);
+  const departDate = departObj.toISOString().split("T")[0];
+  const returnDate = returnObj.toISOString().split("T")[0];
+
+  return { destination, origin, adults, departDate, returnDate };
+}
 
 export type AgentIntent =
   | "BOOKING"
@@ -181,25 +277,27 @@ export function detectUserIntent(query: string): AgentIntent {
 
 /**
  * 🏨 Sub-Agent 1: Booking Agent
+ * Automatically parses user destinations, dates, and pax to build deep search links
  */
 export function handleBookingAgent(query: string): MultiAgentResponse {
   const lower = query.toLowerCase();
+  const trip = parseTripParameters(query);
+  const { destination, origin, adults, departDate, returnDate } = trip;
+  const rooms = Math.max(1, Math.ceil(adults / 2));
 
-  let destination = "Global Destination";
   let deals: BookingDeal[] = [];
 
   if (lower.includes("esim") || lower.includes("sim card") || lower.includes("roaming") || lower.includes("international data") || lower.includes("saily") || lower.includes("drimsim")) {
-    destination = "Global Mobile Connectivity";
     deals = [
       {
         id: "tp_saily_esim",
-        title: "Saily Global Travel eSIM (by Nord Security)",
-        location: "150+ Countries Worldwide",
+        title: `Saily 5G Travel eSIM for ${destination} (Nord Security)`,
+        location: `${destination} & 150+ Countries`,
         rating: 4.9,
-        priceTag: "Data Plans from $3.99",
+        priceTag: "Plans from $3.99",
         badge: "NORD SECURITY BACKED",
         features: ["1-Minute QR Activation", "Keep Original WhatsApp Number", "Ultra Fast 5G/4G Speeds", "24/7 Live Support"],
-        affiliateUrl: "https://saily.tpo.li/9kXyVV0E",
+        affiliateUrl: getSailyEsimUrl(destination),
         imageUrl: "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=600&auto=format&fit=crop&q=80",
       },
       {
@@ -215,17 +313,16 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
       }
     ];
   } else if (lower.includes("claim") || lower.includes("delay") || lower.includes("compensation") || lower.includes("airhelp") || lower.includes("compensair") || lower.includes("cancelled flight") || lower.includes("refund")) {
-    destination = "Flight Delay & Cancellation Compensation";
     deals = [
       {
         id: "tp_airhelp",
-        title: "AirHelp Flight Compensation Claims (EU/UK/US)",
+        title: `AirHelp Flight Delay Compensation (${origin} to ${destination})`,
         location: "Global Airlines & Flights",
         rating: 4.9,
         priceTag: "Up to €600 / $650 per Passenger",
         badge: "NO WIN NO FEE",
         features: ["Covers Delays over 3 Hours", "Cancelled Flight Payouts", "Missed Connections", "2.3M+ Passengers Paid"],
-        affiliateUrl: "https://airhelp.tpo.li/fpMMLvXF",
+        affiliateUrl: getAirHelpUrl({ departure: origin, arrival: destination }),
         imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop&q=80",
       },
       {
@@ -241,357 +338,137 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
       }
     ];
   } else if (lower.includes("car rental") || lower.includes("rent car") || lower.includes("car hire") || lower.includes("road trip") || lower.includes("drive")) {
-    destination = "Worldwide Car Rental";
     deals = [
       {
         id: "tp_economybookings",
-        title: "EconomyBookings Worldwide Car Rental Comparison",
-        location: "20,000+ Locations Worldwide",
+        title: `EconomyBookings Car Rental in ${destination}`,
+        location: `${destination} Airport & Downtown`,
         rating: 4.8,
         priceTag: "Best Price Match Guarantee",
         badge: "FREE CANCELLATION",
         features: ["All Major Brands (Hertz, Avis, Sixt)", "Zero Credit Card Fees", "Airport & Downtown Pickup", "24/7 Multilingual Support"],
-        affiliateUrl: "https://economybookings.tpo.li/fbYsWyaE",
+        affiliateUrl: getEconomyBookingsUrl({ location: destination, pickDate: departDate, dropDate: returnDate }),
         imageUrl: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&auto=format&fit=crop&q=80",
       },
       {
         id: "tp_autoeurope",
-        title: "Auto Europe Premium & European Road Trips",
-        location: "180 Countries & 24,000 Hubs",
+        title: `Auto Europe Self-Drive in ${destination}`,
+        location: `${destination} & 24,000 Global Hubs`,
         rating: 4.8,
         priceTag: "No Change Fees Guarantee",
         badge: "60+ YEARS EXPERIENCE",
         features: ["Zero Deductible Insurance Options", "Motorhomes & Luxury Fleets", "Cross-Border Driving Permits", "Instant Confirmation"],
         affiliateUrl: "https://autoeurope.tpo.li/7U28ek89",
         imageUrl: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&auto=format&fit=crop&q=80",
-      },
-      {
-        id: "tp_qeeq",
-        title: "QEEQ Smart Car Rental & Price Drop Protection",
-        location: "Global Rental Marketplace",
-        rating: 4.7,
-        priceTag: "Automatic Price Drop Rebooking",
-        badge: "DIAMOND CLUB SAVINGS",
-        features: ["Auto-Rebook if Price Drops", "Crypto & UPI Supported", "Free Flight Delay Insurance", "7M+ Verified Renters"],
-        affiliateUrl: "https://qeeq.tpo.li/Vlx3Gi5t",
-        imageUrl: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&auto=format&fit=crop&q=80",
-      }
-    ];
-  } else if (lower.includes("bike") || lower.includes("scooter") || lower.includes("motorcycle") || lower.includes("scooter rental")) {
-    destination = "Motorbike & Scooter Rentals";
-    deals = [
-      {
-        id: "tp_bikesbooking",
-        title: "BikesBooking Motorcycle, Scooter & Quad Hire",
-        location: "2,000+ Locations in 70 Countries",
-        rating: 4.8,
-        priceTag: "From $10 / day",
-        badge: "WORLD'S #1 BIKE RENTAL",
-        features: ["950+ Verified Suppliers", "Helmets & Insurance Included", "Vespa, Harley & Adventure Bikes", "Free 48h Cancellation"],
-        affiliateUrl: "https://bikesbooking.tpo.li/hRkGiF2p",
-        imageUrl: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=600&auto=format&fit=crop&q=80",
       }
     ];
   } else if (lower.includes("transfer") || lower.includes("cab") || lower.includes("taxi") || lower.includes("chauffeur") || lower.includes("airport ride")) {
-    destination = "Airport Transfers & Private Rides";
     deals = [
       {
         id: "tp_gettransfer",
-        title: "GetTransfer Airport Private Chauffeurs & Limousines",
-        location: "180+ Countries Worldwide",
+        title: `GetTransfer Private Airport Transfer (${destination})`,
+        location: `${destination} Airport to Hotel`,
         rating: 4.8,
-        priceTag: "Custom Driver Bids from $15",
+        priceTag: `Custom Driver Bids for ${adults} Pax`,
         badge: "FREE 60 MIN WAITING TIME",
         features: ["Nameplate Airport Meet & Greet", "Mercedes Benz VIP to Economy", "No Surge Pricing Delays", "Fixed Guaranteed Price"],
-        affiliateUrl: "https://gettransfer.tpo.li/SHZAx1VF",
+        affiliateUrl: getGetTransferUrl({ from: `${destination} Airport`, to: `${destination} City Center`, date: departDate, passengers: adults }),
         imageUrl: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&auto=format&fit=crop&q=80",
-      },
-      {
-        id: "tp_intui",
-        title: "Intui.travel Resort & Hotel Door-to-Door Shuttles",
-        location: "175 Countries & 40,000 Resorts",
-        rating: 4.7,
-        priceTag: "Direct Hotel Drop-off",
-        badge: "SHARED & PRIVATE SHUTTLES",
-        features: ["Family Minivans & Child Seats", "No Hidden Baggage Fees", "Direct to Resort Doorstep", "English-speaking Drivers"],
-        affiliateUrl: "https://intui.tpo.li/KXD4PNCN",
-        imageUrl: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&auto=format&fit=crop&q=80",
-      }
-    ];
-  } else if (lower.includes("luggage") || lower.includes("bag") || lower.includes("storage") || lower.includes("locker")) {
-    destination = "Luggage & Bag Storage";
-    deals = [
-      {
-        id: "tp_radicalstorage",
-        title: "Radical Storage Certified Luggage Lockers",
-        location: "5,000+ Spots in 500+ Cities",
-        rating: 4.9,
-        priceTag: "Fixed $5 / €5 per Day per Bag",
-        badge: "€3,000 BAG GUARANTEE",
-        features: ["No Size or Weight Restrictions", "Located near Train Stations & Airports", "3-Minute Instant App Booking", "Verified Hotel & Shop Partners"],
-        affiliateUrl: "https://radicalstorage.tpo.li/o2vAfWY9",
-        imageUrl: "https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=600&auto=format&fit=crop&q=80",
-      }
-    ];
-  } else if (lower.includes("insurance") || lower.includes("medical") || lower.includes("schengen visa")) {
-    destination = "International Travel Insurance";
-    deals = [
-      {
-        id: "tp_ektatraveling",
-        title: "EKTA Traveling Comprehensive Medical & Trip Insurance",
-        location: "Worldwide Coverage",
-        rating: 4.8,
-        priceTag: "Instant Visa-Approved Policy",
-        badge: "SCHENGEN APPROVED",
-        features: ["COVID-19 & Medical Emergency Cover", "Luggage Loss & Delay Protection", "Ages 2 Months to 100 Years", "Direct Hospital Bill Settlement"],
-        affiliateUrl: "https://ektatraveling.tpo.li/Az2rwDBw",
-        imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80",
       }
     ];
   } else if (lower.includes("flight") || lower.includes("plane") || lower.includes("airfare") || lower.includes("aviasales")) {
-    destination = "Flight Search & Airfare Comparison";
     deals = [
       {
         id: "tp_aviasales",
-        title: "Aviasales 1,000+ Airline Flight Comparison",
-        location: "Global Flights & Routes",
+        title: `Aviasales Flights: ${origin} → ${destination} (${adults} Travelers)`,
+        location: `${origin} (${resolveIataCode(origin)}) to ${destination} (${resolveIataCode(destination)})`,
         rating: 4.9,
-        priceTag: "Lowest Price Match Guarantee",
-        badge: "ZERO BOOKING FEES",
-        features: ["Price Alert Tracking", "Direct Airline Ticket Matching", "Multi-City Routing", "Save up to 35% on Airfare"],
-        affiliateUrl: "https://aviasales.tpo.li/ZeF7BjUt",
+        priceTag: "Lowest Fare Comparison",
+        badge: "1,000+ AIRLINES COMPARED",
+        features: ["Exact Route & Date Filter Pre-filled", "Zero Hidden Booking Fees", "Multi-City & Direct Options", "Price Drop Notifications"],
+        affiliateUrl: getAviasalesFlightUrl({ origin, destination, departDate, returnDate, adults, isRoundTrip: true }),
         imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop&q=80",
-      }
-    ];
-  } else if (lower.includes("kerala") || lower.includes("kochi") || lower.includes("munnar") || lower.includes("alleppey")) {
-    destination = "Kerala, India";
-    deals = [
-      {
-        id: "bk_kerala_houseboat",
-        title: "Alleppey Luxury Thatched Houseboat Cruise",
-        location: "Alleppey Backwaters, Kerala",
-        rating: 4.9,
-        priceTag: "From ₹8,500 / night",
-        badge: "VERIFIED TOP PICK",
-        features: ["Private Chef & Butler", "Air Conditioned Bedrooms", "Traditional Karimeen Dinner", "Free Cancellation"],
-        affiliateUrl: getBookingHotelUrl("Alleppey Kerala"),
-        imageUrl: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=600&auto=format&fit=crop&q=80",
       },
       {
-        id: "bk_munnar_tea_resort",
-        title: "Munnar Panoramic Tea Estate Heritage Resort",
-        location: "Munnar Valleys, Kerala",
+        id: "bk_destination_hotel",
+        title: `Booking.com Verified Stays in ${destination}`,
+        location: destination,
         rating: 4.8,
-        priceTag: "From ₹5,200 / night",
-        badge: "SCENIC VALLEY VIEW",
-        features: ["Tea Garden Guided Walks", "Ayurvedic Spa Onsite", "Complimentary Breakfast", "Campfire"],
-        affiliateUrl: getBookingHotelUrl("Munnar Kerala"),
-        imageUrl: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=600&auto=format&fit=crop&q=80",
-      },
-      {
-        id: "bk_kerala_klook_activity",
-        title: "Klook Alleppey Backwater Kayaking & Village Tour",
-        location: "Alleppey & Kochi, Kerala",
-        rating: 4.9,
-        priceTag: "From ₹1,499 / person",
-        badge: "KLOOK TOP EXPERIENCE",
-        features: ["Certified Local Guide", "Sunrise Kayaking Paddle", "Village Coconut Feast", "Instant Mobile Voucher"],
-        affiliateUrl: getKlookUrl("Kerala Alleppey Kayaking and Tours"),
-        imageUrl: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=600&auto=format&fit=crop&q=80",
-      }
-    ];
-  } else if (lower.includes("ladakh") || lower.includes("leh") || lower.includes("kashmir")) {
-    destination = "Ladakh & Kashmir, India";
-    deals = [
-      {
-        id: "bk_leh_heritage_hotel",
-        title: "The Grand Dragon Heritage Retreat Leh",
-        location: "Leh Old Town, Ladakh",
-        rating: 4.9,
-        priceTag: "From ₹9,000 / night",
-        badge: "OXYGEN-ENRICHED ROOMS",
-        features: ["Full Altitude Acclimatization Setup", "Stok Kangri Mountain Views", "Tibetan Gourmet Cuisine", "Free Airport Transfer"],
-        affiliateUrl: getBookingHotelUrl("Leh Ladakh"),
-        imageUrl: "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?w=600&auto=format&fit=crop&q=80",
-      },
-      {
-        id: "bk_pangong_luxury_camps",
-        title: "Pangong Tso Heated Geodesic Luxury Dome",
-        location: "Pangong Lake Shore, Ladakh",
-        rating: 4.7,
-        priceTag: "From ₹6,500 / night",
-        badge: "LAKESIDE STARGAZING",
-        features: ["Heated Blankets & Fireplaces", "Unobstructed Lake Views", "Night Sky Astro-Photography Setup", "Hot Meals"],
-        affiliateUrl: getBookingHotelUrl("Pangong Lake Ladakh"),
-        imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop&q=80",
-      },
-      {
-        id: "bk_ladakh_klook_tour",
-        title: "Klook Ladakh Monasteries & Khardung La Pass Safari",
-        location: "Leh & Nubra Valley, Ladakh",
-        rating: 4.9,
-        priceTag: "From ₹3,200 / person",
-        badge: "KLOOK ADVENTURE PASS",
-        features: ["4x4 Mountain Vehicle with Driver", "Permit Assistance Included", "Diskit & Thiksey Monasteries", "Lowest Price Guarantee"],
-        affiliateUrl: getKlookUrl("Ladakh Day Tours and Sightseeing"),
-        imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop&q=80",
-      }
-    ];
-  } else if (lower.includes("japan") || lower.includes("kyoto") || lower.includes("tokyo")) {
-    destination = "Japan (Tokyo & Kyoto)";
-    deals = [
-      {
-        id: "bk_kyoto_ryokan",
-        title: "Kyoto Traditional Hot Spring Onsen Ryokan",
-        location: "Gion / Arashiyama, Kyoto, Japan",
-        rating: 4.9,
-        priceTag: "From $180 / night",
-        badge: "AUTHENTIC ONSEN",
-        features: ["Private Open-Air Hot Springs", "Multi-Course Kaiseki Dinner", "Tatami Rooms & Yukatas", "Steps to Bamboo Forest"],
-        affiliateUrl: getBookingHotelUrl("Kyoto Japan"),
-        imageUrl: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&auto=format&fit=crop&q=80",
-      },
-      {
-        id: "bk_japan_klook_pass",
-        title: "Klook Kyoto UNESCO Temples, Bamboo Grove & Tea Ceremony",
-        location: "Kyoto, Japan",
-        rating: 4.9,
-        priceTag: "From $48 / person",
-        badge: "KLOOK BESTSELLER",
-        features: ["English Speaking Historian Guide", "Authentic Uji Matcha Ceremony", "Skip-The-Line Temple Access", "Instant Confirmation"],
-        affiliateUrl: getKlookUrl("Kyoto UNESCO Temples Tea Ceremony Tour"),
-        imageUrl: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=600&auto=format&fit=crop&q=80",
-      }
-    ];
-  } else if (lower.includes("goa")) {
-    destination = "Goa, India";
-    deals = [
-      {
-        id: "bk_goa_beach_resort",
-        title: "Heritage Village Resort & Spa South Goa",
-        location: "Arossim Beach, South Goa",
-        rating: 4.8,
-        priceTag: "From ₹6,200 / night",
-        badge: "BEACHFRONT LUXURY",
-        features: ["Direct Beach Access", "Ayurvedic Wellness Spa", "All-Inclusive Dining Options", "Free Cancellation"],
-        affiliateUrl: getBookingHotelUrl("Goa India"),
-        imageUrl: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&auto=format&fit=crop&q=80",
-      },
-      {
-        id: "bk_goa_klook_cruise",
-        title: "Klook Mandovi River Sunset Catamaran & Dinner Cruise",
-        location: "Panaji, Goa",
-        rating: 4.9,
-        priceTag: "From ₹999 / person",
-        badge: "TOP GOA ACTIVITY",
-        features: ["Live Goan Folk Dance & DJ", "Buffet Dinner & Drinks Included", "Dolphin Sighting Route", "Instant E-Ticket"],
-        affiliateUrl: getKlookUrl("Goa Sunset Cruise and Water Sports"),
-        imageUrl: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&auto=format&fit=crop&q=80",
-      }
-    ];
-  } else if (lower.includes("dubai") || lower.includes("uae")) {
-    destination = "Dubai, UAE";
-    deals = [
-      {
-        id: "bk_dubai_marina_hotel",
-        title: "Address Dubai Marina 5-Star Luxury Suites",
-        location: "Dubai Marina Promenade, UAE",
-        rating: 4.9,
-        priceTag: "From $220 / night",
-        badge: "INFINITY POOL & MARINA VIEW",
-        features: ["Direct Mall & Yacht Access", "World-Class Fine Dining", "Private Balconies", "Free Airport Transfer"],
-        affiliateUrl: getBookingHotelUrl("Dubai UAE"),
-        imageUrl: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&auto=format&fit=crop&q=80",
-      },
-      {
-        id: "bk_dubai_klook_burj",
-        title: "Klook Burj Khalifa Level 124/125 + Red Dune Desert Safari Combo",
-        location: "Downtown Dubai & Lahbab Desert",
-        rating: 4.9,
-        priceTag: "From $75 / person",
-        badge: "KLOOK SUPER COMBO",
-        features: ["Fast-Track Observation Deck Access", "4x4 Dune Bashing & Sandboarding", "BBQ Dinner & Tanoura Show", "Free Hotel Pickup"],
-        affiliateUrl: getKlookUrl("Dubai Burj Khalifa and Desert Safari"),
-        imageUrl: "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=600&auto=format&fit=crop&q=80",
-      }
-    ];
-  } else if (lower.includes("bali") || lower.includes("indonesia")) {
-    destination = "Bali, Indonesia";
-    deals = [
-      {
-        id: "bk_bali_ubud_resort",
-        title: "Maya Ubud Resort & Spa Rainforest Haven",
-        location: "Ubud Petanu Valley, Bali",
-        rating: 4.9,
-        priceTag: "From $160 / night",
-        badge: "RAINFOREST INFINITY POOL",
-        features: ["Private Plunge Pool Villas", "Complimentary Morning Yoga", "River Valley Balcony Views", "Free Shuttle to Ubud Centre"],
-        affiliateUrl: getBookingHotelUrl("Ubud Bali"),
-        imageUrl: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&auto=format&fit=crop&q=80",
-      },
-      {
-        id: "bk_bali_klook_nusa",
-        title: "Klook Nusa Penida Speedboat Island Tour & Snorkeling Pass",
-        location: "Sanur & Nusa Penida, Bali",
-        rating: 4.9,
-        priceTag: "From $35 / person",
-        badge: "INSTANT MOBILE VOUCHER",
-        features: ["Round-Trip Fast Ferry Transfer", "Kelingking Beach & Broken Beach", "Snorkel with Manta Rays", "Private Driver Included"],
-        affiliateUrl: getKlookUrl("Nusa Penida Bali Day Tour"),
-        imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80",
-      }
-    ];
-  } else if (lower.includes("switzerland") || lower.includes("swiss")) {
-    destination = "Switzerland (Interlaken & Zermatt)";
-    deals = [
-      {
-        id: "bk_swiss_zermatt_hotel",
-        title: "Matterhorn View Alpine Heritage Grand Hotel",
-        location: "Zermatt, Valais, Switzerland",
-        rating: 4.9,
-        priceTag: "From $240 / night",
-        badge: "UNOBSTRUCTED MATTERHORN VIEW",
-        features: ["Ski-in / Ski-out Access", "Thermal Alpine Mineral Spa", "Swiss Fondue Dining", "Free Electric Taxi Transfer"],
-        affiliateUrl: getBookingHotelUrl("Zermatt Switzerland"),
-        imageUrl: "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=600&auto=format&fit=crop&q=80",
-      },
-      {
-        id: "bk_swiss_klook_jungfrau",
-        title: "Klook Jungfraujoch Top of Europe Mountain Rail Pass",
-        location: "Interlaken / Grindelwald, Switzerland",
-        rating: 4.9,
-        priceTag: "From $185 / person",
-        badge: "TOP OF EUROPE EXCLUSIVE",
-        features: ["Eiger Express Gondola + Cogwheel Train", "Ice Palace & Sphinx Observatory Access", "Aletsch Glacier Panorama", "Instant Pass Confirmation"],
-        affiliateUrl: getKlookUrl("Jungfraujoch Top of Europe Rail Pass"),
-        imageUrl: "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=600&auto=format&fit=crop&q=80",
+        priceTag: `Best Match for ${adults} Guests (${rooms} Room)`,
+        badge: "FREE CANCELLATION",
+        features: ["Pre-filled Check-in & Check-out Dates", "Genius Member Loyalty Discounts", "24/7 Multilingual Support", "Zero Booking Fee"],
+        affiliateUrl: getBookingHotelUrl({ destination, checkin: departDate, checkout: returnDate, adults, rooms }),
+        imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format&fit=crop&q=80",
       }
     ];
   } else {
-    const extractedDest = query.replace(/(book|hotel|resort|stay|in|for|flights|vacation|trip|deals|tour|activities|klook)/gi, "").trim() || "Global";
-    destination = extractedDest;
+    // Comprehensive Multi-Product Trip Basket for the destination
     deals = [
       {
-        id: "bk_global_partner",
-        title: `Curated Hotels & Boutique Stays in ${destination}`,
+        id: "tp_aviasales_dest",
+        title: `Round-Trip Flights: ${origin} → ${destination}`,
+        location: `${origin} (${resolveIataCode(origin)}) to ${destination} (${resolveIataCode(destination)})`,
+        rating: 4.9,
+        priceTag: `Exact Route for ${adults} Travelers`,
+        badge: "LOWEST AIRFARE",
+        features: ["1,000+ Airlines Compared", "Direct Price-Drop Alerts", "Depart: " + departDate, "Return: " + returnDate],
+        affiliateUrl: getAviasalesFlightUrl({ origin, destination, departDate, returnDate, adults, isRoundTrip: true }),
+        imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "bk_hotels_dest",
+        title: `Top-Rated Hotels & Resorts in ${destination}`,
         location: destination,
         rating: 4.8,
-        priceTag: "Best Price Match Guarantee",
+        priceTag: `Search ${adults} Guests / ${rooms} Room`,
         badge: "FREE CANCELLATION",
-        features: ["Instant Confirmation", "Exclusive 2026 Member Discounts", "24/7 Concierge Support", "Verified Guest Reviews"],
-        affiliateUrl: getBookingHotelUrl(destination),
+        features: ["Exact Dates Filtered", "Verified Guest Reviews", "Genius Member Discounts", "Pay At Hotel Options"],
+        affiliateUrl: getBookingHotelUrl({ destination, checkin: departDate, checkout: returnDate, adults, rooms }),
         imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format&fit=crop&q=80",
       },
       {
-        id: "bk_global_klook",
-        title: `Klook Sightseeing Passes, Tours & Entry Tickets for ${destination}`,
+        id: "ag_hotels_dest",
+        title: `Agoda Express VIP Deals in ${destination}`,
+        location: destination,
+        rating: 4.8,
+        priceTag: "Up to 60% Special Discount",
+        badge: "AGODA VIP PRICE",
+        features: ["Instant Room Confirmation", "Lowest Price Match Guarantee", "Bundle Flight + Hotel Savings", "Earn Agoda Cash Rewards"],
+        affiliateUrl: getAgodaHotelUrl({ destination, checkin: departDate, checkout: returnDate, adults, rooms }),
+        imageUrl: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "kl_passes_dest",
+        title: `Klook Sightseeing Passes & Attractions in ${destination}`,
         location: destination,
         rating: 4.9,
-        priceTag: "Save up to 30% with Klook",
-        badge: "KLOOK EXPERIENCES",
-        features: ["Skip-The-Line Fast Track", "Mobile E-Ticket Ready", "Over 500,000 Activities Worldwide", "Earn Klook Reward Credits"],
-        affiliateUrl: getKlookUrl(destination),
+        priceTag: "Skip-The-Line E-Tickets",
+        badge: "KLOOK TOP EXPERIENCES",
+        features: ["Instant Mobile Voucher", "Over 500,000 Verified Tours", "Certified Local Guides", "Earn Klook Reward Credits"],
+        affiliateUrl: getKlookUrl({ destination, query: `${destination} tours activities passes tickets` }),
         imageUrl: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "gt_transfer_dest",
+        title: `GetTransfer Guaranteed Airport Taxi (${destination})`,
+        location: `${destination} Airport to Hotel`,
+        rating: 4.8,
+        priceTag: `Custom Chauffeur Bids (${adults} Pax)`,
+        badge: "FREE 60-MIN WAIT",
+        features: ["Nameplate Meet & Greet", "Fixed Fare (No Surge)", "Sedan, SUV & Minivan Fleets", "Child Seats Available"],
+        affiliateUrl: getGetTransferUrl({ from: `${destination} Airport`, to: `${destination} City Center`, date: departDate, passengers: adults }),
+        imageUrl: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&auto=format&fit=crop&q=80",
+      },
+      {
+        id: "sy_esim_dest",
+        title: `Saily 5G High-Speed Travel eSIM for ${destination}`,
+        location: `${destination} (by Nord Security)`,
+        rating: 4.9,
+        priceTag: "From $3.99 Instant Data",
+        badge: "INSTANT QR SETUP",
+        features: ["Keep WhatsApp Number", "No Physical SIM Swap", "High-Speed 5G Coverage", "24/7 Support"],
+        affiliateUrl: getSailyEsimUrl(destination),
+        imageUrl: "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=600&auto=format&fit=crop&q=80",
       }
     ];
   }
@@ -599,14 +476,14 @@ export function handleBookingAgent(query: string): MultiAgentResponse {
   return {
     intent: "BOOKING",
     agentName: "Booking & Travel Concierge Agent",
-    speechText: `I found verified accommodation and booking recommendations for ${destination}. You can book directly with free cancellation and member discount codes.`,
-    markdownContent: `### 🏨 Verified Stays & Booking Deals for ${destination}\n\nHere are our top-rated accommodations curated with verified pricing, free cancellation, and member benefits:`,
+    speechText: `I synthesized verified trip search results for ${destination} departing from ${origin} for ${adults} traveler${adults > 1 ? "s" : ""}. Every link is pre-filled with your dates and guest details so you land on the exact search results.`,
+    markdownContent: `### 🏨 Verified Trip Search Results for ${destination}\n\n**Trip Summary**: Departing from **${origin}** • **${adults} Traveler${adults > 1 ? "s" : ""}** • Dates: **${departDate}** to **${returnDate}**\n\nHere are the top flight, hotel, airport transfer, and activity recommendations with exact search parameters pre-filled:`,
     bookingDeals: deals,
     affiliateCta: {
-      title: `Explore 10,000+ Verified Stays in ${destination} with Free Cancellation`,
-      description: "Book directly through our official Booking.com & Agoda partner link with guaranteed lowest rates.",
-      url: getBookingHotelUrl(destination),
-      buttonText: "Browse All Hotel Deals →",
+      title: `View Pre-filtered Stays in ${destination} (${adults} Guests, ${departDate} - ${returnDate})`,
+      description: "Opens Booking.com with your exact destination, check-in/out dates, and guest count pre-selected.",
+      url: getBookingHotelUrl({ destination, checkin: departDate, checkout: returnDate, adults, rooms }),
+      buttonText: `Browse ${destination} Hotel Results →`,
       promoCode: "TRAVEL2026",
     },
     recommendedBlogSlugs: [

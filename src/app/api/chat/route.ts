@@ -1,7 +1,16 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getAllCatalogArticles } from "@/lib/content/articles";
-import { runMultiAgentIntentPipeline, detectUserIntent } from "@/lib/agents/multiAgentIntentRouter";
+import { runMultiAgentIntentPipeline, detectUserIntent, parseTripParameters } from "@/lib/agents/multiAgentIntentRouter";
+import {
+  getBookingHotelUrl,
+  getAgodaHotelUrl,
+  getAviasalesFlightUrl,
+  getKlookUrl,
+  getGetTransferUrl,
+  getSailyEsimUrl,
+  getEconomyBookingsUrl,
+} from "@/lib/affiliate/links";
 
 export const dynamic = "force-dynamic";
 
@@ -249,10 +258,12 @@ A comprehensive, multi-source curated itinerary balancing colonial spice heritag
 ---
 
 ### 🎒 Verified Bookings & Recommended Travel Gear:
-- 🏨 [Book Top-Rated Kerala Heritage Resorts & Houseboats on Booking.com](https://www.booking.com/city/in/kochi.html?aid=2026803) *(Free Cancellation & Best Price Match)*
+- 🏨 [Book Top-Rated Kerala Heritage Resorts & Houseboats on Booking.com](${getBookingHotelUrl("Kerala India")}) *(Free Cancellation & Best Price Match)*
+- ✈️ [Compare Cheap Flights to Kochi (COK) on Aviasales](${getAviasalesFlightUrl({ origin: "DEL", destination: "COK" })})
+- 🎟️ [Book Alleppey Backwater Kayaking & Tours on Klook](${getKlookUrl({ destination: "Kerala", activity: "Alleppey Kayaking Houseboat" })})
+- 🚕 [Pre-Book Cochin Airport Transfers on GetTransfer](${getGetTransferUrl({ from: "Cochin Airport", to: "Fort Kochi" })})
 - 🎒 [Mountaintop Waterproof 55L/65L Travel Rucksack on Amazon](https://www.amazon.in/s?k=travel+backpack+trekking+rucksack+50L+60L&tag=autoaiblog-21)
 - 📸 [GoPro HERO12 4K Waterproof Action Camera for Backwaters](https://www.amazon.in/s?k=gopro+hero+action+camera+4k&tag=autoaiblog-21)
-- 🔌 [Universal All-in-One Fast Travel Adapter with USB-C](https://www.amazon.in/s?k=universal+travel+adapter+all+in+one+fast+charging&tag=autoaiblog-21)
 
 📖 *Explore our full editorial deep-dive:* [The Definitive Global Travel & India Discovery Bible](/blog/definitive-global-travel-and-india-discovery-destinations-guide)`;
   }
@@ -318,10 +329,10 @@ An exhaustive, medically acclimatized travel masterclass across the world's high
 ---
 
 ### 🎒 Essential Checklist & Verified Partner Deals:
-- 🏨 [Book Leh Heritage Hotels & Pangong Luxury Camps on Booking.com](https://www.booking.com/city/in/leh.html?aid=2026803)
+- 🏨 [Book Leh Heritage Hotels & Pangong Luxury Camps on Booking.com](${getBookingHotelUrl("Leh Ladakh")})
+- ✈️ [Compare Flights to Leh (IXL) on Aviasales](${getAviasalesFlightUrl({ origin: "DEL", destination: "IXL" })})
+- 🎟️ [Book Ladakh Monasteries & Khardung La Tour on Klook](${getKlookUrl({ destination: "Ladakh", activity: "Khardung La Pass Tour" })})
 - 🧥 [High-Altitude Thermal Windproof Down Jackets on Amazon](https://www.amazon.in/s?k=high+altitude+cold+weather+thermal+jacket+ladakh&tag=autoaiblog-21)
-- 🥾 [Waterproof High-Ankle Hiking & Trekking Boots on Amazon](https://www.amazon.in/s?k=waterproof+trekking+shoes+hiking+boots+men+women&tag=autoaiblog-21)
-- 🔋 [20,000mAh 65W Fast-Charging Power Bank for Cold Weather](https://www.amazon.in/s?k=power+bank+20000mah+65w+fast+charging&tag=autoaiblog-21)
 
 📖 *Read our full field manual:* [The Ultimate Solo Traveller's Guide: Exploring Hidden Wonders & Remote Expeditions](/blog/ultimate-solo-travellers-guide-hidden-wonders-expeditions)`;
   }
@@ -358,9 +369,12 @@ An exhaustive cultural and technological expedition uniting neon megacities, anc
 ---
 
 ### 🎒 Verified Japan Bookings & Travel Essentials:
-- 🏨 [Book Tokyo & Kyoto Ryokans on Booking.com](https://www.booking.com/country/jp.html?aid=2026803) *(Free Cancellation)*
-- 📱 [Get Saily / Airalo Japan High-Speed eSIM](https://saily.tpo.li/9kXyVV0E)
-- 🚕 [Pre-Book Tokyo Narita/Haneda Airport Transfers on GetTransfer](https://gettransfer.com/?partner=2026803)`;
+- 🏨 [Book Tokyo & Kyoto Ryokans on Booking.com](${getBookingHotelUrl("Kyoto Japan")}) *(Free Cancellation)*
+- 🏨 [Compare Tokyo Hotel Deals on Agoda](${getAgodaHotelUrl("Tokyo Japan")}) *(Up to 60% OFF)*
+- ✈️ [Compare Tokyo Flights on Aviasales](${getAviasalesFlightUrl({ origin: "DEL", destination: "HND" })})
+- 🎟️ [Book Kyoto UNESCO Temples & Passes on Klook](${getKlookUrl({ destination: "Kyoto", activity: "Temples Tea Ceremony Pass" })})
+- 📱 [Get Saily Japan High-Speed 5G eSIM](${getSailyEsimUrl("japan")})
+- 🚕 [Pre-Book Tokyo Airport Transfers on GetTransfer](${getGetTransferUrl({ from: "Tokyo Haneda Airport", to: "Shinjuku Tokyo" })})`;
   }
 
   // 4. Goa 4-Day Beach & Heritage Masterplan
@@ -407,9 +421,11 @@ A curated coastal expedition balancing golden Arabian Sea beaches, vibrant Portu
 ---
 
 ### 🎒 Verified Bookings & Partner Deals:
-- 🏨 [Book Top-Rated Goa Beach Resorts on Agoda](https://www.agoda.com/city/goa-in.html?cid=2026803) *(Up to 60% OFF)*
-- 🏨 [Book Luxury 5-Star Heritage Villas on Booking.com](https://www.booking.com/city/in/calangute.html?aid=2026803)
-- 🚕 [Book Guaranteed Airport Cabs with GetTransfer](https://gettransfer.com/?partner=2026803)`;
+- 🏨 [Book Top-Rated Goa Beach Resorts on Agoda](${getAgodaHotelUrl("Goa India")}) *(Up to 60% OFF)*
+- 🏨 [Book Luxury 5-Star Heritage Villas on Booking.com](${getBookingHotelUrl("Goa India")})
+- ✈️ [Compare Flights to Goa (GOI/GOX) on Aviasales](${getAviasalesFlightUrl({ origin: "DEL", destination: "GOI" })})
+- 🎟️ [Book Mandovi Sunset Cruise & Water Sports on Klook](${getKlookUrl({ destination: "Goa", activity: "Sunset Cruise Water Sports" })})
+- 🚕 [Book Guaranteed Airport Cabs with GetTransfer](${getGetTransferUrl({ from: "Goa Airport", to: "Calangute Goa" })})`;
   }
 
   // 5. Dubai 5-Day Luxury & Desert Safari Masterplan
@@ -458,19 +474,23 @@ A premier Middle-Eastern blueprint featuring architectural wonders, desert dune-
 ---
 
 ### 🎒 Verified Dubai Bookings:
-- 🏨 [Book Dubai Hotels & Palm Resorts on Booking.com](https://www.booking.com/city/ae/dubai.html?aid=2026803)
-- 🎟️ [Book Burj Khalifa & Desert Safari on Klook](https://www.klook.com/city/13-dubai-things-to-do/?aid=2026803)
-- 📱 [Get Saily UAE High-Speed 5G eSIM](https://saily.tpo.li/9kXyVV0E)`;
+- 🏨 [Book Dubai Hotels & Palm Resorts on Booking.com](${getBookingHotelUrl("Dubai UAE")})
+- 🏨 [Compare Dubai Hotel Deals on Agoda](${getAgodaHotelUrl("Dubai UAE")})
+- ✈️ [Compare Flights to Dubai (DXB) on Aviasales](${getAviasalesFlightUrl({ origin: "DEL", destination: "DXB" })})
+- 🎟️ [Book Burj Khalifa & Desert Safari on Klook](${getKlookUrl({ destination: "Dubai", activity: "Burj Khalifa Desert Safari" })})
+- 📱 [Get Saily UAE High-Speed 5G eSIM](${getSailyEsimUrl("united arab emirates")})
+- 🚕 [Pre-Book Dubai Airport Transfers on GetTransfer](${getGetTransferUrl({ from: "Dubai International Airport", to: "Dubai Marina" })})`;
   }
 
   // 6. Universal Exhaustive Itinerary Generator for Any Global Destination
   if (lower.includes("itinerary") || lower.includes("plan a trip") || lower.includes("days trip") || lower.includes("tour plan") || lower.includes("travel guide") || lower.includes("visit") || lower.includes("how to travel") || lower.includes("hotel") || lower.includes("resort") || lower.includes("flight") || lower.includes("beach")) {
-    const dest = query.replace(/(itinerary|plan|trip|for|days|budget|give|me|create|generate|a|the|travel|guide|how|to|hotel|resort|flight|beach)/gi, "").trim() || "Your Chosen Destination";
-    const destTitle = dest.charAt(0).toUpperCase() + dest.slice(1);
+    const trip = parseTripParameters(query);
+    const { destination, origin, adults, departDate, returnDate } = trip;
+    const rooms = Math.max(1, Math.ceil(adults / 2));
 
-    return `### 🗺️ Comprehensive 100% Verified Travel Itinerary: ${destTitle}
+    return `### 🗺️ Comprehensive 100% Verified Travel Itinerary: ${destination}
 
-Here is an authentic, multi-source verified travel masterplan for **${destTitle}** featuring balanced pacing, signature culinary trails, transit hacks, and verified accommodation options:
+Here is an authentic, multi-source verified travel masterplan for **${destination}** featuring balanced pacing, signature culinary trails, transit hacks, and verified accommodation options:
 
 ---
 
@@ -484,19 +504,19 @@ Here is an authentic, multi-source verified travel masterplan for **${destTitle}
 - **🌅 Morning**: Visit top landmark monuments early to avoid queues during morning golden hour.
 - **☀️ Afternoon**: Explore art museums, artisanal markets, or traditional craft workshops with a certified local guide.
 - **🌆 Evening**: Stroll through historic river promenades or viewpoints followed by an authentic dinner.
-- **🏨 Recommended Stay**: ${destTitle}.
+- **🏨 Recommended Stay**: ${destination}.
 
 #### 📍 Day 3: Nature, Vistas & Outdoor Expeditions
 - **🌅 Morning**: Take a scenic day excursion to nearby mountains, national parks, lakes, or coastal cliffs.
 - **☀️ Afternoon**: Outdoor lunch featuring fresh local produce and guided nature walks.
 - **🌆 Evening**: Sunset photography viewpoint with tea/coffee and relaxation.
-- **🏨 Recommended Stay**: ${destTitle}.
+- **🏨 Recommended Stay**: ${destination}.
 
 #### 📍 Day 4: Offbeat Hidden Gems & Culinary Deep-Dive
 - **🌅 Morning**: Discover secret neighborhood lanes, quiet temples/churches, and local morning bakeries.
 - **☀️ Afternoon**: Take a hands-on local cooking masterclass or food tasting trail.
 - **🌆 Evening**: Live cultural music, theater, or night market exploration.
-- **🏨 Recommended Stay**: ${destTitle}.
+- **🏨 Recommended Stay**: ${destination}.
 
 #### 📍 Day 5: Scenic Panoramas, Souvenirs & Seamless Departure
 - **🌅 Morning**: Panoramic lookout point for farewell morning photos and souvenir shopping.
@@ -504,23 +524,25 @@ Here is an authentic, multi-source verified travel masterplan for **${destTitle}
 
 ---
 
-### 💰 Itemized Dual-Currency Budget (Estimated):
+### 💰 Itemized Dual-Currency Budget (Estimated for ${adults} Pax):
 | Category | Budget Backpacker | Standard Comfort | Luxury 5-Star |
 | :--- | :--- | :--- | :--- |
 | **Stay & Hotels** | ₹8,000 – ₹12,000 ($95 - $145) | ₹22,000 – ₹35,000 ($265 - $425) | ₹65,000 – ₹1,20,000 ($790 - $1,450) |
 | **Local Transit & Cabs** | ₹3,000 – ₹5,000 ($35 - $60) | ₹10,000 – ₹16,000 ($120 - $195) | ₹25,000 – ₹38,000 ($300 - $460) |
 | **Food & Dining** | ₹5,000 – ₹8,000 ($60 - $95) | ₹14,000 – ₹20,000 ($170 - $240) | ₹32,000 – ₹50,000 ($390 - $610) |
-| **Total Estimated (2 Pax)** | **₹16,000 – ₹25,000 ($190 - $300)** | **₹46,000 – ₹71,000 ($555 - $860)** | **₹1,22,000 – ₹2,08,000 ($1,480 - $2,520)** |
+| **Total Estimated (${adults} Pax)** | **₹16,000 – ₹25,000 ($190 - $300)** | **₹46,000 – ₹71,000 ($555 - $860)** | **₹1,22,000 – ₹2,08,000 ($1,480 - $2,520)** |
 
 ---
 
-### 🎒 Verified Bookings & Essentials for ${destTitle}:
-- 🏨 [Book Top-Rated Hotels & Stays on Booking.com](https://www.booking.com/searchresults.html?ss=${encodeURIComponent(dest)}&aid=2026803) *(Free Cancellation)*
-- 🏨 [Compare Hotel Deals on Agoda](https://www.agoda.com/search?text=${encodeURIComponent(dest)}&cid=2026803) *(Up to 60% OFF)*
-- 🚕 [Book Guaranteed Airport Transfers on GetTransfer](https://gettransfer.com/?partner=2026803)
-- 📱 [Get Saily / Airalo International eSIM Data](https://saily.tpo.li/9kXyVV0E)
+### 🎒 Verified Bookings & Essentials for ${destination}:
+- ✈️ [Compare Flights from ${origin} to ${destination} (${adults} Pax) on Aviasales](${getAviasalesFlightUrl({ origin, destination, departDate, returnDate, adults, isRoundTrip: true })})
+- 🏨 [Book Top-Rated Hotels & Stays on Booking.com](${getBookingHotelUrl({ destination, checkin: departDate, checkout: returnDate, adults, rooms })}) *(Pre-filled Dates & Free Cancellation)*
+- 🏨 [Compare Hotel Deals on Agoda](${getAgodaHotelUrl({ destination, checkin: departDate, checkout: returnDate, adults, rooms })}) *(Up to 60% OFF)*
+- 🎟️ [Book Attraction Passes & Day Tours on Klook](${getKlookUrl({ destination, query: `${destination} attractions tours passes` })})
+- 🚕 [Book Guaranteed Airport Transfers on GetTransfer](${getGetTransferUrl({ from: `${destination} Airport`, to: `${destination} Hotel`, date: departDate, passengers: adults })})
+- 📱 [Get Saily International 5G eSIM Data](${getSailyEsimUrl(destination)})
 
-💬 *Tell me your exact travel dates, travel group size, or budget preferences, and I will tailor this itinerary to your exact specifications!*`;
+💬 *Tell me if you would like custom adjustments for your travel dates, travel style, or specific activities!*`;
   }
 
   // 7. Default Travel Concierge Welcome or Blog Assistant

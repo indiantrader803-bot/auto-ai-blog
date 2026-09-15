@@ -31,7 +31,11 @@ import { useTravelCurrency } from '@/context/TravelCurrencyContext';
 import {
   getBookingHotelUrl,
   getAgodaHotelUrl,
+  getAviasalesFlightUrl,
   getKlookUrl,
+  getGetTransferUrl,
+  getSailyEsimUrl,
+  getAirHelpUrl,
 } from '@/lib/affiliate/links';
 
 export interface TripPlanConfig {
@@ -73,12 +77,52 @@ export default function PersonalizedTripBasket({
     flightCost + hotelCost + transferCost + activitiesCost + foodCost + esimCost + insuranceCost;
   const remainingBudget = budget > 0 ? budget - totalCalculated : 0;
 
-  // Direct affiliate URLs
-  const flightUrl = `https://aviasales.tpo.li/ZeF7BjUt?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`;
-  const hotelUrl = travelStyle === 'Luxury' ? getAgodaHotelUrl(destination) : getBookingHotelUrl(destination);
-  const transferUrl = 'https://gettransfer.tpo.li/yE0Wk8xK';
-  const esimUrl = 'https://saily.tpo.li/9kXyVV0E';
-  const insuranceUrl = 'https://airhelp.tpo.li/fpMMLvXF';
+  // Compute upcoming travel dates for exact search results
+  const today = new Date();
+  const depart = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const returnD = new Date(depart.getTime() + days * 24 * 60 * 60 * 1000);
+  const departDateStr = depart.toISOString().split('T')[0];
+  const returnDateStr = returnD.toISOString().split('T')[0];
+
+  // Direct deep affiliate URLs with prefilled search parameters
+  const flightUrl = getAviasalesFlightUrl({
+    origin,
+    destination,
+    departDate: departDateStr,
+    returnDate: returnDateStr,
+    adults: travelers,
+    isRoundTrip: true,
+  });
+
+  const hotelUrl = travelStyle === 'Luxury'
+    ? getAgodaHotelUrl({
+        destination,
+        checkin: departDateStr,
+        checkout: returnDateStr,
+        adults: travelers,
+        rooms: Math.ceil(travelers / 2),
+      })
+    : getBookingHotelUrl({
+        destination,
+        checkin: departDateStr,
+        checkout: returnDateStr,
+        adults: travelers,
+        rooms: Math.ceil(travelers / 2),
+      });
+
+  const transferUrl = getGetTransferUrl({
+    from: `${origin}`,
+    to: `${destination}`,
+    date: departDateStr,
+    passengers: travelers,
+  });
+
+  const esimUrl = getSailyEsimUrl(guide.country || destination);
+  const insuranceUrl = getAirHelpUrl({ departure: origin, arrival: destination });
+  const klookPassUrl = getKlookUrl({
+    destination: guide.name,
+    activity: guide.topAttractions[0]?.query || `${destination} sightseeing passes`,
+  });
 
   // WhatsApp share message
   const generateWhatsAppLink = () => {

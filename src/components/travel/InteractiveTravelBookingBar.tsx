@@ -22,7 +22,11 @@ import {
 import {
   getBookingHotelUrl,
   getAgodaHotelUrl,
+  getAviasalesFlightUrl,
   getKlookUrl,
+  getGetTransferUrl,
+  getSailyEsimUrl,
+  getEconomyBookingsUrl,
 } from "@/lib/affiliate/links";
 
 interface TabConfig {
@@ -76,23 +80,57 @@ export default function InteractiveTravelBookingBar({
   };
 
   const handleSearch = () => {
-    const queryDest = destination || "Himalayan Trekking";
+    const queryDest = destination || "Manali";
+    const queryOrigin = origin || "Delhi";
+    
+    // Parse adults count
+    let adultsCount = 2;
+    const paxMatch = travelers.match(/(\d+)/);
+    if (paxMatch) adultsCount = parseInt(paxMatch[1], 10);
+
     if (activeTab === "flights") {
-      window.open(
-        `https://aviasales.tpo.li/ZeF7BjUt?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`,
-        "_blank",
-        "noopener,noreferrer"
-      );
+      const flightUrl = getAviasalesFlightUrl({
+        origin: queryOrigin,
+        destination: queryDest,
+        departDate,
+        returnDate: isRoundTrip ? returnDate : undefined,
+        adults: adultsCount,
+        isRoundTrip,
+      });
+      window.open(flightUrl, "_blank", "noopener,noreferrer");
     } else if (activeTab === "hotels") {
-      window.open(getBookingHotelUrl(queryDest), "_blank", "noopener,noreferrer");
+      const hotelUrl = getBookingHotelUrl({
+        destination: queryDest,
+        checkin: departDate,
+        checkout: returnDate,
+        adults: adultsCount,
+        rooms: Math.ceil(adultsCount / 2),
+      });
+      window.open(hotelUrl, "_blank", "noopener,noreferrer");
     } else if (activeTab === "treks") {
-      window.open(getKlookUrl(`${queryDest} Trekking Adventure Tour`), "_blank", "noopener,noreferrer");
+      const trekUrl = getKlookUrl({
+        destination: queryDest,
+        query: `${queryDest} Trekking Adventure Pass`,
+      });
+      window.open(trekUrl, "_blank", "noopener,noreferrer");
     } else if (activeTab === "cars") {
-      window.open("https://economybookings.tpo.li/fbYsWyaE", "_blank", "noopener,noreferrer");
+      const carUrl = getEconomyBookingsUrl({
+        location: queryDest,
+        pickDate: departDate,
+        dropDate: returnDate,
+      });
+      window.open(carUrl, "_blank", "noopener,noreferrer");
     } else if (activeTab === "transfers") {
-      window.open("https://gettransfer.tpo.li/yE0Wk8xK", "_blank", "noopener,noreferrer");
+      const transferUrl = getGetTransferUrl({
+        from: queryOrigin,
+        to: queryDest,
+        date: departDate,
+        passengers: adultsCount,
+      });
+      window.open(transferUrl, "_blank", "noopener,noreferrer");
     } else if (activeTab === "esim") {
-      window.open("https://saily.tpo.li/9kXyVV0E", "_blank", "noopener,noreferrer");
+      const esimUrl = getSailyEsimUrl(queryDest);
+      window.open(esimUrl, "_blank", "noopener,noreferrer");
     }
   };
 
