@@ -12,13 +12,32 @@ export function middleware(req: NextRequest) {
 
   // Seamless Subdomain Routing for travel.thesmartmag.com
   if (host.startsWith("travel.")) {
+    // If user accesses /travel on subdomain, 301 redirect to root
+    if (pathname === "/travel") {
+      return NextResponse.redirect(new URL(`/${search}`, req.url), 301);
+    }
+    // If user accesses /travel/:path on subdomain, 301 redirect to /:path
+    if (pathname.startsWith("/travel/")) {
+      const cleanPath = pathname.replace(/^\/travel/, "");
+      return NextResponse.redirect(new URL(`${cleanPath}${search}`, req.url), 301);
+    }
     // If root '/', rewrite directly to '/travel'
     if (pathname === "/") {
       return NextResponse.rewrite(new URL(`/travel${search}`, req.url));
     }
-    // If visiting destination routes directly like '/japan' on travel subdomain, rewrite to '/travel/japan'
-    if (!pathname.startsWith("/travel") && !pathname.startsWith("/api") && !pathname.startsWith("/_next")) {
+    // If visiting destination routes directly like '/manali' on travel subdomain, rewrite to '/travel/manali'
+    if (!pathname.startsWith("/api") && !pathname.startsWith("/_next")) {
       return NextResponse.rewrite(new URL(`/travel${pathname}${search}`, req.url));
+    }
+  } else {
+    // If user visits https://thesmartmag.com/travel, 301 redirect to https://travel.thesmartmag.com
+    if (pathname === "/travel") {
+      return NextResponse.redirect(new URL(`https://travel.thesmartmag.com${search}`), 301);
+    }
+    // If user visits https://thesmartmag.com/travel/:dest, 301 redirect to https://travel.thesmartmag.com/:dest
+    if (pathname.startsWith("/travel/")) {
+      const cleanPath = pathname.replace(/^\/travel/, "");
+      return NextResponse.redirect(new URL(`https://travel.thesmartmag.com${cleanPath}${search}`), 301);
     }
   }
 

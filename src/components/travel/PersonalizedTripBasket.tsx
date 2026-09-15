@@ -27,6 +27,7 @@ import {
   MessageCircle,
 } from 'lucide-react';
 import { DestinationGuide } from '@/lib/travel/destinationsData';
+import { useTravelCurrency } from '@/context/TravelCurrencyContext';
 import {
   getBookingHotelUrl,
   getAgodaHotelUrl,
@@ -51,13 +52,15 @@ export default function PersonalizedTripBasket({
   onReset?: () => void;
 }) {
   const { guide, destination, origin, days, budget, travelers, travelStyle } = plan;
+  const { currency, setCurrency, currencyInfo, allCurrencies, formatPrice } = useTravelCurrency();
   const [activeDay, setActiveDay] = useState<number>(1);
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [showPriceAlertModal, setShowPriceAlertModal] = useState(false);
   const [alertEmail, setAlertEmail] = useState('');
   const [alertSuccess, setAlertSuccess] = useState(false);
+  const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
 
-  // Budget calculations
+  // Budget calculations (base in INR)
   const flightCost = guide.budgetBreakdown.flight * travelers;
   const hotelCost = guide.budgetBreakdown.hotel * Math.ceil(travelers / 2);
   const transferCost = guide.budgetBreakdown.transfer;
@@ -82,12 +85,12 @@ export default function PersonalizedTripBasket({
     const text = `✈️ *My AI Personalized Travel Plan: ${guide.name}*\n` +
       `📍 Route: ${origin} → ${destination} (${days} Days)\n` +
       `👥 Travelers: ${travelers} | Style: ${travelStyle}\n` +
-      `💰 Total Estimated Budget: ₹${totalCalculated.toLocaleString('en-IN')}\n\n` +
+      `💰 Total Estimated Budget: ${formatPrice(totalCalculated, 'INR')}\n\n` +
       `✈️ Flights: ${flightUrl}\n` +
       `🏨 Stays: ${hotelUrl}\n` +
       `🚕 Transfers: ${transferUrl}\n` +
       `📱 5G eSIM: ${esimUrl}\n\n` +
-      `Crafted by SmartMag Travel AI Concierge: https://thesmartmag.com/travel`;
+      `Crafted by SmartMag Travel AI Concierge: https://travel.thesmartmag.com`;
     return `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
   };
 
@@ -148,8 +151,50 @@ export default function PersonalizedTripBasket({
           </p>
         </div>
 
-        {/* Action buttons (WhatsApp, Save, Price Alert) */}
+        {/* Action buttons (Currency Switcher, WhatsApp, Save, Price Alert) */}
         <div className="flex flex-wrap items-center gap-2 relative z-10">
+          {/* Inline Currency Switcher */}
+          <div className="relative">
+            <button
+              onClick={() => setShowCurrencyDropdown(!showCurrencyDropdown)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition cursor-pointer"
+              title="Switch currency"
+            >
+              <span className="text-sm">{currencyInfo.flag}</span>
+              <span>{currency}</span>
+              <span className="text-sky-400 font-mono text-[11px]">({currencyInfo.symbol.trim()})</span>
+              <ChevronDown className="w-3 h-3 text-slate-400" />
+            </button>
+
+            {showCurrencyDropdown && (
+              <div className="absolute right-0 mt-2 w-44 max-h-60 overflow-y-auto rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl p-1.5 z-50 text-xs font-bold animate-in fade-in slide-in-from-top-2">
+                <div className="px-2 py-1 text-[10px] uppercase font-black tracking-wider text-slate-400 border-b border-slate-800 mb-1">
+                  Change Currency
+                </div>
+                {allCurrencies.map((c) => (
+                  <button
+                    key={c.code}
+                    onClick={() => {
+                      setCurrency(c.code);
+                      setShowCurrencyDropdown(false);
+                    }}
+                    className={`w-full text-left px-2.5 py-1.5 rounded-lg transition-colors flex items-center justify-between cursor-pointer ${
+                      currency === c.code
+                        ? "bg-sky-950 text-sky-400 border border-sky-800"
+                        : "hover:bg-slate-800 text-slate-300"
+                    }`}
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <span>{c.flag}</span>
+                      <span>{c.code}</span>
+                    </span>
+                    <span className="text-slate-400 text-[11px] font-mono">{c.symbol.trim()}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
           <a
             href={generateWhatsAppLink()}
             target="_blank"
@@ -210,7 +255,7 @@ export default function PersonalizedTripBasket({
                 Real-time multi-airline comparison with direct airline ticket matching.
               </p>
               <div className="mt-2 text-xs font-bold text-emerald-400">
-                Est. ₹{flightCost.toLocaleString('en-IN')} (Round-Trip)
+                Est. {formatPrice(flightCost, 'INR')} (Round-Trip)
               </div>
             </div>
             <a
@@ -242,7 +287,7 @@ export default function PersonalizedTripBasket({
                 Free cancellation on 85% of stays with instant confirmation.
               </p>
               <div className="mt-2 text-xs font-bold text-emerald-400">
-                Est. ₹{hotelCost.toLocaleString('en-IN')} ({days} Nights)
+                Est. {formatPrice(hotelCost, 'INR')} ({days} Nights)
               </div>
             </div>
             <a
@@ -274,7 +319,7 @@ export default function PersonalizedTripBasket({
                 Name-sign arrival pickup with 60 mins free waiting time.
               </p>
               <div className="mt-2 text-xs font-bold text-emerald-400">
-                Est. ₹{transferCost.toLocaleString('en-IN')}
+                Est. {formatPrice(transferCost, 'INR')}
               </div>
             </div>
             <a
@@ -338,7 +383,7 @@ export default function PersonalizedTripBasket({
                 Instant 1-minute QR install before flight. Keep WhatsApp number.
               </p>
               <div className="mt-2 text-xs font-bold text-emerald-400">
-                Est. ₹{esimCost.toLocaleString('en-IN')} (High-Speed 5G)
+                Est. {formatPrice(esimCost, 'INR')} (High-Speed 5G)
               </div>
             </div>
             <a
@@ -370,7 +415,7 @@ export default function PersonalizedTripBasket({
                 Automatic passenger compensation for 3+ hour delays &amp; cancellations.
               </p>
               <div className="mt-2 text-xs font-bold text-emerald-400">
-                Up to €600 Cash Payout per Traveler
+                Up to €600 ({formatPrice(54000, 'INR')}) Cash Payout per Traveler
               </div>
             </div>
             <a
@@ -395,13 +440,13 @@ export default function PersonalizedTripBasket({
               AI Travel Budget Calculator
             </h3>
             <p className="text-xs text-slate-400">
-              Real-time cost breakdown for {travelers} traveler(s) over {days} days
+              Real-time cost breakdown for {travelers} traveler(s) over {days} days ({currency} Mode)
             </p>
           </div>
           <div className="text-right">
             <div className="text-xs uppercase tracking-wider text-slate-400 font-bold">Estimated Total Cost</div>
             <div className="text-2xl font-black text-emerald-400 font-mono">
-              ₹{totalCalculated.toLocaleString('en-IN')}
+              {formatPrice(totalCalculated, 'INR')}
             </div>
           </div>
         </div>
@@ -409,39 +454,39 @@ export default function PersonalizedTripBasket({
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs mb-4">
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
             <span className="text-slate-400 block mb-1">✈️ Flights</span>
-            <span className="font-bold text-white font-mono">₹{flightCost.toLocaleString('en-IN')}</span>
+            <span className="font-bold text-white font-mono">{formatPrice(flightCost, 'INR')}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
             <span className="text-slate-400 block mb-1">🏨 Stays</span>
-            <span className="font-bold text-white font-mono">₹{hotelCost.toLocaleString('en-IN')}</span>
+            <span className="font-bold text-white font-mono">{formatPrice(hotelCost, 'INR')}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
             <span className="text-slate-400 block mb-1">🚕 Transfers</span>
-            <span className="font-bold text-white font-mono">₹{transferCost.toLocaleString('en-IN')}</span>
+            <span className="font-bold text-white font-mono">{formatPrice(transferCost, 'INR')}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
             <span className="text-slate-400 block mb-1">🎟️ Attractions</span>
-            <span className="font-bold text-white font-mono">₹{activitiesCost.toLocaleString('en-IN')}</span>
+            <span className="font-bold text-white font-mono">{formatPrice(activitiesCost, 'INR')}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
             <span className="text-slate-400 block mb-1">🍜 Dining &amp; Food</span>
-            <span className="font-bold text-white font-mono">₹{foodCost.toLocaleString('en-IN')}</span>
+            <span className="font-bold text-white font-mono">{formatPrice(foodCost, 'INR')}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
             <span className="text-slate-400 block mb-1">📱 eSIM &amp; Ins.</span>
-            <span className="font-bold text-white font-mono">₹{(esimCost + insuranceCost).toLocaleString('en-IN')}</span>
+            <span className="font-bold text-white font-mono">{formatPrice(esimCost + insuranceCost, 'INR')}</span>
           </div>
         </div>
 
         {budget > 0 && (
           <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between text-xs">
             <span className="text-emerald-300 font-semibold">
-              🎯 Target Budget: ₹{budget.toLocaleString('en-IN')}
+              🎯 Target Budget: {formatPrice(budget, 'INR')}
             </span>
             <span className="font-bold text-emerald-400">
               {remainingBudget >= 0
-                ? `✓ ₹${remainingBudget.toLocaleString('en-IN')} Surplus Remaining for Shopping & Leisure`
-                : `⚠️ ₹${Math.abs(remainingBudget).toLocaleString('en-IN')} Over Initial Target (Consider Economy Stays)`}
+                ? `✓ ${formatPrice(remainingBudget, 'INR')} Surplus Remaining for Shopping & Leisure`
+                : `⚠️ ${formatPrice(Math.abs(remainingBudget), 'INR')} Over Initial Target (Consider Economy Stays)`}
             </span>
           </div>
         )}

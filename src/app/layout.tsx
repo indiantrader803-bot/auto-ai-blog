@@ -5,6 +5,7 @@ import ExitIntentModal from "@/components/growth/ExitIntentModal";
 import FloatingSubscribeButton from "@/components/growth/FloatingSubscribeButton";
 import GlobalBlogAssistant from "@/components/chat/GlobalBlogAssistant";
 import GoogleTranslateProvider from "@/components/layout/GoogleTranslateProvider";
+import { TravelCurrencyProvider } from "@/context/TravelCurrencyContext";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -269,7 +270,9 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white font-sans">
         <GoogleTranslateProvider />
-        {children}
+        <TravelCurrencyProvider>
+          {children}
+        </TravelCurrencyProvider>
         <ExitIntentModal />
         <FloatingSubscribeButton />
         <GlobalBlogAssistant />

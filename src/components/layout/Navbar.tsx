@@ -406,14 +406,14 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
             >
               Featured Stories
             </Link>
-            <Link
-              href="/travel"
+            <a
+              href="https://travel.thesmartmag.com"
               onClick={() => setIsMenuOpen(false)}
               className="block text-sm font-bold uppercase tracking-wider text-sky-500 flex items-center justify-between"
             >
               <span>✈️ Travel Deals &amp; Passes</span>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950">HOT</span>
-            </Link>
+            </a>
             <Link
               href="/store"
               onClick={() => setIsMenuOpen(false)}

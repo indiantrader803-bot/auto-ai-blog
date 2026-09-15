@@ -26,7 +26,7 @@ export async function generateMetadata({
     title: `${guide.name}: Complete 2026 AI Travel Guide & Itinerary | TheSmartMag`,
     description: `Plan your dream ${guide.name} trip with AI: Verified day-by-day itineraries, flight comparison, best hotels, airport transfers, eSIM, and skip-the-line attraction passes.`,
     alternates: {
-      canonical: `https://thesmartmag.com/travel/${guide.slug}`,
+      canonical: `https://travel.thesmartmag.com/${guide.slug}`,
     },
     openGraph: {
       title: `${guide.name}: Complete 2026 AI Travel Guide & Itinerary`,

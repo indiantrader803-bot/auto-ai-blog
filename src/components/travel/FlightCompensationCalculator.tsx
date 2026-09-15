@@ -13,8 +13,10 @@ import {
   Sparkles,
 } from "lucide-react";
 import { trackTravelpayoutsClick } from "@/lib/affiliate/travelpayouts";
+import { useTravelCurrency } from "@/context/TravelCurrencyContext";
 
 export default function FlightCompensationCalculator() {
+  const { currency, formatPrice } = useTravelCurrency();
   const [delayType, setDelayType] = useState<"delayed" | "cancelled" | "overbooked">("delayed");
   const [flightDistance, setFlightDistance] = useState<"short" | "medium" | "long">("long");
 
@@ -159,7 +161,13 @@ export default function FlightCompensationCalculator() {
                 Estimated Legal Payout
               </div>
               <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
-                €{payout} <span className="text-xs text-slate-500 dark:text-slate-400 font-normal">/ passenger</span>
+                €{payout}{" "}
+                {currency !== "EUR" && (
+                  <span className="text-base sm:text-lg text-slate-700 dark:text-slate-300 font-bold">
+                    (~{formatPrice(payout, "EUR")})
+                  </span>
+                )}
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-normal"> / passenger</span>
               </div>
             </div>
 

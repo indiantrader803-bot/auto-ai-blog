@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description:
     "Plan your entire vacation with SmartMag AI: Instant personalized trip baskets, cheap flight radar on Aviasales, airport transfers, 200+ eSIM cellular packages, and skip-the-line attraction passes.",
   alternates: {
-    canonical: "https://thesmartmag.com/travel",
+    canonical: "https://travel.thesmartmag.com",
   },
 };
 

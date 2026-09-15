@@ -17,6 +17,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { trackTravelpayoutsClick } from "@/lib/affiliate/travelpayouts";
+import { useTravelCurrency } from "@/context/TravelCurrencyContext";
 
 interface AttractionItem {
   id: string;
@@ -157,6 +158,7 @@ const FEATURED_ATTRACTIONS: AttractionItem[] = [
 ];
 
 export default function FeaturedAttractionsGrid() {
+  const { currency, formatPrice } = useTravelCurrency();
   const [activeFilter, setActiveFilter] = useState<string>("ALL");
   const [selectedCalendarDate, setSelectedCalendarDate] = useState<number>(14);
 
@@ -341,11 +343,11 @@ export default function FeaturedAttractionsGrid() {
               <div>
                 <div className="flex items-baseline gap-1.5">
                   <span className="text-base sm:text-lg font-black text-rose-600 dark:text-rose-400">
-                    {item.currency} {item.price.toFixed(2)}
+                    {formatPrice(item.price, "USD")}
                   </span>
                   {item.originalPrice && item.originalPrice > item.price && (
                     <span className="text-xs text-slate-400 line-through">
-                      {item.currency} {item.originalPrice.toFixed(2)}
+                      {formatPrice(item.originalPrice, "USD")}
                     </span>
                   )}
                 </div>

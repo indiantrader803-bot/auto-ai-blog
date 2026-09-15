@@ -14,6 +14,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { trackTravelpayoutsClick } from "@/lib/affiliate/travelpayouts";
+import { useTravelCurrency } from "@/context/TravelCurrencyContext";
 
 interface EsimPackage {
   id: string;
@@ -122,6 +123,7 @@ const ESIM_PACKAGES: EsimPackage[] = [
 ];
 
 export default function EsimBookingSection() {
+  const { currency, formatPrice } = useTravelCurrency();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCountryId, setSelectedCountryId] = useState("usa");
 
@@ -254,8 +256,8 @@ export default function EsimBookingSection() {
               <div className="pt-3 border-t border-slate-100 dark:border-slate-800">
                 <div className="flex items-baseline justify-between mb-3">
                   <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Total Price</span>
-                  <span className="text-xl font-black text-slate-900 dark:text-white font-mono">
-                    ${opt.price.toFixed(2)}
+                  <span className="text-xl font-black text-rose-600 dark:text-rose-400 font-mono">
+                    {formatPrice(opt.price, "USD")}
                   </span>
                 </div>
 

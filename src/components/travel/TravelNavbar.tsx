@@ -23,11 +23,13 @@ import {
   ArrowRight,
 } from "lucide-react";
 
+import { useTravelCurrency } from "@/context/TravelCurrencyContext";
+
 export default function TravelNavbar() {
   const [isDark, setIsDark] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [currency, setCurrency] = useState("USD");
+  const { currency, setCurrency, currencyInfo, allCurrencies } = useTravelCurrency();
   const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
 
   useEffect(() => {
@@ -141,34 +143,40 @@ export default function TravelNavbar() {
               <div className="relative">
                 <button
                   onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
-                  className="px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors flex items-center gap-1 cursor-pointer"
+                  className="px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
+                  title="Change Currency"
                 >
-                  <Globe className="w-3.5 h-3.5 text-sky-500" />
+                  <span className="text-sm">{currencyInfo.flag}</span>
                   <span>{currency}</span>
+                  <span className="text-slate-400 dark:text-slate-500 font-mono text-[11px] font-medium">({currencyInfo.symbol.trim()})</span>
                   <ChevronDown className="w-3 h-3 opacity-60" />
                 </button>
 
                 {isCurrencyOpen && (
-                  <div className="absolute right-0 mt-2 w-32 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-1.5 z-50 text-xs font-bold animate-in fade-in slide-in-from-top-2">
-                    {["USD ($)", "EUR (€)", "GBP (£)", "AUD ($)", "CAD ($)", "INR (₹)", "JPY (¥)", "AED (د.إ)"].map((curr) => {
-                      const code = curr.split(" ")[0];
-                      return (
-                        <button
-                          key={curr}
-                          onClick={() => {
-                            setCurrency(code);
-                            setIsCurrencyOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                            currency === code
-                              ? "bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400"
-                              : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
-                          }`}
-                        >
-                          {curr}
-                        </button>
-                      );
-                    })}
+                  <div className="absolute right-0 mt-2 w-48 max-h-72 overflow-y-auto rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-1.5 z-50 text-xs font-bold animate-in fade-in slide-in-from-top-2">
+                    <div className="px-2 py-1 text-[10px] uppercase font-black tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-800 mb-1">
+                      Choose Currency
+                    </div>
+                    {allCurrencies.map((c) => (
+                      <button
+                        key={c.code}
+                        onClick={() => {
+                          setCurrency(c.code);
+                          setIsCurrencyOpen(false);
+                        }}
+                        className={`w-full text-left px-2.5 py-1.5 rounded-lg transition-colors flex items-center justify-between cursor-pointer ${
+                          currency === c.code
+                            ? "bg-sky-50 dark:bg-sky-950/80 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800"
+                            : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
+                        }`}
+                      >
+                        <span className="flex items-center gap-2">
+                          <span>{c.flag}</span>
+                          <span>{c.code}</span>
+                        </span>
+                        <span className="text-slate-400 text-[11px] font-mono">{c.symbol.trim()}</span>
+                      </button>
+                    ))}
                   </div>
                 )}
               </div>
@@ -204,10 +212,29 @@ export default function TravelNavbar() {
 
         {/* 📱 Mobile Navigation Drawer */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-5 py-5 space-y-2 shadow-2xl animate-in slide-in-from-top-2 duration-200 font-sans">
-            <div className="pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-5 py-5 space-y-3 shadow-2xl animate-in slide-in-from-top-2 duration-200 font-sans">
+            <div className="pb-2 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <span className="text-xs font-bold text-slate-500">Language:</span>
               <LanguageSelector />
+            </div>
+
+            <div className="pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-500">Currency:</span>
+              <div className="flex items-center gap-1.5 overflow-x-auto max-w-[200px] scrollbar-none py-1">
+                {allCurrencies.slice(0, 5).map((c) => (
+                  <button
+                    key={c.code}
+                    onClick={() => setCurrency(c.code)}
+                    className={`px-2 py-1 rounded-lg text-xs font-bold shrink-0 transition-colors ${
+                      currency === c.code
+                        ? "bg-sky-500 text-white shadow-sm"
+                        : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                    }`}
+                  >
+                    {c.flag} {c.code}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {navLinks.map((link) => {

@@ -21,6 +21,8 @@ import {
   X,
 } from 'lucide-react';
 import { DESTINATIONS_DATA, DestinationGuide, getDestinationBySlug } from '@/lib/travel/destinationsData';
+import { useTravelCurrency } from '@/context/TravelCurrencyContext';
+import { convertCurrency } from '@/lib/travel/currency';
 import PersonalizedTripBasket, { TripPlanConfig } from './PersonalizedTripBasket';
 import FirstTimeTravelGuideModal from './FirstTimeTravelGuideModal';
 
@@ -36,6 +38,7 @@ const QUICK_PROMPTS = [
 ];
 
 export default function SmartTravelAIAgentHero() {
+  const { currency, setCurrency, currencyInfo, allCurrencies, convertPrice, formatPrice } = useTravelCurrency();
   const [query, setQuery] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -49,6 +52,7 @@ export default function SmartTravelAIAgentHero() {
   const [wizardOrigin, setWizardOrigin] = useState('Delhi (DEL)');
   const [wizardDays, setWizardDays] = useState(4);
   const [wizardBudget, setWizardBudget] = useState('30000');
+  const [wizardCurrency, setWizardCurrency] = useState(currency);
   const [wizardTravelers, setWizardTravelers] = useState(2);
   const [wizardStyle, setWizardStyle] = useState<'Budget' | 'Comfort' | 'Luxury'>('Budget');
 
@@ -66,7 +70,7 @@ export default function SmartTravelAIAgentHero() {
 
         recognition.onstart = () => {
           setIsListening(true);
-          setSpeechFeedback('Listening... Speak your travel dream (e.g., "Manali trip for couple budget 30000 inr")');
+          setSpeechFeedback(`Listening... Speak your travel dream (e.g., "Manali trip for couple with 30000 ${currency}")`);
         };
 
         recognition.onresult = (event: any) => {
@@ -89,7 +93,7 @@ export default function SmartTravelAIAgentHero() {
         recognitionRef.current = recognition;
       }
     }
-  }, []);
+  }, [currency]);
 
   const toggleVoice = () => {
     if (isListening) {
@@ -109,10 +113,33 @@ export default function SmartTravelAIAgentHero() {
     setIsProcessing(true);
 
     setTimeout(() => {
-      // 1. Extract Budget
+      // 1. Extract Budget & Currency
       let parsedBudget = 0;
-      // Match patterns like: "30000 inr", "30k", "1.5 lakh", "₹30,000", "budget 30000", "under 50k", "$1000"
-      const budgetMatch = raw.match(/(?:budget\s*(?:of|for|is|around|under)?\s*)?(?:₹|rs\.?|inr|\$)?\s*(\d+(?:,\d+)*(?:\.\d+)?)\s*(lakh|lac|k|thousand|l|inr|rs|usd|\$)?/i);
+      let detectedCurr = currency;
+
+      if (raw.includes('$') || raw.includes('usd') || raw.includes('dollar')) {
+        detectedCurr = 'USD';
+      } else if (raw.includes('€') || raw.includes('eur') || raw.includes('euro')) {
+        detectedCurr = 'EUR';
+      } else if (raw.includes('£') || raw.includes('gbp') || raw.includes('pound')) {
+        detectedCurr = 'GBP';
+      } else if (raw.includes('aed') || raw.includes('dirham')) {
+        detectedCurr = 'AED';
+      } else if (raw.includes('¥') || raw.includes('jpy') || raw.includes('yen')) {
+        detectedCurr = 'JPY';
+      } else if (raw.includes('aud')) {
+        detectedCurr = 'AUD';
+      } else if (raw.includes('cad')) {
+        detectedCurr = 'CAD';
+      } else if (raw.includes('sgd')) {
+        detectedCurr = 'SGD';
+      } else if (raw.includes('thb') || raw.includes('baht')) {
+        detectedCurr = 'THB';
+      } else if (raw.includes('₹') || raw.includes('inr') || raw.includes('rs') || raw.includes('rupee') || raw.includes('lakh') || raw.includes('lac')) {
+        detectedCurr = 'INR';
+      }
+
+      const budgetMatch = raw.match(/(?:budget\s*(?:of|for|is|around|under)?\s*)?(?:₹|rs\.?|inr|\$|€|£|¥)?\s*(\d+(?:,\d+)*(?:\.\d+)?)\s*(lakh|lac|k|thousand|l|inr|rs|usd|\$|eur|€|gbp|£|aed|jpy)?/i);
       if (budgetMatch) {
         let num = parseFloat(budgetMatch[1].replace(/,/g, ''));
         const unit = budgetMatch[2]?.toLowerCase();
@@ -121,8 +148,9 @@ export default function SmartTravelAIAgentHero() {
         } else if (unit === 'k' || unit === 'thousand') {
           num = num * 1000;
         }
-        if (num >= 5000) {
-          parsedBudget = num;
+        if (num > 0) {
+          // Convert from detected input currency to base INR
+          parsedBudget = convertCurrency(num, detectedCurr, 'INR');
         }
       }
 
@@ -281,14 +309,15 @@ export default function SmartTravelAIAgentHero() {
     setIsProcessing(true);
     setTimeout(() => {
       const targetSlug = wizardDest === 'custom' && customDestInput.trim() ? customDestInput.trim() : wizardDest;
-      const budgetNum = parseInt(wizardBudget, 10) || 30000;
-      const guide = getDestinationBySlug(targetSlug, budgetNum, wizardDays, wizardTravelers, wizardStyle);
+      const enteredBudget = parseFloat(wizardBudget) || (wizardCurrency === 'INR' ? 30000 : 400);
+      const budgetInINR = convertCurrency(enteredBudget, wizardCurrency, 'INR');
+      const guide = getDestinationBySlug(targetSlug, budgetInINR, wizardDays, wizardTravelers, wizardStyle);
 
       setActivePlan({
         destination: guide.name,
         origin: wizardOrigin,
         days: wizardDays,
-        budget: budgetNum,
+        budget: budgetInINR,
         travelers: wizardTravelers,
         travelStyle: wizardStyle,
         guide,
@@ -537,15 +566,33 @@ export default function SmartTravelAIAgentHero() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-slate-400 font-bold uppercase tracking-wider mb-1">Total Target Budget (₹ INR)</label>
-                <input
-                  type="number"
-                  value={wizardBudget}
-                  onChange={(e) => setWizardBudget(e.target.value)}
-                  placeholder="e.g. 150000"
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="sm:col-span-1">
+                  <label className="block text-slate-400 font-bold uppercase tracking-wider mb-1">Currency</label>
+                  <select
+                    value={wizardCurrency}
+                    onChange={(e) => setWizardCurrency(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white"
+                  >
+                    {allCurrencies.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.flag} {c.code} ({c.symbol.trim()})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-slate-400 font-bold uppercase tracking-wider mb-1">
+                    Total Target Budget ({allCurrencies.find(c => c.code === wizardCurrency)?.symbol.trim() || '$'} {wizardCurrency})
+                  </label>
+                  <input
+                    type="number"
+                    value={wizardBudget}
+                    onChange={(e) => setWizardBudget(e.target.value)}
+                    placeholder={`e.g. ${wizardCurrency === 'INR' ? '30000' : '450'}`}
+                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white"
+                  />
+                </div>
               </div>
 
               <div className="pt-3 flex justify-end gap-2">
