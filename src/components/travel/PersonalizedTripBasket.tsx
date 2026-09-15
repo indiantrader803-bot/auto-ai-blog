@@ -36,6 +36,7 @@ import {
   getGetTransferUrl,
   getSailyEsimUrl,
   getAirHelpUrl,
+  getEconomyBookingsUrl,
 } from '@/lib/affiliate/links';
 
 export interface TripPlanConfig {
@@ -119,6 +120,7 @@ export default function PersonalizedTripBasket({
 
   const esimUrl = getSailyEsimUrl(guide.country || destination);
   const insuranceUrl = getAirHelpUrl({ departure: origin, arrival: destination });
+  const carUrl = getEconomyBookingsUrl({ location: destination, pickDate: departDateStr, dropDate: returnDateStr });
   const klookPassUrl = getKlookUrl({
     destination: guide.name,
     activity: guide.topAttractions[0]?.query || `${destination} sightseeing passes`,
@@ -306,9 +308,9 @@ export default function PersonalizedTripBasket({
               href={flightUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 w-full py-2 px-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition"
+              className="mt-4 w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md shadow-sky-500/20 hover:scale-[1.02] active:scale-95 cursor-pointer"
             >
-              <span>Book Flights on Aviasales</span>
+              <span>⚡ Compare Flights on Aviasales</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -338,9 +340,9 @@ export default function PersonalizedTripBasket({
               href={hotelUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 w-full py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition"
+              className="mt-4 w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md shadow-indigo-600/20 hover:scale-[1.02] active:scale-95 cursor-pointer"
             >
-              <span>Book Stay on {travelStyle === 'Luxury' ? 'Agoda' : 'Booking.com'}</span>
+              <span>🏨 Claim Genius Rates on Booking.com</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -370,9 +372,9 @@ export default function PersonalizedTripBasket({
               href={transferUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition"
+              className="mt-4 w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md shadow-emerald-600/20 hover:scale-[1.02] active:scale-95 cursor-pointer"
             >
-              <span>Book Transfer on GetTransfer</span>
+              <span>🚕 Reserve Chauffeur on GetTransfer</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -402,9 +404,9 @@ export default function PersonalizedTripBasket({
               href={getKlookUrl(guide.topAttractions[0]?.query || destination)}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 w-full py-2 px-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition"
+              className="mt-4 w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md shadow-amber-500/20 hover:scale-[1.02] active:scale-95 cursor-pointer"
             >
-              <span>Book Pass on Klook</span>
+              <span>🎟️ Book Fast-Pass on Klook</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -434,41 +436,41 @@ export default function PersonalizedTripBasket({
               href={esimUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 w-full py-2 px-3 rounded-xl bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition"
+              className="mt-4 w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md shadow-pink-600/20 hover:scale-[1.02] active:scale-95 cursor-pointer"
             >
-              <span>Activate eSIM on Saily</span>
+              <span>📱 Activate 5G eSIM on Saily</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
 
-          {/* Component 6: Flight Delay Claim & Protection */}
-          <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800/90 flex flex-col justify-between hover:border-purple-500/50 transition-all group">
+          {/* Component 6: EconomyBookings Self-Drive Car Rental */}
+          <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800/90 flex flex-col justify-between hover:border-teal-500/50 transition-all group">
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="flex items-center gap-1.5 text-xs font-bold text-purple-400">
-                  <ShieldCheck className="w-4 h-4" /> €600 Flight Claim &amp; Cover
+                <span className="flex items-center gap-1.5 text-xs font-bold text-teal-400">
+                  <Car className="w-4 h-4" /> Self-Drive Car Rental
                 </span>
-                <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400">
-                  No Win No Fee
+                <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400">
+                  Free Cancellation
                 </span>
               </div>
-              <h4 className="text-sm font-black text-white group-hover:text-purple-300 transition">
-                AirHelp Delay Protection
+              <h4 className="text-sm font-black text-white group-hover:text-teal-300 transition">
+                EconomyBookings Car Hire ({destination})
               </h4>
               <p className="text-xs text-slate-400 mt-1">
-                Automatic passenger compensation for 3+ hour delays &amp; cancellations.
+                20,000+ rental hubs worldwide. Best price match guarantee.
               </p>
               <div className="mt-2 text-xs font-bold text-emerald-400">
-                Up to €600 ({formatPrice(54000, 'INR')}) Cash Payout per Traveler
+                From $18 / day (All Major Brands)
               </div>
             </div>
             <a
-              href={insuranceUrl}
+              href={carUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 w-full py-2 px-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition"
+              className="mt-4 w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md shadow-teal-600/20 hover:scale-[1.02] active:scale-95 cursor-pointer"
             >
-              <span>Check Coverage on AirHelp</span>
+              <span>🚗 Reserve Car on EconomyBookings</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
