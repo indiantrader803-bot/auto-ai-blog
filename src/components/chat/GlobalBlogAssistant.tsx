@@ -95,7 +95,12 @@ const TRAVEL_SECTIONS = [
 
 export default function GlobalBlogAssistant() {
   const pathname = usePathname();
+  const isAdminPage = pathname?.startsWith("/admin") || false;
   const isTravelPage = pathname?.startsWith("/travel") || false;
+  
+  if (isAdminPage) {
+    return null;
+  }
   
   const activeMode: "BLOG" | "TRAVEL" = isTravelPage ? "TRAVEL" : "BLOG";
   const [isOpen, setIsOpen] = useState(false);

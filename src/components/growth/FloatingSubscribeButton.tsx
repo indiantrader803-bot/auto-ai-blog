@@ -11,7 +11,7 @@ export default function FloatingSubscribeButton() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  if (pathname?.startsWith("/travel")) {
+  if (pathname?.startsWith("/travel") || pathname?.startsWith("/admin")) {
     return null;
   }
 

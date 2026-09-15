@@ -415,6 +415,14 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950">HOT</span>
             </Link>
             <Link
+              href="/store"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-sm font-bold uppercase tracking-wider text-amber-500 dark:text-amber-400 flex items-center justify-between"
+            >
+              <span>✨ AI Tools Store &amp; IDEs</span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950">NEW</span>
+            </Link>
+            <Link
               href="/community"
               onClick={() => setIsMenuOpen(false)}
               className="block text-sm font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400"

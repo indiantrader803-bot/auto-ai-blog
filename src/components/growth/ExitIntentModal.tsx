@@ -1,15 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Download, Sparkles, X, CheckCircle2, ShieldCheck, Gift } from "lucide-react";
 
 export default function ExitIntentModal() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (pathname?.startsWith("/admin")) return;
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0) {
         try {

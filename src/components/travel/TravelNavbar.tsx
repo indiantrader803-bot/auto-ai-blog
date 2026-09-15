@@ -183,12 +183,12 @@ export default function TravelNavbar() {
               </button>
 
               {/* News Link */}
-              <Link
-                href="/"
+              <a
+                href="https://thesmartmag.com"
                 className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 transition-all border border-slate-200 dark:border-slate-700/60"
               >
-                <span>News</span>
-              </Link>
+                <span>News &amp; Blog</span>
+              </a>
 
               {/* Mobile Drawer Hamburger */}
               <button
@@ -229,13 +229,13 @@ export default function TravelNavbar() {
             })}
 
             <div className="pt-3 border-t border-slate-200 dark:border-slate-800">
-              <Link
-                href="/"
+              <a
+                href="https://thesmartmag.com"
                 onClick={() => setIsMenuOpen(false)}
-                className="text-xs font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1"
+                className="text-xs font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1 p-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/50"
               >
-                <span>← Back to SmartMag News &amp; Articles</span>
-              </Link>
+                <span>← Back to SmartMag Tech, AI &amp; Finance Blog</span>
+              </a>
             </div>
           </div>
         )}
