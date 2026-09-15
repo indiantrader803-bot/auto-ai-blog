@@ -185,14 +185,7 @@ export default function Footer() {
             </p>
             <div className="pt-2 flex items-center justify-between gap-2 text-[10px] text-emerald-400 font-bold">
               <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> 100% Independent Editorial Rigor</span>
-              <a
-                href="https://monetag.com/?ref_id=tJVZ"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-purple-400 hover:text-purple-300 transition-colors underline decoration-purple-500/50"
-              >
-                Monetag Partner
-              </a>
+              <span className="text-slate-400">Verified Partner Network</span>
             </div>
           </div>
         </div>
