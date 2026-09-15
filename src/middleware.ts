@@ -12,23 +12,48 @@ export function middleware(req: NextRequest) {
 
   // Seamless Subdomain Routing for travel.thesmartmag.com
   if (host.startsWith("travel.")) {
-    // If user accesses /travel on subdomain, 301 redirect to root
+    // 1. Direct access to secure Admin Portal - NEVER rewrite admin to travel destination
+    if (pathname.startsWith("/admin")) {
+      return NextResponse.next();
+    }
+
+    // 2. If user accesses /travel on subdomain, 301 redirect to root
     if (pathname === "/travel") {
       return NextResponse.redirect(new URL(`/${search}`, req.url), 301);
     }
-    // If user accesses /travel/:path on subdomain, 301 redirect to /:path
+
+    // 3. If user accesses /travel/:path on subdomain, 301 redirect to /:path
     if (pathname.startsWith("/travel/")) {
       const cleanPath = pathname.replace(/^\/travel/, "");
       return NextResponse.redirect(new URL(`${cleanPath}${search}`, req.url), 301);
     }
-    // If root '/', rewrite directly to '/travel'
+
+    // 4. If root '/', rewrite directly to '/travel'
     if (pathname === "/") {
       return NextResponse.rewrite(new URL(`/travel${search}`, req.url));
     }
-    // If visiting destination routes directly like '/manali' on travel subdomain, rewrite to '/travel/manali'
-    if (!pathname.startsWith("/api") && !pathname.startsWith("/_next")) {
-      return NextResponse.rewrite(new URL(`/travel${pathname}${search}`, req.url));
+
+    // 5. System, API, static files, and main publication pages should not be rewritten as destination guides
+    if (
+      pathname.startsWith("/api") ||
+      pathname.startsWith("/_next") ||
+      pathname.includes(".") ||
+      pathname.startsWith("/best-prop-firms") ||
+      pathname.startsWith("/compare") ||
+      pathname.startsWith("/reviews") ||
+      pathname.startsWith("/blog") ||
+      pathname.startsWith("/category") ||
+      pathname.startsWith("/tools") ||
+      pathname.startsWith("/store") ||
+      pathname.startsWith("/about") ||
+      pathname.startsWith("/contact") ||
+      pathname.startsWith("/privacy")
+    ) {
+      return NextResponse.next();
     }
+
+    // 6. If visiting destination routes directly like '/manali' or '/dubai' on travel subdomain, rewrite to '/travel/:destination'
+    return NextResponse.rewrite(new URL(`/travel${pathname}${search}`, req.url));
   } else {
     // If user visits https://thesmartmag.com/travel, 301 redirect to https://travel.thesmartmag.com
     if (pathname === "/travel") {
