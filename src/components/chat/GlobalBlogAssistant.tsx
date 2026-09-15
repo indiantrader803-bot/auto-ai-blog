@@ -83,6 +83,16 @@ const BLOG_PROMPTS = [
   { icon: "💡", text: "Quant Trading Risk Architecture", query: "Explain institutional position sizing, drawdown shields, and multi-agent risk management for traders." },
 ];
 
+const TRAVEL_SECTIONS = [
+  { id: "top", title: "AI Concierge Hero", icon: "🚀", desc: "Speak or type your destination, duration & budget to generate a custom 6-component Trip Basket with flights, hotels, passes & eSIM." },
+  { id: "flights", title: "Flight Radar", icon: "✈️", desc: "Compare 1,000+ airlines on Aviasales with 0% markup and real-time price matching." },
+  { id: "transfers", title: "Airport Transfers", icon: "🚕", desc: "Guaranteed fixed-price private chauffeurs with meet & greet at 175+ international airports via GetTransfer." },
+  { id: "attractions", title: "Attraction Passes", icon: "🎟️", desc: "Instant mobile QR vouchers for Disney, teamLab, Burj Khalifa, and top global experiences via Klook." },
+  { id: "esim", title: "5G eSIM Data", icon: "📱", desc: "1-minute instant QR eSIM data activation on Saily with zero international roaming charges." },
+  { id: "compensation", title: "€600 Delay Claims", icon: "🛡️", desc: "Claim up to €600 cash per passenger for flights delayed over 3 hours via AirHelp." },
+  { id: "destinations", title: "Destinations", icon: "🗺️", desc: "Explore programmatic guides and full 7-day itineraries for Japan, Dubai, Bali, Swiss Alps, and Kashmir." },
+];
+
 export default function GlobalBlogAssistant() {
   const pathname = usePathname();
   const isTravelPage = pathname?.startsWith("/travel") || false;
@@ -321,6 +331,27 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
     setMessages([welcome]);
   };
 
+  const handleJumpToSection = (section: typeof TRAVEL_SECTIONS[0]) => {
+    if (typeof window !== "undefined") {
+      const el = document.getElementById(section.id) || document.querySelector(`#${section.id}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+    const guideMsg: Message = {
+      id: `guide_${Date.now()}`,
+      role: "assistant",
+      content: `🧭 **Section Guide: ${section.title}**\n\n${section.desc}\n\n*Scrolled directly to the ${section.title} section on your screen.*`,
+      timestamp: "Just now",
+      source: "SmartMag Guide Bot",
+      speechText: `Here is the ${section.title} section. ${section.desc}`,
+    };
+    setMessages((prev) => [...prev, guideMsg]);
+    if (speechEnabled) {
+      speakText(guideMsg.speechText || guideMsg.content);
+    }
+  };
+
   const currentPrompts = activeMode === "TRAVEL" ? TRAVEL_PROMPTS : BLOG_PROMPTS;
 
   return (
@@ -502,6 +533,26 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
               </button>
             ))}
           </div>
+
+          {/* Section Guide & Quick Jumps (Interactive Tour for Every Section) */}
+          {activeMode === "TRAVEL" && (
+            <div className="bg-emerald-950/40 border-b border-emerald-900/40 px-3 py-1.5 overflow-x-auto scrollbar-none flex items-center gap-2 shrink-0">
+              <span className="text-[10px] font-black uppercase text-emerald-400 whitespace-nowrap flex items-center gap-1">
+                <Compass className="w-3 h-3 text-emerald-400" />
+                Guide Sections:
+              </span>
+              {TRAVEL_SECTIONS.map((sec) => (
+                <button
+                  key={sec.id}
+                  onClick={() => handleJumpToSection(sec)}
+                  className="px-2.5 py-1 rounded-full bg-slate-900/90 hover:bg-emerald-900/60 border border-emerald-500/30 hover:border-emerald-400 text-emerald-200 text-[10px] font-bold whitespace-nowrap transition cursor-pointer flex items-center gap-1 shadow-sm"
+                >
+                  <span>{sec.icon}</span>
+                  <span>{sec.title}</span>
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Messages Container */}
           <div className="flex-1 p-4 overflow-y-auto space-y-4 text-xs font-sans">

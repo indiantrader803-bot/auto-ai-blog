@@ -18,6 +18,7 @@ import {
   CheckCircle2,
   Volume2,
   VolumeX,
+  X,
 } from 'lucide-react';
 import { DESTINATIONS_DATA, DestinationGuide, getDestinationBySlug } from '@/lib/travel/destinationsData';
 import PersonalizedTripBasket, { TripPlanConfig } from './PersonalizedTripBasket';
@@ -351,9 +352,10 @@ export default function SmartTravelAIAgentHero() {
               <button
                 type="button"
                 onClick={() => setShowWizardModal(false)}
-                className="text-slate-400 hover:text-white transition cursor-pointer"
+                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer"
+                title="Close"
               >
-                ?
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -366,11 +368,11 @@ export default function SmartTravelAIAgentHero() {
                     onChange={(e) => setWizardDest(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white"
                   >
-                    <option value="Japan & Tokyo">?? Japan (Tokyo, Kyoto &amp; Mt Fuji)</option>
-                    <option value="Dubai & Emirates">??? Dubai &amp; Arabian Desert</option>
-                    <option value="Bali Tropical Paradise">??? Bali &amp; Nusa Penida</option>
-                    <option value="Switzerland & The Swiss Alps">??? Switzerland &amp; Swiss Alps</option>
-                    <option value="Kashmir - Heaven on Earth">?? Kashmir (Dal Lake &amp; Gulmarg)</option>
+                    <option value="Japan & Tokyo">🌸 Japan (Tokyo, Kyoto &amp; Mt Fuji)</option>
+                    <option value="Dubai & Emirates">🏙️ Dubai &amp; Arabian Desert</option>
+                    <option value="Bali Tropical Paradise">🌴 Bali &amp; Nusa Penida</option>
+                    <option value="Switzerland & The Swiss Alps">🏔️ Switzerland &amp; Swiss Alps</option>
+                    <option value="Kashmir - Heaven on Earth">❄️ Kashmir (Dal Lake &amp; Gulmarg)</option>
                   </select>
                 </div>
 
