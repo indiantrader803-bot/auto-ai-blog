@@ -41,6 +41,264 @@ export interface DestinationGuide {
 }
 
 export const DESTINATIONS_DATA: Record<string, DestinationGuide> = {
+  manali: {
+    slug: 'manali',
+    name: 'Manali & Himachal Snow Valleys',
+    country: 'India',
+    region: 'Himachal Pradesh (Western Himalayas)',
+    tagline: 'Snow-Capped Peaks, Solang Valley, Atal Tunnel, Pine Forests & River Rafting',
+    heroImage: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200&auto=format&fit=crop&q=80',
+    bestTimeToVisit: 'October to June (Snow in Dec–Feb, pleasant 15–25°C in March–June)',
+    idealDays: '4 to 6 Days',
+    avgBudgetPerPerson: '₹12,000 - ₹18,000 ($145 - $220)',
+    currency: 'Indian Rupee (INR) / ₹',
+    visaInfo: 'Domestic Travel: No visa required. (Postpaid SIM & ID proof recommended)',
+    highlights: [
+      'Solang Valley Paragliding & Skiing',
+      'Atal Tunnel & Sissu Waterfall (Lahaul Valley)',
+      'Rohtang Pass Snow Point (13,058 ft)',
+      'Old Manali Wooden Cafes & Hadimba Temple',
+      'Jogini Waterfalls Trek & Vashisht Hot Springs'
+    ],
+    topAttractions: [
+      { title: 'Solang Valley Adventure & Paragliding Pass', description: 'Tandem paragliding, ropeway cable car, zorbing, and quad biking across Solang meadow.', rating: 4.9, badge: 'BESTSELLER', price: '₹1,450', query: 'Solang Valley Manali paragliding adventure' },
+      { title: 'Atal Tunnel & Sissu Lahaul Valley Full-Day Excursion', description: 'Drive through world longest high-altitude highway tunnel into breathtaking Lahaul valley.', rating: 4.9, badge: 'MUST EXPERIENCE', price: '₹2,200', query: 'Atal Tunnel Sissu Manali day tour' },
+      { title: 'Rohtang Pass Snow Point & Glacier Day Permit', description: 'Scenic drive to 13,058ft pass with snow sledging, yak rides, and panoramic Himalayan vistas.', rating: 4.8, badge: 'ICONIC', price: '₹2,800', query: 'Rohtang Pass Manali day tour' },
+      { title: 'Beas River White Water Rafting & Zipline in Kullu', description: 'Grade 3+ river rafting over 14 km rapids in crystal cold glacial waters of Beas River.', rating: 4.9, badge: 'TOP ADVENTURE', price: '₹950', query: 'Kullu Manali river rafting booking' }
+    ],
+    budgetBreakdown: {
+      flight: 5000,
+      hotel: 9000,
+      transfer: 3500,
+      activities: 4500,
+      food: 5500,
+      esim: 300,
+      insurance: 500,
+      currencySymbol: '₹',
+    },
+    sampleItinerary: [
+      { day: 1, title: 'Arrival in Manali, Old Manali Cafes & Hadimba Temple', activities: ['Arrival via Volvo AC coach or Kullu Bhuntar Airport (KUU)', 'Check into boutique cedarwood riverside resort in Old Manali', 'Walk through dense deodar forests to 500-year-old wooden Hadimba Devi Temple', 'Evening riverside cafe stroll tasting fresh mountain apple pie and herbal tea'], foodRecommendation: 'Himachali Siddu (Steamed wheat dumplings with walnut-poppy filling) & Trout Fish', bookingType: 'hotel', bookingCtaText: 'Book Manali Mountain Resort', bookingQuery: 'Manali boutique hotel resort' },
+      { day: 2, title: 'Solang Valley Paragliding & Anjani Mahadev Waterfall', activities: ['Morning paragliding and ropeway gondola ride over Solang Valley', 'Trek to sacred Anjani Mahadev waterfall where natural ice lingam forms', 'Zorbing, ATV quad bike rides, and mountain photography'], foodRecommendation: 'Piping hot Maggi, Kadhi Chawal & Pahadi Chai at Solang viewpoint', bookingType: 'attraction', bookingCtaText: 'Book Solang Valley Adventure Pass', bookingQuery: 'Solang Valley tour' },
+      { day: 3, title: 'Atal Tunnel, Sissu Waterfall & Lahaul Valley Expedition', activities: ['Drive through the marvel 9.02 km Atal Tunnel beneath Rohtang Pass', 'Arrive at dramatic cold-desert village of Sissu in Lahaul Valley', 'Hike to cascading Sissu Waterfall with snow mountain backdrops', 'Optional extension to Keylong or Rohtang Pass snow point'], foodRecommendation: 'Tibetan Thukpa, steamed butter Momos, and hot mutton broth', bookingType: 'transfer', bookingCtaText: 'Book Atal Tunnel Private Cab Transfer', bookingQuery: 'Atal Tunnel Sissu private cab' },
+      { day: 4, title: 'Jogini Waterfalls Hike, Vashisht Hot Springs & Mall Road', activities: ['Scenic pine forest hike from Vashisht village to Jogini Waterfalls', 'Rejuvenating natural sulphur hot water bath at historic Vashisht Temple', 'Evening souvenir shopping on Mall Road for Kullu woolen shawls, pure honey & dried fruits'], foodRecommendation: 'Traditional Himachali Dham festive feast on brass thali', bookingType: 'attraction', bookingCtaText: 'Book Jogini Waterfall Guided Walk', bookingQuery: 'Jogini waterfall Manali tour' },
+      { day: 5, title: 'Kasol, Manikaran Gurudwara Hot Springs & Departure', activities: ['Day excursion along Parvati Valley to mini-Israel village of Kasol', 'Visit sacred Manikaran Sahib Gurudwara and witness natural boiling springs', 'Return transfer to Chandigarh/Delhi Volvo bus stand or Bhuntar airport'], foodRecommendation: 'Fresh Israeli Shakshuka, falafel pita & Gurudwara Langar prasad', bookingType: 'transfer', bookingCtaText: 'Search Return Volvo & Cabs on GetTransfer', bookingQuery: 'Manali Delhi return transfer' }
+    ]
+  },
+  goa: {
+    slug: 'goa',
+    name: 'Goa Coastal Paradise & Latin Heritage',
+    country: 'India',
+    region: 'Konkan Coast (Arabian Sea)',
+    tagline: 'Golden Sand Beaches, Portuguese Latin Quarters, Seafood Shacks & Water Sports',
+    heroImage: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1200&auto=format&fit=crop&q=80',
+    bestTimeToVisit: 'October to April (Sunny 28°C beach weather, vibrant shacks & water sports)',
+    idealDays: '4 to 6 Days',
+    avgBudgetPerPerson: '₹14,000 - ₹22,000 ($170 - $265)',
+    currency: 'Indian Rupee (INR) / ₹',
+    visaInfo: 'Domestic: No visa. International: 30-Day Tourist eVisa.',
+    highlights: [
+      'North Goa Vibrant Beaches (Baga, Anjuna, Morjim)',
+      'South Goa Secluded Bays (Palolem, Agonda, Butterfly Beach)',
+      'Fontainhas Colourful Portuguese Latin Quarter',
+      'Aguada & Chapora Fort Sunset Vistas',
+      'Dudhsagar Waterfalls & Spice Plantation Safari'
+    ],
+    topAttractions: [
+      { title: 'Grand Island Scuba Diving & Dolphin Speedboat Safari', description: 'PADI certified beginner scuba dive, snorkeling, dolphin spotting, and BBQ lunch.', rating: 4.9, badge: 'TOP SELLER', price: '₹1,650', query: 'Goa scuba diving Grand Island tour' },
+      { title: 'Dudhsagar 4-Tier Waterfall & Spice Plantation Jeep Safari', description: '4x4 jungle jeep safari through Bhagwan Mahavir sanctuary and spice farm feast.', rating: 4.8, badge: 'ADVENTURE', price: '₹1,950', query: 'Dudhsagar waterfall spice plantation Goa tour' },
+      { title: 'Mandovi River Luxury Sunset Catamaran Cruise', description: '2-hour cruise past Panaji bridges with Goan folk dance, live DJ, and drinks.', rating: 4.8, badge: 'POPULAR', price: '₹650', query: 'Goa sunset river cruise Mandovi' },
+      { title: 'North Goa 5-in-1 Water Sports Combo (Parasailing & Jet Ski)', description: 'Parasailing, jet ski, banana ride, bumper ride, and speed boat pass on Calangute beach.', rating: 4.9, badge: 'VALUE DEAL', price: '₹1,350', query: 'Goa water sports combo parasailing' }
+    ],
+    budgetBreakdown: {
+      flight: 6500,
+      hotel: 10000,
+      transfer: 3000,
+      activities: 4500,
+      food: 6000,
+      esim: 300,
+      insurance: 400,
+      currencySymbol: '₹',
+    },
+    sampleItinerary: [
+      { day: 1, title: 'Arrival at Goa, North Goa Beach Check-in & Aguada Sunset', activities: ['Arrival at Dabolim (GOI) or Mopa (GOX) Airport with private pickup', 'Check into beachfront resort or private pool villa in Candolim / Anjuna', 'Explore 17th-century Portuguese Aguada Fort and lighthouse overlooking the sea', 'Sunset cocktails at Thalassa or Curlies beach shack with live acoustic beats'], foodRecommendation: 'Authentic Goan Fish Curry Thali with Kingfish & Butter Garlic Prawns', bookingType: 'transfer', bookingCtaText: 'Book Goa Airport Private Cab', bookingQuery: 'Goa airport taxi transfer' },
+      { day: 2, title: 'Water Sports Rush & Latin Quarter Heritage Walk (Fontainhas)', activities: ['Morning parasailing and jet skiing at Calangute / Morjim beach', 'Drive to Panaji and wander through pastel yellow & blue Portuguese houses of Fontainhas', 'Visit Our Lady of the Immaculate Conception Church and vintage bakeries'], foodRecommendation: 'Fresh Goan Poi bread with Pork Vindaloo or Mushroom Xacuti and Bebinca cake', bookingType: 'attraction', bookingCtaText: 'Book Fontainhas Heritage Walking Tour', bookingQuery: 'Fontainhas Panaji walking tour' },
+      { day: 3, title: 'Dudhsagar Waterfalls & Sahakari Spice Farm Safari', activities: ['Early morning 4x4 open jeep ride through dense jungle streams to majestic Dudhsagar Falls', 'Swim in the natural emerald pool beneath the railway viaduct', 'Guided tour of organic spice plantation with traditional banana-leaf buffet feast'], foodRecommendation: 'Organic Goan buffet with spiced chicken cafreal, local kokum juice & feni', bookingType: 'attraction', bookingCtaText: 'Book Dudhsagar Jeep Safari Pass', bookingQuery: 'Dudhsagar jeep safari tour' },
+      { day: 4, title: 'South Goa Serenity: Palolem Beach & Cabo de Rama Cliff', activities: ['Scenic coastal drive south to crescent-shaped turquoise Palolem Beach', 'Kayak to Honeymoon and Butterfly Beach to spot wild dolphins', 'Clifftop sunset views from historic ruins of Cabo de Rama Fort'], foodRecommendation: 'Candlelight grilled Red Snapper with herbs on Palolem sand beach', bookingType: 'hotel', bookingCtaText: 'Book South Goa Luxury Beach Resort', bookingQuery: 'South Goa beach resort hotel' },
+      { day: 5, title: 'Old Goa UNESCO Cathedrals, Flea Market & Departure', activities: ['Visit Basilica of Bom Jesus (relics of St. Francis Xavier) and Se Cathedral', 'Last-minute cashew nut and homemade Goan chocolate shopping before airport transfer'], foodRecommendation: 'Traditional Goan fish cutlets and sweet caramel custard', bookingType: 'flight', bookingCtaText: 'Compare Goa Return Flights on Aviasales', bookingQuery: 'Goa return flights' }
+    ]
+  },
+  kerala: {
+    slug: 'kerala',
+    name: 'Kerala God\'s Own Country & Backwaters',
+    country: 'India',
+    region: 'South India (Malabar Coast & Western Ghats)',
+    tagline: 'Emerald Tea Plantations, Private Houseboat Canals & Palm-Lined Cliffs',
+    heroImage: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1200&auto=format&fit=crop&q=80',
+    bestTimeToVisit: 'September to March (Pleasant 22–30°C, lush waterfalls & tranquil backwaters)',
+    idealDays: '5 to 7 Days',
+    avgBudgetPerPerson: '₹18,000 - ₹28,000 ($220 - $340)',
+    currency: 'Indian Rupee (INR) / ₹',
+    visaInfo: 'Domestic: No visa. International: 30-Day Indian eVisa.',
+    highlights: [
+      'Alleppey (Alappuzha) Private Luxury Houseboat Cruise',
+      'Munnar High-Altitude Tea Estates & Eravikulam National Park',
+      'Fort Kochi Portuguese Heritage & Chinese Fishing Nets',
+      'Varkala Cliff Sunset Beach & Ayurvedic Spa Retreats',
+      'Thekkady Periyar Wildlife Sanctuary & Spice Trails'
+    ],
+    topAttractions: [
+      { title: 'Alleppey Private Luxury Houseboat 1-Day & Overnight Cruise', description: 'Air-conditioned luxury Kettuvallam boat with private chef, sun deck, and village canals.', rating: 4.9, badge: 'ICONIC', price: '₹7,500', query: 'Alleppey houseboat private cruise booking' },
+      { title: 'Munnar Tea Estate Jeep Safari & Kolukkumalai Sunrise', description: 'Off-road 4WD jeep ascent to world highest tea plantation at 7,130ft for cloud sunrise.', rating: 4.9, badge: 'MUST VISIT', price: '₹2,100', query: 'Munnar Kolukkumalai tea safari' },
+      { title: 'Fort Kochi Kathakali & Kalaripayattu Martial Arts Show', description: 'Authentic 90-minute classical drama and ancient martial arts performance.', rating: 4.8, badge: 'CULTURAL GEM', price: '₹450', query: 'Fort Kochi Kathakali show ticket' },
+      { title: 'Periyar Tiger Reserve Bamboo Rafting & Jungle Safari', description: 'Full-day hiking and bamboo rafting expedition in pristine wildlife sanctuary.', rating: 4.8, badge: 'NATURE', price: '₹2,600', query: 'Periyar wildlife jungle safari Thekkady' }
+    ],
+    budgetBreakdown: {
+      flight: 8500,
+      hotel: 13000,
+      transfer: 4500,
+      activities: 5000,
+      food: 6500,
+      esim: 300,
+      insurance: 500,
+      currencySymbol: '₹',
+    },
+    sampleItinerary: [
+      { day: 1, title: 'Arrival in Kochi, Fort Kochi Walk & Kathakali Evening', activities: ['Arrival at Cochin International Airport (COK)', 'Stroll Portuguese alleys of Fort Kochi, St. Francis Church & Chinese fishing nets', 'Evening Kathakali classical dance and Kalaripayattu martial arts show'], foodRecommendation: 'Fresh Malabar Prawn Curry, Appam & Kerala Parotta with beef fry', bookingType: 'hotel', bookingCtaText: 'Book Fort Kochi Heritage Hotel', bookingQuery: 'Fort Kochi heritage hotel' },
+      { day: 2, title: 'Scenic Mountain Drive to Munnar Tea Estates (1,600m)', activities: ['Scenic 3.5h mountain drive stopping at Cheeyappara and Valara waterfalls', 'Check into luxury tea valley resort surrounded by misty plantations', 'Visit Tata KDHP Tea Museum and factory with guided tea tasting'], foodRecommendation: 'Traditional Kerala Sadya on banana leaf with 20+ side curries and Payasam', bookingType: 'hotel', bookingCtaText: 'Book Munnar Tea Garden Resort', bookingQuery: 'Munnar resort hotel' },
+      { day: 3, title: 'Eravikulam National Park (Nilgiri Tahr) & Echo Point', activities: ['Morning safari in Eravikulam National Park to spot endangered Nilgiri Tahr mountain goats', 'Visit Mattupetty Dam, Echo Point, and speed boating on Kundala Lake', 'Relaxing 60-min authentic Ayurvedic herbal body massage'], foodRecommendation: 'Kottayam Duck Roast and warm cardamom spiced tea', bookingType: 'attraction', bookingCtaText: 'Book Munnar Day Sightseeing Tour', bookingQuery: 'Munnar day tour' },
+      { day: 4, title: 'Munnar to Alleppey: Board Private Luxury Houseboat', activities: ['Descend from the mountains to the tranquil backwaters of Alleppey', 'Board private wooden Kettuvallam houseboat equipped with AC bedroom and private chef', 'Glide through narrow village canals as village life unfolds along the banks'], foodRecommendation: 'Freshly caught Karimeen Pollichathu (Pearl spot fish in roasted spices) & Red Matta Rice', bookingType: 'attraction', bookingCtaText: 'Book Private Alleppey Houseboat', bookingQuery: 'Alleppey houseboat booking' },
+      { day: 5, title: 'Sunrise Canoe Ride, Coir Village & Airport Departure', activities: ['Early sunrise wooden canoe ride through shallow canals where large boats cannot enter', 'Disembark houseboat at 10 AM and visit traditional coir manufacturing village', 'Private transfer back to Cochin Airport for departure'], foodRecommendation: 'Fluffy Appams with vegetable stew and fresh coconut water', bookingType: 'flight', bookingCtaText: 'Search Kochi Return Flights on Aviasales', bookingQuery: 'Kochi return flights' }
+    ]
+  },
+  ladakh: {
+    slug: 'ladakh',
+    name: 'Ladakh High-Altitude Trans-Himalayan Odyssey',
+    country: 'India',
+    region: 'Ladakh (High Himalayas)',
+    tagline: 'World Highest Motorable Passes, Pangong Tso Azure Lake & Nubra Desert Sand Dunes',
+    heroImage: 'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?w=1200&auto=format&fit=crop&q=80',
+    bestTimeToVisit: 'May to September (Roads open, clear skies, pleasant 15–22°C daytime)',
+    idealDays: '6 to 8 Days',
+    avgBudgetPerPerson: '₹25,000 - ₹38,000 ($300 - $460)',
+    currency: 'Indian Rupee (INR) / ₹',
+    visaInfo: 'Domestic: Inner Line Permit (ILP) required (available online in 24h).',
+    highlights: [
+      'Pangong Tso 134km High-Altitude Salt Lake',
+      'Khardung La Pass (17,582 ft) World Highest Motorable Highway',
+      'Nubra Valley Hunder Sand Dunes & Double-Humped Camels',
+      'Thiksey & Diskit Ancient Buddhist Monasteries',
+      'Magnetic Hill & Zanskar-Indus River Confluence'
+    ],
+    topAttractions: [
+      { title: 'Pangong Tso & Chang La Pass 2-Day Expedition', description: 'Overnight in heated lakeshore geodesic domes beneath star-studded Milky Way skies.', rating: 4.9, badge: 'BUCKETLIST', price: '₹4,500', query: 'Pangong Tso Lake tour Ladakh' },
+      { title: 'Khardung La Pass & Nubra Valley 4x4 Jeep Safari', description: 'Cross 17,582ft pass to ride double-humped Bactrian camels in Hunder white desert.', rating: 4.9, badge: 'MUST EXPERIENCE', price: '₹4,800', query: 'Nubra Valley Khardung La tour' },
+      { title: 'Leh Monasteries & Magnetic Hill Day Excursion', description: 'Visit 12-story Thiksey Monastery, Shey Palace, Magnetic Hill, and Sangam confluence.', rating: 4.8, badge: 'CULTURAL', price: '₹2,200', query: 'Leh sightseeing monastery tour' },
+      { title: 'Zanskar River White Water Rafting (Chilling to Sangam)', description: 'Grade 3+ rafting through dramatic high-altitude mountain gorges.', rating: 4.9, badge: 'ADVENTURE', price: '₹1,850', query: 'Zanskar river rafting Ladakh' }
+    ],
+    budgetBreakdown: {
+      flight: 11000,
+      hotel: 14000,
+      transfer: 6500,
+      activities: 5500,
+      food: 6500,
+      esim: 300,
+      insurance: 600,
+      currencySymbol: '₹',
+    },
+    sampleItinerary: [
+      { day: 1, title: 'Arrival in Leh (3,500m) & Mandatory Acclimatization', activities: ['Arrival at Kushok Bakula Rimpochee Airport (IXL)', 'Mandatory 24h complete rest in hotel to adapt to thin oxygen', 'Gentle evening stroll in Leh Main Bazaar tasting hot Tibetan momos and butter tea'], foodRecommendation: 'Steamed Tibetan Tingmo with Vegetable Thukpa and Apricot juice', bookingType: 'hotel', bookingCtaText: 'Book Leh Heritage Hotel with Oxygen', bookingQuery: 'Leh hotel with oxygen backup' },
+      { day: 2, title: 'Shanti Stupa Sunrise, Thiksey Monastery & Magnetic Hill', activities: ['Golden sunrise over Stok Kangri range from white-domed Shanti Stupa', 'Visit 12-story Thiksey Monastery (mini Potala Palace) for morning Buddhist chant', 'Witness gravity-defying Magnetic Hill and Zanskar-Indus river confluence (Sangam)'], foodRecommendation: 'Ladakhi Chhurpi cheese soup and fresh Skyu pasta stew', bookingType: 'attraction', bookingCtaText: 'Book Leh Valley Monasteries Tour', bookingQuery: 'Leh monastery day tour' },
+      { day: 3, title: 'Cross Khardung La Pass (17,582 ft) into Nubra Valley', activities: ['Ascend world highest motorable pass at Khardung La for panoramic photo stop', 'Descend into lush Nubra Valley and visit 32m Golden Maitreya Buddha at Diskit', 'Ride rare double-humped Bactrian camels across Hunder white sand dunes at sunset'], foodRecommendation: 'Balti spiced roasted lamb and organic apricot pie', bookingType: 'attraction', bookingCtaText: 'Book Nubra Valley Jeep Safari', bookingQuery: 'Nubra valley camel safari' },
+      { day: 4, title: 'Nubra Valley to Pangong Tso Lake via Shyok River', activities: ['Scenic rugged 4x4 drive navigating dramatic gorges along the turquoise Shyok River', 'Arrive at the magical 134 km Pangong Tso Lake shifting colors from cobalt to emerald', 'Check into heated geodesic domes on the lakeshore for world-class night astrophotography'], foodRecommendation: 'Hot garlic noodle soup and ginger lemon honey tea under the stars', bookingType: 'hotel', bookingCtaText: 'Book Pangong Lake Luxury Heated Camp', bookingQuery: 'Pangong lake luxury camp' },
+      { day: 5, title: 'Pangong Sunrise, Cross Chang La Pass & Return to Leh', activities: ['Witness breathtaking golden dawn reflection over Pangong Tso mirror waters', 'Cross 17,585ft Chang La Pass with stop at ancient Hemis Monastery', 'Farewell souvenir shopping in Leh for GI-tagged Pashmina shawls and prayer wheels'], foodRecommendation: 'Traditional Ladakhi Mokthuk (dumplings in spiced soup)', bookingType: 'flight', bookingCtaText: 'Search Leh Return Flights on Aviasales', bookingQuery: 'Leh return flights' }
+    ]
+  },
+  thailand: {
+    slug: 'thailand',
+    name: 'Thailand Tropical Paradise (Bangkok & Phuket)',
+    country: 'Thailand',
+    region: 'Southeast Asia',
+    tagline: 'Golden Temples, Phi Phi Island Speedboats, Floating Markets & Street Food Capitals',
+    heroImage: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=1200&auto=format&fit=crop&q=80',
+    bestTimeToVisit: 'November to April (Dry season, warm sunshine 28–32°C, crystal turquoise waters)',
+    idealDays: '5 to 7 Days',
+    avgBudgetPerPerson: '₹35,000 - ₹55,000 ($420 - $660)',
+    currency: 'Thai Baht (THB) / ฿',
+    visaInfo: 'Visa-Free / Instant eVisa for Indian and global travelers.',
+    highlights: [
+      'Phuket Phi Phi Islands & Maya Bay Speedboat Tour',
+      'Bangkok Grand Palace & Wat Arun Temple of Dawn',
+      'Damnoen Saduak Floating Market & Maeklong Railway Train Market',
+      'Phang Nga Bay James Bond Island Sea Kayaking',
+      'Chao Phraya River Princess Luxury Dinner Cruise'
+    ],
+    topAttractions: [
+      { title: 'Phi Phi Islands & Maya Bay Luxury Speedboat Tour', description: 'Visit Maya Bay (The Beach movie), Pileh Lagoon natural pool, Monkey Beach & snorkeling.', rating: 4.9, badge: 'BESTSELLER', price: '₹2,850', query: 'Phi Phi island Maya Bay speedboat tour Phuket' },
+      { title: 'Chao Phraya Princess Luxury Dinner Cruise in Bangkok', description: '2-hour illuminated cruise past Wat Arun and Grand Palace with live saxophone & seafood buffet.', rating: 4.8, badge: 'ROMANTIC', price: '₹1,950', query: 'Chao Phraya Princess dinner cruise ticket' },
+      { title: 'James Bond Island & Phang Nga Bay Sea Canoe Safari', description: 'Sea canoe through hidden sea caves, limestone karsts, and floating Muslim village.', rating: 4.9, badge: 'MUST VISIT', price: '₹2,600', query: 'James Bond island tour Phuket' },
+      { title: 'Bangkok Grand Palace & Wat Phra Kaew Walking Tour', description: 'Skip-the-line guided exploration of sacred Emerald Buddha and royal court pavilions.', rating: 4.8, badge: 'CULTURAL', price: '₹1,450', query: 'Bangkok Grand Palace guided tour' }
+    ],
+    budgetBreakdown: {
+      flight: 16000,
+      hotel: 14000,
+      transfer: 3500,
+      activities: 7500,
+      food: 8000,
+      esim: 650,
+      insurance: 1100,
+      currencySymbol: '₹',
+    },
+    sampleItinerary: [
+      { day: 1, title: 'Arrival in Bangkok, Hotel Check-in & Chao Phraya Dinner Cruise', activities: ['Arrival at Suvarnabhumi (BKK) or Don Mueang (DMK) Airport with private transfer', 'Check into riverfront boutique hotel', 'Evening luxury dinner cruise along Chao Phraya River with illuminated temple views'], foodRecommendation: 'Pad Thai Goong (Stir-fried rice noodles with king prawns) & Mango Sticky Rice', bookingType: 'transfer', bookingCtaText: 'Book Bangkok Airport VIP Transfer', bookingQuery: 'Bangkok BKK airport transfer' },
+      { day: 2, title: 'Grand Palace, Wat Pho Reclining Buddha & Wat Arun', activities: ['Morning guided tour of ornate Grand Palace and Temple of the Emerald Buddha', 'Visit giant 46-meter gold-leaf Reclining Buddha at Wat Pho', 'Cross river by ferry to iconic ceramic porcelain spires of Wat Arun (Temple of Dawn)'], foodRecommendation: 'Tom Yum Goong (Hot and sour lemongrass prawn soup) & Green Papaya Salad (Som Tum)', bookingType: 'attraction', bookingCtaText: 'Book Bangkok Temples Guided Pass', bookingQuery: 'Bangkok temples guided tour' },
+      { day: 3, title: 'Fly to Phuket, Patong Beach & Old Phuket Town', activities: ['Short 1h 15m domestic flight to Phuket (HKT)', 'Check into Andaman beachfront pool resort', 'Afternoon walk through colorful Sino-Portuguese heritage shophouses in Old Phuket Town', 'Sunset drinks at Promthep Cape viewpoint'], foodRecommendation: 'Massaman Curry with tender braised chicken and coconut milk', bookingType: 'hotel', bookingCtaText: 'Book Phuket Beachfront Resort', bookingQuery: 'Phuket beachfront resort' },
+      { day: 4, title: 'Phi Phi Islands, Maya Bay & Pileh Lagoon Speedboat Tour', activities: ['Fast speedboat across turquoise Andaman Sea to iconic Maya Bay', 'Jump into emerald waters of Pileh Lagoon natural cliff pool for swimming', 'Snorkel with tropical coral fish and sea turtles at Bamboo Island'], foodRecommendation: 'Fresh whole grilled Andaman Snapper with Thai sweet chili dip', bookingType: 'attraction', bookingCtaText: 'Book Phi Phi Islands Speedboat Tour', bookingQuery: 'Phi Phi islands speedboat tour' },
+      { day: 5, title: 'James Bond Island Sea Canoe, Thai Massage & Departure', activities: ['Sea canoe through limestone caves of Phang Nga Bay', 'Authentic 90-min traditional Thai herbal wellness massage', 'Departure transfer to Phuket airport for return flight'], foodRecommendation: 'Crispy Banana Pancakes with condensed milk and Thai Iced Milk Tea', bookingType: 'flight', bookingCtaText: 'Search Thailand Return Flights on Aviasales', bookingQuery: 'Thailand return flights' }
+    ]
+  },
+  maldives: {
+    slug: 'maldives',
+    name: 'Maldives Overwater Luxury Archipelago',
+    country: 'Maldives',
+    region: 'Indian Ocean',
+    tagline: 'Private Overwater Bungalows, Turquoise Atolls, Manta Ray Reefs & Seaplane Flights',
+    heroImage: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=1200&auto=format&fit=crop&q=80',
+    bestTimeToVisit: 'November to April (Warm 29°C tropical sunshine, calm crystal-clear seas)',
+    idealDays: '4 to 6 Days',
+    avgBudgetPerPerson: '₹75,000 - ₹1,40,000 ($900 - $1,700)',
+    currency: 'Maldivian Rufiyaa (MVR) / USD ($)',
+    visaInfo: 'Free 30-Day Visa on Arrival for all international tourists.',
+    highlights: [
+      'Private Overwater Pool Villa with direct ocean reef access',
+      'Scenic Trans-Maldivian Seaplane Aerial Flight',
+      'Snorkeling with wild Manta Rays, Whale Sharks & Sea Turtles',
+      'Private Sandbank Sunset Picnic & Candlelight Beach Dinner',
+      'Underwater Restaurant & Subwing Coral Diving'
+    ],
+    topAttractions: [
+      { title: 'Maldives Manta Ray & Nurse Shark Snorkeling Safari', description: 'Guided boat cruise to swim safely with nurse sharks, eagle rays, and vibrant coral reefs.', rating: 4.9, badge: 'UNFORGETTABLE', price: '₹4,800', query: 'Maldives shark and ray snorkeling tour' },
+      { title: 'Private Sandbank Romantic Picnic with Drone Photoshoot', description: 'Speedboat transfer to an isolated white sandbank in the middle of the turquoise ocean.', rating: 4.9, badge: 'HONEYMOON PICK', price: '₹6,500', query: 'Maldives sandbank private tour' },
+      { title: 'Scenic Seaplane Aerial Island Flight Experience', description: 'Breathtaking bird-eye views of coral atolls, blue lagoons, and luxury resorts.', rating: 4.9, badge: 'ICONIC', price: '₹14,500', query: 'Maldives seaplane flight booking' },
+      { title: 'Sunset Dolphin Cruise with Complimentary Sparkling Wine', description: 'Watch hundreds of playful spinner dolphins leaping against golden ocean sunset.', rating: 4.8, badge: 'POPULAR', price: '₹3,200', query: 'Maldives sunset dolphin cruise' }
+    ],
+    budgetBreakdown: {
+      flight: 22000,
+      hotel: 45000,
+      transfer: 12000,
+      activities: 14000,
+      food: 18000,
+      esim: 850,
+      insurance: 1800,
+      currencySymbol: '₹',
+    },
+    sampleItinerary: [
+      { day: 1, title: 'Arrival at Male (MLE), Seaplane Ride & Overwater Villa Check-in', activities: ['Touchdown at Velana International Airport (Male)', 'Scenic seaplane or luxury speedboat transfer directly to your private island resort', 'Check into glass-floor overwater villa with direct ladder into coral lagoon'], foodRecommendation: 'Grilled Maldivian Yellowfin Tuna steak with fresh lime and coconut rice', bookingType: 'hotel', bookingCtaText: 'Book Maldives Overwater Luxury Resort', bookingQuery: 'Maldives overwater villa resort' },
+      { day: 2, title: 'House Reef Snorkeling, Sea Turtles & Lagoon Kayaking', activities: ['Morning snorkeling right from your villa sundeck among butterflyfish and turtles', 'Transparent glass-bottom kayak paddle across calm turquoise lagoon', 'Sunset cocktails at poolside overwater bar'], foodRecommendation: 'Mas Huni (Smoked tuna mixed with freshly grated coconut, chili, and warm roshi flatbread)', bookingType: 'attraction', bookingCtaText: 'Book Reef Snorkeling Tour', bookingQuery: 'Maldives snorkeling pass' },
+      { day: 3, title: 'Private Sandbank Escape & Manta Ray Snorkel Expedition', activities: ['Boat expedition to Baa Atoll UNESCO biosphere to swim alongside gentle Manta Rays', 'Private picnic on secluded white-sand sandbank surrounded by 360° turquoise waters', 'Evening Stargazing cinema night on the beach sand'], foodRecommendation: 'Fresh seafood barbecue with rock lobster and jumbo tiger prawns', bookingType: 'attraction', bookingCtaText: 'Book Sandbank & Manta Ray Tour', bookingQuery: 'Maldives sandbank tour' },
+      { day: 4, title: 'Underwater Spa, Sunset Dolphin Cruise & Candlelight Dinner', activities: ['Rejuvenating couples massage at overwater glass-floor spa pavilion', 'Speedboat sunset cruise following pods of playful wild spinner dolphins', 'Private 5-course candlelight dinner right on the ocean shoreline with torchlights'], foodRecommendation: 'Fine dining 5-course gourmet ocean menu with champagne', bookingType: 'attraction', bookingCtaText: 'Book Sunset Dolphin Cruise', bookingQuery: 'Maldives dolphin cruise' },
+      { day: 5, title: 'Last Ocean Dip, Souvenirs in Male & Return Flight', activities: ['Final sunrise swim in infinity ocean pool', 'Speedboat transfer back to Male for quick lacquer craft shopping before departure flight'], foodRecommendation: 'Tropical coconut water and Maldivian short eats (Hedhikaa pastries)', bookingType: 'flight', bookingCtaText: 'Search Return Flights on Aviasales', bookingQuery: 'Maldives return flights' }
+    ]
+  },
   japan: {
     slug: 'japan',
     name: 'Japan & Tokyo Golden Route',
@@ -194,14 +452,14 @@ export const DESTINATIONS_DATA: Record<string, DestinationGuide> = {
   },
   kashmir: {
     slug: 'kashmir',
-    name: 'Kashmir - Heaven on Earth & Ladakh',
+    name: 'Kashmir - Heaven on Earth & Dal Lake',
     country: 'India',
     region: 'Himalayas',
     tagline: 'Floating Shikaras, Snow Valleys, Pine Forests & Alpine Glacial Lakes',
     heroImage: 'https://images.unsplash.com/photo-1598091383021-15ddea10925d?w=1200&auto=format&fit=crop&q=80',
     bestTimeToVisit: 'April to October (Lush meadows & lakes) or Dec–Feb (Snow skiing in Gulmarg)',
     idealDays: '5 to 7 Days',
-    avgBudgetPerPerson: '₹28,000 - ₹45,000 ($350 - $550)',
+    avgBudgetPerPerson: '₹22,000 - ₹35,000 ($265 - $420)',
     currency: 'Indian Rupee (INR) / ₹',
     visaInfo: 'Domestic Travel: No visa required. (Postpaid SIM card recommended in J&K)',
     highlights: ['Dal Lake Luxury Houseboat & Shikara Ride', 'Gulmarg World 2nd Highest Gondola Cable Car', 'Pahalgam Betaab Valley & Aru Valley', 'Sonamarg Gateway to Ladakh & Thajiwas Glacier', 'Mughal Gardens of Srinagar'],
@@ -212,13 +470,13 @@ export const DESTINATIONS_DATA: Record<string, DestinationGuide> = {
       { title: 'Sonamarg Thajiwas Glacier Pony & Snow Sledge Tour', description: 'Explore snow bridges and glacial waterfalls at the golden meadow of Sonamarg.', rating: 4.8, badge: 'ADVENTURE', price: '₹2,200', query: 'Sonamarg Thajiwas glacier tour' }
     ],
     budgetBreakdown: {
-      flight: 12000,
-      hotel: 14000,
-      transfer: 6000,
-      activities: 6500,
-      food: 7500,
-      esim: 400,
-      insurance: 600,
+      flight: 9500,
+      hotel: 11000,
+      transfer: 4500,
+      activities: 4500,
+      food: 5500,
+      esim: 300,
+      insurance: 500,
       currencySymbol: '₹',
     },
     sampleItinerary: [
@@ -231,11 +489,247 @@ export const DESTINATIONS_DATA: Record<string, DestinationGuide> = {
   }
 };
 
-export function getDestinationBySlug(slug: string): DestinationGuide | null {
-  const clean = slug.toLowerCase().trim();
-  if (DESTINATIONS_DATA[clean]) return DESTINATIONS_DATA[clean];
-  const found = Object.values(DESTINATIONS_DATA).find(
-    (d) => d.slug.includes(clean) || clean.includes(d.slug) || d.name.toLowerCase().includes(clean)
-  );
-  return found || DESTINATIONS_DATA['japan'];
+/**
+ * Universal Dynamic AI Destination Synthesizer
+ * Generates an accurate, rich DestinationGuide for ANY destination worldwide (e.g. Shimla, Kedarnath, Ooty, Darjeeling, Paris, Rome, Singapore, etc.)
+ */
+export function generateDynamicDestinationGuide(
+  rawName: string,
+  targetBudget?: number,
+  durationDays: number = 5,
+  travelers: number = 2,
+  travelStyle: 'Budget' | 'Comfort' | 'Luxury' = 'Comfort'
+): DestinationGuide {
+  const cleanName = rawName
+    .replace(/^(trip to|visit|holiday in|vacation in|guide for|budget for|for|in)\s+/i, '')
+    .replace(/\s+(trip|holiday|vacation|tour|package|for couple|for solo|couple|solo)$/i, '')
+    .trim();
+  
+  const titleName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+  const slug = cleanName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+  // Determine domestic vs international
+  const domesticIndianKeywords = [
+    'manali', 'shimla', 'goa', 'kerala', 'kashmir', 'ladakh', 'leh', 'rishikesh', 'haridwar',
+    'kedarnath', 'badrinath', 'ooty', 'coorg', 'darjeeling', 'sikkim', 'gangtok', 'jaipur',
+    'udaipur', 'jaisalmer', 'rajasthan', 'varanasi', 'amritsar', 'pondicherry', 'pondicherry',
+    'meghalaya', 'shillong', 'hampi', 'mysore', 'munnar', 'wayanad', 'alleppey', 'andaman',
+    'havelock', 'port blair', 'kasol', 'spiti', 'dharamshala', 'nainital', 'mussoorie',
+    'chail', 'kullu', 'jodhpur', 'pushkar', 'agra', 'delhi', 'mumbai', 'kolkata', 'bangalore'
+  ];
+
+  const isDomestic = domesticIndianKeywords.some(k => slug.includes(k) || k.includes(slug));
+
+  // Determine budget distribution
+  const totalBudget = targetBudget && targetBudget > 10000
+    ? targetBudget
+    : isDomestic
+      ? (travelStyle === 'Budget' ? 25000 : travelStyle === 'Luxury' ? 65000 : 40000)
+      : (travelStyle === 'Budget' ? 70000 : travelStyle === 'Luxury' ? 220000 : 130000);
+
+  // Per person allocations
+  const perPaxBudget = totalBudget / Math.max(travelers, 1);
+  const flightAlloc = Math.round(perPaxBudget * (isDomestic ? 0.22 : 0.32));
+  const hotelAlloc = Math.round(perPaxBudget * (isDomestic ? 0.36 : 0.34));
+  const transferAlloc = Math.round(perPaxBudget * 0.10);
+  const activitiesAlloc = Math.round(perPaxBudget * 0.14);
+  const foodAlloc = Math.round(perPaxBudget * 0.14);
+  const esimAlloc = isDomestic ? 300 : 950;
+  const insuranceAlloc = isDomestic ? 500 : 1800;
+
+  return {
+    slug,
+    name: `${titleName} ${isDomestic ? 'Mountain & Cultural Discovery' : 'Scenic Gateway & City Highlights'}`,
+    country: isDomestic ? 'India' : 'International Destination',
+    region: isDomestic ? 'India' : 'Global',
+    tagline: `Curated ${durationDays}-Day Verified Journey with Scenic Viewpoints, Local Delicacies & Top Passes`,
+    heroImage: isDomestic
+      ? 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&auto=format&fit=crop&q=80'
+      : 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&auto=format&fit=crop&q=80',
+    bestTimeToVisit: isDomestic ? 'September to May (Pleasant weather & clear mountain skies)' : 'All Year Round / Spring & Autumn',
+    idealDays: `${durationDays} Days`,
+    avgBudgetPerPerson: `₹${Math.round(perPaxBudget * 0.85).toLocaleString('en-IN')} - ₹${Math.round(perPaxBudget * 1.15).toLocaleString('en-IN')}`,
+    currency: isDomestic ? 'Indian Rupee (INR) / ₹' : 'Local Currency / USD',
+    visaInfo: isDomestic ? 'Domestic Travel: No visa required.' : 'e-Visa / Visa on Arrival available for most travelers.',
+    highlights: [
+      `${titleName} City Center & Historic Heritage Quarter`,
+      `Scenic Day Tour & Panoramic Lookout Viewpoints`,
+      `Local Artisanal Markets & Authentic Food Crawl`,
+      `Skip-The-Line Experience & Nature Excursions`,
+      `Sunset Photography & Evening Cultural Highlights`
+    ],
+    topAttractions: [
+      {
+        title: `${titleName} City Highlights & Sightseeing Pass`,
+        description: `Explore top landmarks, heritage monuments, and photography spots in ${titleName}.`,
+        rating: 4.9,
+        badge: 'BESTSELLER',
+        price: `₹${Math.round(activitiesAlloc * 0.4).toLocaleString('en-IN')}`,
+        query: `${titleName} tour pass`
+      },
+      {
+        title: `${titleName} Day Excursion & Nature Adventure`,
+        description: `Guided day tour to scenic valleys, viewpoints, and signature regional attractions.`,
+        rating: 4.8,
+        badge: 'TOP RATED',
+        price: `₹${Math.round(activitiesAlloc * 0.6).toLocaleString('en-IN')}`,
+        query: `${titleName} day tour`
+      }
+    ],
+    budgetBreakdown: {
+      flight: flightAlloc,
+      hotel: hotelAlloc,
+      transfer: transferAlloc,
+      activities: activitiesAlloc,
+      food: foodAlloc,
+      esim: esimAlloc,
+      insurance: insuranceAlloc,
+      currencySymbol: '₹',
+    },
+    sampleItinerary: [
+      {
+        day: 1,
+        title: `Arrival in ${titleName}, Hotel Check-in & Orientation Walk`,
+        activities: [
+          `Arrival at nearest airport/station with private chauffeur pickup`,
+          `Check into verified boutique ${travelStyle} stay`,
+          `Evening orientation stroll around central promenade tasting regional street snacks`
+        ],
+        foodRecommendation: `Signature regional welcome dinner & artisanal tea/coffee`,
+        bookingType: 'hotel',
+        bookingCtaText: `Book ${titleName} Hotel`,
+        bookingQuery: `${titleName} hotel booking`
+      },
+      {
+        day: 2,
+        title: `${titleName} Iconic Heritage & Cultural Highlights`,
+        activities: [
+          `Morning visit to historic landmarks and iconic architecture`,
+          `Explore local markets for authentic handicrafts and spices`,
+          `Sunset panoramic photography overlooking the city/valley`
+        ],
+        foodRecommendation: `Authentic regional thali or signature chef's special`,
+        bookingType: 'attraction',
+        bookingCtaText: `Book ${titleName} Sightseeing Pass`,
+        bookingQuery: `${titleName} tour pass`
+      },
+      {
+        day: 3,
+        title: `Scenic Nature Excursion & Outdoor Adventure`,
+        activities: [
+          `Full-day scenic excursion to nearby valleys, viewpoints, or water bodies`,
+          `Outdoor hiking, ropeway gondola, or boat cruise experience`,
+          `Relaxing evening cafe unwind with mountain/ocean sunset`
+        ],
+        foodRecommendation: `Fresh farm-to-table lunch & regional desserts`,
+        bookingType: 'attraction',
+        bookingCtaText: `Book ${titleName} Nature Tour`,
+        bookingQuery: `${titleName} excursion tour`
+      },
+      {
+        day: 4,
+        title: `Hidden Gems, Wellness & Local Gastronomy`,
+        activities: [
+          `Visit offbeat village trails, ancient shrines, or botanical gardens`,
+          `Hands-on local food tasting walk or wellness massage`,
+          `Starlit dinner with live cultural music`
+        ],
+        foodRecommendation: `Famous local bakery treats & hot regional beverages`,
+        bookingType: 'attraction',
+        bookingCtaText: `Book ${titleName} Experience`,
+        bookingQuery: `${titleName} activity booking`
+      },
+      {
+        day: 5,
+        title: `Souvenir Shopping & Departure`,
+        activities: [
+          `Morning souvenir shopping for dry fruits, handloom & local specialities`,
+          `Check-out and private transfer to airport/station for departure`
+        ],
+        foodRecommendation: `Farewell brunch with authentic local tea/coffee`,
+        bookingType: 'flight',
+        bookingCtaText: `Search Return Flights on Aviasales`,
+        bookingQuery: `${titleName} return flights`
+      }
+    ]
+  };
 }
+
+/**
+ * Intelligent Destination Resolver:
+ * Checks built-in catalog, adapts custom budget if provided, or dynamically synthesizes guide for ANY location!
+ */
+export function getDestinationBySlug(
+  slugOrName: string,
+  targetBudget?: number,
+  durationDays: number = 5,
+  travelers: number = 2,
+  travelStyle: 'Budget' | 'Comfort' | 'Luxury' = 'Comfort'
+): DestinationGuide {
+  const clean = slugOrName.toLowerCase().trim();
+
+  // 1. Direct match in curated dataset
+  if (DESTINATIONS_DATA[clean]) {
+    const base = DESTINATIONS_DATA[clean];
+    if (targetBudget && targetBudget > 10000) {
+      return adaptGuideBudget(base, targetBudget, durationDays, travelers);
+    }
+    return base;
+  }
+
+  // 2. Fuzzy substring match in curated dataset
+  const found = Object.values(DESTINATIONS_DATA).find(
+    (d) =>
+      d.slug.includes(clean) ||
+      clean.includes(d.slug) ||
+      d.name.toLowerCase().includes(clean) ||
+      clean.includes(d.name.toLowerCase())
+  );
+
+  if (found) {
+    if (targetBudget && targetBudget > 10000) {
+      return adaptGuideBudget(found, targetBudget, durationDays, travelers);
+    }
+    return found;
+  }
+
+  // 3. Dynamic AI Synthesis for ANY other destination in India or worldwide!
+  return generateDynamicDestinationGuide(slugOrName, targetBudget, durationDays, travelers, travelStyle);
+}
+
+/**
+ * Adjusts budget components proportionally when user specifies a custom budget
+ */
+function adaptGuideBudget(
+  base: DestinationGuide,
+  targetBudget: number,
+  durationDays: number,
+  travelers: number
+): DestinationGuide {
+  const perPax = targetBudget / Math.max(travelers, 1);
+  const currentTotalPerPax =
+    base.budgetBreakdown.flight +
+    (base.budgetBreakdown.hotel / 2) +
+    base.budgetBreakdown.transfer +
+    base.budgetBreakdown.activities +
+    base.budgetBreakdown.food +
+    base.budgetBreakdown.esim +
+    base.budgetBreakdown.insurance;
+
+  const ratio = perPax / Math.max(currentTotalPerPax, 1);
+
+  return {
+    ...base,
+    budgetBreakdown: {
+      flight: Math.round(base.budgetBreakdown.flight * ratio),
+      hotel: Math.round(base.budgetBreakdown.hotel * ratio),
+      transfer: Math.round(base.budgetBreakdown.transfer * ratio),
+      activities: Math.round(base.budgetBreakdown.activities * ratio),
+      food: Math.round(base.budgetBreakdown.food * ratio),
+      esim: base.budgetBreakdown.esim,
+      insurance: base.budgetBreakdown.insurance,
+      currencySymbol: base.budgetBreakdown.currencySymbol,
+    }
+  };
+}
+

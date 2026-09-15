@@ -87,7 +87,7 @@ export default async function DestinationPage({
           <div className="relative z-10 space-y-3 max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 border border-sky-500/40 text-sky-400 text-xs font-black uppercase tracking-wider backdrop-blur-md">
               <MapPin className="w-3.5 h-3.5" />
-              {guide.country} � {guide.region}
+              {guide.country} • {guide.region}
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-black font-serif text-white tracking-tight">
@@ -99,13 +99,13 @@ export default async function DestinationPage({
 
             <div className="pt-2 flex flex-wrap items-center gap-3 text-xs">
               <span className="px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-700/80 backdrop-blur-md">
-                ??? <strong>Best Time:</strong> {guide.bestTimeToVisit}
+                📅 <strong>Best Time:</strong> {guide.bestTimeToVisit}
               </span>
               <span className="px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-700/80 backdrop-blur-md">
-                ?? <strong>Ideal Duration:</strong> {guide.idealDays}
+                ⏱️ <strong>Ideal Duration:</strong> {guide.idealDays}
               </span>
               <span className="px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-700/80 backdrop-blur-md">
-                ?? <strong>Visa:</strong> {guide.visaInfo}
+                🛂 <strong>Visa:</strong> {guide.visaInfo}
               </span>
             </div>
           </div>

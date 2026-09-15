@@ -25,11 +25,14 @@ import PersonalizedTripBasket, { TripPlanConfig } from './PersonalizedTripBasket
 import FirstTimeTravelGuideModal from './FirstTimeTravelGuideModal';
 
 const QUICK_PROMPTS = [
+  { label: '🏔️ Manali 4 Days Couple (₹30K)', query: 'Plan a budget 4-day Manali trip for couple with ₹30,000 INR from Delhi.', dest: 'manali', origin: 'Delhi (DEL)', days: 4, budget: 30000, travelers: 2, style: 'Budget' as const },
   { label: '🌸 Japan 7 Days from Kolkata (₹1.5L)', query: 'I want to visit Japan for 7 days from Kolkata with a budget of ₹1.5 lakh.', dest: 'japan', origin: 'Kolkata (CCU)', days: 7, budget: 150000, travelers: 2, style: 'Comfort' as const },
+  { label: '🏖️ Goa 4 Days Beach & Forts (₹25K)', query: 'Plan a 4-day Goa beach and heritage trip for 2 people under ₹25,000.', dest: 'goa', origin: 'Mumbai (BOM)', days: 4, budget: 25000, travelers: 2, style: 'Budget' as const },
   { label: '🏙️ Dubai 5 Days Couple (₹80K)', query: 'Plan a 5-day romantic Dubai trip for a couple from Delhi under ₹80,000.', dest: 'dubai', origin: 'Delhi (DEL)', days: 5, budget: 80000, travelers: 2, style: 'Comfort' as const },
   { label: '🌴 Bali 6 Days Solo Budget (₹50K)', query: 'Create a 6-day budget solo trip to Bali from Mumbai under ₹50,000.', dest: 'bali', origin: 'Mumbai (BOM)', days: 6, budget: 50000, travelers: 1, style: 'Budget' as const },
-  { label: '🏔️ Swiss Alps 8 Days Luxury (₹3L)', query: 'I want an 8-day luxury Swiss Alps and Jungfraujoch tour from Mumbai budget ₹3 lakh.', dest: 'switzerland', origin: 'Mumbai (BOM)', days: 8, budget: 300000, travelers: 2, style: 'Luxury' as const },
   { label: '❄️ Kashmir 5 Days Dal Lake & Gulmarg (₹35K)', query: 'Plan a 5-day Kashmir family trip with Dal Lake houseboat and Gulmarg gondola for ₹35,000.', dest: 'kashmir', origin: 'Delhi (DEL)', days: 5, budget: 35000, travelers: 2, style: 'Comfort' as const },
+  { label: '🏝️ Maldives 4 Days Overwater (₹1.2L)', query: 'Plan a 4-day romantic Maldives overwater villa honeymoon with budget ₹1.2 lakh.', dest: 'maldives', origin: 'Bangalore (BLR)', days: 4, budget: 120000, travelers: 2, style: 'Luxury' as const },
+  { label: '🏔️ Swiss Alps 8 Days Luxury (₹3L)', query: 'I want an 8-day luxury Swiss Alps and Jungfraujoch tour from Mumbai budget ₹3 lakh.', dest: 'switzerland', origin: 'Mumbai (BOM)', days: 8, budget: 300000, travelers: 2, style: 'Luxury' as const },
 ];
 
 export default function SmartTravelAIAgentHero() {
@@ -41,12 +44,13 @@ export default function SmartTravelAIAgentHero() {
   const [showWizardModal, setShowWizardModal] = useState(false);
 
   // Wizard State
-  const [wizardDest, setWizardDest] = useState('Japan & Tokyo');
-  const [wizardOrigin, setWizardOrigin] = useState('Kolkata (CCU)');
-  const [wizardDays, setWizardDays] = useState(7);
-  const [wizardBudget, setWizardBudget] = useState('150000');
+  const [wizardDest, setWizardDest] = useState('manali');
+  const [customDestInput, setCustomDestInput] = useState('');
+  const [wizardOrigin, setWizardOrigin] = useState('Delhi (DEL)');
+  const [wizardDays, setWizardDays] = useState(4);
+  const [wizardBudget, setWizardBudget] = useState('30000');
   const [wizardTravelers, setWizardTravelers] = useState(2);
-  const [wizardStyle, setWizardStyle] = useState<'Budget' | 'Comfort' | 'Luxury'>('Comfort');
+  const [wizardStyle, setWizardStyle] = useState<'Budget' | 'Comfort' | 'Luxury'>('Budget');
 
   const recognitionRef = useRef<any>(null);
 
@@ -62,7 +66,7 @@ export default function SmartTravelAIAgentHero() {
 
         recognition.onstart = () => {
           setIsListening(true);
-          setSpeechFeedback('Listening... Speak your travel dream (e.g., "7 days in Dubai from Delhi budget 80k")');
+          setSpeechFeedback('Listening... Speak your travel dream (e.g., "Manali trip for couple budget 30000 inr")');
         };
 
         recognition.onresult = (event: any) => {
@@ -101,73 +105,163 @@ export default function SmartTravelAIAgentHero() {
   };
 
   const handleAnalyzeQuery = (text: string) => {
-    const raw = text.toLowerCase();
+    const raw = text.toLowerCase().trim();
     setIsProcessing(true);
 
     setTimeout(() => {
-      let matchedSlug = 'japan';
-      if (raw.includes('dubai') || raw.includes('burj') || raw.includes('desert') || raw.includes('emirates')) {
-        matchedSlug = 'dubai';
-      } else if (raw.includes('bali') || raw.includes('indonesia') || raw.includes('ubud') || raw.includes('nusa')) {
-        matchedSlug = 'bali';
-      } else if (raw.includes('swiss') || raw.includes('switzerland') || raw.includes('alps') || raw.includes('zurich')) {
-        matchedSlug = 'switzerland';
-      } else if (raw.includes('kashmir') || raw.includes('srinagar') || raw.includes('gulmarg') || raw.includes('ladakh')) {
-        matchedSlug = 'kashmir';
-      } else if (raw.includes('japan') || raw.includes('tokyo') || raw.includes('kyoto') || raw.includes('fuji')) {
-        matchedSlug = 'japan';
+      // 1. Extract Budget
+      let parsedBudget = 0;
+      // Match patterns like: "30000 inr", "30k", "1.5 lakh", "₹30,000", "budget 30000", "under 50k", "$1000"
+      const budgetMatch = raw.match(/(?:budget\s*(?:of|for|is|around|under)?\s*)?(?:₹|rs\.?|inr|\$)?\s*(\d+(?:,\d+)*(?:\.\d+)?)\s*(lakh|lac|k|thousand|l|inr|rs|usd|\$)?/i);
+      if (budgetMatch) {
+        let num = parseFloat(budgetMatch[1].replace(/,/g, ''));
+        const unit = budgetMatch[2]?.toLowerCase();
+        if (unit === 'lakh' || unit === 'lac' || unit === 'l') {
+          num = num * 100000;
+        } else if (unit === 'k' || unit === 'thousand') {
+          num = num * 1000;
+        }
+        if (num >= 5000) {
+          parsedBudget = num;
+        }
       }
 
-      // Extract days
-      const daysMatch = raw.match(/(\d+)\s*(days|day|nights|night)/);
-      const parsedDays = daysMatch ? parseInt(daysMatch[1], 10) : 7;
+      // 2. Extract Travelers
+      let parsedTravelers = 2;
+      if (raw.includes('couple') || raw.includes('husband') || raw.includes('wife') || raw.includes('partner') || raw.includes('2 people') || raw.includes('two')) {
+        parsedTravelers = 2;
+      } else if (raw.includes('solo') || raw.includes('alone') || raw.includes('myself') || raw.includes('single') || raw.includes('1 person')) {
+        parsedTravelers = 1;
+      } else if (raw.includes('family') || raw.includes('4 people') || raw.includes('four')) {
+        parsedTravelers = 4;
+      } else {
+        const paxMatch = raw.match(/(\d+)\s*(?:people|persons|travelers|friends|adults|pax)/);
+        if (paxMatch) parsedTravelers = Math.max(parseInt(paxMatch[1], 10), 1);
+      }
 
-      // Extract origin
-      let parsedOrigin = 'Kolkata (CCU)';
+      // 3. Extract Days / Duration
+      const daysMatch = raw.match(/(\d+)\s*(?:days|day|nights|night|d|n)/);
+      let parsedDays = daysMatch ? parseInt(daysMatch[1], 10) : 0;
+
+      // 4. Extract Origin
+      let parsedOrigin = '';
       if (raw.includes('delhi')) parsedOrigin = 'Delhi (DEL)';
-      else if (raw.includes('mumbai')) parsedOrigin = 'Mumbai (BOM)';
+      else if (raw.includes('mumbai') || raw.includes('bombay')) parsedOrigin = 'Mumbai (BOM)';
+      else if (raw.includes('kolkata') || raw.includes('calcutta')) parsedOrigin = 'Kolkata (CCU)';
       else if (raw.includes('bangalore') || raw.includes('bengaluru')) parsedOrigin = 'Bangalore (BLR)';
-      else if (raw.includes('chennai')) parsedOrigin = 'Chennai (MAA)';
+      else if (raw.includes('chennai') || raw.includes('madras')) parsedOrigin = 'Chennai (MAA)';
+      else if (raw.includes('hyderabad')) parsedOrigin = 'Hyderabad (HYD)';
+      else if (raw.includes('ahmedabad')) parsedOrigin = 'Ahmedabad (AMD)';
+      else if (raw.includes('pune')) parsedOrigin = 'Pune (PNQ)';
+      else if (raw.includes('chandigarh')) parsedOrigin = 'Chandigarh (IXC)';
+      else if (raw.includes('jaipur')) parsedOrigin = 'Jaipur (JAI)';
+      else if (raw.includes('lucknow')) parsedOrigin = 'Lucknow (LKO)';
+      else if (raw.includes('kochi') || raw.includes('cochin')) parsedOrigin = 'Kochi (COK)';
       else if (raw.includes('london')) parsedOrigin = 'London (LHR)';
       else if (raw.includes('new york') || raw.includes('nyc')) parsedOrigin = 'New York (JFK)';
+      else if (raw.includes('dubai')) parsedOrigin = 'Dubai (DXB)';
+      else if (raw.includes('singapore')) parsedOrigin = 'Singapore (SIN)';
 
-      // Extract budget
-      let parsedBudget = 120000;
-      const budgetMatch = raw.match(/(₹|rs\.?|inr)?\s*(\d+(\.\d+)?)\s*(lakh|lac|k|thousand|l)?/i);
-      if (budgetMatch) {
-        let num = parseFloat(budgetMatch[2]);
-        const unit = budgetMatch[4]?.toLowerCase();
-        if (unit === 'lakh' || unit === 'lac' || unit === 'l') num = num * 100000;
-        else if (unit === 'k' || unit === 'thousand') num = num * 1000;
-        if (num > 10000) parsedBudget = num;
+      // 5. Extract Destination Name / Slug
+      let matchedTarget = '';
+      const destPatterns: Record<string, string[]> = {
+        manali: ['manali', 'solang', 'rohtang', 'atal tunnel', 'kullu', 'kasol', 'sissu', 'himachal'],
+        goa: ['goa', 'panaji', 'calangute', 'baga', 'anjuna', 'palolem', 'fontainhas', 'dudhsagar'],
+        kerala: ['kerala', 'munnar', 'alleppey', 'alappuzha', 'kochi', 'cochin', 'varkala', 'wayanad', 'thekkady'],
+        ladakh: ['ladakh', 'leh', 'pangong', 'nubra', 'khardung', 'hunder', 'zanskar'],
+        kashmir: ['kashmir', 'srinagar', 'gulmarg', 'pahalgam', 'sonamarg', 'dal lake'],
+        thailand: ['thailand', 'bangkok', 'phuket', 'pattaya', 'phi phi', 'krabi'],
+        maldives: ['maldives', 'male', 'overwater', 'atoll'],
+        dubai: ['dubai', 'burj', 'abu dhabi', 'emirates', 'sharjah'],
+        bali: ['bali', 'indonesia', 'ubud', 'seminyak', 'canggu', 'nusa penida', 'kuta'],
+        switzerland: ['swiss', 'switzerland', 'alps', 'zurich', 'interlaken', 'jungfrau', 'lucerne', 'zermatt'],
+        japan: ['japan', 'tokyo', 'kyoto', 'osaka', 'fuji', 'shibuya', 'shinjuku'],
+      };
+
+      for (const [key, keywords] of Object.entries(destPatterns)) {
+        if (keywords.some((kw) => raw.includes(kw))) {
+          matchedTarget = key;
+          break;
+        }
+      }
+
+      // If not in standard keywords, extract destination noun from text
+      if (!matchedTarget) {
+        // Strip common prompt prefixes and budget words
+        const cleaned = raw
+          .replace(/i want (?:a )?budget for/g, '')
+          .replace(/plan (?:a )?(?:budget )?(?:trip )?(?:to|for)?/g, '')
+          .replace(/trip to/g, '')
+          .replace(/holiday in/g, '')
+          .replace(/for (?:a )?couple/g, '')
+          .replace(/for solo(?: traveler)?/g, '')
+          .replace(/for family/g, '')
+          .replace(/\b\d+\s*(?:days|nights|day|night)\b/g, '')
+          .replace(/\b(?:₹|rs\.?|inr|\$)?\s*\d+(?:,\d+)*(?:\.\d+)?\s*(?:lakh|lac|k|thousand|l|inr|rs)?\b/gi, '')
+          .replace(/\b(?:from|leaving from)\s+[a-z\s]+/gi, '')
+          .replace(/\b(?:budget|trip|tour|itinerary|package|cheap|luxury|best|places|visit|travel)\b/gi, '')
+          .trim();
+
+        matchedTarget = cleaned || 'manali';
+      }
+
+      // Defaults
+      if (!parsedDays) {
+        parsedDays = (matchedTarget === 'manali' || matchedTarget === 'goa') ? 4
+          : (matchedTarget === 'kerala' || matchedTarget === 'dubai' || matchedTarget === 'bali' || matchedTarget === 'thailand') ? 5
+          : (matchedTarget === 'switzerland' || matchedTarget === 'japan' || matchedTarget === 'ladakh') ? 7
+          : 5;
+      }
+
+      if (!parsedOrigin) {
+        parsedOrigin = (matchedTarget === 'manali' || matchedTarget === 'kashmir' || matchedTarget === 'ladakh') ? 'Delhi (DEL)'
+          : (matchedTarget === 'goa') ? 'Mumbai (BOM)'
+          : 'Kolkata (CCU)';
+      }
+
+      // Default budget if not specified
+      if (!parsedBudget) {
+        parsedBudget = (matchedTarget === 'manali' || matchedTarget === 'goa') ? 30000
+          : (matchedTarget === 'kerala' || matchedTarget === 'kashmir') ? 45000
+          : (matchedTarget === 'thailand' || matchedTarget === 'bali') ? 70000
+          : (matchedTarget === 'dubai') ? 80000
+          : (matchedTarget === 'maldives') ? 140000
+          : (matchedTarget === 'japan') ? 150000
+          : (matchedTarget === 'switzerland') ? 300000
+          : 35000;
       }
 
       // Style
       let parsedStyle: 'Budget' | 'Comfort' | 'Luxury' = 'Comfort';
-      if (raw.includes('luxury') || raw.includes('5 star') || raw.includes('first class')) parsedStyle = 'Luxury';
-      else if (raw.includes('budget') || raw.includes('cheap') || raw.includes('backpacking')) parsedStyle = 'Budget';
+      const perPaxPerDay = parsedBudget / (parsedTravelers * parsedDays);
+      if (raw.includes('luxury') || raw.includes('5 star') || perPaxPerDay > 9000) {
+        parsedStyle = 'Luxury';
+      } else if (raw.includes('budget') || raw.includes('cheap') || perPaxPerDay < 3500) {
+        parsedStyle = 'Budget';
+      }
 
-      const guide = getDestinationBySlug(matchedSlug) || DESTINATIONS_DATA['japan'];
+      // Resolve guide dynamically with budget and traveler parameters
+      const guide = getDestinationBySlug(matchedTarget, parsedBudget, parsedDays, parsedTravelers, parsedStyle);
 
       setActivePlan({
         destination: guide.name,
         origin: parsedOrigin,
-        days: Math.min(Math.max(parsedDays, 3), 10),
+        days: Math.min(Math.max(parsedDays, 3), 14),
         budget: parsedBudget,
-        travelers: raw.includes('solo') || raw.includes('alone') ? 1 : raw.includes('family') ? 4 : 2,
+        travelers: parsedTravelers,
         travelStyle: parsedStyle,
         guide,
       });
 
       setIsProcessing(false);
-    }, 600);
+    }, 400);
   };
 
   const handleSelectQuickPrompt = (p: typeof QUICK_PROMPTS[0]) => {
     setQuery(p.query);
     setIsProcessing(true);
     setTimeout(() => {
-      const guide = getDestinationBySlug(p.dest) || DESTINATIONS_DATA['japan'];
+      const guide = getDestinationBySlug(p.dest, p.budget, p.days, p.travelers, p.style);
       setActivePlan({
         destination: guide.name,
         origin: p.origin,
@@ -178,7 +272,7 @@ export default function SmartTravelAIAgentHero() {
         guide,
       });
       setIsProcessing(false);
-    }, 400);
+    }, 300);
   };
 
   const handleWizardSubmit = (e: React.FormEvent) => {
@@ -186,23 +280,21 @@ export default function SmartTravelAIAgentHero() {
     setShowWizardModal(false);
     setIsProcessing(true);
     setTimeout(() => {
-      const slug = wizardDest.toLowerCase().includes('dubai') ? 'dubai'
-        : wizardDest.toLowerCase().includes('bali') ? 'bali'
-        : wizardDest.toLowerCase().includes('swiss') ? 'switzerland'
-        : wizardDest.toLowerCase().includes('kashmir') ? 'kashmir'
-        : 'japan';
-      const guide = getDestinationBySlug(slug) || DESTINATIONS_DATA['japan'];
+      const targetSlug = wizardDest === 'custom' && customDestInput.trim() ? customDestInput.trim() : wizardDest;
+      const budgetNum = parseInt(wizardBudget, 10) || 30000;
+      const guide = getDestinationBySlug(targetSlug, budgetNum, wizardDays, wizardTravelers, wizardStyle);
+
       setActivePlan({
         destination: guide.name,
         origin: wizardOrigin,
         days: wizardDays,
-        budget: parseInt(wizardBudget, 10) || 120000,
+        budget: budgetNum,
         travelers: wizardTravelers,
         travelStyle: wizardStyle,
         guide,
       });
       setIsProcessing(false);
-    }, 400);
+    }, 300);
   };
 
   return (
@@ -368,12 +460,30 @@ export default function SmartTravelAIAgentHero() {
                     onChange={(e) => setWizardDest(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white"
                   >
-                    <option value="Japan & Tokyo">🌸 Japan (Tokyo, Kyoto &amp; Mt Fuji)</option>
-                    <option value="Dubai & Emirates">🏙️ Dubai &amp; Arabian Desert</option>
-                    <option value="Bali Tropical Paradise">🌴 Bali &amp; Nusa Penida</option>
-                    <option value="Switzerland & The Swiss Alps">🏔️ Switzerland &amp; Swiss Alps</option>
-                    <option value="Kashmir - Heaven on Earth">❄️ Kashmir (Dal Lake &amp; Gulmarg)</option>
+                    <option value="manali">🏔️ Manali (Solang, Atal Tunnel & Rohtang)</option>
+                    <option value="goa">🏖️ Goa (North Beaches & South Heritage)</option>
+                    <option value="kerala">🌴 Kerala (Munnar Tea Hills & Alleppey Houseboat)</option>
+                    <option value="ladakh">🏔️ Ladakh (Pangong Lake & Khardung La)</option>
+                    <option value="kashmir">❄️ Kashmir (Dal Lake & Gulmarg Gondola)</option>
+                    <option value="thailand">🏝️ Thailand (Bangkok & Phuket Speedboats)</option>
+                    <option value="maldives">🏝️ Maldives (Overwater Luxury Bungalow)</option>
+                    <option value="dubai">🏙️ Dubai & Arabian Desert Safari</option>
+                    <option value="bali">🌴 Bali Tropical Paradise & Nusa Penida</option>
+                    <option value="switzerland">🏔️ Switzerland & Swiss Alps</option>
+                    <option value="japan">🌸 Japan (Tokyo, Kyoto & Mt Fuji)</option>
+                    <option value="custom">✨ Custom Destination (Type Any City/Place)...</option>
                   </select>
+
+                  {wizardDest === 'custom' && (
+                    <input
+                      type="text"
+                      required
+                      value={customDestInput}
+                      onChange={(e) => setCustomDestInput(e.target.value)}
+                      placeholder="Enter any destination (e.g., Shimla, Kedarnath, Paris, Ooty)..."
+                      className="mt-2 w-full bg-slate-950 border border-sky-500 rounded-xl px-3 py-2 text-white placeholder:text-slate-500"
+                    />
+                  )}
                 </div>
 
                 <div>
@@ -382,7 +492,7 @@ export default function SmartTravelAIAgentHero() {
                     type="text"
                     value={wizardOrigin}
                     onChange={(e) => setWizardOrigin(e.target.value)}
-                    placeholder="e.g. Kolkata, Delhi, London, NYC"
+                    placeholder="e.g. Delhi, Kolkata, Mumbai, London"
                     className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white"
                   />
                 </div>
