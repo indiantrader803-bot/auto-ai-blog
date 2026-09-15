@@ -196,6 +196,169 @@ export function formatAviasalesDate(dateStr?: string): string {
   return "";
 }
 
+/**
+ * 🏨 Agoda Verified City Slugs Dictionary
+ */
+export const AGODA_CITY_SLUG_MAP: Record<string, string> = {
+  dubai: "dubai-ae",
+  uae: "dubai-ae",
+  abudhabi: "abu-dhabi-ae",
+  goa: "goa-in",
+  manali: "manali-in",
+  kerala: "kochi-in",
+  kochi: "kochi-in",
+  cochin: "kochi-in",
+  munnar: "munnar-in",
+  alleppey: "alleppey-in",
+  ladakh: "leh-in",
+  leh: "leh-in",
+  srinagar: "srinagar-in",
+  kashmir: "srinagar-in",
+  delhi: "new-delhi-and-ncr-in",
+  mumbai: "mumbai-in",
+  bombay: "mumbai-in",
+  bangalore: "bangalore-in",
+  bengaluru: "bangalore-in",
+  jaipur: "jaipur-in",
+  rajasthan: "jaipur-in",
+  udaipur: "udaipur-in",
+  varanasi: "varanasi-in",
+  paris: "paris-fr",
+  tokyo: "tokyo-jp",
+  kyoto: "kyoto-jp",
+  osaka: "osaka-jp",
+  bali: "bali-id",
+  denpasar: "bali-id",
+  bangkok: "bangkok-th",
+  phuket: "phuket-th",
+  pattaya: "pattaya-th",
+  singapore: "singapore-sg",
+  london: "london-gb",
+  zurich: "zurich-ch",
+  switzerland: "zurich-ch",
+  maldives: "male-city-and-airport-mv",
+  male: "male-city-and-airport-mv",
+  newyork: "new-york-ny-us",
+  nyc: "new-york-ny-us",
+  sanfrancisco: "san-francisco-ca-us",
+  losangeles: "los-angeles-ca-us",
+  rome: "rome-it",
+  milan: "milan-it",
+  amsterdam: "amsterdam-nl",
+  sydney: "sydney-au",
+  melbourne: "melbourne-au",
+  toronto: "toronto-on-ca",
+  vancouver: "vancouver-bc-ca",
+  doha: "doha-qa",
+  hanoi: "hanoi-vn",
+  hochiminh: "ho-chi-minh-city-vn",
+  seoul: "seoul-kr"
+};
+
+/**
+ * 📱 Saily Global Country Destination Slugs Dictionary
+ */
+export const SAILY_COUNTRY_SLUG_MAP: Record<string, string> = {
+  dubai: "united-arab-emirates",
+  uae: "united-arab-emirates",
+  abudhabi: "united-arab-emirates",
+  "united arab emirates": "united-arab-emirates",
+  india: "india",
+  delhi: "india",
+  goa: "india",
+  manali: "india",
+  kerala: "india",
+  kochi: "india",
+  munnar: "india",
+  ladakh: "india",
+  leh: "india",
+  kashmir: "india",
+  srinagar: "india",
+  mumbai: "india",
+  bangalore: "india",
+  jaipur: "india",
+  rajasthan: "india",
+  japan: "japan",
+  tokyo: "japan",
+  kyoto: "japan",
+  osaka: "japan",
+  europe: "europe",
+  france: "france",
+  paris: "france",
+  uk: "united-kingdom",
+  england: "united-kingdom",
+  london: "united-kingdom",
+  "united kingdom": "united-kingdom",
+  britain: "united-kingdom",
+  indonesia: "indonesia",
+  bali: "indonesia",
+  ubud: "indonesia",
+  thailand: "thailand",
+  bangkok: "thailand",
+  phuket: "thailand",
+  singapore: "singapore",
+  switzerland: "switzerland",
+  swiss: "switzerland",
+  zurich: "switzerland",
+  maldives: "maldives",
+  male: "maldives",
+  usa: "united-states",
+  "united states": "united-states",
+  america: "united-states",
+  newyork: "united-states",
+  nyc: "united-states",
+  vietnam: "vietnam",
+  hanoi: "vietnam",
+  turkey: "turkey",
+  istanbul: "turkey",
+  italy: "italy",
+  rome: "italy",
+  milan: "italy",
+  germany: "germany",
+  berlin: "germany",
+  spain: "spain",
+  barcelona: "spain",
+  madrid: "spain",
+  canada: "canada",
+  toronto: "canada",
+  australia: "australia",
+  sydney: "australia",
+  malaysia: "malaysia",
+  kualalumpur: "malaysia",
+  greece: "greece",
+  athens: "greece",
+  egypt: "egypt",
+  cairo: "egypt"
+};
+
+/**
+ * Resolve city / query to an Agoda verified city slug
+ */
+export function resolveAgodaCitySlug(input?: string): string | null {
+  if (!input) return "dubai-ae";
+  const clean = input.toLowerCase().replace(/[^a-z]/g, "");
+  for (const [key, slug] of Object.entries(AGODA_CITY_SLUG_MAP)) {
+    if (clean.includes(key)) {
+      return slug;
+    }
+  }
+  return null;
+}
+
+/**
+ * Resolve destination query to a Saily country slug
+ */
+export function resolveSailyCountrySlug(input?: string): string | null {
+  if (!input) return "united-arab-emirates";
+  const clean = input.toLowerCase().replace(/[^a-z]/g, "");
+  for (const [key, slug] of Object.entries(SAILY_COUNTRY_SLUG_MAP)) {
+    if (clean.includes(key)) {
+      return slug;
+    }
+  }
+  return null;
+}
+
 export interface HotelSearchParams {
   destination?: string;
   checkin?: string; // YYYY-MM-DD
@@ -230,26 +393,27 @@ export function getBookingHotelUrl(param?: string | HotelSearchParams): string {
 
 /**
  * Generate Deep Agoda Hotel Search URL with exact destination, dates & guest count
+ * Uses direct city landing pages for verified destinations, or falls back to partner search.
  */
 export function getAgodaHotelUrl(param?: string | HotelSearchParams): string {
   const cid = AFFILIATE_CONFIG.agodaCid;
-  if (!param) {
-    return `https://www.agoda.com/partners/partnersearch.aspx?cid=${cid}`;
+  const dest = typeof param === "string" ? param : param?.destination || "Dubai";
+  const citySlug = resolveAgodaCitySlug(dest);
+
+  if (citySlug) {
+    let url = `https://www.agoda.com/en-gb/city/${citySlug}.html?cid=${cid}`;
+    if (typeof param === "object") {
+      const { checkin, checkout, adults = 2, rooms = 1 } = param;
+      url += `&adults=${adults}&rooms=${rooms}`;
+      if (checkin && checkout) {
+        url += `&checkIn=${checkin}&checkOut=${checkout}`;
+      }
+    }
+    return url;
   }
 
-  if (typeof param === "string") {
-    const cleanCity = cleanDestinationCity(param);
-    return `https://www.agoda.com/partners/partnersearch.aspx?cid=${cid}&city=${encodeURIComponent(cleanCity)}`;
-  }
-
-  const { destination = "Dubai", checkin, checkout, adults = 2, rooms = 1 } = param;
-  const cleanCity = cleanDestinationCity(destination);
-  let url = `https://www.agoda.com/search?city=${encodeURIComponent(cleanCity)}&cid=${cid}&adults=${adults}&rooms=${rooms}`;
-
-  if (checkin && checkout) {
-    url += `&checkIn=${checkin}&checkOut=${checkout}`;
-  }
-  return url;
+  const cleanCity = cleanDestinationCity(dest);
+  return `https://www.agoda.com/partners/partnersearch.aspx?cid=${cid}&city=${encodeURIComponent(cleanCity)}`;
 }
 
 export interface FlightSearchParams {
@@ -340,8 +504,14 @@ export function getGetTransferUrl(param?: string | TransferSearchParams): string
 
 /**
  * Generate Saily 5G Global eSIM Deep Destination URL
+ * Links directly to the country-specific eSIM package with affiliate tracking attached.
  */
 export function getSailyEsimUrl(countryOrRegion = "global"): string {
+  const countrySlug = resolveSailyCountrySlug(countryOrRegion);
+  if (countrySlug) {
+    const targetUrl = `https://saily.com/esim-${countrySlug}/`;
+    return `https://go.saily.site/aff_c?aff_id=8014&offer_id=126&url=${encodeURIComponent(targetUrl)}`;
+  }
   return `https://saily.tpo.li/9kXyVV0E`;
 }
 

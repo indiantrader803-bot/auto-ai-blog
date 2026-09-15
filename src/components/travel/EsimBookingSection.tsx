@@ -13,6 +13,7 @@ import {
   ExternalLink,
   ArrowRight,
 } from "lucide-react";
+import { getSailyEsimUrl } from "@/lib/affiliate/links";
 import { trackTravelpayoutsClick } from "@/lib/affiliate/travelpayouts";
 import { useTravelCurrency } from "@/context/TravelCurrencyContext";
 
@@ -43,7 +44,7 @@ const ESIM_PACKAGES: EsimPackage[] = [
       { data: "20 GB", days: "30 Days", price: 36.99 },
     ],
     provider: "saily",
-    affiliateUrl: "https://saily.tpo.li/9kXyVV0E",
+    affiliateUrl: getSailyEsimUrl("united-states"),
   },
   {
     id: "europe",
@@ -59,7 +60,7 @@ const ESIM_PACKAGES: EsimPackage[] = [
       { data: "10 GB", days: "30 Days", price: 24.99 },
     ],
     provider: "saily",
-    affiliateUrl: "https://saily.tpo.li/9kXyVV0E",
+    affiliateUrl: getSailyEsimUrl("europe"),
   },
   {
     id: "japan",
@@ -75,7 +76,7 @@ const ESIM_PACKAGES: EsimPackage[] = [
       { data: "10 GB", days: "30 Days", price: 21.99 },
     ],
     provider: "saily",
-    affiliateUrl: "https://saily.tpo.li/9kXyVV0E",
+    affiliateUrl: getSailyEsimUrl("japan"),
   },
   {
     id: "uk",
@@ -89,7 +90,7 @@ const ESIM_PACKAGES: EsimPackage[] = [
       { data: "10 GB", days: "30 Days", price: 19.99 },
     ],
     provider: "saily",
-    affiliateUrl: "https://saily.tpo.li/9kXyVV0E",
+    affiliateUrl: getSailyEsimUrl("united-kingdom"),
   },
   {
     id: "thailand",
@@ -103,7 +104,7 @@ const ESIM_PACKAGES: EsimPackage[] = [
       { data: "Unlimited", days: "10 Days", price: 19.99 },
     ],
     provider: "saily",
-    affiliateUrl: "https://saily.tpo.li/9kXyVV0E",
+    affiliateUrl: getSailyEsimUrl("thailand"),
   },
   {
     id: "global",
@@ -139,9 +140,11 @@ export default function EsimBookingSection() {
       country: pkg.country,
       data: option.data,
       price: option.price,
-      action: "BUY_ESIM_DATA_PACK",
+      action: "ESIM_BUY_CLICK",
     });
-    window.open(pkg.affiliateUrl, "_blank", "noopener,noreferrer");
+
+    const directAffUrl = pkg.provider === "saily" ? getSailyEsimUrl(pkg.country) : pkg.affiliateUrl;
+    window.open(directAffUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -181,7 +184,7 @@ export default function EsimBookingSection() {
           </div>
 
           <a
-            href="https://saily.tpo.li/9kXyVV0E"
+            href={getSailyEsimUrl(searchQuery || "global")}
             target="_blank"
             rel="noopener noreferrer nofollow"
             onClick={() => trackTravelpayoutsClick("saily", { query: searchQuery })}
