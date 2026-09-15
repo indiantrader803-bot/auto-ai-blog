@@ -554,9 +554,9 @@ I am your 100% verified travel architect and global booking concierge. Here is w
 1. **🗺️ 100% Verified Day-by-Day Itineraries:**
    - Detailed morning, afternoon, and evening schedules with exact transit routes and authentic regional cuisine.
 2. **🏨 Verified Hotel & Resort Bookings:**
-   - Partner rates with [Booking.com](https://www.booking.com/?aid=2026803) and [Agoda](https://www.agoda.com/?cid=2026803) (Free cancellation & price match).
+   - Partner rates with [Booking.com](${getBookingHotelUrl()}) and [Agoda](${getAgodaHotelUrl()}) (Free cancellation & price match).
 3. **🚕 Private Airport Transfers & Rides:**
-   - Fixed-fare chauffeur pickups with [GetTransfer](https://gettransfer.com/?partner=2026803).
+   - Fixed-fare chauffeur pickups with [GetTransfer](${getGetTransferUrl()}).
 4. **🎥 4K YouTube Video Travel Guides:**
    - Curated walking tours and visual guides playable right inside our in-app modal.
 5. **💰 Dual-Currency Budgets:**

@@ -13,6 +13,8 @@ import {
 import { trackTravelpayoutsClick } from "@/lib/affiliate/travelpayouts";
 import { useTravelCurrency } from "@/context/TravelCurrencyContext";
 
+import { getAviasalesFlightUrl, getKlookUrl } from "@/lib/affiliate/links";
+
 interface Destination {
   city: string;
   country: string;
@@ -34,8 +36,8 @@ const DESTINATIONS: Destination[] = [
     baseFlightUSD: 489,
     baseHotelUSD: 65,
     topAttraction: "teamLab & Shibuya Sky Pass",
-    flightUrl: "https://aviasales.tpo.li/ZeF7BjUt",
-    klookUrl: "https://tp.media/r?campaign_id=137&marker=777349&p=4110&trs=573745&u=https%3A%2F%2Fklook.com%2Fen-US%2Fcity%2F28-tokyo-things-to-do%2F",
+    flightUrl: getAviasalesFlightUrl({ origin: "DEL", destination: "Tokyo" }),
+    klookUrl: getKlookUrl({ destination: "Tokyo", query: "Tokyo teamLab Shibuya Sky passes" }),
     tag: "MOST POPULAR",
     slug: "japan",
   },
@@ -46,8 +48,8 @@ const DESTINATIONS: Destination[] = [
     baseFlightUSD: 399,
     baseHotelUSD: 85,
     topAttraction: "Louvre Priority & Eiffel Tower",
-    flightUrl: "https://aviasales.tpo.li/ZeF7BjUt",
-    klookUrl: "https://tp.media/r?campaign_id=89&marker=777349&p=3984&trs=573790&u=https%3A%2F%2Fwww.tiqets.com%2Fen%2Fparis-attractions-c66746%2F",
+    flightUrl: getAviasalesFlightUrl({ origin: "DEL", destination: "Paris" }),
+    klookUrl: getKlookUrl({ destination: "Paris", query: "Paris Louvre Eiffel Tower passes" }),
     tag: "ROMANTIC GETAWAY",
     slug: "paris",
   },
@@ -58,8 +60,8 @@ const DESTINATIONS: Destination[] = [
     baseFlightUSD: 420,
     baseHotelUSD: 90,
     topAttraction: "Tower of London & Crown Jewels",
-    flightUrl: "https://aviasales.tpo.li/ZeF7BjUt",
-    klookUrl: "https://tp.media/r?campaign_id=89&marker=777349&p=3984&trs=573790&u=https%3A%2F%2Fwww.tiqets.com%2Fen%2Flondon-attractions-c67458%2F",
+    flightUrl: getAviasalesFlightUrl({ origin: "DEL", destination: "London" }),
+    klookUrl: getKlookUrl({ destination: "London", query: "London Tower of London attractions" }),
     tag: "HISTORIC SIGHTS",
     slug: "london",
   },
@@ -70,8 +72,8 @@ const DESTINATIONS: Destination[] = [
     baseFlightUSD: 380,
     baseHotelUSD: 75,
     topAttraction: "Burj Khalifa & Desert Safari",
-    flightUrl: "https://aviasales.tpo.li/ZeF7BjUt",
-    klookUrl: "https://tp.media/r?campaign_id=137&marker=777349&p=4110&trs=573745&u=https%3A%2F%2Fklook.com%2Fen-US%2Fcity%2F115-dubai-things-to-do%2F",
+    flightUrl: getAviasalesFlightUrl({ origin: "DEL", destination: "Dubai" }),
+    klookUrl: getKlookUrl({ destination: "Dubai", query: "Dubai Burj Khalifa Desert Safari passes" }),
     tag: "LUXURY & SUNSHINE",
     slug: "dubai",
   },
@@ -82,8 +84,8 @@ const DESTINATIONS: Destination[] = [
     baseFlightUSD: 510,
     baseHotelUSD: 35,
     topAttraction: "Ubud Waterfalls & Temple Tours",
-    flightUrl: "https://aviasales.tpo.li/ZeF7BjUt",
-    klookUrl: "https://tp.media/r?campaign_id=137&marker=777349&p=4110&trs=573745&u=https%3A%2F%2Fklook.com%2Fen-US%2Fcity%2F98-bali-things-to-do%2F",
+    flightUrl: getAviasalesFlightUrl({ origin: "DEL", destination: "Bali" }),
+    klookUrl: getKlookUrl({ destination: "Bali", query: "Bali Ubud Waterfalls Temple tours" }),
     tag: "TROPICAL ESCAPE",
     slug: "bali",
   },
@@ -94,8 +96,8 @@ const DESTINATIONS: Destination[] = [
     baseFlightUSD: 140,
     baseHotelUSD: 30,
     topAttraction: "Solang Adventure & Atal Tunnel",
-    flightUrl: "https://aviasales.tpo.li/ZeF7BjUt",
-    klookUrl: "https://tp.media/r?campaign_id=137&marker=777349&p=4110&trs=573745&u=https%3A%2F%2Fklook.com",
+    flightUrl: getAviasalesFlightUrl({ origin: "DEL", destination: "Manali" }),
+    klookUrl: getKlookUrl({ destination: "Manali", query: "Manali Solang Valley adventure passes" }),
     tag: "HIMALAYAN SNOW",
     slug: "manali",
   },

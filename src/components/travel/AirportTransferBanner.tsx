@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   Sparkles,
 } from "lucide-react";
+import { getGetTransferUrl } from "@/lib/affiliate/links";
 import { trackTravelpayoutsClick } from "@/lib/affiliate/travelpayouts";
 
 export default function AirportTransferBanner() {
@@ -37,12 +38,12 @@ export default function AirportTransferBanner() {
       source: "AIRPORT_TRANSFER_BANNER",
     });
 
-    const params = new URLSearchParams();
-    if (fromLocation) params.set("from", fromLocation);
-    if (toLocation) params.set("to", toLocation);
-    if (pickupDate) params.set("date", pickupDate);
-
-    const targetUrl = `https://gettransfer.tpo.li/SHZAx1VF?${params.toString()}`;
+    const targetUrl = getGetTransferUrl({
+      from: fromLocation || "Airport",
+      to: toLocation || "Hotel",
+      date: pickupDate,
+      passengers: parseInt(passengers, 10) || 1,
+    });
     window.open(targetUrl, "_blank", "noopener,noreferrer");
   };
 

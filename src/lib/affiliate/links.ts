@@ -161,6 +161,41 @@ export function resolveIataCode(input: string, fallback = "DEL"): string {
   return fallback;
 }
 
+/**
+ * Clean complex travel destination strings (e.g., 'Dubai & Arabian Luxury Desert' -> 'Dubai')
+ */
+export function cleanDestinationCity(input?: string): string {
+  if (!input) return "Dubai";
+  
+  // Remove parenthesized IATA codes or annotations like (DEL), (DXB)
+  let clean = input.replace(/\s*\([A-Za-z0-9\s]+\)/g, "").trim();
+  
+  // Split on delimiters like &, -, |, or commas
+  clean = clean.split(/&| - | \| |,/)[0].trim();
+  
+  // Remove common promotional suffix words
+  clean = clean.replace(/\b(Trip|Tour|Holiday|Vacation|Adventure|Expedition|Experience|Getaway|Luxury|Desert|Backwaters|Mountains|Beaches|Beach|Sightseeing|Resort|Stays|Villas)\b/gi, "").trim();
+  
+  // Clean double spaces
+  clean = clean.replace(/\s+/g, " ").trim();
+  
+  return clean || input.split(" ")[0] || "Dubai";
+}
+
+/**
+ * Format YYYY-MM-DD date to Aviasales DDMM format (e.g., '2026-09-22' -> '2209')
+ */
+export function formatAviasalesDate(dateStr?: string): string {
+  if (!dateStr) return "";
+  const parts = dateStr.split("-");
+  if (parts.length === 3) {
+    const day = parts[2].padStart(2, "0");
+    const month = parts[1].padStart(2, "0");
+    return `${day}${month}`;
+  }
+  return "";
+}
+
 export interface HotelSearchParams {
   destination?: string;
   checkin?: string; // YYYY-MM-DD
@@ -179,13 +214,13 @@ export function getBookingHotelUrl(param?: string | HotelSearchParams): string {
   }
 
   if (typeof param === "string") {
-    const cleanDest = encodeURIComponent(param.trim());
-    return `https://www.booking.com/searchresults.html?ss=${cleanDest}&aid=${aid}`;
+    const cleanCity = cleanDestinationCity(param);
+    return `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(cleanCity)}&aid=${aid}`;
   }
 
-  const { destination = "Manali", checkin, checkout, adults = 2, rooms = 1 } = param;
-  const cleanDest = encodeURIComponent(destination.trim());
-  let url = `https://www.booking.com/searchresults.html?ss=${cleanDest}&aid=${aid}&group_adults=${adults}&no_rooms=${rooms}`;
+  const { destination = "Dubai", checkin, checkout, adults = 2, rooms = 1 } = param;
+  const cleanCity = cleanDestinationCity(destination);
+  let url = `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(cleanCity)}&aid=${aid}&group_adults=${adults}&no_rooms=${rooms}`;
 
   if (checkin && checkout) {
     url += `&checkin=${checkin}&checkout=${checkout}`;
@@ -203,13 +238,13 @@ export function getAgodaHotelUrl(param?: string | HotelSearchParams): string {
   }
 
   if (typeof param === "string") {
-    const cleanDest = encodeURIComponent(param.trim());
-    return `https://www.agoda.com/search?city=${cleanDest}&cid=${cid}`;
+    const cleanCity = cleanDestinationCity(param);
+    return `https://www.agoda.com/partners/partnersearch.aspx?cid=${cid}&city=${encodeURIComponent(cleanCity)}`;
   }
 
-  const { destination = "Goa", checkin, checkout, adults = 2, rooms = 1 } = param;
-  const cleanDest = encodeURIComponent(destination.trim());
-  let url = `https://www.agoda.com/search?city=${cleanDest}&cid=${cid}&adults=${adults}&rooms=${rooms}`;
+  const { destination = "Dubai", checkin, checkout, adults = 2, rooms = 1 } = param;
+  const cleanCity = cleanDestinationCity(destination);
+  let url = `https://www.agoda.com/search?city=${encodeURIComponent(cleanCity)}&cid=${cid}&adults=${adults}&rooms=${rooms}`;
 
   if (checkin && checkout) {
     url += `&checkIn=${checkin}&checkOut=${checkout}`;
@@ -228,28 +263,35 @@ export interface FlightSearchParams {
 
 /**
  * Generate Deep Aviasales / Travelpayouts Flight Search URL with exact Origin, Destination, Dates & Adults
+ * Uses official Aviasales direct deep search route format:
+ * https://www.aviasales.com/search/{ORIGIN_IATA}{DEPART_DDMM}{DEST_IATA}{RETURN_DDMM}{ADULTS}?marker={MARKER}
  */
 export function getAviasalesFlightUrl(param?: string | FlightSearchParams): string {
   const marker = AFFILIATE_CONFIG.travelpayoutsMarker;
   
   if (!param) {
-    return `https://aviasales.tpo.li/ZeF7BjUt?marker=${marker}`;
+    return `https://www.aviasales.com/?marker=${marker}`;
   }
 
   if (typeof param === "string") {
-    const destIata = resolveIataCode(param, "GOI");
-    return `https://aviasales.tpo.li/ZeF7BjUt?marker=${marker}&destination=${destIata}&adults=2`;
+    const destIata = resolveIataCode(param, "DXB");
+    return `https://www.aviasales.com/search/DEL${destIata}2?marker=${marker}`;
   }
 
-  const { origin = "DEL", destination = "GOI", departDate, returnDate, adults = 2, isRoundTrip = true } = param;
+  const { origin = "DEL", destination = "DXB", departDate, returnDate, adults = 2, isRoundTrip = true } = param;
   const originIata = resolveIataCode(origin, "DEL");
-  const destIata = resolveIataCode(destination, "GOI");
+  const destIata = resolveIataCode(destination, "DXB");
 
-  let url = `https://aviasales.tpo.li/ZeF7BjUt?marker=${marker}&origin=${originIata}&destination=${destIata}&adults=${adults}`;
-  if (departDate) url += `&depart_date=${departDate}`;
-  if (isRoundTrip && returnDate) url += `&return_date=${returnDate}`;
+  const departDDMM = formatAviasalesDate(departDate);
+  const returnDDMM = isRoundTrip && returnDate ? formatAviasalesDate(returnDate) : "";
 
-  return url;
+  // Build exact Aviasales deep search slug
+  let searchSlug = `${originIata}${departDDMM}${destIata}${returnDDMM}${adults}`;
+  if (!departDDMM) {
+    searchSlug = `${originIata}${destIata}${adults}`;
+  }
+
+  return `https://www.aviasales.com/search/${searchSlug}?marker=${marker}`;
 }
 
 export interface KlookSearchParams {
@@ -271,9 +313,10 @@ export function getKlookUrl(param?: string | KlookSearchParams): string {
 
   let searchQuery = "attractions passes tickets";
   if (typeof param === "string") {
-    searchQuery = param.trim();
+    searchQuery = cleanDestinationCity(param) + " attractions tickets";
   } else if (param) {
-    searchQuery = `${param.destination || ""} ${param.activity || param.query || "attractions activities"}`.trim();
+    const city = cleanDestinationCity(param.destination);
+    searchQuery = `${city} ${param.activity || param.query || "attractions activities"}`.trim();
   }
 
   const targetKlook = `https://www.klook.com/search?query=${encodeURIComponent(searchQuery)}`;
@@ -291,46 +334,30 @@ export interface TransferSearchParams {
  * Generate Deep GetTransfer Airport Taxi & Chauffeur URL
  */
 export function getGetTransferUrl(param?: string | TransferSearchParams): string {
-  if (!param) return `https://gettransfer.tpo.li/yE0Wk8xK`;
-  
-  if (typeof param === "string") {
-    return `https://gettransfer.tpo.li/yE0Wk8xK?from=${encodeURIComponent(param)}`;
-  }
-
-  const { from = "Airport", to = "Hotel", date, passengers = 2 } = param;
-  let url = `https://gettransfer.tpo.li/yE0Wk8xK?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&pax=${passengers}`;
-  if (date) url += `&date=${date}`;
-  return url;
+  const marker = AFFILIATE_CONFIG.travelpayoutsMarker;
+  return `https://gettransfer.com/en?partner_id=${marker}`;
 }
 
 /**
  * Generate Saily 5G Global eSIM Deep Destination URL
  */
 export function getSailyEsimUrl(countryOrRegion = "global"): string {
-  const clean = encodeURIComponent(countryOrRegion.trim().toLowerCase());
-  return `https://saily.tpo.li/9kXyVV0E?country=${clean}`;
+  return `https://saily.tpo.li/9kXyVV0E`;
 }
 
 /**
  * Generate AirHelp €600 Flight Delay Claim URL
  */
 export function getAirHelpUrl(options?: { departure?: string; arrival?: string; airline?: string }): string {
-  if (!options) return `https://airhelp.tpo.li/fpMMLvXF`;
-  const dep = resolveIataCode(options.departure || "DEL");
-  const arr = resolveIataCode(options.arrival || "LHR");
-  return `https://airhelp.tpo.li/fpMMLvXF?departure=${dep}&arrival=${arr}`;
+  const marker = AFFILIATE_CONFIG.travelpayoutsMarker;
+  return `https://www.airhelp.com/en-int/?a_aid=Travelpayouts&data1=${marker}`;
 }
 
 /**
  * Generate EconomyBookings Worldwide Car Rental URL
  */
 export function getEconomyBookingsUrl(options?: { location?: string; pickDate?: string; dropDate?: string }): string {
-  if (!options) return `https://economybookings.tpo.li/fbYsWyaE`;
-  const loc = encodeURIComponent(options.location || "Airport");
-  let url = `https://economybookings.tpo.li/fbYsWyaE?pick_up=${loc}`;
-  if (options.pickDate) url += `&pick_date=${options.pickDate}`;
-  if (options.dropDate) url += `&drop_date=${options.dropDate}`;
-  return url;
+  return `https://economybookings.tpo.li/fbYsWyaE`;
 }
 
 /**
