@@ -180,22 +180,32 @@ export default function TrendingDestinations() {
               </div>
 
               {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-2 pt-2">
-                <button
-                  onClick={() => handleClick(dest, "flight")}
-                  className="py-2.5 px-3 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-sky-300 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer"
+              <div className="space-y-2 pt-2">
+                <a
+                  href={`/travel/${dest.city.toLowerCase() === 'tokyo' ? 'japan' : dest.city.toLowerCase()}`}
+                  className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-md transition-all hover:scale-[1.01]"
                 >
-                  <Plane className="w-3.5 h-3.5" />
-                  <span>Flights</span>
-                </button>
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Explore {dest.city} AI Trip Basket →</span>
+                </a>
 
-                <button
-                  onClick={() => handleClick(dest, "tours")}
-                  className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-md transition-all hover:scale-[1.02] cursor-pointer"
-                >
-                  <Ticket className="w-3.5 h-3.5" />
-                  <span>Tours</span>
-                </button>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => handleClick(dest, "flight")}
+                    className="py-2 px-3 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-sky-300 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer"
+                  >
+                    <Plane className="w-3.5 h-3.5" />
+                    <span>Flights</span>
+                  </button>
+
+                  <button
+                    onClick={() => handleClick(dest, "tours")}
+                    className="py-2 px-3 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-amber-400 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer"
+                  >
+                    <Ticket className="w-3.5 h-3.5" />
+                    <span>Tours</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

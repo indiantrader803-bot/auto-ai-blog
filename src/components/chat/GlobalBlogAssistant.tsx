@@ -87,25 +87,23 @@ export default function GlobalBlogAssistant() {
   const pathname = usePathname();
   const isTravelPage = pathname?.startsWith("/travel") || false;
   
-  const [activeMode, setActiveMode] = useState<"BLOG" | "TRAVEL">(isTravelPage ? "TRAVEL" : "BLOG");
+  const activeMode: "BLOG" | "TRAVEL" = isTravelPage ? "TRAVEL" : "BLOG";
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
-  // Sync mode with route if user navigates
-  useEffect(() => {
-    if (pathname?.startsWith("/travel")) {
-      setActiveMode("TRAVEL");
-    }
-  }, [pathname]);
-
   // Voice & Speech State
   const [isListening, setIsListening] = useState(false);
   const [speechEnabled, setSpeechEnabled] = useState(true);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [activeVideoModal, setActiveVideoModal] = useState<string | null>(null);
+
+  // Re-sync welcome messages when route changes
+  useEffect(() => {
+    setMessages([getWelcomeMessage(isTravelPage ? "TRAVEL" : "BLOG")]);
+  }, [isTravelPage]);
 
   const getWelcomeMessage = (mode: "BLOG" | "TRAVEL"): Message => {
     if (mode === "TRAVEL") {
@@ -314,17 +312,6 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
     setTimeout(() => setCopiedCode(null), 2500);
   };
 
-  const handleSwitchMode = (newMode: "BLOG" | "TRAVEL") => {
-    setActiveMode(newMode);
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
-    const welcome = getWelcomeMessage(newMode);
-    setMessages([welcome]);
-    if (speechEnabled) {
-      speakText(welcome.speechText || welcome.content);
-    }
-  };
 
   const handleReset = () => {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
@@ -367,15 +354,26 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
         </div>
       )}
 
+      {/* Backdrop overlay on mobile to easily close by tapping outside */}
+      {isOpen && (
+        <div
+          onClick={() => {
+            window.speechSynthesis?.cancel();
+            setIsOpen(false);
+          }}
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-[998] sm:hidden"
+        />
+      )}
+
       {/* Floating Launcher Trigger Button */}
-      <div className="fixed bottom-6 right-6 z-[999] flex items-center gap-3">
+      <div className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-[999] flex items-center gap-3">
         {!isOpen && (
           <button
             onClick={() => {
               setIsOpen(true);
               if (speechEnabled) speakText(messages[0].speechText || messages[0].content);
             }}
-            className={`group relative flex items-center gap-2.5 px-4 py-3.5 rounded-full text-white shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 cursor-pointer ${
+            className={`group relative flex items-center gap-2 px-3 sm:px-4 py-3 sm:py-3.5 rounded-full text-white shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 cursor-pointer ${
               activeMode === "TRAVEL"
                 ? "bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-700 shadow-emerald-500/50 hover:shadow-emerald-500/80 border-emerald-400/40"
                 : "bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 shadow-indigo-500/50 hover:shadow-indigo-500/80 border-indigo-400/40"
@@ -389,11 +387,11 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
 
             <div className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wider">
               <Mic className="w-4 h-4 text-amber-300 animate-bounce" />
-              <span>{activeMode === "TRAVEL" ? "✈️ Travel AI Voice" : "🎙️ Blog AI Voice"}</span>
+              <span className="hidden xs:inline sm:inline">{activeMode === "TRAVEL" ? "✈️ Travel AI Concierge" : "🎙️ Blog AI Voice"}</span>
             </div>
 
-            <span className="px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] uppercase shadow-xs">
-              LIVE 24/7
+            <span className="px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] uppercase shadow-xs hidden sm:inline">
+              LIVE
             </span>
           </button>
         )}
@@ -401,14 +399,14 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
 
       {/* Floating Chat Modal / Drawer */}
       {isOpen && (
-        <div className={`fixed bottom-6 right-4 sm:right-6 z-[999] w-[94vw] sm:w-[480px] md:w-[560px] h-[86vh] max-h-[740px] bg-white dark:bg-slate-950 rounded-3xl shadow-2xl border-2 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300 ${
+        <div className={`fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-[999] w-[95vw] sm:w-[480px] md:w-[560px] h-[85vh] max-h-[720px] bg-white dark:bg-slate-950 rounded-3xl shadow-2xl border-2 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300 ${
           activeMode === "TRAVEL"
             ? "border-emerald-500/30 dark:border-emerald-500/40"
             : "border-indigo-500/30 dark:border-indigo-500/40"
         }`}>
           
           {/* Header */}
-          <div className={`p-3.5 text-white border-b flex flex-col gap-2.5 shrink-0 ${
+          <div className={`p-3.5 text-white border-b flex flex-col gap-2 shrink-0 ${
             activeMode === "TRAVEL"
               ? "bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 border-teal-900/50"
               : "bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-900/50"
@@ -431,7 +429,7 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="text-sm font-black text-white tracking-tight">
-                      {activeMode === "TRAVEL" ? "Travel AI Voice Concierge" : "Editorial & AI Voice Assistant"}
+                      {activeMode === "TRAVEL" ? "Smart Travel AI Concierge" : "Editorial & AI Voice Assistant"}
                     </h3>
                     <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[9px] font-bold border border-emerald-500/30">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -440,7 +438,7 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
                   </div>
                   <p className="text-[10px] text-slate-300 font-medium">
                     {activeMode === "TRAVEL"
-                      ? "Verified Bookings • Itineraries • YouTube 4K Guides • Transfers"
+                      ? "Custom Trip Baskets • Hotel Deals • 4K Video Guides • Transfers"
                       : "Article Research • Prop Firm Comparisons • AI Tools • Quant"}
                   </p>
                 </div>
@@ -477,41 +475,12 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
                     window.speechSynthesis?.cancel();
                     setIsOpen(false);
                   }}
-                  title="Close chat"
-                  className="p-1.5 rounded-xl hover:bg-white/10 text-slate-300 hover:text-white transition-colors text-xs"
+                  title="Close popup"
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors text-xs cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
-            </div>
-
-            {/* Mode Switcher Tabs */}
-            <div className="flex items-center gap-1 bg-black/40 backdrop-blur-md p-1 rounded-xl border border-white/10 text-xs font-bold">
-              <button
-                type="button"
-                onClick={() => handleSwitchMode("BLOG")}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg transition-all ${
-                  activeMode === "BLOG"
-                    ? "bg-indigo-600 text-white shadow-xs font-black"
-                    : "text-slate-400 hover:text-slate-200"
-                }`}
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>📰 Blog &amp; Articles</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleSwitchMode("TRAVEL")}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg transition-all ${
-                  activeMode === "TRAVEL"
-                    ? "bg-emerald-600 text-white shadow-xs font-black"
-                    : "text-slate-400 hover:text-slate-200"
-                }`}
-              >
-                <Plane className="w-3.5 h-3.5" />
-                <span>✈️ Travel &amp; Bookings</span>
-              </button>
             </div>
           </div>
 

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import TravelNavbar from "@/components/travel/TravelNavbar";
 import TravelFooter from "@/components/travel/TravelFooter";
+import SmartTravelAIAgentHero from "@/components/travel/SmartTravelAIAgentHero";
 import AirportTransferBanner from "@/components/travel/AirportTransferBanner";
 import InteractiveTravelBookingBar from "@/components/travel/InteractiveTravelBookingBar";
 import FeaturedAttractionsGrid from "@/components/travel/FeaturedAttractionsGrid";
@@ -11,9 +12,9 @@ import TravelEssentialsHub from "@/components/travel/TravelEssentialsHub";
 import { ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "SmartMag Travel: Airport Transfers, Cheap Flights, eSIMs & Attraction Passes",
+  title: "SmartMag Travel: AI Trip Planner, Cheap Flights, eSIMs & Attraction Passes",
   description:
-    "Instant booking for global airport transfers in 175+ countries, cheap flight comparison, 200+ eSIM cellular data packages, skip-the-line museum tickets, and €600 flight delay compensation.",
+    "Plan your entire vacation with SmartMag AI: Instant personalized trip baskets, cheap flight radar on Aviasales, airport transfers, 200+ eSIM cellular packages, and skip-the-line attraction passes.",
   alternates: {
     canonical: "https://thesmartmag.com/travel",
   },
@@ -25,16 +26,21 @@ export default function TravelHubPage() {
       {/* 🧭 Dedicated Standalone Travel Brand Navbar */}
       <TravelNavbar />
 
-      {/* 🚀 Main Travel Booking Suite (Starts with Airport Transfers Hero as First Section) */}
+      {/* 🚀 Main Travel Booking Suite */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 flex-1 w-full">
-        {/* 1. Global Airport Transfers & Private Chauffeurs (Hero First Section) */}
-        <section id="transfers" className="scroll-mt-24">
-          <AirportTransferBanner />
+        {/* 1. 🎙️ Flagship AI Travel Concierge & Trip Planner Engine (First & Most Prominent) */}
+        <section id="ai-planner" className="scroll-mt-24">
+          <SmartTravelAIAgentHero />
         </section>
 
-        {/* 2. Real-time Live Flight, Hotel, Klook, Car, Tiqets & AirHelp Widget Engine */}
+        {/* 2. Real-time Live Flight, Hotel, Treks, Car & Transfer Search Engine */}
         <section id="flights" className="scroll-mt-24">
           <InteractiveTravelBookingBar />
+        </section>
+
+        {/* 3. Global Airport Transfers & Private Chauffeurs */}
+        <section id="transfers" className="scroll-mt-24">
+          <AirportTransferBanner />
         </section>
 
         {/* 3. Popular Attraction Passes & Skip-The-Line Tickets (Klook & Tiqets) */}
