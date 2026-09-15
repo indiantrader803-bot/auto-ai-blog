@@ -21,13 +21,14 @@ import {
 } from 'lucide-react';
 import { DESTINATIONS_DATA, DestinationGuide, getDestinationBySlug } from '@/lib/travel/destinationsData';
 import PersonalizedTripBasket, { TripPlanConfig } from './PersonalizedTripBasket';
+import FirstTimeTravelGuideModal from './FirstTimeTravelGuideModal';
 
 const QUICK_PROMPTS = [
-  { label: '?? Japan 7 Days from Kolkata ?1.5L', query: 'I want to visit Japan for 7 days from Kolkata with a budget of ?1.5 lakh.', dest: 'japan', origin: 'Kolkata (CCU)', days: 7, budget: 150000, travelers: 2, style: 'Comfort' as const },
-  { label: '??? Dubai 5 Days Couple ?80K', query: 'Plan a 5-day romantic Dubai trip for a couple from Delhi under ?80,000.', dest: 'dubai', origin: 'Delhi (DEL)', days: 5, budget: 80000, travelers: 2, style: 'Comfort' as const },
-  { label: '??? Bali 6 Days Solo Budget ?50K', query: 'Create a 6-day budget solo trip to Bali from Mumbai under ?50,000.', dest: 'bali', origin: 'Mumbai (BOM)', days: 6, budget: 50000, travelers: 1, style: 'Budget' as const },
-  { label: '??? Swiss Alps 8 Days Luxury ?3L', query: 'I want an 8-day luxury Swiss Alps and Jungfraujoch tour from Mumbai budget ?3 lakh.', dest: 'switzerland', origin: 'Mumbai (BOM)', days: 8, budget: 300000, travelers: 2, style: 'Luxury' as const },
-  { label: '?? Kashmir 5 Days Dal Lake & Gulmarg ?35K', query: 'Plan a 5-day Kashmir family trip with Dal Lake houseboat and Gulmarg gondola for ?35,000.', dest: 'kashmir', origin: 'Delhi (DEL)', days: 5, budget: 35000, travelers: 2, style: 'Comfort' as const },
+  { label: '🌸 Japan 7 Days from Kolkata (₹1.5L)', query: 'I want to visit Japan for 7 days from Kolkata with a budget of ₹1.5 lakh.', dest: 'japan', origin: 'Kolkata (CCU)', days: 7, budget: 150000, travelers: 2, style: 'Comfort' as const },
+  { label: '🏙️ Dubai 5 Days Couple (₹80K)', query: 'Plan a 5-day romantic Dubai trip for a couple from Delhi under ₹80,000.', dest: 'dubai', origin: 'Delhi (DEL)', days: 5, budget: 80000, travelers: 2, style: 'Comfort' as const },
+  { label: '🌴 Bali 6 Days Solo Budget (₹50K)', query: 'Create a 6-day budget solo trip to Bali from Mumbai under ₹50,000.', dest: 'bali', origin: 'Mumbai (BOM)', days: 6, budget: 50000, travelers: 1, style: 'Budget' as const },
+  { label: '🏔️ Swiss Alps 8 Days Luxury (₹3L)', query: 'I want an 8-day luxury Swiss Alps and Jungfraujoch tour from Mumbai budget ₹3 lakh.', dest: 'switzerland', origin: 'Mumbai (BOM)', days: 8, budget: 300000, travelers: 2, style: 'Luxury' as const },
+  { label: '❄️ Kashmir 5 Days Dal Lake & Gulmarg (₹35K)', query: 'Plan a 5-day Kashmir family trip with Dal Lake houseboat and Gulmarg gondola for ₹35,000.', dest: 'kashmir', origin: 'Delhi (DEL)', days: 5, budget: 35000, travelers: 2, style: 'Comfort' as const },
 ];
 
 export default function SmartTravelAIAgentHero() {
@@ -217,7 +218,7 @@ export default function SmartTravelAIAgentHero() {
             Next-Gen AI Travel Concierge
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black font-serif text-white tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-5xl font-black font-serif text-white tracking-tight leading-tight pt-3">
             Plan Your Entire Dream Journey with <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-300 to-sky-200">Smart AI</span>
           </h1>
 
@@ -225,7 +226,7 @@ export default function SmartTravelAIAgentHero() {
             Tell us where you want to go, your departure city, and budget. Our AI agent instantly crafts your custom <strong className="text-white">Trip Basket</strong> (Flights, Hotels, Private Transfers, Attraction Passes, 5G eSIM &amp; Daily Itinerary).
           </p>
 
-          {/* ??? Interactive Voice & Prompt Input Bar */}
+          {/* Interactive Voice & Prompt Input Bar */}
           <div className="pt-4 max-w-2xl mx-auto">
             <div className="relative flex items-center rounded-2xl bg-slate-950 border-2 border-sky-500/50 shadow-2xl p-2 focus-within:border-sky-400 transition-all">
               <button
@@ -250,7 +251,7 @@ export default function SmartTravelAIAgentHero() {
                     handleAnalyzeQuery(query);
                   }
                 }}
-                placeholder="e.g. 7 days in Japan from Kolkata for 2 people budget ?1.5L..."
+                placeholder="e.g. 7 days in Japan from Kolkata for 2 people budget ₹1.5L..."
                 className="w-full bg-transparent px-3 text-xs sm:text-sm text-white placeholder:text-slate-500 focus:outline-none"
               />
 
@@ -266,8 +267,9 @@ export default function SmartTravelAIAgentHero() {
             </div>
 
             {speechFeedback && (
-              <div className="mt-2 text-xs font-semibold text-sky-400 animate-pulse">
-                ??? {speechFeedback}
+              <div className="mt-2 text-xs font-semibold text-sky-400 animate-pulse flex items-center justify-center gap-1.5">
+                <Volume2 className="w-3.5 h-3.5 text-sky-400" />
+                <span>{speechFeedback}</span>
               </div>
             )}
           </div>
@@ -276,26 +278,26 @@ export default function SmartTravelAIAgentHero() {
           <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={toggleVoice}
-              className="px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold flex items-center gap-2 transition cursor-pointer"
             >
               <Mic className="w-3.5 h-3.5 text-sky-400" />
-              <span>??? Talk to AI</span>
+              <span>Voice AI Assistant</span>
             </button>
 
             <button
               onClick={() => setShowWizardModal(true)}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold flex items-center gap-1.5 transition shadow-md cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold flex items-center gap-2 transition shadow-md cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>? Build My Trip Wizard</span>
+              <span>Build My Trip Wizard</span>
             </button>
 
             <a
               href="#flights"
-              className="px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold flex items-center gap-2 transition cursor-pointer"
             >
               <Search className="w-3.5 h-3.5 text-emerald-400" />
-              <span>?? Search Manually</span>
+              <span>Search Manually</span>
             </a>
           </div>
 
@@ -424,7 +426,7 @@ export default function SmartTravelAIAgentHero() {
               </div>
 
               <div>
-                <label className="block text-slate-400 font-bold uppercase tracking-wider mb-1">Total Target Budget (? INR)</label>
+                <label className="block text-slate-400 font-bold uppercase tracking-wider mb-1">Total Target Budget (₹ INR)</label>
                 <input
                   type="number"
                   value={wizardBudget}
@@ -453,6 +455,16 @@ export default function SmartTravelAIAgentHero() {
           </div>
         </div>
       )}
+
+      {/* First-Time Interactive Guide Modal & Floating Tour Beacon */}
+      <FirstTimeTravelGuideModal
+        onTriggerDemo={(slug) => {
+          const prompt = QUICK_PROMPTS.find((p) => p.dest === slug) || QUICK_PROMPTS[0];
+          handleSelectQuickPrompt(prompt);
+        }}
+        onTriggerVoice={toggleVoice}
+        onOpenWizard={() => setShowWizardModal(true)}
+      />
     </div>
   );
 }

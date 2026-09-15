@@ -79,14 +79,14 @@ export default function PersonalizedTripBasket({
 
   // WhatsApp share message
   const generateWhatsAppLink = () => {
-    const text = `?? *My AI Personalized Travel Plan: ${guide.name}*\n` +
-      `?? Route: ${origin} ? ${destination} (${days} Days)\n` +
-      `?? Travelers: ${travelers} | Style: ${travelStyle}\n` +
-      `?? Total Estimated Budget: ?${totalCalculated.toLocaleString('en-IN')}\n\n` +
-      `?? Flights: ${flightUrl}\n` +
-      `?? Stays: ${hotelUrl}\n` +
-      `?? Transfers: ${transferUrl}\n` +
-      `?? 5G eSIM: ${esimUrl}\n\n` +
+    const text = `✈️ *My AI Personalized Travel Plan: ${guide.name}*\n` +
+      `📍 Route: ${origin} → ${destination} (${days} Days)\n` +
+      `👥 Travelers: ${travelers} | Style: ${travelStyle}\n` +
+      `💰 Total Estimated Budget: ₹${totalCalculated.toLocaleString('en-IN')}\n\n` +
+      `✈️ Flights: ${flightUrl}\n` +
+      `🏨 Stays: ${hotelUrl}\n` +
+      `🚕 Transfers: ${transferUrl}\n` +
+      `📱 5G eSIM: ${esimUrl}\n\n` +
       `Crafted by SmartMag Travel AI Concierge: https://thesmartmag.com/travel`;
     return `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
   };
@@ -136,7 +136,7 @@ export default function PersonalizedTripBasket({
               {travelStyle} Class Plan
             </span>
             <span className="text-xs text-slate-400">
-              {origin} ? <strong className="text-white">{destination}</strong> � {days} Days � {travelers} Traveler(s)
+              {origin} → <strong className="text-white">{destination}</strong> • {days} Days • {travelers} Traveler(s)
             </span>
           </div>
 
@@ -144,7 +144,7 @@ export default function PersonalizedTripBasket({
             Your Personalized {guide.name} Journey
           </h2>
           <p className="text-xs sm:text-sm text-slate-300 mt-1">
-            {guide.tagline} � Best Season: <span className="text-amber-300 font-semibold">{guide.bestTimeToVisit}</span>
+            {guide.tagline} • Best Season: <span className="text-amber-300 font-semibold">{guide.bestTimeToVisit}</span>
           </p>
         </div>
 
@@ -178,7 +178,7 @@ export default function PersonalizedTripBasket({
         </div>
       </div>
 
-      {/* ?? 1. THE COMPLETE TRIP BASKET (All 6 core products with 1-click booking) */}
+      {/* 1. THE COMPLETE TRIP BASKET (All 6 core products with 1-click booking) */}
       <div className="mt-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
@@ -204,13 +204,13 @@ export default function PersonalizedTripBasket({
                 </span>
               </div>
               <h4 className="text-sm font-black text-white group-hover:text-sky-300 transition">
-                {origin} ? {destination}
+                {origin} → {destination}
               </h4>
               <p className="text-xs text-slate-400 mt-1">
                 Real-time multi-airline comparison with direct airline ticket matching.
               </p>
               <div className="mt-2 text-xs font-bold text-emerald-400">
-                Est. ?{flightCost.toLocaleString('en-IN')} (Round-Trip)
+                Est. ₹{flightCost.toLocaleString('en-IN')} (Round-Trip)
               </div>
             </div>
             <a
@@ -242,7 +242,7 @@ export default function PersonalizedTripBasket({
                 Free cancellation on 85% of stays with instant confirmation.
               </p>
               <div className="mt-2 text-xs font-bold text-emerald-400">
-                Est. ?{hotelCost.toLocaleString('en-IN')} ({days} Nights)
+                Est. ₹{hotelCost.toLocaleString('en-IN')} ({days} Nights)
               </div>
             </div>
             <a
@@ -268,13 +268,13 @@ export default function PersonalizedTripBasket({
                 </span>
               </div>
               <h4 className="text-sm font-black text-white group-hover:text-emerald-300 transition">
-                Airport ? Hotel Meet &amp; Greet
+                Airport → Hotel Meet &amp; Greet
               </h4>
               <p className="text-xs text-slate-400 mt-1">
                 Name-sign arrival pickup with 60 mins free waiting time.
               </p>
               <div className="mt-2 text-xs font-bold text-emerald-400">
-                Est. ?{transferCost.toLocaleString('en-IN')}
+                Est. ₹{transferCost.toLocaleString('en-IN')}
               </div>
             </div>
             <a
@@ -306,7 +306,7 @@ export default function PersonalizedTripBasket({
                 Skip-the-line gate admission with mobile QR code delivery.
               </p>
               <div className="mt-2 text-xs font-bold text-emerald-400">
-                {guide.topAttractions[0]?.price} � 4.9? Rating
+                {guide.topAttractions[0]?.price} • 4.9★ Rating
               </div>
             </div>
             <a
@@ -338,7 +338,7 @@ export default function PersonalizedTripBasket({
                 Instant 1-minute QR install before flight. Keep WhatsApp number.
               </p>
               <div className="mt-2 text-xs font-bold text-emerald-400">
-                Est. ?{esimCost.toLocaleString('en-IN')} (High-Speed 5G)
+                Est. ₹{esimCost.toLocaleString('en-IN')} (High-Speed 5G)
               </div>
             </div>
             <a
@@ -357,7 +357,7 @@ export default function PersonalizedTripBasket({
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="flex items-center gap-1.5 text-xs font-bold text-purple-400">
-                  <ShieldCheck className="w-4 h-4" /> �600 Flight Claim &amp; Cover
+                  <ShieldCheck className="w-4 h-4" /> €600 Flight Claim &amp; Cover
                 </span>
                 <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400">
                   No Win No Fee
@@ -370,7 +370,7 @@ export default function PersonalizedTripBasket({
                 Automatic passenger compensation for 3+ hour delays &amp; cancellations.
               </p>
               <div className="mt-2 text-xs font-bold text-emerald-400">
-                Up to �600 Cash Payout per Traveler
+                Up to €600 Cash Payout per Traveler
               </div>
             </div>
             <a
@@ -386,7 +386,7 @@ export default function PersonalizedTripBasket({
         </div>
       </div>
 
-      {/* ?? 2. AI TRAVEL BUDGET BREAKDOWN CALCULATOR */}
+      {/* 2. AI TRAVEL BUDGET BREAKDOWN CALCULATOR */}
       <div className="mt-8 p-5 sm:p-6 rounded-2xl bg-slate-950/90 border border-slate-800">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800">
           <div>
@@ -401,53 +401,53 @@ export default function PersonalizedTripBasket({
           <div className="text-right">
             <div className="text-xs uppercase tracking-wider text-slate-400 font-bold">Estimated Total Cost</div>
             <div className="text-2xl font-black text-emerald-400 font-mono">
-              ?{totalCalculated.toLocaleString('en-IN')}
+              ₹{totalCalculated.toLocaleString('en-IN')}
             </div>
           </div>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs mb-4">
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <span className="text-slate-400 block mb-1">?? Flights</span>
-            <span className="font-bold text-white font-mono">?{flightCost.toLocaleString('en-IN')}</span>
+            <span className="text-slate-400 block mb-1">✈️ Flights</span>
+            <span className="font-bold text-white font-mono">₹{flightCost.toLocaleString('en-IN')}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <span className="text-slate-400 block mb-1">?? Stays</span>
-            <span className="font-bold text-white font-mono">?{hotelCost.toLocaleString('en-IN')}</span>
+            <span className="text-slate-400 block mb-1">🏨 Stays</span>
+            <span className="font-bold text-white font-mono">₹{hotelCost.toLocaleString('en-IN')}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <span className="text-slate-400 block mb-1">?? Transfers</span>
-            <span className="font-bold text-white font-mono">?{transferCost.toLocaleString('en-IN')}</span>
+            <span className="text-slate-400 block mb-1">🚕 Transfers</span>
+            <span className="font-bold text-white font-mono">₹{transferCost.toLocaleString('en-IN')}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <span className="text-slate-400 block mb-1">??? Attractions</span>
-            <span className="font-bold text-white font-mono">?{activitiesCost.toLocaleString('en-IN')}</span>
+            <span className="text-slate-400 block mb-1">🎟️ Attractions</span>
+            <span className="font-bold text-white font-mono">₹{activitiesCost.toLocaleString('en-IN')}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <span className="text-slate-400 block mb-1">?? Dining &amp; Food</span>
-            <span className="font-bold text-white font-mono">?{foodCost.toLocaleString('en-IN')}</span>
+            <span className="text-slate-400 block mb-1">🍜 Dining &amp; Food</span>
+            <span className="font-bold text-white font-mono">₹{foodCost.toLocaleString('en-IN')}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <span className="text-slate-400 block mb-1">?? eSIM &amp; Ins.</span>
-            <span className="font-bold text-white font-mono">?{(esimCost + insuranceCost).toLocaleString('en-IN')}</span>
+            <span className="text-slate-400 block mb-1">📱 eSIM &amp; Ins.</span>
+            <span className="font-bold text-white font-mono">₹{(esimCost + insuranceCost).toLocaleString('en-IN')}</span>
           </div>
         </div>
 
         {budget > 0 && (
           <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between text-xs">
             <span className="text-emerald-300 font-semibold">
-              ?? Target Budget: ?{budget.toLocaleString('en-IN')}
+              🎯 Target Budget: ₹{budget.toLocaleString('en-IN')}
             </span>
             <span className="font-bold text-emerald-400">
               {remainingBudget >= 0
-                ? `?? ?${remainingBudget.toLocaleString('en-IN')} Surplus Remaining for Shopping & Leisure`
-                : `?? ?${Math.abs(remainingBudget).toLocaleString('en-IN')} Over Initial Target (Consider Economy Stays)`}
+                ? `✓ ₹${remainingBudget.toLocaleString('en-IN')} Surplus Remaining for Shopping & Leisure`
+                : `⚠️ ₹${Math.abs(remainingBudget).toLocaleString('en-IN')} Over Initial Target (Consider Economy Stays)`}
             </span>
           </div>
         )}
       </div>
 
-      {/* ??? 3. DAY-BY-DAY ITINERARY WITH ACTIONABLE BOOK CTAS */}
+      {/* 3. DAY-BY-DAY ITINERARY WITH ACTIONABLE BOOK CTAS */}
       <div className="mt-8">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-black text-white flex items-center gap-2">
@@ -531,16 +531,16 @@ export default function PersonalizedTripBasket({
         </div>
       </div>
 
-      {/* ?? 4. "WHY THIS RECOMMENDATION?" AI TRUST BADGE STRIP */}
+      {/* 4. "WHY THIS RECOMMENDATION?" AI TRUST BADGE STRIP */}
       <div className="mt-8 p-4 rounded-2xl bg-gradient-to-r from-sky-950/60 to-indigo-950/60 border border-sky-500/30 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2">
           <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
           <span className="font-bold text-white">Why SmartMag AI Selected This Plan:</span>
         </div>
         <div className="flex items-center gap-4 text-slate-300">
-          <span>? 4.9? Provider Ratings</span>
-          <span>? 100% Free Cancellation Option</span>
-          <span>? Lowest Direct Price Guarantee</span>
+          <span>✓ 4.9★ Provider Ratings</span>
+          <span>✓ 100% Free Cancellation Option</span>
+          <span>✓ Lowest Direct Price Guarantee</span>
         </div>
       </div>
 
@@ -553,12 +553,12 @@ export default function PersonalizedTripBasket({
               Track Price Drops for {destination}
             </h3>
             <p className="text-xs text-slate-300 mb-4">
-              We monitor 1,000+ airlines and hotel rates for {origin} ? {destination}. We�ll alert you the moment fares drop below your budget.
+              We monitor 1,000+ airlines and hotel rates for {origin} → {destination}. We will alert you the moment fares drop below your budget.
             </p>
 
             {alertSuccess ? (
               <div className="p-4 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold text-center">
-                ?? Price tracker activated for {alertEmail}! We�ll alert you on major price drops.
+                ✓ Price tracker activated for {alertEmail}! We will alert you on major price drops.
               </div>
             ) : (
               <form onSubmit={handleSubscribeAlert} className="space-y-3">
