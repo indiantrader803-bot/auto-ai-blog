@@ -41,6 +41,7 @@ import {
   Luggage,
 } from "lucide-react";
 import { BookingDeal, AffiliateComparisonOffer, VideoSearchResult } from "@/lib/agents/multiAgentIntentRouter";
+import { useTravelCurrency } from "@/context/TravelCurrencyContext";
 
 interface Message {
   id: string;
@@ -64,14 +65,16 @@ interface Message {
 }
 
 const TRAVEL_PROMPTS = [
-  { icon: "🏨", text: "Kerala Houseboats & Resorts", query: "Find me verified luxury houseboat stays and booking deals in Alleppey and Munnar Kerala." },
+  { icon: "🏔️", text: "Manali Snow & Adventure", query: "Plan a 4-day adventure trip to Manali covering Solang Valley snow activities, paragliding, and Old Manali cafes." },
+  { icon: "🌴", text: "Kerala Luxury Houseboats", query: "Find me verified luxury houseboat stays and booking deals in Alleppey and Munnar Kerala." },
   { icon: "🏔️", text: "7-Day Ladakh & Kashmir Plan", query: "Create a 7-day high-altitude travel itinerary for Ladakh and Kashmir with Khardung La and Pangong Lake." },
-  { icon: "🎥", text: "Japan Golden Route 4K Video", query: "Show me YouTube 4K video travel guides and itineraries for Tokyo, Kyoto, and Mt. Fuji Japan." },
-  { icon: "🚕", text: "Airport Taxi & Private Transfers", query: "How do I book guaranteed private airport transfers and chauffeur pickups with GetTransfer?" },
-  { icon: "📱", text: "Travel eSIM Data Packages", query: "What are the best international eSIM mobile data plans for travel in India, Europe, and Asia?" },
+  { icon: "🌸", text: "Japan Golden Route 4K Video", query: "Show me YouTube 4K video travel guides and itineraries for Tokyo, Kyoto, and Mt. Fuji Japan." },
+  { icon: "🏙️", text: "Dubai 5-Day Luxury & Desert", query: "Plan a 5-day Dubai trip covering Burj Khalifa, desert safari, and luxury marina dinner cruises." },
   { icon: "🏖️", text: "4-Day Goa Beach & Heritage", query: "Give me a 4-day verified Goa itinerary covering North & South Goa beaches, water sports, and heritage." },
-  { icon: "🏰", text: "Dubai 5-Day Luxury & Desert", query: "Plan a 5-day Dubai trip covering Burj Khalifa, desert safari, and luxury marina dinner cruises." },
-  { icon: "✈️", text: "Cheap Flights & Route Search", query: "Compare the best flight comparison engines and flight deals on Aviasales with lowest price guarantee." },
+  { icon: "✈️", text: "Aviasales Cheap Flight Radar", query: "Compare the best flight comparison engines and flight deals on Aviasales with lowest price guarantee." },
+  { icon: "📱", text: "Saily 5G Global eSIM Data", query: "What are the best international eSIM mobile data plans for travel in India, Europe, and Asia?" },
+  { icon: "🚕", text: "Airport Taxi & Private Transfers", query: "How do I book guaranteed private airport transfers and chauffeur pickups with GetTransfer?" },
+  { icon: "🛡️", text: "AirHelp €600 Flight Delay Claim", query: "How can I check eligibility and claim up to €600 cash compensation for a delayed or cancelled flight with AirHelp?" },
 ];
 
 const BLOG_PROMPTS = [
@@ -95,8 +98,21 @@ const TRAVEL_SECTIONS = [
 
 export default function GlobalBlogAssistant() {
   const pathname = usePathname();
+  const { currency, currencySymbol } = useTravelCurrency();
+  const [isTravelHost, setIsTravelHost] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const host = window.location.host;
+      const path = window.location.pathname;
+      if (host.startsWith("travel.") || host.includes("travel") || path.startsWith("/travel")) {
+        setIsTravelHost(true);
+      }
+    }
+  }, [pathname]);
+
   const isAdminPage = pathname?.startsWith("/admin") || false;
-  const isTravelPage = pathname?.startsWith("/travel") || false;
+  const isTravelPage = isTravelHost || pathname?.startsWith("/travel") || false;
   
   if (isAdminPage) {
     return null;
@@ -115,29 +131,26 @@ export default function GlobalBlogAssistant() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [activeVideoModal, setActiveVideoModal] = useState<string | null>(null);
 
-  // Re-sync welcome messages when route changes
-  useEffect(() => {
-    setMessages([getWelcomeMessage(isTravelPage ? "TRAVEL" : "BLOG")]);
-  }, [isTravelPage]);
-
   const getWelcomeMessage = (mode: "BLOG" | "TRAVEL"): Message => {
     if (mode === "TRAVEL") {
       return {
         id: "welcome_travel",
         role: "assistant",
-        content: `✈️ **Welcome to SmartMag Travel AI Voice Concierge!**
+        content: `✈️ **Welcome to SmartTravel AI Voice Concierge!**
 
-I am your 100% verified Global Travel Planner & Booking Assistant. How can I craft your trip today?
-- 🏨 **Verified Hotel Bookings**: Direct partner reservations on Booking.com & Agoda.
-- 🗺️ **100% Verified Day-by-Day Itineraries**: Custom plans with morning, afternoon, evening schedules, and authentic food recommendations.
-- 🎥 **YouTube Video Suggestions**: Curated 4K travel documentaries and visual road-trip guides.
-- 🚕 **Airport Transfers & Taxis**: Fixed-price private chauffeurs with GetTransfer & Intui.travel.
-- 📱 **eSIM Data & Flights**: Global roaming data eSIMs and Aviasales 1,000+ airline comparisons.
+I am your 24/7 verified Global Travel Planner & Booking Assistant. I can craft your entire journey with 100% price matching & direct partner reservations:
 
-*Click the 🎙️ **Microphone button** to speak your travel destination, or select a quick prompt below:*`,
+• 🏨 **Direct Hotel & Resort Bookings**: Direct partner reservations on Booking.com & Agoda.
+• ✈️ **0% Markup Flights**: Real-time comparisons on Aviasales across 1,000+ airlines.
+• 🗺️ **Verified Day-by-Day Roadmaps**: Morning, afternoon, and evening schedules with authentic local spots.
+• 🚕 **Airport Transfers & Chauffeurs**: Guaranteed fixed-price private pickups with GetTransfer & Intui.travel.
+• 📱 **Instant 5G Global eSIM**: 1-minute QR code activation on Saily with zero roaming charges.
+• 🎟️ **Attraction Passes & 4K Video Guides**: Instant entry tickets via Klook & curated 4K travel guides.
+
+🎙️ *Click the **Microphone** to speak your destination, or tap a quick destination prompt below:*`,
         timestamp: "Just now",
-        source: "SmartMag Travel Concierge",
-        speechText: "Welcome to SmartMag Travel Concierge. I can help you with hotel bookings, verified day by day itineraries, airport transfers, or YouTube travel video guides. What destination are you planning?",
+        source: "SmartTravel AI Concierge",
+        speechText: "Welcome to SmartTravel AI Concierge. I can plan your entire trip, compare flights, book verified hotels, or find airport transfers. What destination would you like to explore?",
       };
     }
 
@@ -160,6 +173,11 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
   };
 
   const [messages, setMessages] = useState<Message[]>([getWelcomeMessage(isTravelPage ? "TRAVEL" : "BLOG")]);
+
+  // Re-sync welcome messages when route changes
+  useEffect(() => {
+    setMessages([getWelcomeMessage(isTravelPage ? "TRAVEL" : "BLOG")]);
+  }, [isTravelPage]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -409,24 +427,30 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
               setIsOpen(true);
               if (speechEnabled) speakText(messages[0].speechText || messages[0].content);
             }}
-            className={`group relative flex items-center gap-2 px-3 sm:px-4 py-3 sm:py-3.5 rounded-full text-white shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 cursor-pointer ${
+            className={`group relative flex items-center gap-2.5 px-4 py-3 sm:px-5 sm:py-3.5 rounded-full text-white shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 cursor-pointer ${
               activeMode === "TRAVEL"
-                ? "bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-700 shadow-emerald-500/50 hover:shadow-emerald-500/80 border-emerald-400/40"
-                : "bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 shadow-indigo-500/50 hover:shadow-indigo-500/80 border-indigo-400/40"
+                ? "bg-gradient-to-r from-sky-500 via-indigo-600 to-emerald-500 shadow-sky-500/40 hover:shadow-sky-500/70 border-sky-300/60"
+                : "bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-indigo-500/50 hover:shadow-indigo-500/80 border-indigo-400/40"
             }`}
-            aria-label="Open AI Voice Agent & Concierge"
+            aria-label={activeMode === "TRAVEL" ? "Open Travel AI Concierge" : "Open Blog AI Voice Assistant"}
           >
             <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                activeMode === "TRAVEL" ? "bg-emerald-300" : "bg-rose-400"
+              }`}></span>
+              <span className={`relative inline-flex rounded-full h-3 w-3 ${
+                activeMode === "TRAVEL" ? "bg-emerald-400" : "bg-rose-500"
+              }`}></span>
             </span>
 
-            <div className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wider">
+            <div className="flex items-center gap-2 font-black text-xs uppercase tracking-wider">
               <Mic className="w-4 h-4 text-amber-300 animate-bounce" />
-              <span className="hidden xs:inline sm:inline">{activeMode === "TRAVEL" ? "✈️ Travel AI Concierge" : "🎙️ Blog AI Voice"}</span>
+              <span>{activeMode === "TRAVEL" ? "✈️ Travel AI Concierge" : "🎙️ Blog AI Voice"}</span>
             </div>
 
-            <span className="px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] uppercase shadow-xs hidden sm:inline">
+            <span className={`px-2 py-0.5 rounded-full font-black text-[9px] uppercase shadow-xs ${
+              activeMode === "TRAVEL" ? "bg-emerald-400 text-slate-950" : "bg-amber-400 text-slate-950"
+            }`}>
               LIVE
             </span>
           </button>
@@ -435,46 +459,52 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
 
       {/* Floating Chat Modal / Drawer */}
       {isOpen && (
-        <div className={`fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-[999] w-[95vw] sm:w-[480px] md:w-[560px] h-[85vh] max-h-[720px] bg-white dark:bg-slate-950 rounded-3xl shadow-2xl border-2 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300 ${
+        <div className={`fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-[999] w-[95vw] sm:w-[500px] md:w-[580px] h-[85vh] max-h-[740px] bg-white dark:bg-slate-950 rounded-3xl shadow-2xl border-2 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300 ${
           activeMode === "TRAVEL"
-            ? "border-emerald-500/30 dark:border-emerald-500/40"
-            : "border-indigo-500/30 dark:border-indigo-500/40"
+            ? "border-sky-500/40 dark:border-sky-500/40 shadow-sky-950/50"
+            : "border-indigo-500/30 dark:border-indigo-500/40 shadow-indigo-950/50"
         }`}>
           
           {/* Header */}
-          <div className={`p-3.5 text-white border-b flex flex-col gap-2 shrink-0 ${
+          <div className={`p-3.5 sm:p-4 text-white border-b flex flex-col gap-2 shrink-0 ${
             activeMode === "TRAVEL"
-              ? "bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 border-teal-900/50"
-              : "bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-900/50"
+              ? "bg-gradient-to-r from-slate-950 via-slate-900 to-sky-950 border-sky-900/50"
+              : "bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 border-indigo-900/50"
           }`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className={`relative w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-md ${
                   activeMode === "TRAVEL"
-                    ? "bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 shadow-emerald-500/30"
+                    ? "bg-gradient-to-tr from-sky-500 via-indigo-500 to-emerald-500 shadow-sky-500/30"
                     : "bg-gradient-to-tr from-indigo-500 via-purple-500 to-rose-500 shadow-indigo-500/30"
                 }`}>
                   {activeMode === "TRAVEL" ? <Plane className="w-5 h-5 text-amber-300" /> : <Bot className="w-5 h-5 text-amber-300" />}
                   {isSpeaking && (
                     <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                     </span>
                   )}
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="text-sm font-black text-white tracking-tight">
-                      {activeMode === "TRAVEL" ? "Smart Travel AI Concierge" : "Editorial & AI Voice Assistant"}
+                      {activeMode === "TRAVEL" ? "SmartTravel AI Voice Concierge" : "Editorial & AI Voice Assistant"}
                     </h3>
                     <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[9px] font-bold border border-emerald-500/30">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                       100% VERIFIED
                     </span>
+                    {activeMode === "TRAVEL" && currency && (
+                      <span className="px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 text-[9px] font-black border border-sky-500/30 flex items-center gap-0.5">
+                        <span>{currency}</span>
+                        <span>({currencySymbol})</span>
+                      </span>
+                    )}
                   </div>
                   <p className="text-[10px] text-slate-300 font-medium">
                     {activeMode === "TRAVEL"
-                      ? "Custom Trip Baskets • Hotel Deals • 4K Video Guides • Transfers"
+                      ? "Custom Trip Baskets • 0% Markup Flights • Verified Hotels • 4K Guides"
                       : "Article Research • Prop Firm Comparisons • AI Tools • Quant"}
                   </p>
                 </div>
@@ -493,7 +523,7 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
                   }}
                   title={speechEnabled ? "Mute Voice Audio" : "Enable Voice Audio"}
                   className={`p-1.5 rounded-xl transition-colors text-xs ${
-                    speechEnabled ? "bg-indigo-600/60 text-amber-300 hover:bg-indigo-600" : "hover:bg-white/10 text-slate-400"
+                    speechEnabled ? "bg-sky-600/60 text-amber-300 hover:bg-sky-600" : "hover:bg-white/10 text-slate-400"
                   }`}
                 >
                   {speechEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
@@ -943,10 +973,16 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
                 className={`p-2.5 rounded-2xl transition-all shrink-0 cursor-pointer shadow-md ${
                   isListening
                     ? "bg-rose-600 text-white animate-pulse ring-4 ring-rose-400/50"
+                    : activeMode === "TRAVEL"
+                    ? "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-sky-100 dark:hover:bg-sky-950/80 hover:text-sky-600"
                     : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-indigo-100 dark:hover:bg-indigo-950/80 hover:text-indigo-600"
                 }`}
               >
-                {isListening ? <MicOff className="w-4 h-4 text-white" /> : <Mic className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
+                {isListening ? (
+                  <MicOff className="w-4 h-4 text-white" />
+                ) : (
+                  <Mic className={`w-4 h-4 ${activeMode === "TRAVEL" ? "text-sky-500 dark:text-sky-400" : "text-indigo-600 dark:text-indigo-400"}`} />
+                )}
               </button>
 
               <div className="relative flex-1">
@@ -955,8 +991,18 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={isListening ? "Listening to your voice..." : "Ask for bookings, compare offers, video search..."}
-                  className="w-full px-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder-slate-400 text-xs focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  placeholder={
+                    isListening
+                      ? "Listening to your voice..."
+                      : activeMode === "TRAVEL"
+                      ? `Speak or type (e.g. "7 days in Manali or Japan budget ${currencySymbol}1,500")...`
+                      : "Ask for research, prop firm discounts, or summarize article..."
+                  }
+                  className={`w-full px-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-slate-900 border text-slate-900 dark:text-white placeholder-slate-400 text-xs focus:outline-none transition-all ${
+                    activeMode === "TRAVEL"
+                      ? "border-slate-200 dark:border-slate-800 focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                      : "border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                  }`}
                   disabled={loading}
                 />
               </div>
@@ -964,7 +1010,11 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
               <button
                 type="submit"
                 disabled={!input.trim() || loading}
-                className="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-indigo-500/20 transition-all shrink-0 cursor-pointer"
+                className={`px-4 py-2.5 rounded-2xl disabled:opacity-50 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition-all shrink-0 cursor-pointer ${
+                  activeMode === "TRAVEL"
+                    ? "bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 shadow-sky-500/20"
+                    : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 shadow-indigo-500/20"
+                }`}
               >
                 {loading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -980,9 +1030,11 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
             <div className="flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500 mt-2 px-1">
               <span className="flex items-center gap-1">
                 <ShieldCheck className="w-3 h-3 text-emerald-500" />
-                Instant conversion tracking &amp; verified deals
+                {activeMode === "TRAVEL" ? "100% price match guarantee & verified bookings" : "Instant conversion tracking & verified deals"}
               </span>
-              <span className="font-semibold text-indigo-500">Autonomous Intent Router</span>
+              <span className={`font-semibold ${activeMode === "TRAVEL" ? "text-sky-500" : "text-indigo-500"}`}>
+                {activeMode === "TRAVEL" ? "SmartTravel AI Engine" : "Autonomous Intent Router"}
+              </span>
             </div>
           </div>
         </div>

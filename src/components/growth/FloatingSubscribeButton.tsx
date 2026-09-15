@@ -1,17 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Mail, Sparkles, X, CheckCircle2, Gift } from "lucide-react";
 
 export default function FloatingSubscribeButton() {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+  const [isTravelSite, setIsTravelSite] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  if (pathname?.startsWith("/travel") || pathname?.startsWith("/admin")) {
+  useEffect(() => {
+    setMounted(true);
+    if (typeof window !== "undefined") {
+      const host = window.location.host;
+      const path = window.location.pathname;
+      if (host.startsWith("travel.") || host.includes("travel") || path.startsWith("/travel")) {
+        setIsTravelSite(true);
+      }
+    }
+  }, [pathname]);
+
+  if (!mounted) return null;
+
+  if (pathname?.startsWith("/travel") || pathname?.startsWith("/admin") || isTravelSite) {
     return null;
   }
 

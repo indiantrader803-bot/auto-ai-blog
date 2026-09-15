@@ -272,10 +272,10 @@ export default function RootLayout({
         <GoogleTranslateProvider />
         <TravelCurrencyProvider>
           {children}
+          <ExitIntentModal />
+          <FloatingSubscribeButton />
+          <GlobalBlogAssistant />
         </TravelCurrencyProvider>
-        <ExitIntentModal />
-        <FloatingSubscribeButton />
-        <GlobalBlogAssistant />
       </body>
     </html>
   );

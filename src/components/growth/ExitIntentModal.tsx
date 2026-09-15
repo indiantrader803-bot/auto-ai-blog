@@ -10,9 +10,20 @@ export default function ExitIntentModal() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isTravelSite, setIsTravelSite] = useState(false);
 
   useEffect(() => {
-    if (pathname?.startsWith("/admin")) return;
+    if (typeof window !== "undefined") {
+      const host = window.location.host;
+      const path = window.location.pathname;
+      if (host.startsWith("travel.") || host.includes("travel") || path.startsWith("/travel")) {
+        setIsTravelSite(true);
+        return;
+      }
+    }
+
+    if (pathname?.startsWith("/admin") || pathname?.startsWith("/travel")) return;
+
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0) {
         try {
@@ -29,7 +40,11 @@ export default function ExitIntentModal() {
 
     document.addEventListener("mouseleave", handleMouseLeave);
     return () => document.removeEventListener("mouseleave", handleMouseLeave);
-  }, []);
+  }, [pathname]);
+
+  if (isTravelSite || pathname?.startsWith("/travel") || pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
