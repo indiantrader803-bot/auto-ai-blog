@@ -61,10 +61,10 @@ const VIDEO_GUIDES: VideoGuide[] = [
     country: "United Arab Emirates",
     flag: "🇦🇪",
     title: "Dubai 4K Ultra HD City & Luxury Desert Safari Complete Guide",
-    youtubeId: "rDqAeyz7z0E",
-    duration: "14 mins",
+    youtubeId: "A8-43V8K5bI",
+    duration: "18 mins",
     resolution: "4K HDR 60fps",
-    channel: "SmartTravel 4K Explorer",
+    channel: "Scenic Relaxation 4K",
     description: "Explore Downtown Dubai, Burj Khalifa 124th floor, Dubai Marina yacht cruises, luxury desert dune bashing, and Palm Jumeirah luxury beach resorts.",
     flightCode: "DXB",
     visaInfo: "30-Day Visa on Arrival / E-Visa for most nationalities (Free / Instant).",
@@ -84,10 +84,10 @@ const VIDEO_GUIDES: VideoGuide[] = [
     country: "Japan",
     flag: "🇯🇵",
     title: "Japan Golden Route 4K: Tokyo Shibuya, Kyoto Temples & Shinkansen",
-    youtubeId: "V_0pZk4F2qg",
-    duration: "18 mins",
+    youtubeId: "NiGhGQpo804",
+    duration: "20 mins",
     resolution: "4K HDR 60fps",
-    channel: "World Walker 4K",
+    channel: "World Relaxation 4K",
     description: "Experience the vibrant streets of Shibuya, teamLab Planets digital art, Arashiyama bamboo forest in Kyoto, and scenic Mt. Fuji Lake Kawaguchiko.",
     flightCode: "HND",
     visaInfo: "eVisa available online for most passports; 90-day visa exemption for US/EU/UK.",
@@ -107,8 +107,8 @@ const VIDEO_GUIDES: VideoGuide[] = [
     country: "Switzerland",
     flag: "🇨🇭",
     title: "Swiss Alps 4K: Lauterbrunnen, Zermatt Matterhorn & Glacier Express",
-    youtubeId: "linlz7-6e0s",
-    duration: "16 mins",
+    youtubeId: "mFArItqe5JA",
+    duration: "25 mins",
     resolution: "4K 60fps",
     channel: "Scenic Earth Ultra HD",
     description: "Witness the 72 cascading waterfalls of Lauterbrunnen Valley, Jungfraujoch Top of Europe, Lake Brienz emerald waters, and Matterhorn scenic trains.",
@@ -130,10 +130,10 @@ const VIDEO_GUIDES: VideoGuide[] = [
     country: "India (Himachal Pradesh)",
     flag: "🇮🇳",
     title: "Manali & Atal Tunnel 4K: Snow Peaks, Paragliding & Old Manali Cafes",
-    youtubeId: "W6h8Hq7N8sI",
-    duration: "12 mins",
+    youtubeId: "UepC7t9cvqg",
+    duration: "14 mins",
     resolution: "4K Ultra HD",
-    channel: "Himalayan Treks & Travels",
+    channel: "Himalayan Drone Cinema",
     description: "Complete adventure guide to Solang Valley snow sports, paragliding at 8,000ft, Atal Tunnel gateway to Lahaul, and rustic wooden cafes of Old Manali.",
     flightCode: "KUU",
     visaInfo: "Indian E-Visa (Online approval in 24-72 hours) / Native Travel unrestricted.",
@@ -153,8 +153,8 @@ const VIDEO_GUIDES: VideoGuide[] = [
     country: "Maldives",
     flag: "🇲🇻",
     title: "Maldives Island Paradise 4K: Overwater Bungalows, Manta Rays & Snorkeling",
-    youtubeId: "KkCgE8h-l3E",
-    duration: "15 mins",
+    youtubeId: "n591E_8q5Yg",
+    duration: "16 mins",
     resolution: "4K HDR 60fps",
     channel: "Luxury Travel Escapes",
     description: "Crystal clear turquoise lagoons, coral reef snorkeling with sea turtles and manta rays, private infinity pool villas, and luxury speedboat transfers.",
@@ -176,8 +176,8 @@ const VIDEO_GUIDES: VideoGuide[] = [
     country: "Indonesia",
     flag: "🇮🇩",
     title: "Bali Complete Travel Guide 4K: Waterfalls, Rice Terraces & Nusa Penida",
-    youtubeId: "6tLSm_p34Z8",
-    duration: "17 mins",
+    youtubeId: "EgPuH310KQI",
+    duration: "18 mins",
     resolution: "4K 60fps",
     channel: "Tropical Escapes HD",
     description: "Explore the emerald Tegalalang rice terraces in Ubud, sacred sea temples of Uluwatu, Kelingking T-Rex cliff at Nusa Penida, and Seminyak beach clubs.",
@@ -315,9 +315,9 @@ export default function CinematicTravelGuides() {
             {activeInfoTab === "video" && (
               <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black shadow-2xl border border-slate-800">
                 <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${selectedGuide.youtubeId}?autoplay=0&rel=0&modestbranding=1&enablejsapi=1`}
+                  src={`https://www.youtube.com/embed/${selectedGuide.youtubeId}?rel=0&modestbranding=1`}
                   title={selectedGuide.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                   className="w-full h-full border-0"
                 />
