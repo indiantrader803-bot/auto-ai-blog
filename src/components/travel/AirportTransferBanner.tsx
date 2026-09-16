@@ -14,10 +14,11 @@ import {
   CheckCircle2,
   Sparkles,
 } from "lucide-react";
-import { getGetTransferUrl } from "@/lib/affiliate/links";
+import { getGetTransferUrl, getIntuiTransferUrl } from "@/lib/affiliate/links";
 import { trackTravelpayoutsClick } from "@/lib/affiliate/travelpayouts";
 
 export default function AirportTransferBanner() {
+  const [provider, setProvider] = useState<"gettransfer" | "intui">("gettransfer");
   const [fromLocation, setFromLocation] = useState("");
   const [toLocation, setToLocation] = useState("");
   const [pickupDate, setPickupDate] = useState("");
@@ -31,12 +32,23 @@ export default function AirportTransferBanner() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    trackTravelpayoutsClick("gettransfer", {
+    trackTravelpayoutsClick(provider, {
       searchQuery: `${fromLocation} -> ${toLocation}`,
       pickupDate,
       passengers,
       source: "AIRPORT_TRANSFER_BANNER",
     });
+
+    if (provider === "intui") {
+      const targetUrl = getIntuiTransferUrl({
+        from: fromLocation || "Airport",
+        to: toLocation || "Hotel",
+        date: pickupDate,
+        passengers: parseInt(passengers, 10) || 1,
+      });
+      window.open(targetUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
 
     const targetUrl = getGetTransferUrl({
       from: fromLocation || "Airport",
@@ -81,6 +93,43 @@ export default function AirportTransferBanner() {
 
       {/* 🔍 Interactive Booking Console */}
       <div className="p-6 sm:p-8 bg-slate-50/50 dark:bg-slate-950/60">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 p-1 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <button
+              type="button"
+              onClick={() => setProvider("gettransfer")}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                provider === "gettransfer"
+                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/25"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+              }`}
+            >
+              GetTransfer (Chauffeur &amp; Minivan)
+            </button>
+            <button
+              type="button"
+              onClick={() => setProvider("intui")}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                provider === "intui"
+                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/25"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+              }`}
+            >
+              Intui.travel (VIP &amp; Fixed Fare)
+            </button>
+          </div>
+
+          <a
+            href="https://intui.tpo.li/7TDYgynw"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1"
+          >
+            <span>Explore Intui.travel VIP Fleet</span>
+            <Sparkles className="w-3.5 h-3.5" />
+          </a>
+        </div>
+
         <form onSubmit={handleSearch} className="space-y-4">
           {/* Connected Inputs Row */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-center">

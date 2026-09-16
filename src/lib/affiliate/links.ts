@@ -503,6 +503,20 @@ export function getGetTransferUrl(param?: string | TransferSearchParams): string
 }
 
 /**
+ * Generate Intui.travel Airport Transfer & VIP Chauffeur URL
+ */
+export function getIntuiTransferUrl(param?: string | TransferSearchParams): string {
+  return `https://intui.tpo.li/7TDYgynw`;
+}
+
+/**
+ * Generate KKday Attractions, Day Tours & Theme Park Passes URL
+ */
+export function getKkdayUrl(param?: string): string {
+  return `https://kkday.tpo.li/VtERguRB`;
+}
+
+/**
  * Generate Saily 5G Global eSIM Deep Destination URL
  * Links directly to Saily with affiliate tracking attached via Travelpayouts verified CDN gateway.
  */

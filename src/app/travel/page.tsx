@@ -2,8 +2,9 @@ import { Metadata } from "next";
 import TravelNavbar from "@/components/travel/TravelNavbar";
 import TravelFooter from "@/components/travel/TravelFooter";
 import SmartTravelAIAgentHero from "@/components/travel/SmartTravelAIAgentHero";
-import AirportTransferBanner from "@/components/travel/AirportTransferBanner";
 import InteractiveTravelBookingBar from "@/components/travel/InteractiveTravelBookingBar";
+import AviasalesLiveFlightDeals from "@/components/travel/AviasalesLiveFlightDeals";
+import AirportTransferBanner from "@/components/travel/AirportTransferBanner";
 import FeaturedAttractionsGrid from "@/components/travel/FeaturedAttractionsGrid";
 import EsimBookingSection from "@/components/travel/EsimBookingSection";
 import FlightCompensationCalculator from "@/components/travel/FlightCompensationCalculator";
@@ -38,7 +39,12 @@ export default function TravelHubPage() {
           <InteractiveTravelBookingBar />
         </section>
 
-        {/* 3. Global Airport Transfers & Private Chauffeurs */}
+        {/* ✈️ 2B. Live Lowest Fare Radar & Interactive Flight Deals Map (Aviasales) */}
+        <section id="flight-deals" className="scroll-mt-24">
+          <AviasalesLiveFlightDeals />
+        </section>
+
+        {/* 3. Global Airport Transfers & Private Chauffeurs (GetTransfer & Intui.travel) */}
         <section id="transfers" className="scroll-mt-24">
           <AirportTransferBanner />
         </section>

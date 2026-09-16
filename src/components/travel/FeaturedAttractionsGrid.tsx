@@ -30,13 +30,43 @@ interface AttractionItem {
   price: number;
   originalPrice?: number;
   currency: string;
-  provider: "klook" | "tiqets" | "gocity";
+  provider: "klook" | "tiqets" | "gocity" | "kkday";
   affiliateUrl: string;
   badge?: string;
   hasCalendar?: boolean;
 }
 
 const FEATURED_ATTRACTIONS: AttractionItem[] = [
+  {
+    id: "kkday-universal-studios-japan",
+    title: "Universal Studios Japan Studio Pass & Express Pass",
+    location: "Osaka, Japan",
+    category: "Theme Park & Pass",
+    image: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=800&auto=format&fit=crop&q=80",
+    rating: 4.9,
+    reviews: "88,230",
+    price: 54.00,
+    originalPrice: 65.00,
+    currency: "US$",
+    provider: "kkday",
+    affiliateUrl: "https://kkday.tpo.li/VtERguRB",
+    badge: "KKDAY EXCLUSIVE",
+  },
+  {
+    id: "kkday-taipei-101",
+    title: "Taipei 101 Observatory Skip-The-Line Fast Track Pass",
+    location: "Taipei, Taiwan",
+    category: "Observation Deck",
+    image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=800&auto=format&fit=crop&q=80",
+    rating: 4.8,
+    reviews: "45,190",
+    price: 18.50,
+    originalPrice: 22.00,
+    currency: "US$",
+    provider: "kkday",
+    affiliateUrl: "https://kkday.tpo.li/VtERguRB",
+    badge: "INSTANT VOUCHER",
+  },
   {
     id: "eaton-hk-buffet",
     title: "Eaton HK Buffet | The Astor Lunch & Dinner Buffet",
@@ -165,8 +195,9 @@ export default function FeaturedAttractionsGrid() {
   const filteredItems = FEATURED_ATTRACTIONS.filter((item) => {
     if (activeFilter === "ALL") return true;
     if (activeFilter === "KLOOK") return item.provider === "klook";
+    if (activeFilter === "KKDAY") return item.provider === "kkday";
     if (activeFilter === "TIQETS") return item.provider === "tiqets";
-    if (activeFilter === "ASIA") return item.location.includes("Hong Kong") || item.location.includes("Tokyo");
+    if (activeFilter === "ASIA") return item.location.includes("Hong Kong") || item.location.includes("Tokyo") || item.location.includes("Osaka") || item.location.includes("Taipei");
     if (activeFilter === "EUROPE") return item.location.includes("London") || item.location.includes("Paris") || item.location.includes("Barcelona");
     return true;
   });
@@ -216,7 +247,7 @@ export default function FeaturedAttractionsGrid() {
           <div className="flex items-center gap-2 mb-2">
             <span className="px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-600 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
               <Sparkles className="w-3 h-3 text-amber-500 dark:text-amber-400" />
-              Verified Attraction Partners (Klook &amp; Tiqets)
+              Verified Partners (KKday, Klook &amp; Tiqets)
             </span>
             <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
               <ShieldCheck className="w-3 h-3" /> 100% Official Mobile Vouchers
@@ -227,7 +258,7 @@ export default function FeaturedAttractionsGrid() {
             Popular Experiences, Tours &amp; Skip-The-Line Tickets
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
-            Book top-rated theme park passes, museum admissions, and culinary buffets with instant mobile QR delivery and free cancellation.
+            Book top-rated theme park passes, museum admissions, and day tours with instant mobile QR delivery and free cancellation.
           </p>
         </div>
 
@@ -235,10 +266,11 @@ export default function FeaturedAttractionsGrid() {
         <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none">
           {[
             { id: "ALL", label: "🔥 Top Trending" },
-            { id: "ASIA", label: "🏯 Asia & HK" },
-            { id: "EUROPE", label: "🏰 Europe & UK" },
+            { id: "KKDAY", label: "✨ KKday Passes" },
             { id: "KLOOK", label: "🎟️ Klook Deals" },
             { id: "TIQETS", label: "🏛️ Tiqets Passes" },
+            { id: "ASIA", label: "🏯 Asia & Japan" },
+            { id: "EUROPE", label: "🏰 Europe & UK" },
           ].map((btn) => (
             <button
               key={btn.id}
