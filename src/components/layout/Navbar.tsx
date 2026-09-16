@@ -12,6 +12,7 @@ import {
   TrendingUp,
   Sparkles,
   ChevronDown,
+  ChevronRight,
   Mail,
   Zap,
   Radio,
@@ -138,21 +139,21 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
       {/* Top Flash Bar / Trending Ticker (SmartMag Style) */}
-      <div className="bg-slate-950 text-slate-300 text-xs py-2 px-4 border-b border-slate-800/80 font-sans select-none">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <div className="bg-slate-950 text-slate-300 text-xs py-1.5 sm:py-2 px-3 sm:px-4 border-b border-slate-800/80 font-sans select-none overflow-hidden">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 overflow-hidden">
           {/* Left: Trending Ticker */}
-          <div className="flex items-center gap-3 overflow-hidden min-w-0">
-            <span className="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-rose-500 to-amber-500 text-white font-black text-[10px] uppercase tracking-wider shrink-0 flex items-center gap-1.5 shadow-sm shadow-rose-500/20">
-              <span className="relative flex h-2 w-2">
+          <div className="flex items-center gap-2 sm:gap-3 overflow-hidden min-w-0 flex-1">
+            <span className="px-2 sm:px-2.5 py-0.5 rounded-full bg-gradient-to-r from-rose-500 to-amber-500 text-white font-black text-[9px] sm:text-[10px] uppercase tracking-wider shrink-0 flex items-center gap-1 sm:gap-1.5 shadow-sm shadow-rose-500/20">
+              <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-white"></span>
               </span>
-              HOT TRENDING
+              TRENDING
             </span>
-            <div className="flex items-center gap-2 truncate text-[11px] text-slate-300">
+            <div className="flex items-center gap-1.5 truncate text-[11px] text-slate-300 min-w-0 flex-1">
               <Link
                 href={`/blog/${tickerPost.slug}`}
-                className="hover:text-amber-300 transition-colors truncate font-medium flex items-center gap-1.5"
+                className="hover:text-amber-300 transition-colors truncate font-medium flex items-center gap-1.5 min-w-0"
               >
                 <Flame className="w-3.5 h-3.5 text-rose-400 shrink-0 animate-pulse" />
                 <span className="truncate">{tickerPost.title}</span>
@@ -253,11 +254,11 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
         }`}
       >
         {/* Tier 1: Logo & Actions Bar */}
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-2 sm:gap-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-2">
           {/* Brand Logo with Badge */}
-          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0 group">
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0 group">
             <div className="relative">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-all duration-300">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-all duration-300">
                 <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5 sm:h-3 sm:w-3">
@@ -280,7 +281,7 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
             </div>
           </Link>
 
-          {/* Center / Right Prominent Interactive Hubs: Travel Deals, AI Store & Community */}
+          {/* Center Prominent Interactive Hubs (Desktop xl+ only) */}
           <div className="hidden xl:flex items-center gap-2">
             <Link
               href="/travel"
@@ -313,39 +314,41 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
             </Link>
           </div>
 
-          {/* Right Actions Bar */}
+          {/* Right Actions Bar - Perfectly sized for mobile & desktop */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             {/* Search Trigger */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center justify-between gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:border-indigo-500/50 hover:bg-white dark:hover:bg-slate-950 transition-all text-xs font-medium group"
-              aria-label="Search"
+              className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:border-indigo-500/50 hover:bg-white dark:hover:bg-slate-950 transition-all text-xs font-medium group cursor-pointer"
+              aria-label="Search articles"
             >
-              <div className="flex items-center gap-1.5">
-                <Search className="w-3.5 h-3.5 text-indigo-500 group-hover:scale-110 transition-transform shrink-0" />
-                <span className="hidden sm:inline">Search...</span>
-              </div>
-              <kbd className="hidden 2xl:inline-block px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] text-slate-400 font-mono shrink-0">
+              <Search className="w-4 h-4 text-indigo-500 group-hover:scale-110 transition-transform shrink-0" />
+              <span className="hidden md:inline">Search...</span>
+              <kbd className="hidden 2xl:inline-block px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] text-slate-400 font-mono shrink-0 ml-1">
                 ⌘K
               </kbd>
             </button>
 
-            {/* Language Selector */}
-            <LanguageSelector />
+            {/* Language Selector (Tablet & Desktop) */}
+            <div className="hidden sm:block">
+              <LanguageSelector />
+            </div>
 
-            {/* Web Push Alerts */}
-            <PushNotificationBanner />
+            {/* Push Notifications (Tablet & Desktop) */}
+            <div className="hidden md:block">
+              <PushNotificationBanner />
+            </div>
 
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
               aria-label="Toggle theme"
-              className="p-1.5 sm:p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors shrink-0"
+              className="p-2 sm:p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors shrink-0 cursor-pointer"
             >
               {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
             </button>
 
-            {/* Subscribe CTA Button */}
+            {/* Subscribe CTA Button (Desktop only) */}
             <Link
               href="#newsletter-subscribe"
               className="hidden xl:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-xs font-bold uppercase tracking-wider shadow-sm hover:opacity-90 transition-opacity shrink-0"
@@ -354,18 +357,25 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               <span>Subscribe</span>
             </Link>
 
-            {/* Mobile Menu Hamburger */}
+            {/* Mobile / Tablet Menu Button (Increased size, clear visual styling) */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-1.5 sm:p-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 shrink-0"
-              aria-label="Open menu"
+              className="lg:hidden flex items-center gap-1.5 px-2.5 py-2 sm:px-3 sm:py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition-all shrink-0 cursor-pointer shadow-xs"
+              aria-label="Toggle navigation menu"
             >
-              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {isMenuOpen ? (
+                <X className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              ) : (
+                <>
+                  <Menu className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                  <span className="text-xs font-black uppercase tracking-wider hidden xs:inline">Menu</span>
+                </>
+              )}
             </button>
           </div>
         </div>
 
-        {/* Tier 2: Category Navigation Menu Bar (Dynamically updated via Hot Topics) */}
+        {/* Tier 2: Desktop Category Navigation Menu Bar */}
         <div className="hidden lg:block border-t border-slate-100 dark:border-slate-900 bg-slate-50/50 dark:bg-slate-950/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-6 py-2.5 overflow-x-auto text-xs font-bold uppercase tracking-wider scrollbar-none">
@@ -391,80 +401,187 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* 📱 Full-Featured Luxury Mobile Navigation Drawer */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-6 py-6 space-y-4 shadow-xl animate-in slide-in-from-top-2 duration-200">
-            <div className="pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Select Language:</span>
-              <LanguageSelector />
+          <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/98 dark:bg-slate-950/98 backdrop-blur-xl px-4 py-5 space-y-4 shadow-2xl animate-in slide-in-from-top-2 duration-200 max-h-[85vh] overflow-y-auto font-sans">
+            {/* Top Controls Row (Language, Notifications, Search) */}
+            <div className="grid grid-cols-2 gap-2.5 pb-3 border-b border-slate-100 dark:border-slate-800">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Language</span>
+                <LanguageSelector />
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Push Alerts</span>
+                <PushNotificationBanner />
+              </div>
             </div>
 
-            <Link
-              href="/"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white"
-            >
-              Featured Stories
-            </Link>
-            <a
-              href="https://travel.thesmartmag.com"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-sm font-bold uppercase tracking-wider text-sky-500 flex items-center justify-between"
-            >
-              <span>✈️ Travel Deals &amp; Passes</span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950">HOT</span>
-            </a>
-            <Link
-              href="/store"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-sm font-bold uppercase tracking-wider text-amber-500 dark:text-amber-400 flex items-center justify-between"
-            >
-              <span>✨ AI Tools Store &amp; IDEs</span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950">NEW</span>
-            </Link>
-            <Link
-              href="/community"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-sm font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400"
-            >
-              💬 Community Discussions
-            </Link>
-            {categories.map((cat) => (
+            {/* Quick Interactive Tiles (2x2 Grid) */}
+            <div className="grid grid-cols-2 gap-2.5">
               <Link
-                key={cat.slug}
-                href={`/category/${cat.slug}`}
+                href="/travel"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center justify-between text-sm font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 hover:text-indigo-600"
+                className="p-3 rounded-2xl bg-gradient-to-br from-sky-500/10 via-sky-500/5 to-slate-900/20 border border-sky-500/30 hover:border-sky-500 flex flex-col gap-1.5 transition-all"
               >
-                <span>{cat.name}</span>
-                {cat.isHot && (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/10 text-rose-500 border border-rose-500/20">
-                    HOT
-                  </span>
-                )}
+                <div className="flex items-center justify-between">
+                  <Plane className="w-4 h-4 text-sky-500" />
+                  <span className="px-1.5 py-0.5 rounded-full bg-sky-500 text-slate-950 text-[9px] font-black">0% FEE</span>
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">Travel Deals</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Flights &amp; Hotels</div>
+                </div>
               </Link>
-            ))}
-            <Link
-              href="/about"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-sm font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300"
-            >
-              Editorial &amp; About Us
-            </Link>
-            <Link
-              href="/contact"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-sm font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300"
-            >
-              Contact
-            </Link>
-            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+
+              <Link
+                href="/store"
+                onClick={() => setIsMenuOpen(false)}
+                className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-slate-900/20 border border-amber-500/30 hover:border-amber-500 flex flex-col gap-1.5 transition-all"
+              >
+                <div className="flex items-center justify-between">
+                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  <span className="px-1.5 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[9px] font-black">STORE</span>
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">AI Tools Store</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Templates &amp; Prompts</div>
+                </div>
+              </Link>
+
+              <Link
+                href="/community"
+                onClick={() => setIsMenuOpen(false)}
+                className="p-3 rounded-2xl bg-gradient-to-br from-indigo-500/10 via-indigo-500/5 to-slate-900/20 border border-indigo-500/30 hover:border-indigo-500 flex flex-col gap-1.5 transition-all"
+              >
+                <div className="flex items-center justify-between">
+                  <MessageSquare className="w-4 h-4 text-indigo-500" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">Community</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Mastermind Chat</div>
+                </div>
+              </Link>
+
+              <Link
+                href="/best-prop-firms"
+                onClick={() => setIsMenuOpen(false)}
+                className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-slate-900/20 border border-emerald-500/30 hover:border-emerald-500 flex flex-col gap-1.5 transition-all"
+              >
+                <div className="flex items-center justify-between">
+                  <Flame className="w-4 h-4 text-emerald-500" />
+                  <span className="px-1.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[9px] font-black">CODES</span>
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">Prop Firms</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Discounts &amp; Passes</div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Category Navigation Links */}
+            <div className="space-y-1 pt-2">
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 mb-1">
+                Explore Editorial Channels
+              </div>
+              <Link
+                href="/"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900 text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white transition-colors"
+              >
+                <span>📰 Featured Stories</span>
+                <ChevronRight className="w-4 h-4 text-slate-400" />
+              </Link>
+              {categories.map((cat) => (
+                <Link
+                  key={cat.slug}
+                  href={`/category/${cat.slug}`}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-indigo-600 transition-colors"
+                >
+                  <span>{cat.name}</span>
+                  {cat.isHot ? (
+                    <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-500/10 text-rose-500 border border-rose-500/20">
+                      HOT
+                    </span>
+                  ) : (
+                    <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                  )}
+                </Link>
+              ))}
+            </div>
+
+            {/* Static Pages Links */}
+            <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] font-medium text-slate-600 dark:text-slate-400">
+              <Link href="/about" onClick={() => setIsMenuOpen(false)} className="hover:text-indigo-500 text-center py-1">
+                About Us
+              </Link>
+              <Link href="/contact" onClick={() => setIsMenuOpen(false)} className="hover:text-indigo-500 text-center py-1">
+                Contact
+              </Link>
+              <Link href="/privacy" onClick={() => setIsMenuOpen(false)} className="hover:text-indigo-500 text-center py-1">
+                Privacy
+              </Link>
+            </div>
+
+            {/* Follow Us / Social Links */}
+            <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-around text-slate-400">
+              <a
+                href="https://x.com/Theindainta9go"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 hover:text-sky-400 transition-colors"
+                title="X (Twitter)"
+              >
+                <Twitter className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/indian-trader-804333436/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 hover:text-blue-400 transition-colors"
+                title="LinkedIn"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=61594475423154"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 hover:text-blue-500 transition-colors"
+                title="Facebook"
+              >
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.instagram.com/indiantrader8032026/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 hover:text-pink-400 transition-colors"
+                title="Instagram"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.reddit.com/user/Indiantrader803/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 hover:text-orange-500 transition-colors"
+                title="Reddit"
+              >
+                <span className="w-4 h-4 rounded-full bg-orange-500 text-[9px] font-black text-white flex items-center justify-center">r</span>
+              </a>
+            </div>
+
+            {/* Subscribe VIP Button */}
+            <div className="pt-2">
               <a
                 href="#newsletter"
                 onClick={() => setIsMenuOpen(false)}
-                className="px-4 py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider w-full text-center"
+                className="flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-xs font-black uppercase tracking-wider w-full shadow-lg shadow-indigo-600/30 text-center"
               >
-                Join VIP Newsletter Free
+                <Sparkles className="w-4 h-4" />
+                <span>Join VIP Newsletter Free</span>
               </a>
             </div>
           </div>
