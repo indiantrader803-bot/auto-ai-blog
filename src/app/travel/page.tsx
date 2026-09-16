@@ -6,6 +6,7 @@ import InteractiveTravelBookingBar from "@/components/travel/InteractiveTravelBo
 import AviasalesLiveFlightDeals from "@/components/travel/AviasalesLiveFlightDeals";
 import AirportTransferBanner from "@/components/travel/AirportTransferBanner";
 import FeaturedAttractionsGrid from "@/components/travel/FeaturedAttractionsGrid";
+import CinematicTravelGuides from "@/components/travel/CinematicTravelGuides";
 import EsimBookingSection from "@/components/travel/EsimBookingSection";
 import FlightCompensationCalculator from "@/components/travel/FlightCompensationCalculator";
 import TrendingDestinations from "@/components/travel/TrendingDestinations";
@@ -49,9 +50,14 @@ export default function TravelHubPage() {
           <AirportTransferBanner />
         </section>
 
-        {/* 3. Popular Attraction Passes & Skip-The-Line Tickets (Klook & Tiqets) */}
+        {/* 3. Popular Attraction Passes & Skip-The-Line Tickets (Klook, KKday & Tiqets) */}
         <section id="attractions" className="scroll-mt-24">
           <FeaturedAttractionsGrid />
+        </section>
+
+        {/* 🎬 3B. 4K Ultra HD Cinematic Travel Guides & Destination Facts */}
+        <section id="video-cinema" className="scroll-mt-24">
+          <CinematicTravelGuides />
         </section>
 
         {/* 4. Airalo & Saily Global eSIM Data Packs (200+ Countries) */}
