@@ -25,6 +25,69 @@ export const metadata: Metadata = {
 export default function TravelHubPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-sky-500 selection:text-white flex flex-col justify-between transition-colors">
+      {/* 🌐 JSON-LD Structured Data for Googlebot Indexing */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebSite",
+                "@id": "https://travel.thesmartmag.com/#website",
+                url: "https://travel.thesmartmag.com",
+                name: "SmartMag Travel: AI Vacation Planner & Deals",
+                description:
+                  "Plan flights, luxury hotels, airport transfers, eSIM cellular packages, and attraction passes across 25+ global destinations.",
+                publisher: {
+                  "@type": "Organization",
+                  name: "SmartMag Tech & Travel Media",
+                  url: "https://thesmartmag.com",
+                },
+              },
+              {
+                "@type": "ItemList",
+                name: "Top Trending Travel Destinations 2026",
+                itemListElement: [
+                  { "@type": "ListItem", position: 1, name: "Manali & Himachal Snow Valleys", url: "https://travel.thesmartmag.com/manali" },
+                  { "@type": "ListItem", position: 2, name: "Goa Coastal Beaches & Nightlife", url: "https://travel.thesmartmag.com/goa" },
+                  { "@type": "ListItem", position: 3, name: "Kerala Backwaters & Munnar Tea Hills", url: "https://travel.thesmartmag.com/kerala" },
+                  { "@type": "ListItem", position: 4, name: "Dubai Luxury & Desert Safari", url: "https://travel.thesmartmag.com/dubai" },
+                  { "@type": "ListItem", position: 5, name: "Japan Cherry Blossom & Kyoto Temples", url: "https://travel.thesmartmag.com/japan" },
+                  { "@type": "ListItem", position: 6, name: "Bali Tropical Beaches & Ubud Villas", url: "https://travel.thesmartmag.com/bali" },
+                  { "@type": "ListItem", position: 7, name: "Maldives Overwater Luxury Resorts", url: "https://travel.thesmartmag.com/maldives" },
+                  { "@type": "ListItem", position: 8, name: "Switzerland Alpine Scenic Trains & Peaks", url: "https://travel.thesmartmag.com/switzerland" },
+                  { "@type": "ListItem", position: 9, name: "Kashmir Gulmarg Snow & Dal Lake Shikaras", url: "https://travel.thesmartmag.com/kashmir" },
+                  { "@type": "ListItem", position: 10, name: "Ladakh High Passes & Pangong Lake", url: "https://travel.thesmartmag.com/ladakh" },
+                  { "@type": "ListItem", position: 11, name: "Thailand Island Hopping & Bangkok Nightlife", url: "https://travel.thesmartmag.com/thailand" },
+                ],
+              },
+              {
+                "@type": "FAQPage",
+                mainEntity: [
+                  {
+                    "@type": "Question",
+                    name: "How does the SmartMag AI Travel Concierge work?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "Simply specify your destination, duration, and budget. Our AI agent instantly builds a complete day-by-day itinerary, compares real-time flight fares on Aviasales, selects high-rated hotels on Booking.com/Agoda, and provisions eSIM data.",
+                    },
+                  },
+                  {
+                    "@type": "Question",
+                    name: "Can I get international eSIM mobile data before flying?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "Yes, you can select instant eSIM profiles with unlimited 4G/5G data for over 200 countries via Airalo and Saily with zero roaming charges.",
+                    },
+                  },
+                ],
+              },
+            ],
+          }),
+        }}
+      />
+
       {/* 🧭 Dedicated Standalone Travel Brand Navbar */}
       <TravelNavbar />
 

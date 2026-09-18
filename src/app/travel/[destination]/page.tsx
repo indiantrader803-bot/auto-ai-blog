@@ -73,6 +73,31 @@ export default async function DestinationPage({
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-sky-500 selection:text-white flex flex-col justify-between">
+      {/* 🌐 JSON-LD Schema for Google TouristDestination Indexing */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "TouristDestination",
+            name: guide.name,
+            description: guide.tagline,
+            url: `https://travel.thesmartmag.com/${guide.slug}`,
+            image: guide.heroImage,
+            containedInPlace: {
+              "@type": "Country",
+              name: guide.country,
+            },
+            touristType: ["Adventure", "Luxury", "Budget", "Family"],
+            includesAttraction: guide.topAttractions.map((att) => ({
+              "@type": "TouristAttraction",
+              name: att.title,
+              description: att.description,
+            })),
+          }),
+        }}
+      />
+
       <TravelNavbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 flex-1 w-full">
