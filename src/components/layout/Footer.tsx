@@ -149,6 +149,12 @@ export default function Footer() {
                   <span className="px-2 py-0.5 rounded-full bg-sky-950 text-[10px] text-sky-400 font-bold">17 PARTNERS</span>
                 </Link>
               </li>
+              <li>
+                <Link href="/store" className="hover:text-amber-400 text-amber-300 transition-colors flex items-center justify-between">
+                  <span>🛍️ AI Digital Products &amp; Store</span>
+                  <span className="px-2 py-0.5 rounded-full bg-amber-950 text-[10px] text-amber-400 font-bold">STORE</span>
+                </Link>
+              </li>
             </ul>
           </div>
 

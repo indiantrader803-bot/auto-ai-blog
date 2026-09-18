@@ -434,6 +434,30 @@ export default async function HomePage() {
         {/* 7. Video Showcase Multimedia Studio */}
         <VideoShowcase />
 
+        {/* 7.5. AI Digital Products & Developer Toolkit Spotlight */}
+        <section className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-indigo-500/10 border border-amber-500/30 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+          <div className="space-y-2 text-center md:text-left">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 font-black text-xs uppercase tracking-wider border border-amber-500/30">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>SmartMag Digital Store</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-serif">
+              Enterprise Prompt Packs, Next.js Boilerplates &amp; AI Agents
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl">
+              Turnkey autonomous pipelines, multi-agent frameworks, and high-converting marketing prompt libraries with instant digital delivery.
+            </p>
+          </div>
+
+          <Link
+            href="/store"
+            className="px-6 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-amber-500/20 hover:scale-105 transition-all shrink-0"
+          >
+            <span>Explore Digital Store</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </section>
+
         {/* 8. Full-Width Newsletter Dispatch Banner */}
         <NewsletterBanner />
       </main>

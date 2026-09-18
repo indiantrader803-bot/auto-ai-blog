@@ -282,7 +282,7 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
           </Link>
 
           {/* Center Prominent Interactive Hubs (Desktop xl+ only) */}
-          <div className="hidden xl:flex items-center gap-2">
+          <div className="hidden xl:flex items-center gap-2.5">
             <Link
               href="/trade"
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:border-emerald-500 hover:bg-emerald-500/20 text-xs font-black uppercase tracking-wider transition-all shadow-sm group cursor-pointer"
@@ -299,15 +299,6 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               <Plane className="w-3.5 h-3.5 text-sky-500 group-hover:scale-125 transition-transform" />
               <span>Travel Deals</span>
               <span className="px-1.5 py-0.2 rounded-full bg-sky-500 text-slate-950 text-[9px] font-black">DEALS</span>
-            </Link>
-
-            <Link
-              href="/store"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 hover:border-amber-500 hover:bg-amber-500/20 text-xs font-black uppercase tracking-wider transition-all shadow-sm group cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-500 group-hover:scale-125 transition-transform" />
-              <span>AI Store</span>
-              <span className="px-1.5 py-0.2 rounded-full bg-amber-500 text-slate-950 text-[9px] font-black">HOT</span>
             </Link>
 
             <Link
@@ -443,17 +434,17 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               </Link>
 
               <Link
-                href="/store"
+                href="/tools"
                 onClick={() => setIsMenuOpen(false)}
-                className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-slate-900/20 border border-amber-500/30 hover:border-amber-500 flex flex-col gap-1.5 transition-all"
+                className="p-3 rounded-2xl bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-slate-900/20 border border-indigo-500/30 hover:border-indigo-500 flex flex-col gap-1.5 transition-all"
               >
                 <div className="flex items-center justify-between">
-                  <Sparkles className="w-4 h-4 text-amber-500" />
-                  <span className="px-1.5 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[9px] font-black">STORE</span>
+                  <Sparkles className="w-4 h-4 text-indigo-500" />
+                  <span className="px-1.5 py-0.5 rounded-full bg-indigo-500 text-white text-[9px] font-black">TOOLS</span>
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-white">AI Tools Store</div>
-                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Templates &amp; Prompts</div>
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">AI Tools Hub</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Calculators &amp; Code</div>
                 </div>
               </Link>
 
