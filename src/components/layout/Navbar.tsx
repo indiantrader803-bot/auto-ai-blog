@@ -254,7 +254,7 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
         }`}
       >
         {/* Tier 1: Logo & Actions Bar */}
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-2">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
           {/* Brand Logo with Badge */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0 group">
             <div className="relative">
@@ -281,31 +281,31 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
             </div>
           </Link>
 
-          {/* Center Prominent Interactive Hubs (Desktop xl+ only) */}
-          <div className="hidden xl:flex items-center gap-2.5">
+          {/* Center Prominent Interactive Hubs (Desktop lg+ only) */}
+          <div className="hidden lg:flex items-center gap-2 xl:gap-3">
             <Link
               href="/trade"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:border-emerald-500 hover:bg-emerald-500/20 text-xs font-black uppercase tracking-wider transition-all shadow-sm group cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:border-emerald-500 text-xs font-black uppercase tracking-wider transition-all shadow-xs group cursor-pointer"
             >
-              <TrendingUp className="w-3.5 h-3.5 text-emerald-500 group-hover:scale-125 transition-transform" />
-              <span>Trade &amp; Prop Hub</span>
-              <span className="px-1.5 py-0.2 rounded-full bg-emerald-500 text-slate-950 text-[9px] font-black">90% SPLIT</span>
+              <TrendingUp className="w-3.5 h-3.5 text-emerald-500 group-hover:scale-110 transition-transform" />
+              <span>Trade Hub</span>
+              <span className="px-1.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[8.5px] font-black">90% SPLIT</span>
             </Link>
 
             <Link
               href="/travel"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-sky-500/10 via-indigo-500/10 to-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/30 hover:border-sky-500 hover:bg-sky-500/20 text-xs font-black uppercase tracking-wider transition-all shadow-sm group cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/30 hover:border-sky-500 text-xs font-black uppercase tracking-wider transition-all shadow-xs group cursor-pointer"
             >
-              <Plane className="w-3.5 h-3.5 text-sky-500 group-hover:scale-125 transition-transform" />
+              <Plane className="w-3.5 h-3.5 text-sky-500 group-hover:scale-110 transition-transform" />
               <span>Travel Deals</span>
-              <span className="px-1.5 py-0.2 rounded-full bg-sky-500 text-slate-950 text-[9px] font-black">DEALS</span>
+              <span className="px-1.5 py-0.5 rounded-full bg-sky-500 text-slate-950 text-[8.5px] font-black">DEALS</span>
             </Link>
 
             <Link
               href="/community"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30 hover:border-indigo-500 hover:bg-indigo-500/20 text-xs font-black uppercase tracking-wider transition-all shadow-sm group cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30 hover:border-indigo-500 text-xs font-black uppercase tracking-wider transition-all shadow-xs group cursor-pointer"
             >
-              <MessageSquare className="w-3.5 h-3.5 text-indigo-500 group-hover:scale-125 transition-transform" />
+              <MessageSquare className="w-3.5 h-3.5 text-indigo-500 group-hover:scale-110 transition-transform" />
               <span>Community</span>
               <span className="flex h-2 w-2 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -314,17 +314,17 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
             </Link>
           </div>
 
-          {/* Right Actions Bar - Perfectly sized for mobile & desktop */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+          {/* Right Actions Bar */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Search Trigger */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:border-indigo-500/50 hover:bg-white dark:hover:bg-slate-950 transition-all text-xs font-medium group cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-2 sm:px-3 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900/80 text-slate-600 dark:text-slate-300 hover:border-indigo-500/50 hover:bg-white dark:hover:bg-slate-950 transition-all text-xs font-medium group cursor-pointer"
               aria-label="Search articles"
             >
               <Search className="w-4 h-4 text-indigo-500 group-hover:scale-110 transition-transform shrink-0" />
-              <span className="hidden md:inline">Search...</span>
-              <kbd className="hidden 2xl:inline-block px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] text-slate-400 font-mono shrink-0 ml-1">
+              <span className="hidden md:inline">Search</span>
+              <kbd className="hidden 2xl:inline-block px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] text-slate-400 font-mono shrink-0 ml-0.5">
                 ⌘K
               </kbd>
             </button>
@@ -334,8 +334,8 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               <LanguageSelector />
             </div>
 
-            {/* Push Notifications (Tablet & Desktop) */}
-            <div className="hidden md:block">
+            {/* Push Notifications (Desktop xl+) */}
+            <div className="hidden xl:block">
               <PushNotificationBanner />
             </div>
 
@@ -348,16 +348,16 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
             </button>
 
-            {/* Subscribe CTA Button (Desktop only) */}
+            {/* Subscribe CTA Button (Desktop lg+) */}
             <Link
-              href="#newsletter-subscribe"
-              className="hidden xl:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-xs font-bold uppercase tracking-wider shadow-sm hover:opacity-90 transition-opacity shrink-0"
+              href="#newsletter"
+              className="hidden lg:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-950 text-xs font-bold uppercase tracking-wider shadow-sm transition-all shrink-0 cursor-pointer"
             >
               <Mail className="w-3.5 h-3.5" />
-              <span>Subscribe</span>
+              <span>VIP</span>
             </Link>
 
-            {/* Mobile / Tablet Menu Button (Increased size, clear visual styling) */}
+            {/* Mobile / Tablet Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="lg:hidden flex items-center gap-1.5 px-2.5 py-2 sm:px-3 sm:py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/80 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition-all shrink-0 cursor-pointer shadow-xs"
@@ -375,21 +375,21 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
           </div>
         </div>
 
-        {/* Tier 2: Desktop Category Navigation Menu Bar */}
-        <div className="hidden lg:block border-t border-slate-100 dark:border-slate-900 bg-slate-50/50 dark:bg-slate-950/50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav className="flex items-center gap-6 py-2.5 overflow-x-auto text-xs font-bold uppercase tracking-wider scrollbar-none">
+        {/* Tier 2: Category Navigation Bar with Edge-Fade & Zero Scrollbar */}
+        <div className="hidden lg:block border-t border-slate-100 dark:border-slate-900 bg-slate-50/70 dark:bg-slate-950/70 relative">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <nav className="flex items-center gap-5 xl:gap-6 py-2.5 overflow-x-auto text-xs font-bold uppercase tracking-wider no-scrollbar scrollbar-none">
               <Link
                 href="/"
-                className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap"
+                className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap shrink-0 flex items-center gap-1.5"
               >
-                Home
+                <span>🏠 Home</span>
               </Link>
               {categories.map((cat) => (
                 <Link
                   key={cat.slug}
                   href={`/category/${cat.slug}`}
-                  className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap group"
+                  className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0 group"
                 >
                   <span>{cat.name}</span>
                   {cat.isHot && (

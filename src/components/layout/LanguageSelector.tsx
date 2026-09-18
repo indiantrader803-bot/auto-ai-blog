@@ -113,12 +113,12 @@ export default function LanguageSelector() {
     <div className="relative inline-block text-left">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-200 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-2xs"
+        className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-200 text-xs font-bold hover:border-indigo-500/50 hover:bg-white dark:hover:bg-slate-950 transition-all cursor-pointer shadow-2xs"
         aria-label="Select Language"
       >
-        <Globe className="w-3.5 h-3.5 text-indigo-500" />
-        <span>{currentObj.flag}</span>
-        <span className="hidden sm:inline font-sans">{currentObj.name}</span>
+        <Globe className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+        <span className="text-sm leading-none">{currentObj.flag}</span>
+        <span className="hidden xl:inline font-sans text-[11px] truncate max-w-[90px]">{currentObj.name.split(" ")[0]}</span>
       </button>
 
       {isOpen && (

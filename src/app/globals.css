@@ -66,6 +66,23 @@ img, video, iframe, embed, object {
   background: #334155;
 }
 
+/* Hide scrollbars cleanly for mobile & desktop carousels/navbars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important;
+}
+.scrollbar-none {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
 /* Glassmorphism helpers */
 .glass {
   background-color: rgba(255, 255, 255, 0.85);
