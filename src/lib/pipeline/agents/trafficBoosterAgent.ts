@@ -32,6 +32,15 @@ export async function pingSearchEngines(articleUrls?: string[]): Promise<Indexin
   if (!urls || urls.length === 0) {
     const catalog = getAllCatalogArticles();
     urls = catalog.map((a) => `${siteUrl}/blog/${a.slug}`);
+    urls.push("https://trade.thesmartmag.com");
+    urls.push("https://trade.thesmartmag.com/compare");
+    urls.push("https://trade.thesmartmag.com/reviews/fundedsquad");
+    urls.push("https://trade.thesmartmag.com/reviews/equity-edge");
+    urls.push("https://trade.thesmartmag.com/reviews/blue-guardian");
+    urls.push("https://trade.thesmartmag.com/reviews/funded-trader-markets");
+    urls.push("https://trade.thesmartmag.com/reviews/atlas-funded");
+    urls.push("https://trade.thesmartmag.com/reviews/aquafunded");
+    urls.push("https://trade.thesmartmag.com/tools");
     urls.push("https://travel.thesmartmag.com");
     urls.push("https://travel.thesmartmag.com/manali");
     urls.push("https://travel.thesmartmag.com/goa");

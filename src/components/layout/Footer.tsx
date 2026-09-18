@@ -138,6 +138,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/trade" className="hover:text-emerald-400 text-emerald-300 transition-colors flex items-center justify-between font-bold">
+                  <span>⚡ SmartMag Trade (Prop Hub)</span>
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-950 text-[10px] text-emerald-400 font-black">90% SPLIT</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/travel" className="hover:text-sky-400 text-sky-300 transition-colors flex items-center justify-between">
                   <span>✈️ Travel &amp; Flight Deals</span>
                   <span className="px-2 py-0.5 rounded-full bg-sky-950 text-[10px] text-sky-400 font-bold">17 PARTNERS</span>

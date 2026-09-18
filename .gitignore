@@ -35,5 +35,8 @@ next-env.d.ts
 *.db
 *.db-journal
 
-# Cellia subfolder
+# Cellia and sub-repos
 cellia-repo/
+store/
+n8n/
+vendor_repos/

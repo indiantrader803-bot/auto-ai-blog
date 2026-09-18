@@ -10,6 +10,31 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(targetUrl, 301);
   }
 
+  // Seamless Subdomain Routing for trade.thesmartmag.com
+  if (host.startsWith("trade.")) {
+    // 1. Direct access to secure Admin Portal
+    if (pathname.startsWith("/admin")) {
+      return NextResponse.next();
+    }
+
+    // 2. If user accesses /trade on subdomain, 301 redirect to root /
+    if (pathname === "/trade") {
+      return NextResponse.redirect(new URL(`/${search}`, req.url), 301);
+    }
+
+    // 3. If root '/', rewrite directly to '/trade'
+    if (pathname === "/") {
+      return NextResponse.rewrite(new URL(`/trade${search}`, req.url));
+    }
+
+    // 4. If user accesses /best-prop-firms on trade subdomain, rewrite to /trade
+    if (pathname === "/best-prop-firms") {
+      return NextResponse.rewrite(new URL(`/trade${search}`, req.url));
+    }
+
+    return NextResponse.next();
+  }
+
   // Seamless Subdomain Routing for travel.thesmartmag.com
   if (host.startsWith("travel.")) {
     // 1. Direct access to secure Admin Portal - NEVER rewrite admin to travel destination
@@ -39,6 +64,7 @@ export function middleware(req: NextRequest) {
       pathname.startsWith("/_next") ||
       pathname.includes(".") ||
       pathname.startsWith("/best-prop-firms") ||
+      pathname.startsWith("/trade") ||
       pathname.startsWith("/compare") ||
       pathname.startsWith("/reviews") ||
       pathname.startsWith("/blog") ||
@@ -55,6 +81,10 @@ export function middleware(req: NextRequest) {
     // 6. If visiting destination routes directly like '/manali' or '/dubai' on travel subdomain, rewrite to '/travel/:destination'
     return NextResponse.rewrite(new URL(`/travel${pathname}${search}`, req.url));
   } else {
+    // If user visits https://thesmartmag.com/trade, 301 redirect to https://trade.thesmartmag.com
+    if (pathname === "/trade") {
+      return NextResponse.redirect(new URL(`https://trade.thesmartmag.com${search}`), 301);
+    }
     // If user visits https://thesmartmag.com/travel, 301 redirect to https://travel.thesmartmag.com
     if (pathname === "/travel") {
       return NextResponse.redirect(new URL(`https://travel.thesmartmag.com${search}`), 301);

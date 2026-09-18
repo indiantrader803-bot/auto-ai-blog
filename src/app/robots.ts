@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = (
     process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.RENDER_EXTERNAL_URL ? `https://${process.env.RENDER_EXTERNAL_URL}` : "https://auto-ai-blog-web.onrender.com")
+    "https://thesmartmag.com"
   ).replace(/\/$/, "");
 
   return {
@@ -19,6 +19,11 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin/", "/api/"],
       },
       {
+        userAgent: "Googlebot-Image",
+        allow: "/",
+        disallow: ["/admin/", "/api/"],
+      },
+      {
         userAgent: "Bingbot",
         allow: "/",
         disallow: ["/admin/", "/api/"],
@@ -26,16 +31,31 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "GPTBot",
         allow: "/",
+        disallow: ["/admin/"],
       },
       {
         userAgent: "ClaudeBot",
         allow: "/",
+        disallow: ["/admin/"],
       },
       {
         userAgent: "PerplexityBot",
         allow: "/",
-      }
+        disallow: ["/admin/"],
+      },
+      {
+        userAgent: "Twitterbot",
+        allow: "/",
+      },
+      {
+        userAgent: "facebookexternalhit",
+        allow: "/",
+      },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: [
+      `${baseUrl}/sitemap.xml`,
+      "https://trade.thesmartmag.com/sitemap.xml",
+      "https://travel.thesmartmag.com/sitemap.xml",
+    ],
   };
 }

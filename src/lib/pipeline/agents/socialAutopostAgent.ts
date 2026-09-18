@@ -66,11 +66,16 @@ ${payload.excerpt.slice(0, 130)}...
 
 ${payload.excerpt.slice(0, 130)}...
 
-🔥 Verified 2026 Prop Discount: Code 'arnab' for 10% OFF at FTM | Code '12275' at Atlas Funded.
+🔥 2026 Top Prop Firm Deals & Codes:
+• FundedSquad (Buy 1 Get 2 FREE + 35% OFF): Code CHARGE
+• Equity Edge (90% Profit Split): Code THESMARTMAG
+• Blue Guardian (Reserve $48): Code 1tgf
+• FTM (10% OFF): Code arnab
 
+👉 Compare Top Prop Firms & Codes: https://trade.thesmartmag.com
 👉 Read full report: ${payload.slug}
 
-#Trading #Nifty50 #Forex #Theindainta9go`;
+#Trading #PropFirm #Forex #Nifty50 #Theindainta9go`;
   }
 
   if (platform === "linkedin") {
@@ -110,8 +115,11 @@ ${payload.excerpt}
 
 Key Institutional Takeaways for 2026:
 • Real-time risk management & deterministic execution
-• Zero-time-limit prop evaluation framework
-• Verified Partner Discounts: FTM (Code: arnab) | Atlas Funded (Code: 12275)
+• Zero-time-limit prop evaluation framework (up to 90% profit splits)
+• Verified Partner Discounts: FundedSquad (Code: CHARGE) | Equity Edge (Code: THESMARTMAG) | FTM (Code: arnab)
+
+⚡ Official Trading Sub-Brand & Prop Leaderboards:
+https://trade.thesmartmag.com
 
 Read the verified benchmark report & calculations:
 ${payload.slug}
@@ -139,15 +147,19 @@ ${payload.slug}
 ${payload.excerpt}
 
 💡 Exclusive Verified Partner Discounts & Resources:
+✅ FundedSquad: 35% OFF + Buy 1 Get 2 FREE with code 'CHARGE'
+✅ Equity Edge: 90% Profit Split with code 'THESMARTMAG'
+✅ Blue Guardian: Reserve from $48 with code '1tgf'
 ✅ Funded Trader Markets: 10% OFF with code 'arnab'
-✅ Atlas Funded: 20% OFF with code '12275'
-✅ AquaFunded: 20% Rebate with code '6e9'
 ✅ Pocket Option: 50% Deposit Match with code '50START'
+
+⚡ Official 2026 Trading & Prop Firm Hub:
+👉 https://trade.thesmartmag.com
 
 👉 Read the Full Breakdown:
 ${payload.slug}
 
-#Trading #TechNews #Forex #IndianTrader`;
+#Trading #TechNews #Forex #PropFirm #IndianTrader`;
   }
 
   if (platform === "instagram") {
@@ -155,6 +167,7 @@ ${payload.slug}
 
 ${payload.excerpt.slice(0, 180)}...
 
+⚡ Prop Firm Discounts & Trading Hub: https://trade.thesmartmag.com
 👉 Read full story at link in bio or visit: ${payload.slug}
 
 #SmartMag #Technology #Travel #Trading #AI #Innovation #indiantrader8032026`;

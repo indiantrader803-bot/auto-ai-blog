@@ -284,6 +284,15 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
           {/* Center Prominent Interactive Hubs (Desktop xl+ only) */}
           <div className="hidden xl:flex items-center gap-2">
             <Link
+              href="/trade"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-indigo-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:border-emerald-500 hover:bg-emerald-500/20 text-xs font-black uppercase tracking-wider transition-all shadow-sm group cursor-pointer"
+            >
+              <TrendingUp className="w-3.5 h-3.5 text-emerald-500 group-hover:scale-125 transition-transform" />
+              <span>Trade &amp; Prop Hub</span>
+              <span className="px-1.5 py-0.2 rounded-full bg-emerald-500 text-slate-950 text-[9px] font-black">90% SPLIT</span>
+            </Link>
+
+            <Link
               href="/travel"
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-sky-500/10 via-indigo-500/10 to-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/30 hover:border-sky-500 hover:bg-sky-500/20 text-xs font-black uppercase tracking-wider transition-all shadow-sm group cursor-pointer"
             >
@@ -464,17 +473,17 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               </Link>
 
               <Link
-                href="/best-prop-firms"
+                href="/trade"
                 onClick={() => setIsMenuOpen(false)}
                 className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-slate-900/20 border border-emerald-500/30 hover:border-emerald-500 flex flex-col gap-1.5 transition-all"
               >
                 <div className="flex items-center justify-between">
-                  <Flame className="w-4 h-4 text-emerald-500" />
-                  <span className="px-1.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[9px] font-black">CODES</span>
+                  <TrendingUp className="w-4 h-4 text-emerald-500" />
+                  <span className="px-1.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[9px] font-black">90% SPLIT</span>
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-white">Prop Firms</div>
-                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Discounts &amp; Passes</div>
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">SmartMag Trade</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Prop Firms &amp; Codes</div>
                 </div>
               </Link>
             </div>
