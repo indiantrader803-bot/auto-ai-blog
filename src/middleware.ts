@@ -4,6 +4,16 @@ export function middleware(req: NextRequest) {
   const host = req.headers.get("host") || "";
   const { pathname, search } = req.nextUrl;
 
+  // Instant 200 OK ads.txt delivery for Google AdSense verification across all subdomains & root
+  if (pathname === "/ads.txt") {
+    return new NextResponse("google.com, pub-9768860457233655, DIRECT, f08c47fec0942fa0\n", {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "public, max-age=86400, s-maxage=86400",
+      },
+    });
+  }
+
   // 301 Permanent Redirect all *.onrender.com traffic to official https://thesmartmag.com
   if (host.includes("onrender.com") && !pathname.startsWith("/api/health")) {
     const targetUrl = new URL(`https://thesmartmag.com${pathname}${search}`);
