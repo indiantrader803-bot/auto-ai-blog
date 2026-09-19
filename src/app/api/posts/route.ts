@@ -54,11 +54,33 @@ export async function GET(req: NextRequest) {
           orderBy: { publishedAt: "desc" },
           skip,
           take: limit,
-          include: {
-            category: true,
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            excerpt: true,
+            featuredImage: true,
+            imageAlt: true,
+            readTimeMinutes: true,
+            views: true,
+            shares: true,
+            publishedAt: true,
+            category: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+                color: true,
+              },
+            },
             tags: {
-              include: {
-                tag: true,
+              select: {
+                tag: {
+                  select: {
+                    name: true,
+                    slug: true,
+                  },
+                },
               },
             },
           },

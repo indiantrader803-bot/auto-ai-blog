@@ -10,4 +10,12 @@ export const prisma =
     log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
   });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+// Unconditional singleton retention to prevent duplicate connection pools & V8 memory leaks
+globalForPrisma.prisma = prisma;
+
+// Graceful container shutdown cleanup
+if (typeof process !== "undefined") {
+  process.on("beforeExit", async () => {
+    await prisma.$disconnect();
+  });
+}

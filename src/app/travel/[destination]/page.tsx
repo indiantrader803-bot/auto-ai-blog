@@ -197,7 +197,122 @@ export default async function DestinationPage({
           </div>
         </section>
 
-        {/* ?? 3. Interactive Multi-Product Booking Console */}
+        {/* 🗺️ 3. Curated Day-by-Day Itinerary */}
+        {guide.sampleItinerary && guide.sampleItinerary.length > 0 && (
+          <section className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-xs font-black uppercase tracking-wider text-sky-400">
+                  Recommended Travel Schedule
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black font-serif text-white">
+                  {guide.idealDays} Day-by-Day Itinerary in {guide.name}
+                </h3>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {guide.sampleItinerary.map((dayPlan) => (
+                <div
+                  key={dayPlan.day}
+                  className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3 hover:border-sky-500/40 transition-all shadow-md flex flex-col justify-between"
+                >
+                  <div className="space-y-2.5">
+                    <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-sky-500/10 text-sky-400 text-[11px] font-black uppercase">
+                      <span>Day {dayPlan.day}</span>
+                    </div>
+                    <h4 className="text-base font-bold text-white leading-snug">
+                      {dayPlan.title}
+                    </h4>
+                    <ul className="space-y-1.5 text-xs text-slate-300">
+                      {dayPlan.activities.map((act, aIdx) => (
+                        <li key={aIdx} className="flex items-start gap-2">
+                          <span className="text-sky-400 mt-0.5">•</span>
+                          <span>{act}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    {dayPlan.foodRecommendation && (
+                      <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80 text-[11px] text-amber-300">
+                        <strong>🍽️ Must Eat:</strong> {dayPlan.foodRecommendation}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-800/80">
+                    <a
+                      href={getKlookUrl(dayPlan.bookingQuery || guide.name)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-2 px-3 rounded-xl bg-sky-500/15 hover:bg-sky-500 text-sky-300 hover:text-white border border-sky-500/30 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <span>{dayPlan.bookingCtaText || "Explore Passes"}</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 🤝 Transparent Affiliate Disclosure (Editorial Trust Standard) */}
+        <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-xs text-slate-400 leading-relaxed my-6 max-w-4xl mx-auto flex items-start gap-3">
+          <span className="p-1 rounded-lg bg-sky-500/10 text-sky-400 font-bold shrink-0 text-sm">ℹ️</span>
+          <div>
+            <span className="font-bold text-slate-200">Just so you know: </span>
+            Some links on this itinerary are verified affiliate partner links. If you book passes, flights, or hotels, we may receive a small commission at zero additional cost to you. It helps keep our autonomous trip planning algorithms free for all travelers.
+          </div>
+        </div>
+
+        {/* 🛡️ 4. Verified Booking Guarantees & Trust Badges */}
+        <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-5 rounded-2xl bg-slate-900/60 border border-slate-800 text-center">
+          <div className="space-y-1 p-3">
+            <ShieldCheck className="w-6 h-6 text-emerald-400 mx-auto" />
+            <h5 className="text-xs font-bold text-white">256-Bit SSL Encrypted</h5>
+            <p className="text-[11px] text-slate-400">Direct booking with verified global operators</p>
+          </div>
+          <div className="space-y-1 p-3">
+            <CheckCircle2 className="w-6 h-6 text-sky-400 mx-auto" />
+            <h5 className="text-xs font-bold text-white">Instant Voucher Delivery</h5>
+            <p className="text-[11px] text-slate-400">Receive QR passes directly on your smartphone</p>
+          </div>
+          <div className="space-y-1 p-3">
+            <Sparkles className="w-6 h-6 text-amber-400 mx-auto" />
+            <h5 className="text-xs font-bold text-white">Lowest Direct Rates</h5>
+            <p className="text-[11px] text-slate-400">Zero middleman markups or surprise checkout fees</p>
+          </div>
+        </section>
+
+        {/* 🎁 5. Free 30-Day Travel Planning Kit Lead Capture */}
+        <section className="p-6 sm:p-10 rounded-3xl bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-700 text-white shadow-xl text-center space-y-4">
+          <span className="px-3 py-1 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-widest backdrop-blur-md inline-flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" /> Free Vacation Kit
+          </span>
+          <h3 className="text-2xl sm:text-3xl font-black font-serif tracking-tight">
+            Planning a trip to {guide.name}?
+          </h3>
+          <p className="text-xs sm:text-sm text-sky-100 max-w-xl mx-auto">
+            Get our complete {guide.name} offline packing list, emergency contacts, local currency conversion table, and hidden gem maps.
+          </p>
+          <form action="/api/subscribe" method="POST" className="flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto pt-1">
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="Enter your email address..."
+              className="w-full px-4 py-3 rounded-xl bg-white text-slate-900 text-xs font-medium focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs uppercase tracking-wider transition-all shrink-0 cursor-pointer"
+            >
+              Get Free Kit →
+            </button>
+          </form>
+        </section>
+
+        {/* 🔍 6. Interactive Multi-Product Booking Console */}
         <section>
           <InteractiveTravelBookingBar
             title={`Search Custom Flights, Hotels & Passes for ${guide.name}`}

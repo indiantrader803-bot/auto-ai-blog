@@ -14,8 +14,7 @@ import NewsletterBanner from "@/components/monetization/NewsletterBanner";
 import AmazonAffiliateShowcase from "@/components/monetization/AmazonAffiliateShowcase";
 import { Sparkles, TrendingUp, Compass, Flame, ArrowRight, Zap, Award, Layers, MessageSquare } from "lucide-react";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 // Rich initial magazine articles for instant high-fidelity rendering
 const FALLBACK_POSTS = [
@@ -105,7 +104,24 @@ export default async function HomePage() {
         where: { status: "PUBLISHED" },
         orderBy: { publishedAt: "desc" },
         take: 24,
-        include: { category: true },
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          excerpt: true,
+          featuredImage: true,
+          imageAlt: true,
+          readTimeMinutes: true,
+          views: true,
+          publishedAt: true,
+          category: {
+            select: {
+              name: true,
+              slug: true,
+              color: true,
+            },
+          },
+        },
       }),
       prisma.category.findMany({
         include: {

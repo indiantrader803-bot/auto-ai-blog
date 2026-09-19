@@ -1,17 +1,22 @@
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
 import TravelNavbar from "@/components/travel/TravelNavbar";
 import TravelFooter from "@/components/travel/TravelFooter";
 import SmartTravelAIAgentHero from "@/components/travel/SmartTravelAIAgentHero";
 import InteractiveTravelBookingBar from "@/components/travel/InteractiveTravelBookingBar";
-import AviasalesLiveFlightDeals from "@/components/travel/AviasalesLiveFlightDeals";
-import AirportTransferBanner from "@/components/travel/AirportTransferBanner";
-import FeaturedAttractionsGrid from "@/components/travel/FeaturedAttractionsGrid";
-import CinematicTravelGuides from "@/components/travel/CinematicTravelGuides";
-import EsimBookingSection from "@/components/travel/EsimBookingSection";
-import FlightCompensationCalculator from "@/components/travel/FlightCompensationCalculator";
 import TrendingDestinations from "@/components/travel/TrendingDestinations";
-import TravelEssentialsHub from "@/components/travel/TravelEssentialsHub";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, Mail, Sparkles, CheckCircle2 } from "lucide-react";
+
+// Code splitting: Dynamic lazy loading for below-the-fold widgets
+const AviasalesLiveFlightDeals = dynamic(() => import("@/components/travel/AviasalesLiveFlightDeals"), { ssr: true });
+const AirportTransferBanner = dynamic(() => import("@/components/travel/AirportTransferBanner"), { ssr: true });
+const FeaturedAttractionsGrid = dynamic(() => import("@/components/travel/FeaturedAttractionsGrid"), { ssr: true });
+const CinematicTravelGuides = dynamic(() => import("@/components/travel/CinematicTravelGuides"), { ssr: true });
+const EsimBookingSection = dynamic(() => import("@/components/travel/EsimBookingSection"), { ssr: true });
+const FlightCompensationCalculator = dynamic(() => import("@/components/travel/FlightCompensationCalculator"), { ssr: true });
+const TravelEssentialsHub = dynamic(() => import("@/components/travel/TravelEssentialsHub"), { ssr: true });
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "SmartMag Travel: AI Trip Planner, Cheap Flights, eSIMs & Attraction Passes",
@@ -141,6 +146,49 @@ export default function TravelHubPage() {
         {/* 7. Comprehensive Travel Partner Directory & Search Filter */}
         <section id="essentials" className="scroll-mt-24">
           <TravelEssentialsHub />
+        </section>
+
+        {/* 🤝 Transparent Affiliate Disclosure (Editorial Trust Standard) */}
+        <div className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 leading-relaxed my-8 max-w-5xl mx-auto flex items-start gap-3">
+          <span className="p-1 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 font-bold shrink-0 text-sm">ℹ️</span>
+          <div>
+            <span className="font-bold text-slate-900 dark:text-white">Just so you know: </span>
+            Some links on this platform are verified affiliate links. If you book a flight, hotel, airport transfer, or eSIM package, we may earn a modest commission at absolutely zero additional cost to you. This enables us to maintain our 24/7 AI travel research fleet and price radar completely free. We strictly partner with accredited global operators with 256-bit SSL encrypted checkouts.
+          </div>
+        </div>
+
+        {/* 🎁 Free 30-Day Travel Planning Kit Lead Magnet (High Conversion) */}
+        <section className="my-10 p-6 sm:p-10 rounded-3xl bg-gradient-to-br from-sky-600 via-indigo-600 to-purple-700 text-white shadow-2xl relative overflow-hidden">
+          <div className="max-w-3xl mx-auto text-center space-y-4 relative z-10">
+            <span className="px-3 py-1 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-widest backdrop-blur-md inline-flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" /> Free Traveler Toolkit
+            </span>
+            <h3 className="text-2xl sm:text-4xl font-black font-serif tracking-tight">
+              Download the Free 30-Day Travel Planning Kit
+            </h3>
+            <p className="text-xs sm:text-sm text-sky-100 max-w-xl mx-auto leading-relaxed">
+              Get our comprehensive packing checklist, currency budgeting template, flight price radar guide, and emergency visa checklist delivered instantly to your inbox.
+            </p>
+            <form action="/api/subscribe" method="POST" className="flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto pt-2">
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="Enter your best email address..."
+                className="w-full px-4 py-3 rounded-xl bg-white/95 text-slate-900 placeholder:text-slate-500 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-300 shadow-inner"
+              />
+              <button
+                type="submit"
+                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs uppercase tracking-wider transition-all shadow-lg shrink-0 cursor-pointer"
+              >
+                Get Free Kit →
+              </button>
+            </form>
+            <div className="flex items-center justify-center gap-4 text-[11px] text-sky-200 pt-1">
+              <span className="flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-300" /> No Spam Guarantee</span>
+              <span className="flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-300" /> Instant PDF Download</span>
+            </div>
+          </div>
         </section>
 
         {/* 8. Verified Booking Protection & Trust Banner */}

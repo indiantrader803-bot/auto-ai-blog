@@ -4,8 +4,19 @@ import { getAllCatalogArticles } from "@/lib/content/articles";
 
 export const dynamic = "force-dynamic";
 
+let cachedCategoriesData: { data: any; timestamp: number } | null = null;
+const CATEGORIES_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
 export async function GET() {
   try {
+    if (cachedCategoriesData && Date.now() - cachedCategoriesData.timestamp < CATEGORIES_CACHE_TTL_MS) {
+      return NextResponse.json(cachedCategoriesData.data, {
+        headers: {
+          "Cache-Control": "public, s-maxage=600, stale-while-revalidate=1200",
+        },
+      });
+    }
+
     let dbCategories: any[] = [];
     let latestPost: any = null;
 
@@ -79,12 +90,23 @@ export async function GET() {
       // Sort strictly by priority score (most articles & latest published)
       .sort((a, b) => b.priorityScore - a.priorityScore);
 
-    return NextResponse.json({
+    const result = {
       success: true,
       categories: processedCategories,
       topTrendingPost: latestPost || {
         title: "Astra for Coding: Why Are We Doing This Again?",
         slug: "astra-for-coding-why-are-we-doing-this-again",
+      },
+    };
+
+    cachedCategoriesData = {
+      data: result,
+      timestamp: Date.now(),
+    };
+
+    return NextResponse.json(result, {
+      headers: {
+        "Cache-Control": "public, s-maxage=600, stale-while-revalidate=1200",
       },
     });
   } catch (error: any) {

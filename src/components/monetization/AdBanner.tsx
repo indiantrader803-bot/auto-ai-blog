@@ -85,7 +85,7 @@ export default function AdBanner({
 
   // Full-width High-Converting Interactive Banner
   return (
-    <div className={`my-6 flex flex-col items-center justify-center ${className}`}>
+    <div className={`my-6 flex flex-col items-center justify-center min-h-[110px] w-full [contain:layout] ${className}`}>
       <div className="w-full max-w-4xl p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl relative overflow-hidden group">
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-transparent pointer-events-none" />
         <div className="flex items-start sm:items-center gap-3.5 relative z-10">

@@ -53,7 +53,7 @@ interface Props {
   params: { slug: string };
 }
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cleanSlug = decodeURIComponent(params.slug || "");
@@ -69,7 +69,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const post = await prisma.post.findUnique({
       where: { slug: cleanSlug },
-      include: { category: true, tags: { include: { tag: true } } },
+      select: {
+        title: true,
+        seoTitle: true,
+        excerpt: true,
+        seoDescription: true,
+        featuredImage: true,
+        publishedAt: true,
+        tags: {
+          select: {
+            tag: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (post) {
@@ -88,10 +104,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         tags = catalog.tags;
       }
     }
-  } catch (_) {}
+  } catch (err) {
+    // Graceful fallback to static catalog
+  }
 
   return {
-    title,
+    title: `${title} | TheSmartMag`,
     description,
     alternates: {
       canonical: canonicalUrl,
@@ -100,41 +118,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       url: canonicalUrl,
-      type: "article",
-      publishedTime,
+      siteName: "TheSmartMag",
       images: [
         {
           url: image,
           width: 1200,
-          height: 630,
+          height: 675,
           alt: title,
         },
       ],
+      type: "article",
+      publishedTime,
+      tags,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
       images: [image],
+      creator: "@Theindainta9go",
     },
-    keywords: tags,
   };
 }
 
-const FALLBACK_ARTICLE = {
-  id: "sample-article",
+const FALLBACK_SINGLE_POST = {
+  id: "mock_1",
   title: "Autonomous AI Agent Swarms in 2026: How Coordinated Multi-Agent Systems Are Reshaping Enterprise Automation",
   slug: "autonomous-ai-agent-swarms-2026-enterprise-automation",
   excerpt: "An architectural deep-dive into decentralized AI agent-to-agent communication protocols, dynamic task allocation, and emergent problem-solving workflows redefining production engineering.",
-  content: `## The Paradigm Shift in Modern Engineering
-
-The discipline of software engineering is undergoing its most profound transformation since the invention of the compiler. While 2023 and 2024 centered on conversational code assistants (suggesting completions line-by-line), **2026 marks the emergence of truly autonomous multi-agent engineering swarms**.
-
-Rather than developers manually prompting models, modern agentic loops operate as self-directing teams: a **Lead Architect Agent** decomposes specifications, coordinates with specialized **Backend and Frontend Worker Agents**, and collaborates with a **Verification & Critic Agent** that executes local test suites, analyzes stack traces, and patches build failures automatically.
-
----
-
-## 🏛️ The 4 Pillars of Autonomous Agent Architecture
+  content: `## 🏛️ The 4 Pillars of Autonomous Agent Architecture
 
 The architectural foundation of an enterprise agentic loop relies on four interconnected layers:
 
@@ -226,6 +238,25 @@ export default async function BlogPostPage({ params }: Props) {
         data: { views: { increment: 1 } },
       }).catch(() => {});
 
+      const postProjection = {
+        id: true,
+        title: true,
+        slug: true,
+        excerpt: true,
+        featuredImage: true,
+        imageAlt: true,
+        readTimeMinutes: true,
+        views: true,
+        publishedAt: true,
+        category: {
+          select: {
+            name: true,
+            slug: true,
+            color: true,
+          },
+        },
+      };
+
       const [related, prev, next] = await Promise.all([
         prisma.post.findMany({
           where: {
@@ -234,17 +265,17 @@ export default async function BlogPostPage({ params }: Props) {
             id: { not: post.id },
           },
           take: 3,
-          include: { category: true },
+          select: postProjection,
         }),
         prisma.post.findFirst({
           where: { status: "PUBLISHED", id: { not: post.id } },
           orderBy: { publishedAt: "desc" },
-          include: { category: true },
+          select: postProjection,
         }),
         prisma.post.findFirst({
           where: { status: "PUBLISHED", id: { not: post.id } },
           orderBy: { publishedAt: "asc" },
-          include: { category: true },
+          select: postProjection,
         }),
       ]);
 

@@ -37,6 +37,7 @@ interface ArticleImageProps {
   alt: string;
   className?: string;
   loading?: "lazy" | "eager";
+  priority?: boolean;
 }
 
 export default function ArticleImage({
@@ -44,6 +45,7 @@ export default function ArticleImage({
   alt,
   className = "w-full h-full object-cover",
   loading = "lazy",
+  priority = false,
 }: ArticleImageProps) {
   // If no src is given or it's a generic static placeholder, generate a bespoke topic-matched visual
   const isGeneric =
@@ -77,8 +79,13 @@ export default function ArticleImage({
     <img
       src={imgSrc}
       alt={alt}
-      className={className}
-      loading={loading}
+      width={1200}
+      height={675}
+      decoding="async"
+      loading={priority ? "eager" : loading}
+      // @ts-ignore
+      fetchPriority={priority ? "high" : "auto"}
+      className={`${className} aspect-video`}
       onError={handleError}
     />
   );
