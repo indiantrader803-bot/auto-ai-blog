@@ -71,6 +71,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "commodities",
     "indian-markets",
     "telecom-and-connectivity",
+    "gaming-and-platforms",
+    "animation-and-cinema",
+    "web-development",
+    "productivity-and-workflow",
   ]);
 
   for (const cat of dbCategories) {

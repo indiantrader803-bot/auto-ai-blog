@@ -29,6 +29,26 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin/", "/api/"],
       },
       {
+        userAgent: "YandexBot",
+        allow: "/",
+        disallow: ["/admin/", "/api/"],
+      },
+      {
+        userAgent: "Baiduspider",
+        allow: "/",
+        disallow: ["/admin/", "/api/"],
+      },
+      {
+        userAgent: "DuckDuckBot",
+        allow: "/",
+        disallow: ["/admin/", "/api/"],
+      },
+      {
+        userAgent: "Applebot",
+        allow: "/",
+        disallow: ["/admin/", "/api/"],
+      },
+      {
         userAgent: "GPTBot",
         allow: "/",
         disallow: ["/admin/"],
@@ -44,11 +64,42 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin/"],
       },
       {
+        userAgent: "Google-Extended",
+        allow: "/",
+        disallow: ["/admin/"],
+      },
+      {
+        userAgent: "Bytespider",
+        allow: "/",
+        disallow: ["/admin/"],
+      },
+      {
+        userAgent: "CCBot",
+        allow: "/",
+        disallow: ["/admin/"],
+      },
+      {
         userAgent: "Twitterbot",
         allow: "/",
       },
       {
         userAgent: "facebookexternalhit",
+        allow: "/",
+      },
+      {
+        userAgent: "LinkedInBot",
+        allow: "/",
+      },
+      {
+        userAgent: "Pinterestbot",
+        allow: "/",
+      },
+      {
+        userAgent: "TelegramBot",
+        allow: "/",
+      },
+      {
+        userAgent: "WhatsApp",
         allow: "/",
       },
     ],

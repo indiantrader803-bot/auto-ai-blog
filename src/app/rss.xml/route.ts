@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   const siteUrl = (
-    process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com"
   ).replace(/\/$/, "");
 
   let dbPosts: any[] = [];

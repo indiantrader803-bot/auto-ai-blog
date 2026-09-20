@@ -106,7 +106,7 @@ export async function pingSearchEngines(articleUrls?: string[]): Promise<Indexin
     });
   }
 
-  // 3. IndexNow API Protocol
+  // 3. IndexNow API Protocol (Pushes simultaneously to Microsoft Bing, Yahoo, Yandex, Seznam.cz, and Naver)
   try {
     const host = new URL(siteUrl).hostname;
     const indexNowPayload = {
@@ -116,23 +116,60 @@ export async function pingSearchEngines(articleUrls?: string[]): Promise<Indexin
       urlList: urls.slice(0, 100),
     };
 
-    const res = await fetch("https://api.indexnow.org/indexnow", {
-      method: "POST",
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify(indexNowPayload),
-    }).catch(() => null);
+    const indexNowGateways = [
+      { name: "IndexNow Global Gateway", url: "https://api.indexnow.org/indexnow" },
+      { name: "Microsoft Bing IndexNow", url: "https://www.bing.com/indexnow" },
+      { name: "Yandex IndexNow", url: "https://yandex.com/indexnow" },
+    ];
 
-    results.push({
-      engine: "IndexNow Multi-Engine Instant Push",
-      status: res && (res.ok || res.status === 200 || res.status === 202) ? "SUCCESS" : "WARNING",
-      message: res ? `IndexNow accepted ${urls.length} URLs for instant push (HTTP ${res.status})` : "IndexNow payload dispatched",
-      urlsSubmitted: urls.length,
-    });
+    for (const gateway of indexNowGateways) {
+      try {
+        const res = await fetch(gateway.url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json; charset=utf-8" },
+          body: JSON.stringify(indexNowPayload),
+        }).catch(() => null);
+
+        results.push({
+          engine: gateway.name,
+          status: res && (res.ok || res.status === 200 || res.status === 202) ? "SUCCESS" : "WARNING",
+          message: res ? `${gateway.name} accepted ${urls.length} URLs (HTTP ${res.status})` : "Dispatched to gateway",
+          urlsSubmitted: urls.length,
+        });
+      } catch (e: any) {
+        results.push({
+          engine: gateway.name,
+          status: "WARNING",
+          message: `Notice: ${e.message}`,
+          urlsSubmitted: urls.length,
+        });
+      }
+    }
   } catch (err: any) {
     results.push({
-      engine: "IndexNow Multi-Engine Instant Push",
+      engine: "IndexNow Protocol",
       status: "WARNING",
       message: `IndexNow dispatch notice: ${err.message}`,
+      urlsSubmitted: urls.length,
+    });
+  }
+
+  // 4. Ping-O-Matic / FeedBurner / Global Blog Search RPC Aggregators
+  try {
+    const rssUrl = `${siteUrl}/rss.xml`;
+    const pingOMatic = `https://pingomatic.com/ping/?title=${encodeURIComponent("TheSmartMag")}&blogurl=${encodeURIComponent(siteUrl)}&rssurl=${encodeURIComponent(rssUrl)}&chk_weblogscom=on&chk_blogs=on&chk_technorati=on&chk_feedburner=on&chk_syndic8=on&chk_newsgator=on&chk_myyahoo=on&chk_pubsubcom=on&chk_blogdigger=on&chk_weblogalot=on&chk_newsisfree=on&chk_topicexchange=on&chk_google=on&chk_tailrank=on&chk_skygrid=on&chk_collecta=on&chk_superfeedr=on`;
+    const res = await fetch(pingOMatic, { method: "GET" }).catch(() => null);
+    results.push({
+      engine: "Global Blog Index Aggregator (Ping-O-Matic & RPC Feeds)",
+      status: res && (res.ok || res.status < 500) ? "SUCCESS" : "WARNING",
+      message: res ? `Dispatched notification to global search aggregators (HTTP ${res.status})` : "Aggregator ping sent",
+      urlsSubmitted: urls.length,
+    });
+  } catch (e: any) {
+    results.push({
+      engine: "Global Blog Index Aggregator (Ping-O-Matic)",
+      status: "WARNING",
+      message: `Notice: ${e.message}`,
       urlsSubmitted: urls.length,
     });
   }
