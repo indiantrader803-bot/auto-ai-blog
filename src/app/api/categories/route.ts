@@ -69,6 +69,8 @@ export async function GET() {
           "telecom-and-connectivity": "📡",
           "web-development": "🌐",
           "productivity-and-workflow": "⚡",
+          "gaming-and-platforms": "🎮",
+          "animation-and-cinema": "🎬",
         };
 
         const emoji = emojiMap[cat.slug] || "🔥";

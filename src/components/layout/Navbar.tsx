@@ -55,6 +55,8 @@ const DEFAULT_CATEGORIES: NavCategory[] = [
   { name: "📱 Tech & Gadgets", slug: "tech-and-gadgets", isHot: true, count: 20 },
   { name: "🪙 Commodities", slug: "commodities", isHot: true, count: 5 },
   { name: "💻 Development", slug: "development-and-engineering", isHot: true, count: 4 },
+  { name: "🎮 Gaming Platforms", slug: "gaming-and-platforms", isHot: true, count: 8 },
+  { name: "🎬 Animation & Cinema", slug: "animation-and-cinema", isHot: true, count: 6 },
   { name: "🇮🇳 Indian Markets", slug: "indian-markets", isHot: true, count: 3 },
   { name: "📡 Telecom & 5G", slug: "telecom-and-connectivity", isHot: false, count: 2 },
 ];

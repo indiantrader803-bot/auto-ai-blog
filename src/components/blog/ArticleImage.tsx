@@ -26,6 +26,10 @@ function getTopicSpecificAiImage(altOrTitle: string): string {
     styleContext = "advanced cybersecurity data defense matrix, glowing digital firewall shields, biometric cryptography, moody cinematic lighting";
   } else if (lower.includes("gadget") || lower.includes("hardware") || lower.includes("phone") || lower.includes("apple") || lower.includes("chip") || lower.includes("nvidia")) {
     styleContext = "luxury industrial product photography, machined aerospace titanium and glass chassis, clean studio lighting, 8k commercial magazine quality";
+  } else if (lower.includes("game") || lower.includes("gaming") || lower.includes("steam") || lower.includes("console") || lower.includes("switch") || lower.includes("gta") || lower.includes("unreal")) {
+    styleContext = "next-gen cinematic video game capture, Unreal Engine 5.5 photorealism, volumetric ray tracing, high octane cyberpunk battle scene, 8k resolution wallpaper";
+  } else if (lower.includes("animation") || lower.includes("anime") || lower.includes("arcane") || lower.includes("pixar") || lower.includes("spider-verse") || lower.includes("ghibli") || lower.includes("film") || lower.includes("movie")) {
+    styleContext = "masterpiece animation cinematography, Studio Ghibli meets Arcane style, breathtaking hand-painted lighting, expressive vibrant characters, 8k theatrical render";
   }
 
   const prompt = `editorial 4k visual of ${cleanTitle}, ${styleContext}, 16:9 widescreen, hyper realistic, no watermarks, master photography`;
