@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "FundedSquad Review 2026: 35% Discount Code 'CHARGE' & Buy 1 Get 2 Free Promo",
   description: "Comprehensive 2026 review of FundedSquad Prop Firm. Claim 35% instant discount with code 'CHARGE', Buy 1 Get 2 Free on $25k+ accounts, instant funding models, and up to 90% profit split.",
   keywords: ["FundedSquad review 2026", "FundedSquad coupon code", "FundedSquad promo code CHARGE", "FundedSquad buy 1 get 2 free", "FundedSquad instant funding", "FundedSquad affiliate squad 3552"],
+  alternates: {
+    canonical: "https://thesmartmag.com/reviews/fundedsquad",
+  },
 };
 
 export default function FundedSquadReviewPage() {

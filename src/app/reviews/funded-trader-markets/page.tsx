@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Funded Trader Markets (FTM) Review 2026: 10% Discount Code & Rules Breakdown",
   description: "Comprehensive 2026 review of Funded Trader Markets (FTM). Learn about zero time limits, up to 90% profit split, on-demand payouts, and claim an exclusive 10% discount with code 'arnab'.",
   keywords: ["Funded Trader Markets review", "FTM discount code", "FTM promo code arnab", "prop trading zero time limit", "FTM challenge rules 2026"],
+  alternates: {
+    canonical: "https://thesmartmag.com/reviews/funded-trader-markets",
+  },
 };
 
 export default function FTMReviewPage() {

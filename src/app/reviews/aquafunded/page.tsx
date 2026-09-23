@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "AquaFunded Review 2026: Up to 20% Discount Code '6e9' & 90% Profit Split",
   description: "Comprehensive 2026 AquaFunded review. Rapid 1-step and 2-step evaluations, 90% profit split, and save up to 20% with coupon code '6e9'.",
   keywords: ["AquaFunded review 2026", "AquaFunded promo code 6e9", "AquaFunded discount", "1 step prop challenge 2026"],
+  alternates: {
+    canonical: "https://thesmartmag.com/reviews/aquafunded",
+  },
 };
 
 export default function AquaFundedReviewPage() {

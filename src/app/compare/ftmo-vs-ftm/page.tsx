@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "FTMO vs Funded Trader Markets (FTM) Comparison 2026: Pricing, Rules & Spreads",
   description: "Direct side-by-side comparison between FTMO and Funded Trader Markets (FTM). Learn how FTM's zero time limit and 10% discount code 'arnab' saves you money.",
   keywords: ["FTMO vs FTM", "FTMO alternative 2026", "Funded Trader Markets vs FTMO", "cheapest prop firm challenge 2026"],
+  alternates: {
+    canonical: "https://thesmartmag.com/compare/ftmo-vs-ftm",
+  },
 };
 
 export default function FTMOvsFTMPage() {

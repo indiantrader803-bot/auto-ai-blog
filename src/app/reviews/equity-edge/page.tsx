@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Equity Edge Prop Firm Review 2026: Rules, 90% Split & Partner Signup Code",
   description: "Comprehensive 2026 review of Equity Edge Prop Firm. Learn about evaluation rules, up to 90% profit split, zero time limits, fast payouts, and claim partner access with code THESMARTMAG.",
   keywords: ["Equity Edge review 2026", "Equity Edge discount code", "Equity Edge promo code THESMARTMAG", "Equity Edge prop firm", "Equity Edge signup link"],
+  alternates: {
+    canonical: "https://thesmartmag.com/reviews/equity-edge",
+  },
 };
 
 export default function EquityEdgeReviewPage() {

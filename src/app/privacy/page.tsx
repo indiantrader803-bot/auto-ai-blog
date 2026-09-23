@@ -1,6 +1,15 @@
+import { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Shield } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy & Cookie Policy | TheSmartMag",
+  description: "Privacy policy, data collection practices, and cookie compliance for TheSmartMag readers.",
+  alternates: {
+    canonical: "https://thesmartmag.com/privacy",
+  },
+};
 
 export default function PrivacyPage() {
   return (

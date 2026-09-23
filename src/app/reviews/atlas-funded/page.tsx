@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Atlas Funded Review 2026: 20% Discount Code '12275' + $5 Free Challenge Passes",
   description: "Detailed 2026 review of Atlas Funded. High leverage on TradeLocker, instant scaling, 85-90% profit split, and claim 20% off with exclusive partner code '12275'.",
   keywords: ["Atlas Funded review 2026", "Atlas Funded discount code 12275", "Atlas Funded promo", "prop firm discount 20 off"],
+  alternates: {
+    canonical: "https://thesmartmag.com/reviews/atlas-funded",
+  },
 };
 
 export default function AtlasFundedReviewPage() {

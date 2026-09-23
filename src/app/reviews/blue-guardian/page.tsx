@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Blue Guardian Prop Firm Review 2026: Reserve Pricing, Rules & Discount Code",
   description: "Comprehensive 2026 review of Blue Guardian Prop Firm. Check updated Reserve pricing (from $48), 5X bundle discounts, No Daily Loss option, Nano Momentum, and Guardian Protector shield.",
   keywords: ["Blue Guardian review 2026", "Blue Guardian discount code", "Blue Guardian reserve pricing", "Blue Guardian affiliate code 1tgf", "Blue Guardian 5X bundles"],
+  alternates: {
+    canonical: "https://thesmartmag.com/reviews/blue-guardian",
+  },
 };
 
 export default function BlueGuardianReviewPage() {

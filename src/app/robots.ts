@@ -105,8 +105,6 @@ export default function robots(): MetadataRoute.Robots {
     ],
     sitemap: [
       `${baseUrl}/sitemap.xml`,
-      "https://trade.thesmartmag.com/sitemap.xml",
-      "https://travel.thesmartmag.com/sitemap.xml",
     ],
   };
 }
