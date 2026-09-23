@@ -359,13 +359,12 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
             </button>
 
-            {/* Subscribe CTA Button (Desktop lg+) */}
+            {/* VIP Lounge CTA Button */}
             <Link
-              href="#newsletter"
-              className="hidden lg:flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-950 text-xs font-bold uppercase tracking-wider shadow-sm transition-all shrink-0 cursor-pointer"
+              href="/vip"
+              className="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider shadow-md shadow-amber-500/20 transition-all shrink-0 cursor-pointer"
             >
-              <Mail className="w-3.5 h-3.5" />
-              <span>VIP</span>
+              <span>👑 VIP</span>
             </Link>
 
             {/* Mobile / Tablet Menu Button */}

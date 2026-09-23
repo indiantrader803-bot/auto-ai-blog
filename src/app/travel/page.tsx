@@ -5,6 +5,7 @@ import TravelFooter from "@/components/travel/TravelFooter";
 import SmartTravelAIAgentHero from "@/components/travel/SmartTravelAIAgentHero";
 import InteractiveTravelBookingBar from "@/components/travel/InteractiveTravelBookingBar";
 import TrendingDestinations from "@/components/travel/TrendingDestinations";
+import MonetagBanner from "@/components/ads/MonetagBanner";
 import { ShieldCheck, Mail, Sparkles, CheckCircle2 } from "lucide-react";
 
 // Code splitting: Dynamic lazy loading for below-the-fold widgets
@@ -153,6 +154,9 @@ export default function TravelHubPage() {
         <section id="essentials" className="scroll-mt-24">
           <TravelEssentialsHub />
         </section>
+
+        {/* Monetag Safe High-CPM Travel Ad Slot */}
+        <MonetagBanner slotType="homepage" className="my-10" />
 
         {/* 🤝 Transparent Affiliate Disclosure (Editorial Trust Standard) */}
         <div className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 leading-relaxed my-8 max-w-5xl mx-auto flex items-start gap-3">

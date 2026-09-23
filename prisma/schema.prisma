@@ -115,3 +115,33 @@ model AnalyticsEvent {
   @@index([eventType, createdAt(sort: Desc)])
   @@index([slug])
 }
+
+model User {
+  id                   String     @id @default(cuid())
+  email                String     @unique
+  name                 String?
+  passwordHash         String
+  isVip                Boolean    @default(true)
+  vipTier              String     @default("VIP_MEMBER")
+  emailVerified        Boolean    @default(false)
+  verificationToken    String?
+  resetPasswordToken   String?    @unique
+  resetPasswordExpires DateTime?
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+  sessions             Session[]
+
+  @@index([email])
+  @@index([resetPasswordToken])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+

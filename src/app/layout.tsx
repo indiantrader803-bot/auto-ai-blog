@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
+import "@/styles/ads.css";
 import ExitIntentModal from "@/components/growth/ExitIntentModal";
 import FloatingSubscribeButton from "@/components/growth/FloatingSubscribeButton";
 import GlobalBlogAssistant from "@/components/chat/GlobalBlogAssistant";
 import GoogleTranslateProvider from "@/components/layout/GoogleTranslateProvider";
+import MonetagProvider from "@/components/ads/MonetagProvider";
 import { TravelCurrencyProvider } from "@/context/TravelCurrencyContext";
 
 export const dynamic = "force-dynamic";
@@ -154,39 +156,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap"
           rel="stylesheet"
         />
-        <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              tailwind.config = {
-                darkMode: 'class',
-                theme: {
-                  extend: {
-                    fontFamily: {
-                      sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-                      serif: ['"Lora"', 'Georgia', 'serif'],
-                      mono: ['"JetBrains Mono"', 'monospace'],
-                    },
-                    colors: {
-                      primary: {
-                        50: '#eef2ff',
-                        100: '#e0e7ff',
-                        200: '#c7d2fe',
-                        300: '#a5b4fc',
-                        400: '#818cf8',
-                        500: '#6366f1',
-                        600: '#4f46e5',
-                        700: '#4338ca',
-                        800: '#3730a3',
-                        900: '#312e81',
-                      }
-                    }
-                  }
-                }
-              }
-            `,
-          }}
-        />
+
         {/* Google AdSense Account Verification Meta & Ad Engine */}
         <meta name="google-adsense-account" content="ca-pub-9768860457233655" />
         <script
@@ -264,10 +234,12 @@ export default function RootLayout({
       <body className="min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white font-sans">
         <GoogleTranslateProvider />
         <TravelCurrencyProvider>
-          {children}
-          <ExitIntentModal />
-          <FloatingSubscribeButton />
-          <GlobalBlogAssistant />
+          <MonetagProvider>
+            {children}
+            <ExitIntentModal />
+            <FloatingSubscribeButton />
+            <GlobalBlogAssistant />
+          </MonetagProvider>
         </TravelCurrencyProvider>
       </body>
     </html>

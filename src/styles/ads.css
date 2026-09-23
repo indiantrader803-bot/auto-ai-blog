@@ -1,0 +1,77 @@
+/* Monetag Layout Stability & Zero-CLS Guardrails */
+
+.monetag-ad-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 1.75rem auto;
+  clear: both;
+  overflow: hidden;
+}
+
+.monetag-banner-container {
+  position: relative;
+  min-height: 250px;
+  width: 100%;
+  max-width: 728px;
+  background-color: rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  contain: layout-style;
+  content-visibility: auto;
+}
+
+.dark .monetag-banner-container {
+  background-color: rgba(15, 23, 42, 0.6);
+  border-color: rgba(51, 65, 85, 0.5);
+}
+
+.monetag-ad-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+  user-select: none;
+}
+
+/* Skeleton animation while ad script loads in background */
+.monetag-skeleton {
+  width: 300px;
+  height: 250px;
+  background: linear-gradient(
+    90deg,
+    rgba(226, 232, 240, 0.4) 25%,
+    rgba(226, 232, 240, 0.8) 50%,
+    rgba(226, 232, 240, 0.4) 75%
+  );
+  background-size: 200% 100%;
+  animation: monetag-shimmer 1.8s infinite;
+  border-radius: 0.5rem;
+}
+
+.dark .monetag-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(30, 41, 59, 0.4) 25%,
+    rgba(51, 65, 85, 0.6) 50%,
+    rgba(30, 41, 59, 0.4) 75%
+  );
+  background-size: 200% 100%;
+}
+
+@keyframes monetag-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

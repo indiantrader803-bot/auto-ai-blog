@@ -26,14 +26,16 @@ module.exports = {
       },
       fontFamily: {
         sans: [
+          '"Plus Jakarta Sans"',
+          "system-ui",
           "-apple-system",
           "BlinkMacSystemFont",
           '"Segoe UI"',
           "Roboto",
-          "Helvetica",
-          "Arial",
           "sans-serif",
         ],
+        serif: ['"Lora"', "Georgia", "serif"],
+        mono: ['"JetBrains Mono"', "monospace"],
       },
     },
   },
