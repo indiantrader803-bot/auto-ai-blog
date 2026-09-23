@@ -27,6 +27,7 @@ import KeyInsightBox from "@/components/blog/KeyInsightBox";
 import { getArticleBySlug, getAllCatalogArticles } from "@/lib/content/articles";
 import { matchSponsorForArticle } from "@/lib/pipeline/agents/sponsorAgent";
 import { generateStructuredSchema } from "@/lib/pipeline/seoAffiliateEngine";
+import { applySmartInternalLinks } from "@/lib/pipeline/internalLinkingEngine";
 import {
   Calendar,
   Clock,
@@ -263,6 +264,8 @@ export default async function BlogPostPage({ params }: Props) {
     post.featuredImage ||
     "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop";
 
+  const linkedContent = await applySmartInternalLinks(post.content || "", cleanSlug);
+
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#070c18] text-slate-900 dark:text-slate-100 font-sans transition-colors">
       {/* Schema Markup for Googlebot */}
@@ -363,7 +366,7 @@ export default async function BlogPostPage({ params }: Props) {
           <aside className="lg:col-span-4 order-2 lg:order-1">
             <div className="sticky top-24 space-y-6">
               <ArticleSidebarWidgets
-                content={post.content || ""}
+                content={linkedContent}
                 categorySlug={post.category?.slug}
               />
               <AdBanner slot="article-sidebar" format="rectangle" />
@@ -392,7 +395,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* 2. Main Markdown Article Content */}
             <div id="article-body">
-              <MarkdownRenderer content={post.content} />
+              <MarkdownRenderer content={linkedContent} />
             </div>
 
             {/* 3. Key Insight Highlight Callout */}
