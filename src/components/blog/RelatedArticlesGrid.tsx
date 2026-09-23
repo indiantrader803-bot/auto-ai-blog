@@ -73,9 +73,12 @@ export default function RelatedArticlesGrid({
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 {/* Category Pill Overlay */}
-                <div className="absolute top-2.5 left-2.5 z-10">
+                <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1">
                   <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-600/90 text-white backdrop-blur-sm shadow-sm">
                     {catName}
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 shadow-sm">
+                    👑 VIP
                   </span>
                 </div>
               </div>

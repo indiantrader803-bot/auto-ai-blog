@@ -23,12 +23,17 @@ export default function SmartHeroGrid({ featured, subFeatured }: SmartHeroGridPr
 
         {/* Top Badges */}
         <div className="absolute top-6 left-6 right-6 flex items-center justify-between z-10">
-          <Link
-            href={`/category/${featured.category?.slug || "technology"}`}
-            className="px-3.5 py-1.5 rounded-full bg-indigo-600 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-indigo-600/30 hover:bg-indigo-500 transition-colors"
-          >
-            {featured.category?.name || "Featured Story"}
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/category/${featured.category?.slug || "technology"}`}
+              className="px-3.5 py-1.5 rounded-full bg-indigo-600 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-indigo-600/30 hover:bg-indigo-500 transition-colors"
+            >
+              {featured.category?.name || "Featured Story"}
+            </Link>
+            <span className="px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/30 flex items-center gap-1">
+              👑 VIP
+            </span>
+          </div>
           <div className="flex items-center gap-2">
             <span className="px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md text-amber-300 font-bold text-xs flex items-center gap-1 border border-slate-700/50">
               <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300" /> Editor&apos;s Pick

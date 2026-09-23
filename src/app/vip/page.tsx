@@ -3,6 +3,9 @@ import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { getAllCatalogArticles } from "@/lib/content/articles";
+import PostCard from "@/components/blog/PostCard";
 import {
   Crown,
   Sparkles,
@@ -28,6 +31,22 @@ export const metadata: Metadata = {
 
 export default async function VipLoungePage() {
   const user = await getCurrentUser();
+
+  let vipArticles: any[] = [];
+  try {
+    vipArticles = await prisma.post.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: { publishedAt: "desc" },
+      take: 8,
+      include: { category: true },
+    });
+  } catch (e) {
+    console.warn("VIP articles fetch notice:", e);
+  }
+
+  if (vipArticles.length === 0) {
+    vipArticles = getAllCatalogArticles().slice(0, 8);
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-teal-500 selection:text-white">
@@ -195,6 +214,34 @@ export default async function VipLoungePage() {
             </div>
           </div>
         </div>
+
+        {/* 👑 VIP Exclusive & Latest Full Coverage Feed */}
+        <section className="mb-14">
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 flex items-center gap-1">
+                  👑 VIP UNLOCKED FEED
+                </span>
+                <span className="text-xs text-amber-400 font-mono font-bold">100% Uncensored Access</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black font-serif text-white tracking-tight">
+                Latest Proprietary Deep Dives &amp; Market Research
+              </h2>
+              <p className="text-xs text-slate-400">
+                {user
+                  ? "As an authenticated VIP member, you have full unredacted access to every analysis and code snippet below."
+                  : "Normal viewers can preview a 1/3 glimpse. Log in or create a complimentary account to unlock the full institutional dossiers."}
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {vipArticles.map((post: any) => (
+              <PostCard key={post.id || post.slug} post={post} />
+            ))}
+          </div>
+        </section>
 
         {/* 🚀 Authenticated User Control Panel */}
         {user ? (

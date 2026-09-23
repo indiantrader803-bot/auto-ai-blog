@@ -26,6 +26,7 @@ import RelatedArticlesGrid from "@/components/blog/RelatedArticlesGrid";
 import KeyInsightBox from "@/components/blog/KeyInsightBox";
 import MonetagBanner from "@/components/ads/MonetagBanner";
 import VipContentGate from "@/components/vip/VipContentGate";
+import ArticleContentGate from "@/components/vip/ArticleContentGate";
 import { getArticleBySlug, getAllCatalogArticles } from "@/lib/content/articles";
 import { matchSponsorForArticle } from "@/lib/pipeline/agents/sponsorAgent";
 import { generateStructuredSchema } from "@/lib/pipeline/seoAffiliateEngine";
@@ -395,9 +396,13 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Fact-Checked Quality Seal */}
             <FactCheckedBadge category={post.category?.name} authorName="SmartMag Editorial Board" />
 
-            {/* 2. Main Markdown Article Content */}
+            {/* 2. Main Markdown Article Content with VIP Content Gating */}
             <div id="article-body">
-              <MarkdownRenderer content={linkedContent} />
+              <ArticleContentGate
+                fullContent={linkedContent}
+                articleTitle={post.title}
+                views={post.views || 2800}
+              />
             </div>
 
             {/* 3. Key Insight Highlight Callout */}

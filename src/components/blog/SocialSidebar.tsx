@@ -156,9 +156,14 @@ export default function SocialSidebar({
               </div>
 
               <div className="flex-1 min-w-0">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-                  {post.category?.name || "Tech"}
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                    {post.category?.name || "Tech"}
+                  </span>
+                  <span className="text-[9px] font-black uppercase tracking-wider text-amber-500 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.2 rounded">
+                    👑 VIP
+                  </span>
+                </div>
                 <h4 className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 leading-snug font-serif mt-0.5">
                   {post.title}
                 </h4>

@@ -8,6 +8,7 @@ import GlobalBlogAssistant from "@/components/chat/GlobalBlogAssistant";
 import GoogleTranslateProvider from "@/components/layout/GoogleTranslateProvider";
 import MonetagProvider from "@/components/ads/MonetagProvider";
 import { TravelCurrencyProvider } from "@/context/TravelCurrencyContext";
+import { VipAuthProvider } from "@/context/VipAuthContext";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -234,12 +235,14 @@ export default function RootLayout({
       <body className="min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white font-sans">
         <GoogleTranslateProvider />
         <TravelCurrencyProvider>
-          <MonetagProvider>
-            {children}
-            <ExitIntentModal />
-            <FloatingSubscribeButton />
-            <GlobalBlogAssistant />
-          </MonetagProvider>
+          <VipAuthProvider>
+            <MonetagProvider>
+              {children}
+              <ExitIntentModal />
+              <FloatingSubscribeButton />
+              <GlobalBlogAssistant />
+            </MonetagProvider>
+          </VipAuthProvider>
         </TravelCurrencyProvider>
       </body>
     </html>
