@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   Sparkles,
   Shield,
+  ShieldCheck,
   FileText,
   Mail,
   ArrowUp,
@@ -165,29 +166,29 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs text-slate-400">
               <li>
+                <Link href="/editorial-policy" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
+                  <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" /> Editorial &amp; Fact-Checking Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
+                  <FileText className="w-3.5 h-3.5 text-sky-400" /> About TheSmartMag Newsroom
+                </Link>
+              </li>
+              <li>
                 <Link href="/privacy" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
                   <Shield className="w-3.5 h-3.5 text-emerald-400" /> Privacy Policy &amp; GDPR
                 </Link>
               </li>
               <li>
-                <Link href="/editorial-policy" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
-                  <Shield className="w-3.5 h-3.5 text-sky-400" /> Editorial Guidelines &amp; Fact-Check
-                </Link>
-              </li>
-              <li>
                 <Link href="/terms" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
-                  <FileText className="w-3.5 h-3.5 text-purple-400" /> Terms of Service &amp; Disclaimer
+                  <FileText className="w-3.5 h-3.5 text-purple-400" /> Terms of Service
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
-                  <FileText className="w-3.5 h-3.5 text-indigo-400" /> About Our Mission &amp; Methodology
+                <Link href="/contact" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
+                  <Mail className="w-3.5 h-3.5 text-amber-400" /> Contact Editorial Desk
                 </Link>
-              </li>
-              <li>
-                <a href="mailto:contact@thesmartmag.com" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
-                  <Mail className="w-3.5 h-3.5 text-amber-400" /> contact@thesmartmag.com
-                </a>
               </li>
               <li>
                 <a href="mailto:support@thesmartmag.com" className="hover:text-emerald-400 transition-colors flex items-center gap-2">

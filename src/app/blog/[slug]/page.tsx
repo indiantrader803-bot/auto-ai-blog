@@ -411,28 +411,14 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="pt-6 border-t border-b border-slate-200/80 dark:border-slate-800 py-4 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-black shadow-md text-xs">
-                  SM
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold shadow-md">
+                  SC
                 </div>
                 <div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-slate-900 dark:text-white block text-sm">
-                      TheSmartMag Research Team
-                    </span>
-                    <Link
-                      href="/editorial-policy"
-                      title="Verified by TheSmartMag Fact-Checking Protocol"
-                      className="inline-flex items-center gap-1 text-[10px] text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors"
-                    >
-                      <ShieldCheck className="w-3 h-3 text-emerald-500" />
-                      <span>FACT-CHECKED</span>
-                    </Link>
-                  </div>
-                  <div className="flex items-center gap-2 text-[11px] text-slate-500">
-                    <span>Published: {formatDate(post.publishedAt)}</span>
-                    <span>•</span>
-                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">Updated 2026</span>
-                  </div>
+                  <span className="font-bold text-slate-900 dark:text-white block text-sm">
+                    Editorial Board
+                  </span>
+                  <span>{formatDate(post.publishedAt)}</span>
                 </div>
               </div>
 

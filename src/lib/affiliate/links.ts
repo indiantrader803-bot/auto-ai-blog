@@ -524,6 +524,8 @@ export function getSailyEsimUrl(countryOrRegion = "global"): string {
   return `https://saily.tpo.li/9kXyVV0E`;
 }
 
+export const getAiraloEsimUrl = getSailyEsimUrl;
+
 /**
  * Generate Drimsim Universal Data & Voice SIM/eSIM URL
  */

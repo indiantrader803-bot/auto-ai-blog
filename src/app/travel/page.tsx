@@ -14,6 +14,7 @@ const FeaturedAttractionsGrid = dynamic(() => import("@/components/travel/Featur
 const CinematicTravelGuides = dynamic(() => import("@/components/travel/CinematicTravelGuides"), { ssr: true });
 const EsimBookingSection = dynamic(() => import("@/components/travel/EsimBookingSection"), { ssr: true });
 const FlightCompensationCalculator = dynamic(() => import("@/components/travel/FlightCompensationCalculator"), { ssr: true });
+const InteractiveTravelCostCalculator = dynamic(() => import("@/components/travel/InteractiveTravelCostCalculator"), { ssr: true });
 const TravelEssentialsHub = dynamic(() => import("@/components/travel/TravelEssentialsHub"), { ssr: true });
 
 export const revalidate = 300;
@@ -136,6 +137,11 @@ export default function TravelHubPage() {
         {/* 5. Flight Delay Claim Calculator (€600 Legal Compensation) */}
         <section id="compensation" className="scroll-mt-24">
           <FlightCompensationCalculator />
+        </section>
+
+        {/* 🧮 5B. Interactive Vacation Cost & Budget Calculator (Phase 8 Tool) */}
+        <section id="budget-calculator" className="scroll-mt-24">
+          <InteractiveTravelCostCalculator />
         </section>
 
         {/* 6. Trending Holiday Destinations & Bundles */}

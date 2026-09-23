@@ -246,13 +246,21 @@ export default function TravelFooter() {
             © {new Date().getFullYear()} SmartMag Travel Hub. Part of The SmartMag Network. All rights reserved.
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
+            <Link href="/editorial-policy" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+              Editorial Policy
+            </Link>
+            <span>•</span>
             <Link href="/privacy" className="hover:text-slate-900 dark:hover:text-white transition-colors">
               Privacy Policy
             </Link>
             <span>•</span>
+            <Link href="/terms" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+              Terms of Service
+            </Link>
+            <span>•</span>
             <Link href="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">
-              SmartMag News
+              SmartMag Tech
             </Link>
             <span>•</span>
             <button
