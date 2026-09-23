@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const [posts, cats] = await Promise.all([
       prisma.post.findMany({
         where: { status: "PUBLISHED" },
-        select: { slug: true, updatedAt: true, publishedAt: true },
+        select: { slug: true, updatedAt: true, publishedAt: true, content: true },
       }),
       prisma.category.findMany({
         select: { slug: true, createdAt: true },
@@ -35,8 +35,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const postEntries: MetadataRoute.Sitemap = [];
 
-  // 1. Add DB posts
+  // 1. Add DB posts (Enforce Quality Guardrail: filter out thin content under ~800 words / 1500 characters)
   for (const post of dbPosts) {
+    const wordCount = post.content ? post.content.trim().split(/\s+/).length : 0;
+    // Exclude thin content to safeguard Google crawl budget & avoid soft 404 / low-quality indexing penalties
+    if (wordCount < 400 && post.content?.length < 1500) {
+      continue;
+    }
+
     postSlugs.add(post.slug);
     postEntries.push({
       url: `${baseUrl}/blog/${post.slug}`,
@@ -232,7 +238,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/best-prop-firms`,
       lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 0.9,
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/best-ai-tools`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.95,
     },
     {
       url: `${baseUrl}/reviews/fundedsquad`,
@@ -287,6 +299,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/editorial-policy`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
     },
     {
       url: `${baseUrl}/privacy`,

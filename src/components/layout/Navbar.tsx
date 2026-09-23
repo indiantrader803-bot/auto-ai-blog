@@ -284,7 +284,15 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
           </Link>
 
           {/* Center Prominent Interactive Hubs (Desktop lg+ only) */}
-          <div className="hidden lg:flex items-center gap-2 xl:gap-3">
+            <Link
+              href="/best-ai-tools"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 border border-purple-500/30 hover:border-purple-500 text-xs font-black uppercase tracking-wider transition-all shadow-xs group cursor-pointer"
+            >
+              <Bot className="w-3.5 h-3.5 text-purple-500 group-hover:scale-110 transition-transform" />
+              <span>AI Tools</span>
+              <span className="px-1.5 py-0.5 rounded-full bg-purple-500 text-white text-[8.5px] font-black">2026</span>
+            </Link>
+
             <Link
               href="/trade"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:border-emerald-500 text-xs font-black uppercase tracking-wider transition-all shadow-xs group cursor-pointer"

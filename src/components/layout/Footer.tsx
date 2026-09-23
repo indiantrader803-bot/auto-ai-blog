@@ -170,8 +170,18 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/editorial-policy" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
+                  <Shield className="w-3.5 h-3.5 text-sky-400" /> Editorial Guidelines &amp; Fact-Check
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
+                  <FileText className="w-3.5 h-3.5 text-purple-400" /> Terms of Service &amp; Disclaimer
+                </Link>
+              </li>
+              <li>
                 <Link href="/about" className="hover:text-indigo-400 transition-colors flex items-center gap-2">
-                  <FileText className="w-3.5 h-3.5 text-indigo-400" /> Editorial Integrity &amp; AI Fact Check
+                  <FileText className="w-3.5 h-3.5 text-indigo-400" /> About Our Mission &amp; Methodology
                 </Link>
               </li>
               <li>
