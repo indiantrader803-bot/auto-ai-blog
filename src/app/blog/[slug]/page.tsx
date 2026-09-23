@@ -6,47 +6,33 @@ import { formatDate } from "@/lib/utils";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import MarkdownRenderer from "@/components/blog/MarkdownRenderer";
-import TableOfContents from "@/components/blog/TableOfContents";
 import FaqAccordion from "@/components/blog/FaqAccordion";
-import SocialShare from "@/components/blog/SocialShare";
-import ArticleReactions from "@/components/blog/ArticleReactions";
 import ArticleAudioPlayer from "@/components/blog/ArticleAudioPlayer";
 import CommentsSection from "@/components/blog/CommentsSection";
 import AdBanner from "@/components/monetization/AdBanner";
 import AffiliateCard from "@/components/monetization/AffiliateCard";
-import BuyMeCoffee from "@/components/monetization/BuyMeCoffee";
-import NewsletterBanner from "@/components/monetization/NewsletterBanner";
-import PostCard from "@/components/blog/PostCard";
 import ArticleImage from "@/components/blog/ArticleImage";
 import ArticleTracker from "@/components/blog/ArticleTracker";
 import FloatingShareDock from "@/components/blog/FloatingShareDock";
-import TrendingAlertBox from "@/components/blog/TrendingAlertBox";
 import ReadingProgressBar from "@/components/blog/ReadingProgressBar";
 import NextStoryFlyout from "@/components/blog/NextStoryFlyout";
 import FloatingDealStickyBar from "@/components/growth/FloatingDealStickyBar";
-import KeyTakeaways from "@/components/blog/KeyTakeaways";
 import FactCheckedBadge from "@/components/blog/FactCheckedBadge";
 import InstantSavingsChip from "@/components/blog/InstantSavingsChip";
-import { getTrendingStoryRecommendation } from "@/lib/pipeline/internalLinkingEngine";
+import ArticleSidebarWidgets from "@/components/blog/ArticleSidebarWidgets";
+import AiQuickSummary from "@/components/blog/AiQuickSummary";
+import ArticleHeroActions from "@/components/blog/ArticleHeroActions";
+import RelatedArticlesGrid from "@/components/blog/RelatedArticlesGrid";
+import KeyInsightBox from "@/components/blog/KeyInsightBox";
+import { getArticleBySlug, getAllCatalogArticles } from "@/lib/content/articles";
+import { matchSponsorForArticle } from "@/lib/pipeline/agents/sponsorAgent";
 import { generateStructuredSchema } from "@/lib/pipeline/seoAffiliateEngine";
 import {
+  Calendar,
   Clock,
-  Eye,
-  Sparkles,
   ChevronRight,
-  Video,
-  User,
-  CheckCircle2,
-  Bookmark,
-  Share2,
-  ArrowLeft,
-  ArrowRight,
   ShieldCheck,
-  Award,
-  Star,
-  Twitter,
-  Linkedin,
-  Github,
+  Video,
 } from "lucide-react";
 
 interface Props {
@@ -104,13 +90,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         tags = catalog.tags;
       }
     }
-  } catch (err) {
-    // Graceful fallback to static catalog
+  } catch (e) {
+    console.warn("Metadata fetch error:", e);
   }
 
   return {
     title: `${title} | TheSmartMag`,
     description,
+    keywords: tags.join(", "),
     alternates: {
       canonical: canonicalUrl,
     },
@@ -123,98 +110,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         {
           url: image,
           width: 1200,
-          height: 675,
+          height: 630,
           alt: title,
         },
       ],
       type: "article",
       publishedTime,
-      tags,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
       images: [image],
-      creator: "@Theindainta9go",
+      creator: "@TheSmartMag",
     },
   };
 }
-
-const FALLBACK_SINGLE_POST = {
-  id: "mock_1",
-  title: "Autonomous AI Agent Swarms in 2026: How Coordinated Multi-Agent Systems Are Reshaping Enterprise Automation",
-  slug: "autonomous-ai-agent-swarms-2026-enterprise-automation",
-  excerpt: "An architectural deep-dive into decentralized AI agent-to-agent communication protocols, dynamic task allocation, and emergent problem-solving workflows redefining production engineering.",
-  content: `## 🏛️ The 4 Pillars of Autonomous Agent Architecture
-
-The architectural foundation of an enterprise agentic loop relies on four interconnected layers:
-
-1. **AST & Semantic Context Ingestion**: Building continuous in-memory knowledge graphs of entire repositories.
-2. **Cognitive Planning & Self-Critique**: Tree-of-Thought exploration simulating multiple potential refactoring paths before writing code.
-3. **Sandboxed MCP Tool Execution**: Safe terminal access, linting runners, and automated schema migration verifiers.
-4. **Autonomous Self-Healing & Verification**: Running continuous integration tests and triggering automatic repair loops upon error detection.
-
-\`\`\`typescript
-// Architectural representation of an Autonomous Agentic Loop
-interface AgenticTask {
-  goal: string;
-  contextGraph: CodebaseAST;
-  plan: TaskStep[];
-  execute: (step: TaskStep) => Promise<ExecutionOutput>;
-  validate: (output: ExecutionOutput) => Promise<QualityScore>;
-  selfHeal: (error: CompilationError) => Promise<PatchResult>;
-}
-\`\`\`
-
----
-
-## 📊 Comparison: Monolithic Assistants vs. Autonomous Swarms
-
-| Capability Dimension | Single-Prompt Copilots | Autonomous Multi-Agent Swarms |
-| :--- | :--- | :--- |
-| **Context Scope** | Active File (~8,000 tokens) | Entire Repository AST Graph |
-| **Tool Execution** | Read / Suggest Only | Terminal, Browser & Git Automation |
-| **Error Handling** | Human must diagnose | Autonomous Build, Test & Repair Loop |
-| **Engineering Velocity** | 1.2x - 1.4x | 4.0x - 8.0x Multiplier |
-| **Factual Precision** | Prone to hallucinations | Grounded by AST Index & Local Linter |
-
----
-
-## 💡 Key Takeaways & Practical Recommendations
-
-- **Standardize on MCP (Model Context Protocol)**: Connect all databases, API specs, and devtools into open agent interfaces.
-- **Implement Strict Production Guardrails**: Never grant autonomous agents direct write access to production without automated CI review gates.
-- **Instrument Observability & Tracing**: Maintain full audit logs of agent decision trees and token consumption.
-
----
-
-## Summary & Future Outlook
-
-Autonomous AI swarms do not replace developers; they elevate software engineers from syntax typists into high-leverage architectural directors orchestrating planetary-scale software systems.`,
-  featuredImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
-  imageAlt: "Futuristic digital neural network node visualization",
-  imagePhotographer: "Milad Fakurian",
-  imagePhotographerUrl: "https://unsplash.com/@fakurian",
-  youtubeVideoId: "sal78ACtGTc",
-  youtubeVideoTitle: "What Are Autonomous AI Agents? Complete Breakdown",
-  seoTitle: "Autonomous AI Agent Swarms in 2026: The Complete Guide",
-  seoDescription: "Discover how autonomous AI swarms are revolutionizing software development.",
-  seoKeywords: "autonomous AI, agentic workflows, multi-agent systems, AI programming",
-  faqJson: JSON.stringify([
-    { question: "What is an autonomous AI agent swarm?", answer: "An autonomous AI agent swarm is a network of specialized LLM-powered agents capable of planning, collaborating, using tools, and self-healing to achieve complex engineering goals." },
-    { question: "How do agent swarms differ from ChatGPT or Copilot?", answer: "While chat assistants require continuous manual prompts, swarms work collaboratively in background loops to decompose complex multi-file projects, test outputs, and fix errors automatically." }
-  ]),
-  readTimeMinutes: 7,
-  status: "PUBLISHED",
-  views: 1840,
-  publishedAt: new Date(),
-  category: { name: "Artificial Intelligence", slug: "artificial-intelligence" },
-  tags: [{ tag: { name: "AI Swarms" } }, { tag: { name: "Software Architecture" } }, { tag: { name: "Autonomous Coding" } }]
-};
-
-import { getArticleBySlug, getAllCatalogArticles } from "@/lib/content/articles";
-import { matchSponsorForArticle } from "@/lib/pipeline/agents/sponsorAgent";
 
 export default async function BlogPostPage({ params }: Props) {
   const cleanSlug = decodeURIComponent(params.slug || "");
@@ -287,7 +198,7 @@ export default async function BlogPostPage({ params }: Props) {
     console.warn("Post DB query notice:", e);
   }
 
-  // 1. Fallback to rich Content Catalog
+  // Fallback to content catalog
   if (!post) {
     const catalogItem = getArticleBySlug(cleanSlug);
     if (catalogItem) {
@@ -300,7 +211,7 @@ export default async function BlogPostPage({ params }: Props) {
     }
   }
 
-  // 2. Fallback to default catalog article if still not resolved
+  // Fallback to first catalog article if not found
   if (!post) {
     const fallback = getAllCatalogArticles()[0];
     post = {
@@ -348,178 +259,166 @@ export default async function BlogPostPage({ params }: Props) {
     faqs
   );
 
-  const trendingRecommendation = getTrendingStoryRecommendation(cleanSlug);
+  const heroImageSrc =
+    post.featuredImage ||
+    "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop";
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950 font-sans">
-      {/* Schema Markup for Google SEO */}
+    <div className="flex flex-col min-h-screen bg-white dark:bg-[#070c18] text-slate-900 dark:text-slate-100 font-sans transition-colors">
+      {/* Schema Markup for Googlebot */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: schemaJson }}
       />
 
-      {/* Reading Progress Bar & Real-time Client Telemetry */}
+      {/* Reading Progress & Telemetry */}
       <ReadingProgressBar />
       <ArticleTracker slug={post.slug} title={post.title} />
       <FloatingShareDock title={post.title} slug={post.slug} />
 
       <Navbar />
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-        {/* Breadcrumb Navigation (SmartMag Style) */}
-        <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400 mb-8">
-          <Link href="/" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+        {/* Breadcrumb Navigation */}
+        <nav className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400 mb-6 overflow-hidden">
+          <Link href="/" className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors shrink-0">
             Home
           </Link>
-          <ChevronRight className="w-3.5 h-3.5" />
+          <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+          <Link href="/blog" className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors shrink-0">
+            Blog
+          </Link>
+          <ChevronRight className="w-3.5 h-3.5 shrink-0" />
           {post.category && (
             <>
               <Link
                 href={`/category/${post.category.slug}`}
-                className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors uppercase tracking-wider text-[11px] font-bold"
+                className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors uppercase tracking-wider text-[11px] font-semibold shrink-0"
               >
                 {post.category.name}
               </Link>
-              <ChevronRight className="w-3.5 h-3.5" />
+              <ChevronRight className="w-3.5 h-3.5 shrink-0" />
             </>
           )}
-          <span className="text-slate-900 dark:text-slate-200 truncate max-w-xs sm:max-w-md font-medium">
+          <span className="text-slate-700 dark:text-slate-300 truncate font-normal">
             {post.title}
           </span>
         </nav>
 
-        {/* Article Header (SmartMag Typography) */}
-        <header className="max-w-4xl mx-auto mb-10 space-y-6 text-center sm:text-left">
-          {post.category && (
-            <Link
-              href={`/category/${post.category.slug}`}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-500 transition-colors"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              {post.category.name}
-            </Link>
-          )}
+        {/* 🌟 Split 2-Column Hero Header (Matching Mockup) */}
+        <header className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-12">
+          {/* Left Column: Category, Title, Excerpt, Metadata & Actions */}
+          <div className="lg:col-span-7 space-y-4">
+            {post.category && (
+              <div>
+                <span className="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-teal-600 dark:bg-teal-500 text-white shadow-sm">
+                  {post.category.name}
+                </span>
+              </div>
+            )}
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.12] font-serif">
-            {post.title}
-          </h1>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.16] font-serif">
+              {post.title}
+            </h1>
 
-          <p className="text-base sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-            {post.excerpt}
-          </p>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              {post.excerpt}
+            </p>
 
-          <div className="pt-6 border-t border-b border-slate-200/80 dark:border-slate-800 py-4 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
-            <div className="flex flex-wrap items-center gap-4">
+            {/* Meta Row & Action Buttons */}
+            <div className="pt-2 flex flex-wrap items-center justify-between gap-4 border-t border-slate-100 dark:border-slate-800/80 pt-4 text-xs text-slate-500 dark:text-slate-400">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold shadow-md">
-                  SC
-                </div>
-                <div>
-                  <span className="font-bold text-slate-900 dark:text-white block text-sm">
-                    Editorial Board
-                  </span>
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
                   <span>{formatDate(post.publishedAt)}</span>
-                </div>
+                </span>
+                <span>•</span>
+                <span className="flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
+                  <span>{post.readTimeMinutes || 6} min read</span>
+                </span>
               </div>
 
-              <span className="text-slate-300 dark:text-slate-700 hidden sm:inline">•</span>
-              <span className="flex items-center gap-1 font-medium">
-                <Clock className="w-3.5 h-3.5 text-indigo-500" /> {post.readTimeMinutes || 6} min read
-              </span>
-              <span className="text-slate-300 dark:text-slate-700 hidden sm:inline">•</span>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-semibold shadow-sm">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span>
-                  {(post.views || 2400) >= 1000
-                    ? `${((post.views || 2400) / 1000).toFixed(1)}k readers`
-                    : `${post.views || 2400} readers`}
-                </span>
-              </div>
+              {/* Action Buttons: Bookmark, Copy, Share */}
+              <ArticleHeroActions title={post.title} slug={post.slug} />
             </div>
+          </div>
 
-            <SocialShare
-              title={post.title}
-              slug={post.slug}
-              category={post.category?.name}
-              excerpt={post.excerpt}
-            />
+          {/* Right Column: Hero Graphic / Featured Image */}
+          <div className="lg:col-span-5">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800/80 aspect-[16/11] bg-slate-950">
+              <ArticleImage
+                src={heroImageSrc}
+                alt={post.imageAlt || post.title}
+                className="w-full h-full object-cover"
+                loading="eager"
+              />
+            </div>
           </div>
         </header>
 
-        {/* E-E-A-T Editorial Standards & Fact-Checked Seal */}
-        <FactCheckedBadge category={post.category?.name} authorName="SmartMag Editorial Board" />
+        {/* 📐 Main Grid Layout: Left Sticky Sidebar (4 cols) + Right Content (8 cols) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          {/* Left Sticky Sidebar (Matching Mockup) */}
+          <aside className="lg:col-span-4 order-2 lg:order-1">
+            <div className="sticky top-24 space-y-6">
+              <ArticleSidebarWidgets
+                content={post.content || ""}
+                categorySlug={post.category?.slug}
+              />
+              <AdBanner slot="article-sidebar" format="rectangle" />
+            </div>
+          </aside>
 
-        {/* Featured Hero Photo */}
-        {post.featuredImage && (
-          <figure className="max-w-5xl mx-auto mb-12 rounded-3xl overflow-hidden shadow-2xl bg-slate-950 border border-slate-200/80 dark:border-slate-800">
-            <ArticleImage
-              src={post.featuredImage}
-              alt={post.imageAlt || post.title}
-              className="w-full max-h-[560px] object-cover"
-              loading="eager"
-            />
-            {post.imagePhotographer && (
-              <figcaption className="p-3 text-right text-[11px] text-slate-400 bg-black/50 backdrop-blur-sm">
-                Photography by{" "}
-                {post.imagePhotographerUrl ? (
-                  <a
-                    href={post.imagePhotographerUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline hover:text-white"
-                  >
-                    {post.imagePhotographer}
-                  </a>
-                ) : (
-                  post.imagePhotographer
-                )}
-              </figcaption>
-            )}
-          </figure>
-        )}
-
-        {/* Article Grid Layout: Content + Sticky TOC Sidebar */}
-        <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
-          {/* Main Article Body (8 cols) */}
-          <article className="lg:col-span-8 space-y-8 min-w-0">
-            {/* AI Voice Audio Player */}
-            <ArticleAudioPlayer title={post.title} content={post.content} />
-
-            {/* Executive Summary & Key Takeaways for Google Position #0 Snippets */}
-            <KeyTakeaways
+          {/* Right Main Article Body (Matching Mockup) */}
+          <article className="lg:col-span-8 order-1 lg:order-2 space-y-8 min-w-0">
+            {/* 1. AI Quick Summary Box with Audio & Translate buttons */}
+            <AiQuickSummary
               title={post.title}
               excerpt={post.excerpt}
               category={post.category?.name}
-              readTimeMinutes={post.readTimeMinutes}
             />
 
-            {/* In-Article Sponsor / Ad Placement */}
+            {/* Embedded Audio Player */}
+            <div id="article-audio-player">
+              <ArticleAudioPlayer title={post.title} content={post.content} />
+            </div>
+
+            {/* Top In-Article Ad Slot */}
             <AdBanner slot="article-top" className="my-2" />
 
-            {/* Markdown Body */}
-            <MarkdownRenderer content={post.content} />
+            {/* Fact-Checked Quality Seal */}
+            <FactCheckedBadge category={post.category?.name} authorName="SmartMag Editorial Board" />
 
-            {/* Contextual Trader & Developer Instant Savings Chip */}
+            {/* 2. Main Markdown Article Content */}
+            <div id="article-body">
+              <MarkdownRenderer content={post.content} />
+            </div>
+
+            {/* 3. Key Insight Highlight Callout */}
+            <KeyInsightBox
+              title="Key Insight"
+              insight={`${post.title} represents a structural shift in modern execution paradigms. Strategic success hinges on timing, regulatory resilience, and foundational adoption.`}
+            />
+
+            {/* Contextual Savings & Promo Chip */}
             <InstantSavingsChip category={post.category?.name} />
 
-            {/* Embedded YouTube Video Explainer */}
+            {/* Embedded Video (if present) */}
             {post.youtubeVideoId && (
-              <section className="my-10 p-6 sm:p-8 rounded-3xl bg-slate-950 text-white border border-slate-800 shadow-2xl">
+              <section className="my-8 p-6 rounded-3xl bg-slate-950 text-white border border-slate-800 shadow-2xl">
                 <div className="flex items-center justify-between gap-3 mb-3">
                   <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-rose-400">
-                    <Video className="w-4 h-4" /> Featured Video Workshop &amp; Tutorial
+                    <Video className="w-4 h-4" /> Featured Video Workshop
                   </div>
                   <span className="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[10px] font-bold uppercase tracking-wider border border-rose-500/30">
-                    Verified Partner
+                    Verified
                   </span>
                 </div>
                 {post.youtubeVideoTitle && (
-                  <h3 className="text-lg font-bold mb-4 font-serif text-white">{post.youtubeVideoTitle}</h3>
+                  <h3 className="text-base font-bold mb-3 font-serif text-white">{post.youtubeVideoTitle}</h3>
                 )}
-                <div className="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-inner mb-4">
+                <div className="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-inner">
                   <iframe
                     src={`https://www.youtube-nocookie.com/embed/${post.youtubeVideoId}`}
                     title={post.youtubeVideoTitle || "YouTube video player"}
@@ -528,27 +427,10 @@ export default async function BlogPostPage({ params }: Props) {
                     className="absolute inset-0 w-full h-full border-0"
                   />
                 </div>
-
-                {/* Creator Monetization CTA Box */}
-                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <div className="space-y-0.5 text-center sm:text-left">
-                    <div className="text-xs font-bold text-white">Want your video embedded in our high-traffic articles?</div>
-                    <div className="text-[11px] text-slate-400">Reach 100,000+ targeted traders &amp; developers starting at $29 / ₹2,499.</div>
-                  </div>
-                  <Link
-                    href="/sponsor-video"
-                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs font-bold shadow-md shadow-rose-600/30 transition-all shrink-0 flex items-center gap-1.5"
-                  >
-                    <span>Feature Your Video →</span>
-                  </Link>
-                </div>
               </section>
             )}
 
-            {/* Interactive Reader Reactions */}
-            <ArticleReactions />
-
-            {/* High-Converting AI Matched Sponsor & Monetization Card */}
+            {/* Matched Sponsor / Affiliate Card */}
             <AffiliateCard
               title={matchedSponsor.sponsorName}
               subtitle={matchedSponsor.tagline}
@@ -559,151 +441,74 @@ export default async function BlogPostPage({ params }: Props) {
               features={[
                 matchedSponsor.description,
                 matchedSponsor.discountCode ? `Exclusive Promo Code: ${matchedSponsor.discountCode}` : "Instant Free Tier Access",
-                "Strict Zero Data Retention & Enterprise Tier Support"
+                "Strict Zero Data Retention & Enterprise Tier Support",
               ]}
             />
 
-            {/* In-Article High-CTR Viral Trending Recommendation */}
-            {trendingRecommendation && (
-              <TrendingAlertBox story={trendingRecommendation} />
-            )}
-
-            {/* Mid-Article Ad Banner */}
+            {/* Mid-Article Ad Slot */}
             <AdBanner slot="article-mid" className="my-8" />
 
-            {/* FAQ Section */}
-            {faqs.length > 0 && <FaqAccordion faqs={faqs} />}
+            {/* 4. Frequently Asked Questions Accordion */}
+            <FaqAccordion faqs={faqs} topicTitle={post.title} />
 
-            {/* Tags Pill List */}
+            {/* 5. Article Tags Row */}
             {post.tags && post.tags.length > 0 && (
-              <div className="my-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-400 mr-2">
-                  Keywords:
+              <div className="my-8 pt-6 border-t border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center gap-2">
+                <span className="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">
+                  Tags:
                 </span>
-                {post.tags.map((t: any, idx: number) => (
-                  <span
-                    key={idx}
-                    className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300"
-                  >
-                    #{t.tag?.name || t}
-                  </span>
-                ))}
+                {post.tags.map((t: any, idx: number) => {
+                  const tagName = t.tag?.name || t;
+                  return (
+                    <span
+                      key={idx}
+                      className="px-3 py-1 rounded-xl text-xs font-medium bg-slate-100 dark:bg-[#0b1329] border border-slate-200 dark:border-slate-800/80 text-slate-700 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                    >
+                      {tagName}
+                    </span>
+                  );
+                })}
               </div>
             )}
 
-            {/* Author Bio Box (SmartMag Style) */}
-            <div className="my-10 p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-6">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-purple-600 flex items-center justify-center text-white font-black text-xl font-serif shrink-0 shadow-lg shadow-indigo-600/20">
+            {/* Editorial Team Card */}
+            <div className="my-8 p-6 rounded-2xl bg-slate-50 dark:bg-[#0b1329]/60 border border-slate-200 dark:border-slate-800/80 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-600 flex items-center justify-center text-white font-black text-lg font-serif shrink-0 shadow-md shadow-teal-500/20">
                 SC
               </div>
-              <div className="space-y-2 text-center sm:text-left flex-1">
-                <div className="flex flex-wrap items-center justify-center sm:justify-between gap-2">
-                  <div>
-                    <h4 className="text-base font-bold text-slate-900 dark:text-white font-serif">
-                      SmartMag Editorial Board
-                    </h4>
-                    <span className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
-                      Autonomous Intelligence &amp; Software Research
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[11px] font-bold">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> Verified Editorial Team
-                  </div>
+              <div className="space-y-1 flex-1">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white font-serif">
+                    SmartMag Editorial Newsroom
+                  </h4>
+                  <span className="flex items-center gap-1 text-[11px] text-teal-600 dark:text-teal-400 font-semibold">
+                    <ShieldCheck className="w-3.5 h-3.5" /> Verified
+                  </span>
                 </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Curated and verified by our multi-agent autonomous journalism engine, synthesizing live code repos, benchmark data, and expert consensus.
+                  Researched and fact-checked by our multidisciplinary engineering desk.
                 </p>
               </div>
             </div>
 
-            {/* Previous / Next Article Navigation Cards */}
-            <div className="my-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {prevPost && (
-                <Link
-                  href={`/blog/${prevPost.slug}`}
-                  className="group p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-indigo-500/40 shadow-sm transition-all flex flex-col justify-between"
-                >
-                  <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-slate-400 group-hover:text-indigo-600 transition-colors">
-                    <ArrowLeft className="w-3.5 h-3.5" /> Previous Story
-                  </div>
-                  <h5 className="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 mt-2 font-serif group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                    {prevPost.title}
-                  </h5>
-                </Link>
-              )}
-
-              {nextPost && (
-                <Link
-                  href={`/blog/${nextPost.slug}`}
-                  className="group p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-indigo-500/40 shadow-sm transition-all flex flex-col justify-between text-right"
-                >
-                  <div className="flex items-center justify-end gap-1.5 text-[10px] font-black uppercase tracking-wider text-slate-400 group-hover:text-indigo-600 transition-colors">
-                    Next Story <ArrowRight className="w-3.5 h-3.5" />
-                  </div>
-                  <h5 className="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 mt-2 font-serif group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                    {nextPost.title}
-                  </h5>
-                </Link>
-              )}
-            </div>
-
-            {/* High-Conversion Bottom Social Share Bar */}
-            <div className="my-8">
-              <SocialShare
-                title={post.title}
-                slug={post.slug}
-                category={post.category?.name}
-                excerpt={post.excerpt}
-              />
-            </div>
-
-            {/* Community Discussion & AI Expert Auto-Reply Agent */}
+            {/* Community Comments */}
             <CommentsSection
               articleTitle={post.title}
               articleSlug={cleanSlug}
               articleExcerpt={post.excerpt}
             />
-
-            {/* Buy Me A Coffee Support Widget */}
-            <BuyMeCoffee />
           </article>
-
-          {/* Sticky Sidebar: Table of Contents & Sticky Ad (4 cols) */}
-          <aside className="lg:col-span-4 space-y-6">
-            <div className="sticky top-28 space-y-6">
-              <TableOfContents content={post.content} />
-              <AdBanner slot="article-sidebar" format="rectangle" />
-            </div>
-          </aside>
         </div>
 
-        {/* Related Posts Recommendation Section */}
-        {relatedPosts.length > 0 && (
-          <section className="max-w-5xl mx-auto my-16 pt-12 border-t border-slate-200 dark:border-slate-800">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-serif">
-                You Might Also Like
-              </h3>
-              <span className="text-xs text-slate-400">More from {post.category?.name || "Topic"}</span>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedPosts.map((item) => (
-                <PostCard key={item.id} post={item} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Bottom Newsletter */}
-        <div className="max-w-5xl mx-auto">
-          <NewsletterBanner />
-        </div>
+        {/* 6. Related Articles Section (Matching Mockup 3-Card Grid) */}
+        <RelatedArticlesGrid
+          posts={relatedPosts}
+          currentCategoryName={post.category?.name}
+        />
       </main>
 
-      {/* Slide-in Next Story Flyout */}
+      {/* Flyout & Bottom Stickies */}
       <NextStoryFlyout nextPost={nextPost || relatedPosts[0] || null} />
-
-      {/* Floating High-Converting Buyer Intent Deal Pill / Sticky Promo */}
       <FloatingDealStickyBar
         categorySlug={post?.category?.slug}
         articleTitle={post?.title}

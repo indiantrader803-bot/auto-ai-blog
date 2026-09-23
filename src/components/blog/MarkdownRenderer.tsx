@@ -67,12 +67,15 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
           },
           blockquote({ node, children, ...props }) {
             return (
-              <blockquote
-                className="my-6 pl-5 py-2 border-l-4 border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/30 rounded-r-xl italic text-slate-800 dark:text-slate-200"
-                {...props}
-              >
-                {children}
-              </blockquote>
+              <div className="my-8 p-5 sm:p-6 rounded-2xl bg-[#f0f9ff] dark:bg-[#0c1e2e]/90 border border-cyan-200 dark:border-cyan-500/30 flex items-start gap-3.5 shadow-sm">
+                <span className="text-3xl sm:text-4xl font-serif text-cyan-600 dark:text-cyan-400 select-none leading-none shrink-0 mt-0.5">“</span>
+                <blockquote
+                  className="text-sm sm:text-base italic font-medium text-slate-800 dark:text-slate-200 leading-relaxed m-0 p-0 border-0 bg-transparent"
+                  {...props}
+                >
+                  {children}
+                </blockquote>
+              </div>
             );
           },
           table({ node, children, ...props }) {
