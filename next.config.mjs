@@ -20,6 +20,7 @@ const nextConfig = {
         hostname: "**",
       },
     ],
+  },
   async redirects() {
     return [
       {
