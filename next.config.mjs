@@ -20,6 +20,24 @@ const nextConfig = {
         hostname: "**",
       },
     ],
+  async redirects() {
+    return [
+      {
+        source: "/category-sitemap.xml",
+        destination: "/sitemap.xml",
+        permanent: true,
+      },
+      {
+        source: "/post-sitemap.xml",
+        destination: "/sitemap.xml",
+        permanent: true,
+      },
+      {
+        source: "/page-sitemap.xml",
+        destination: "/sitemap.xml",
+        permanent: true,
+      },
+    ];
   },
   async headers() {
     return [
