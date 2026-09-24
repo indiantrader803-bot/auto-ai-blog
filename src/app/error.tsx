@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AlertTriangle, RefreshCw, Home } from "lucide-react";
 
@@ -11,23 +11,52 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const [retrying, setRetrying] = useState(false);
+
   useEffect(() => {
     console.error("Page error caught by boundary:", error);
-  }, [error]);
+
+    // Auto-heal temporary hydration mismatches or 3rd-party script anomalies silently
+    if (typeof window !== "undefined") {
+      const msg = error?.message?.toLowerCase() || "";
+      const isHydrationOrDomMismatch =
+        msg.includes("hydration") ||
+        msg.includes("minified react error") ||
+        msg.includes("failed to execute 'appendchild'") ||
+        msg.includes("target container is not a dom element") ||
+        msg.includes("text content does not match");
+
+      const sessionKey = "error_boundary_retry_timestamp";
+      const lastRetry = sessionStorage.getItem(sessionKey);
+      const now = Date.now();
+
+      // Automatically retry once if it occurred due to DOM mismatch
+      if (isHydrationOrDomMismatch && (!lastRetry || now - Number(lastRetry) > 15000)) {
+        sessionStorage.setItem(sessionKey, String(now));
+        setRetrying(true);
+        const timer = setTimeout(() => {
+          reset();
+        }, 600);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [error, reset]);
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center p-6">
       <div className="max-w-md w-full p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-6">
         <div className="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-500 border border-amber-500/20 flex items-center justify-center mx-auto">
-          <AlertTriangle className="w-8 h-8" />
+          <AlertTriangle className="w-8 h-8 animate-pulse" />
         </div>
 
         <div className="space-y-2">
           <h2 className="text-xl font-bold font-serif text-slate-900 dark:text-white">
-            Something went wrong
+            {retrying ? "Restoring View..." : "Something went wrong"}
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-            A temporary client exception occurred while rendering this view. You can reload or return to the main feed.
+            {retrying
+              ? "Reconnecting to TheSmartMag live feed automatically..."
+              : "A temporary client exception occurred while rendering this view. You can reload or return to the main feed."}
           </p>
         </div>
 
