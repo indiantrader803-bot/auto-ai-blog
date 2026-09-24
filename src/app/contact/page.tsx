@@ -97,14 +97,24 @@ export default function ContactPage() {
 
         <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
           {submitted ? (
-            <div className="text-center py-8 space-y-3">
-              <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto" />
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-                Message Received!
+            <div className="text-center py-8 space-y-4">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto border border-emerald-500/20">
+                <CheckCircle className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-black text-slate-900 dark:text-white">
+                Inquiry Processed & Solution Dispatched!
               </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                Thank you for reaching out. Our editorial team will review and respond shortly.
+              <p className="text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
+                Thank you for reaching out. Our dedicated AI support agent has analyzed your question and sent a full step-by-step solution to your email from <strong className="text-slate-900 dark:text-white font-mono">query@thesmartmag.com</strong>.
               </p>
+              <div className="pt-2">
+                <button
+                  onClick={() => setSubmitted(false)}
+                  className="px-5 py-2 rounded-xl text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 transition-colors cursor-pointer"
+                >
+                  Submit Another Question →
+                </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">

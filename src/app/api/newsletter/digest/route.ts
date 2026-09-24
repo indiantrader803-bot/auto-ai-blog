@@ -99,12 +99,6 @@ async function handleDigest(req: NextRequest) {
       console.warn("Could not query DB subscribers:", err.message);
     }
 
-    // Always include admin as a recipient for audit/verification
-    const adminEmail = process.env.ADMIN_EMAIL || "arnab.laha2018@gmail.com";
-    if (!recipientMap.has(adminEmail)) {
-      recipientMap.set(adminEmail, { email: adminEmail, name: "Admin" });
-    }
-
     const recipients = Array.from(recipientMap.values());
 
     // 3. If send=true is requested and authorized, dispatch emails

@@ -63,8 +63,6 @@ async function handleCron(req: NextRequest) {
           if (!recipientMap.has(clean)) recipientMap.set(clean, { email: clean });
         }
       }
-      const adminEmail = process.env.ADMIN_EMAIL || "arnab.laha2018@gmail.com";
-      if (!recipientMap.has(adminEmail)) recipientMap.set(adminEmail, { email: adminEmail, name: "Admin" });
 
       if (topPosts.length > 0 && recipientMap.size > 0) {
         const { sendDailyVipViralDigestEmail } = await import("@/lib/emailNotification");
