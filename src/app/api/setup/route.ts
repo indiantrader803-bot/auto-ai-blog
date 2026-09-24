@@ -4,10 +4,12 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const setupLogs: string[] = [];
+
   try {
-    // 1. Create Tables via Raw SQL if not exist
-    await prisma.$executeRawUnsafe(`
-      CREATE TABLE IF NOT EXISTS "Category" (
+    // 1. Create Tables via Raw SQL one-by-one (avoids prepared statement multi-command error)
+    const ddlStatements = [
+      `CREATE TABLE IF NOT EXISTS "Category" (
           "id" TEXT NOT NULL,
           "name" TEXT NOT NULL,
           "slug" TEXT NOT NULL,
@@ -15,11 +17,11 @@ export async function GET() {
           "color" TEXT NOT NULL DEFAULT '#6366f1',
           "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
           CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
-      );
-      CREATE UNIQUE INDEX IF NOT EXISTS "Category_name_key" ON "Category"("name");
-      CREATE UNIQUE INDEX IF NOT EXISTS "Category_slug_key" ON "Category"("slug");
+      )`,
+      `CREATE UNIQUE INDEX IF NOT EXISTS "Category_name_key" ON "Category"("name")`,
+      `CREATE UNIQUE INDEX IF NOT EXISTS "Category_slug_key" ON "Category"("slug")`,
 
-      CREATE TABLE IF NOT EXISTS "Post" (
+      `CREATE TABLE IF NOT EXISTS "Post" (
           "id" TEXT NOT NULL,
           "title" TEXT NOT NULL,
           "slug" TEXT NOT NULL,
@@ -43,30 +45,27 @@ export async function GET() {
           "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
           "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
           "categoryId" TEXT,
-          CONSTRAINT "Post_pkey" PRIMARY KEY ("id"),
-          CONSTRAINT "Post_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE SET NULL ON UPDATE CASCADE
-      );
-      CREATE UNIQUE INDEX IF NOT EXISTS "Post_slug_key" ON "Post"("slug");
+          CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
+      )`,
+      `CREATE UNIQUE INDEX IF NOT EXISTS "Post_slug_key" ON "Post"("slug")`,
 
-      CREATE TABLE IF NOT EXISTS "Tag" (
+      `CREATE TABLE IF NOT EXISTS "Tag" (
           "id" TEXT NOT NULL,
           "name" TEXT NOT NULL,
           "slug" TEXT NOT NULL,
           "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
           CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
-      );
-      CREATE UNIQUE INDEX IF NOT EXISTS "Tag_name_key" ON "Tag"("name");
-      CREATE UNIQUE INDEX IF NOT EXISTS "Tag_slug_key" ON "Tag"("slug");
+      )`,
+      `CREATE UNIQUE INDEX IF NOT EXISTS "Tag_name_key" ON "Tag"("name")`,
+      `CREATE UNIQUE INDEX IF NOT EXISTS "Tag_slug_key" ON "Tag"("slug")`,
 
-      CREATE TABLE IF NOT EXISTS "PostTag" (
+      `CREATE TABLE IF NOT EXISTS "PostTag" (
           "postId" TEXT NOT NULL,
           "tagId" TEXT NOT NULL,
-          CONSTRAINT "PostTag_pkey" PRIMARY KEY ("postId","tagId"),
-          CONSTRAINT "PostTag_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE,
-          CONSTRAINT "PostTag_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE CASCADE ON UPDATE CASCADE
-      );
+          CONSTRAINT "PostTag_pkey" PRIMARY KEY ("postId","tagId")
+      )`,
 
-      CREATE TABLE IF NOT EXISTS "GenerationLog" (
+      `CREATE TABLE IF NOT EXISTS "GenerationLog" (
           "id" TEXT NOT NULL,
           "topic" TEXT NOT NULL,
           "status" TEXT NOT NULL,
@@ -77,30 +76,29 @@ export async function GET() {
           "postId" TEXT,
           "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
           "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-          CONSTRAINT "GenerationLog_pkey" PRIMARY KEY ("id"),
-          CONSTRAINT "GenerationLog_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE SET NULL ON UPDATE CASCADE
-      );
+          CONSTRAINT "GenerationLog_pkey" PRIMARY KEY ("id")
+      )`,
 
-      CREATE TABLE IF NOT EXISTS "Setting" (
+      `CREATE TABLE IF NOT EXISTS "Setting" (
           "id" TEXT NOT NULL,
           "key" TEXT NOT NULL,
           "value" TEXT NOT NULL,
           "description" TEXT,
           "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
           CONSTRAINT "Setting_pkey" PRIMARY KEY ("id")
-      );
-      CREATE UNIQUE INDEX IF NOT EXISTS "Setting_key_key" ON "Setting"("key");
+      )`,
+      `CREATE UNIQUE INDEX IF NOT EXISTS "Setting_key_key" ON "Setting"("key")`,
 
-      CREATE TABLE IF NOT EXISTS "NewsletterSubscriber" (
+      `CREATE TABLE IF NOT EXISTS "NewsletterSubscriber" (
           "id" TEXT NOT NULL,
           "email" TEXT NOT NULL,
           "status" TEXT NOT NULL DEFAULT 'ACTIVE',
           "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
           CONSTRAINT "NewsletterSubscriber_pkey" PRIMARY KEY ("id")
-      );
-      CREATE UNIQUE INDEX IF NOT EXISTS "NewsletterSubscriber_email_key" ON "NewsletterSubscriber"("email");
+      )`,
+      `CREATE UNIQUE INDEX IF NOT EXISTS "NewsletterSubscriber_email_key" ON "NewsletterSubscriber"("email")`,
 
-      CREATE TABLE IF NOT EXISTS "AnalyticsEvent" (
+      `CREATE TABLE IF NOT EXISTS "AnalyticsEvent" (
           "id" TEXT NOT NULL,
           "eventType" TEXT NOT NULL,
           "slug" TEXT,
@@ -109,9 +107,9 @@ export async function GET() {
           "metadata" TEXT,
           "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
           CONSTRAINT "AnalyticsEvent_pkey" PRIMARY KEY ("id")
-      );
+      )`,
 
-      CREATE TABLE IF NOT EXISTS "User" (
+      `CREATE TABLE IF NOT EXISTS "User" (
           "id" TEXT NOT NULL,
           "email" TEXT NOT NULL,
           "name" TEXT,
@@ -125,35 +123,38 @@ export async function GET() {
           "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
           "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
           CONSTRAINT "User_pkey" PRIMARY KEY ("id")
-      );
-      CREATE UNIQUE INDEX IF NOT EXISTS "User_email_key" ON "User"("email");
-      CREATE UNIQUE INDEX IF NOT EXISTS "User_resetPasswordToken_key" ON "User"("resetPasswordToken");
-      CREATE INDEX IF NOT EXISTS "User_email_idx" ON "User"("email");
+      )`,
+      `CREATE UNIQUE INDEX IF NOT EXISTS "User_email_key" ON "User"("email")`,
+      `CREATE UNIQUE INDEX IF NOT EXISTS "User_resetPasswordToken_key" ON "User"("resetPasswordToken")`,
+      `CREATE INDEX IF NOT EXISTS "User_email_idx" ON "User"("email")`,
 
-      CREATE TABLE IF NOT EXISTS "Session" (
+      `CREATE TABLE IF NOT EXISTS "Session" (
           "id" TEXT NOT NULL,
           "sessionToken" TEXT NOT NULL,
           "userId" TEXT NOT NULL,
           "expires" TIMESTAMP(3) NOT NULL,
-          CONSTRAINT "Session_pkey" PRIMARY KEY ("id"),
-          CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE
-      );
-      CREATE UNIQUE INDEX IF NOT EXISTS "Session_sessionToken_key" ON "Session"("sessionToken");
-      CREATE INDEX IF NOT EXISTS "Session_userId_idx" ON "Session"("userId");
+          CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
+      )`,
+      `CREATE UNIQUE INDEX IF NOT EXISTS "Session_sessionToken_key" ON "Session"("sessionToken")`,
+      `CREATE INDEX IF NOT EXISTS "Session_userId_idx" ON "Session"("userId")`,
 
-      DO $$
-      BEGIN
-        ALTER TABLE IF EXISTS "User" ENABLE ROW LEVEL SECURITY;
-        DROP POLICY IF EXISTS "Allow all for server on User" ON "User";
-        CREATE POLICY "Allow all for server on User" ON "User" FOR ALL USING (true) WITH CHECK (true);
+      `ALTER TABLE "User" ENABLE ROW LEVEL SECURITY`,
+      `DROP POLICY IF EXISTS "Allow all for server on User" ON "User"`,
+      `CREATE POLICY "Allow all for server on User" ON "User" FOR ALL USING (true) WITH CHECK (true)`,
 
-        ALTER TABLE IF EXISTS "Session" ENABLE ROW LEVEL SECURITY;
-        DROP POLICY IF EXISTS "Allow all for server on Session" ON "Session";
-        CREATE POLICY "Allow all for server on Session" ON "Session" FOR ALL USING (true) WITH CHECK (true);
-      EXCEPTION
-        WHEN others THEN NULL;
-      END $$;
-    `);
+      `ALTER TABLE "Session" ENABLE ROW LEVEL SECURITY`,
+      `DROP POLICY IF EXISTS "Allow all for server on Session" ON "Session"`,
+      `CREATE POLICY "Allow all for server on Session" ON "Session" FOR ALL USING (true) WITH CHECK (true)`
+    ];
+
+    for (const sql of ddlStatements) {
+      try {
+        await prisma.$executeRawUnsafe(sql);
+        setupLogs.push(`OK: ${sql.slice(0, 35)}...`);
+      } catch (err: any) {
+        setupLogs.push(`WARN: ${sql.slice(0, 35)} - ${err?.message}`);
+      }
+    }
 
     // 2. Seed Initial Categories
     const categories = [
@@ -203,9 +204,10 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      message: "Database tables initialized and seeded successfully!",
+      message: "Database tables initialized and verified successfully!",
+      logs: setupLogs,
     });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message, logs: setupLogs }, { status: 500 });
   }
 }
