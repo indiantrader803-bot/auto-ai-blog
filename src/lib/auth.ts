@@ -107,3 +107,18 @@ export async function getCurrentUser() {
     return null;
   }
 }
+
+/**
+ * 👑 Superadmin Check
+ * Returns true if the given user is a designated superadmin.
+ */
+export const SUPERADMIN_EMAILS = [
+  "arnab.laha2018@gmail.com",
+  "indiantrader803@gmail.com",
+  "admin@thesmartmag.com",
+];
+
+export function isSuperAdmin(user: { email: string; vipTier?: string | null } | null): boolean {
+  if (!user) return false;
+  return user.vipTier === "SUPERADMIN" || SUPERADMIN_EMAILS.includes(user.email.toLowerCase());
+}

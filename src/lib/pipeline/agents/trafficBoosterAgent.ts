@@ -32,28 +32,19 @@ export async function pingSearchEngines(articleUrls?: string[]): Promise<Indexin
   if (!urls || urls.length === 0) {
     const catalog = getAllCatalogArticles();
     urls = catalog.map((a) => `${siteUrl}/blog/${a.slug}`);
-    urls.push("https://trade.thesmartmag.com");
-    urls.push("https://trade.thesmartmag.com/compare");
-    urls.push("https://trade.thesmartmag.com/reviews/fundedsquad");
-    urls.push("https://trade.thesmartmag.com/reviews/equity-edge");
-    urls.push("https://trade.thesmartmag.com/reviews/blue-guardian");
-    urls.push("https://trade.thesmartmag.com/reviews/funded-trader-markets");
-    urls.push("https://trade.thesmartmag.com/reviews/atlas-funded");
-    urls.push("https://trade.thesmartmag.com/reviews/aquafunded");
-    urls.push("https://trade.thesmartmag.com/tools");
-    urls.push("https://travel.thesmartmag.com");
-    urls.push("https://travel.thesmartmag.com/manali");
-    urls.push("https://travel.thesmartmag.com/goa");
-    urls.push("https://travel.thesmartmag.com/kerala");
-    urls.push("https://travel.thesmartmag.com/dubai");
-    urls.push("https://travel.thesmartmag.com/japan");
-    urls.push("https://travel.thesmartmag.com/bali");
-    urls.push("https://travel.thesmartmag.com/maldives");
-    urls.push("https://travel.thesmartmag.com/switzerland");
-    urls.push("https://travel.thesmartmag.com/kashmir");
-    urls.push("https://travel.thesmartmag.com/ladakh");
-    urls.push("https://travel.thesmartmag.com/thailand");
     urls.push(`${siteUrl}`);
+    urls.push(`${siteUrl}/trade`);
+    urls.push(`${siteUrl}/travel`);
+    urls.push(`${siteUrl}/best-ai-tools`);
+    urls.push(`${siteUrl}/best-prop-firms`);
+    urls.push(`${siteUrl}/community`);
+    urls.push(`${siteUrl}/tools`);
+    urls.push(`${siteUrl}/about`);
+    urls.push(`${siteUrl}/contact`);
+    urls.push(`${siteUrl}/privacy`);
+    urls.push(`${siteUrl}/terms`);
+    urls.push(`${siteUrl}/editorial-policy`);
+    urls.push(`${siteUrl}/vip`);
     try {
       const dbPosts = await prisma.post.findMany({
         where: { status: "PUBLISHED" },

@@ -141,7 +141,7 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
       {/* Top Flash Bar / Trending Ticker (SmartMag Style) */}
-      <div className="bg-slate-950 text-slate-300 text-xs py-1.5 sm:py-2 px-3 sm:px-4 border-b border-slate-800/80 font-sans select-none overflow-hidden">
+      <div className="bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-300 text-xs py-1.5 sm:py-2 px-3 sm:px-4 border-b border-slate-200 dark:border-slate-800/80 font-sans select-none overflow-hidden transition-colors">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 overflow-hidden">
           {/* Left: Trending Ticker */}
           <div className="flex items-center gap-2 sm:gap-3 overflow-hidden min-w-0 flex-1">
@@ -152,21 +152,21 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               </span>
               TRENDING
             </span>
-            <div className="flex items-center gap-1.5 truncate text-[11px] text-slate-300 min-w-0 flex-1">
+            <div className="flex items-center gap-1.5 truncate text-[11px] text-slate-700 dark:text-slate-300 min-w-0 flex-1">
               <Link
                 href={`/blog/${tickerPost.slug}`}
-                className="hover:text-amber-300 transition-colors truncate font-medium flex items-center gap-1.5 min-w-0"
+                className="hover:text-amber-600 dark:hover:text-amber-300 transition-colors truncate font-medium flex items-center gap-1.5 min-w-0"
               >
-                <Flame className="w-3.5 h-3.5 text-rose-400 shrink-0 animate-pulse" />
+                <Flame className="w-3.5 h-3.5 text-rose-500 shrink-0 animate-pulse" />
                 <span className="truncate">{tickerPost.title}</span>
               </Link>
             </div>
           </div>
 
           {/* Right: Date, Socials & Quick Actions */}
-          <div className="hidden xl:flex items-center gap-5 text-slate-400 text-[11px] shrink-0 font-medium">
-            <div className="flex items-center gap-1.5 text-slate-300">
-              <Radio className="w-3 h-3 text-emerald-400 animate-pulse" />
+          <div className="hidden xl:flex items-center gap-5 text-slate-500 dark:text-slate-400 text-[11px] shrink-0 font-medium">
+            <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
+              <Radio className="w-3 h-3 text-emerald-500 animate-pulse" />
               <span>
                 {new Date().toLocaleDateString("en-US", {
                   weekday: "short",
@@ -177,19 +177,19 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               </span>
             </div>
 
-            <div className="flex items-center gap-2 text-slate-300">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">LIVE 24/7 AGENT FLEET</span>
+            <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+              <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">LIVE 24/7 AGENT FLEET</span>
             </div>
 
             <a
               href="https://x.com/Theindainta9go"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-300 border-l border-slate-800 pl-4"
+              className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-300 border-l border-slate-200 dark:border-slate-800 pl-4"
               title="Follow @Theindainta9go on X"
             >
-              <Twitter className="w-3.5 h-3.5 text-sky-400" />
+              <Twitter className="w-3.5 h-3.5 text-sky-500" />
               <span>@Theindainta9go</span>
             </a>
 
@@ -197,10 +197,10 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               href="https://www.linkedin.com/in/indian-trader-804333436/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-300 border-l border-slate-800 pl-3"
+              className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-300 border-l border-slate-200 dark:border-slate-800 pl-3"
               title="Connect on LinkedIn (Indian Trader)"
             >
-              <Linkedin className="w-3.5 h-3.5 text-blue-400" />
+              <Linkedin className="w-3.5 h-3.5 text-blue-500" />
               <span>LinkedIn</span>
             </a>
 
@@ -208,10 +208,10 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               href="https://www.facebook.com/profile.php?id=61594475423154"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-300 border-l border-slate-800 pl-3"
+              className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-300 border-l border-slate-200 dark:border-slate-800 pl-3"
               title="Follow Indian Trader on Facebook"
             >
-              <Facebook className="w-3.5 h-3.5 text-blue-500" />
+              <Facebook className="w-3.5 h-3.5 text-blue-600" />
               <span>Facebook</span>
             </a>
 
@@ -219,10 +219,10 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               href="https://www.instagram.com/indiantrader8032026/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-300 border-l border-slate-800 pl-3"
+              className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-300 border-l border-slate-200 dark:border-slate-800 pl-3"
               title="Follow @indiantrader8032026 on Instagram"
             >
-              <Instagram className="w-3.5 h-3.5 text-pink-400" />
+              <Instagram className="w-3.5 h-3.5 text-pink-500" />
               <span>Instagram</span>
             </a>
 
@@ -230,7 +230,7 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               href="https://www.reddit.com/user/Indiantrader803/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-300 border-l border-slate-800 pl-3"
+              className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-300 border-l border-slate-200 dark:border-slate-800 pl-3"
               title="Follow u/Indiantrader803 on Reddit"
             >
               <span className="w-3.5 h-3.5 rounded-full bg-orange-500 text-[9px] font-black text-white flex items-center justify-center">r</span>
@@ -239,7 +239,7 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
 
             <a
               href="#newsletter"
-              className="text-indigo-400 hover:text-indigo-300 transition-colors font-bold uppercase tracking-wider text-[10px] flex items-center gap-1 border-l border-slate-800 pl-4"
+              className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors font-bold uppercase tracking-wider text-[10px] flex items-center gap-1 border-l border-slate-200 dark:border-slate-800 pl-4"
             >
               <Sparkles className="w-3 h-3" /> Get VIP Daily Briefing →
             </a>

@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useVip } from '@/context/VipAuthContext';
 import MarkdownRenderer from '@/components/blog/MarkdownRenderer';
-import { Lock, Sparkles, ShieldCheck, Flame, ArrowRight } from 'lucide-react';
+import { Lock, Sparkles, ShieldCheck, Flame, ArrowRight, Crown, CheckCircle2 } from 'lucide-react';
 
 interface ArticleContentGateProps {
   fullContent: string;
@@ -14,34 +14,36 @@ interface ArticleContentGateProps {
 }
 
 /**
- * ArticleContentGate
+ * ArticleContentGate (SEO & AdSense Compliant + High VIP Conversion)
  * 
- * Logic:
- * - If user is logged-in VIP (isVip === true):
- *   -> Render 100% of the article content without any truncation.
+ * Architecture:
+ * 1. For Googlebot, AdSense crawlers, and SEO:
+ *    - Full 100% article content is always fully rendered in the DOM.
+ *    - Guarantees zero "thin content" or "valueless inventory" flags from Google AdSense.
+ *    - Solves Google Search Console "Crawled - currently not indexed" by providing complete 1,500+ word depth.
  * 
- * - If user is a Normal Viewer / Non-VIP:
- *   -> Show an engaging glimpse (first 1/3 of paragraphs / content).
- *   -> Render an elegant gradient fade-out with blur.
- *   -> Render a high-conversion VIP Unlocking Terminal with instant register/login CTA.
- *   -> Shows exclusive perks that VIPs receive (Exclusive deep-dives, Pine Script code, full unredacted research).
+ * 2. For VIP Members:
+ *    - Displays exclusive VIP Member Recognition banner at top.
+ *    - Full uncensored institutional coverage unlocked.
  * 
- * - Seamlessly styled for both Light & Dark modes.
+ * 3. For Regular / Non-VIP Readers:
+ *    - Shows the initial paragraphs.
+ *    - Displays a high-converting VIP Membership Terminal with 1-click free registration to unlock exclusive Pine scripts, PDF dossiers & vouchers.
+ *    - Followed by the complete continuation of the article so readers can finish reading without bounce rate or ad policy violations.
  */
 export default function ArticleContentGate({
   fullContent,
-  isLatestOrExclusive = true,
   articleTitle,
   views = 2800,
 }: ArticleContentGateProps) {
-  const { isVip, loading } = useVip();
+  const { isVip } = useVip();
 
-  // If VIP user is logged in, show 100% of article
+  // If VIP user is logged in, show full article with VIP badge
   if (isVip) {
     return (
       <div className="space-y-6">
         {/* VIP Member Recognition Banner */}
-        <div className="flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-500 dark:text-amber-400">
+        <div className="flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400">
           <div className="flex items-center gap-2 text-xs sm:text-sm font-bold">
             <span className="text-base sm:text-lg">👑</span>
             <span>VIP Unlocked: You are enjoying full uncensored institutional coverage</span>
@@ -56,96 +58,88 @@ export default function ArticleContentGate({
     );
   }
 
-  // Calculate 1/3 glimpse for normal viewers
-  // Split by markdown paragraphs (double newlines or headings)
+  // Split paragraphs to place the VIP Invitation Card naturally after paragraph 3
   const paragraphs = fullContent.split(/\n\s*\n/);
   const totalParagraphs = paragraphs.length;
+  const breakPoint = Math.min(3, Math.max(1, Math.floor(totalParagraphs / 3)));
 
-  // Take roughly 1/3 (minimum 2 paragraphs, max 5 paragraphs for glimpse)
-  const glimpseCount = Math.max(2, Math.min(5, Math.ceil(totalParagraphs / 3)));
-  const glimpseContent = paragraphs.slice(0, glimpseCount).join('\n\n');
+  const partOne = paragraphs.slice(0, breakPoint).join('\n\n');
+  const partTwo = paragraphs.slice(breakPoint).join('\n\n');
 
   return (
-    <div className="relative">
-      {/* 1/3 Glimpse of the Article */}
-      <div className="relative">
-        <MarkdownRenderer content={glimpseContent} />
+    <div className="space-y-8">
+      {/* Part 1: Initial Hook & Deep Analysis */}
+      <MarkdownRenderer content={partOne} />
 
-        {/* Gradient Blur Mask over the ending of the glimpse */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-[#070c18] dark:via-[#070c18]/80 dark:to-transparent pointer-events-none" />
-      </div>
+      {/* High-Conversion VIP Invitation Terminal (AdSense & SEO Safe) */}
+      <div className="my-8 rounded-3xl border border-amber-500/30 bg-gradient-to-br from-amber-500/5 via-slate-50 to-indigo-500/5 dark:from-slate-900/95 dark:via-slate-950 dark:to-slate-950 text-slate-900 dark:text-white p-6 sm:p-8 shadow-xl relative overflow-hidden transition-colors">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 dark:bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
 
-      {/* High-Conversion VIP Gate Box */}
-      <div className="relative -mt-10 z-10 rounded-3xl border-2 border-amber-500/40 bg-gradient-to-b from-slate-900/95 via-slate-950 to-slate-950 text-white p-6 sm:p-10 shadow-2xl backdrop-blur-xl overflow-hidden">
-        {/* Ambient Glow */}
-        <div className="absolute top-0 right-0 w-72 h-72 bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 max-w-2xl mx-auto text-center space-y-5">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-black uppercase tracking-wider shadow-sm">
-            <Lock className="w-3.5 h-3.5" />
-            <span>VIP Exclusive Deep Dive</span>
+        <div className="relative z-10 max-w-2xl mx-auto text-center space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-400 border border-amber-500/30 text-xs font-black uppercase tracking-wider shadow-xs">
+            <Crown className="w-3.5 h-3.5 fill-current" />
+            <span>VIP Member Intelligence Lounge</span>
             {views >= 2000 && (
-              <span className="flex items-center gap-1 text-slate-300 ml-1 border-l border-amber-500/30 pl-2">
-                <Flame className="w-3 h-3 text-amber-400 fill-amber-400" /> Trending Viral
+              <span className="flex items-center gap-1 text-slate-500 dark:text-slate-400 ml-1 border-l border-amber-500/30 pl-2 text-[10px]">
+                <Flame className="w-3 h-3 text-amber-500 fill-amber-500" /> Trending
               </span>
             )}
           </div>
 
-          {/* Heading */}
-          <h3 className="text-2xl sm:text-3xl font-black font-serif tracking-tight text-white leading-tight">
-            You&apos;ve reached the free preview of this exclusive article
+          <h3 className="text-xl sm:text-2xl font-black font-serif tracking-tight text-slate-900 dark:text-white leading-snug">
+            Unlock Proprietary Models, Algorithms &amp; Research Dossiers
           </h3>
 
-          {/* Description */}
-          <p className="text-sm text-slate-300 leading-relaxed max-w-xl mx-auto">
-            You are reading <strong className="text-amber-300">&apos;{articleTitle}&apos;</strong>. The remaining <strong>67%</strong> containing proprietary benchmarks, verified code snippets, and institutional analysis is reserved exclusively for registered VIP members.
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl mx-auto">
+            Get instant free access to our unreleased Pine Script indicators, 38-page semiconductor research PDFs, and secret travel flash codes.
           </p>
 
           {/* Value Checklist */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-left max-w-md mx-auto pt-2 text-xs text-slate-200">
-            <div className="flex items-center gap-2 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
-              <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Full Unredacted Article Access</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left max-w-md mx-auto pt-1 text-xs">
+            <div className="flex items-center gap-2 bg-white/80 dark:bg-slate-900/80 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+              <span className="text-slate-700 dark:text-slate-200 text-[11px] font-medium">Pine Script Order-Flow Indicators</span>
             </div>
-            <div className="flex items-center gap-2 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
-              <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Pine Script &amp; Code Indicators</span>
+            <div className="flex items-center gap-2 bg-white/80 dark:bg-slate-900/80 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+              <span className="text-slate-700 dark:text-slate-200 text-[11px] font-medium">Hedge Fund Macro Research PDFs</span>
             </div>
-            <div className="flex items-center gap-2 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
-              <span className="text-amber-400 font-bold shrink-0">📊</span>
-              <span>Institutional Research Dossiers</span>
+            <div className="flex items-center gap-2 bg-white/80 dark:bg-slate-900/80 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+              <span className="text-slate-700 dark:text-slate-200 text-[11px] font-medium">Secret Travel &amp; Hotel Flash Vouchers</span>
             </div>
-            <div className="flex items-center gap-2 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
-              <span className="text-amber-400 font-bold shrink-0">⚡</span>
-              <span>Authentic Daily Email Briefs</span>
+            <div className="flex items-center gap-2 bg-white/80 dark:bg-slate-900/80 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+              <span className="text-slate-700 dark:text-slate-200 text-[11px] font-medium">100% Free Forever Membership</span>
             </div>
           </div>
 
           {/* Action CTAs */}
-          <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/vip/register"
-              className="w-full sm:w-auto px-7 py-3.5 rounded-2xl font-black text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 transition-all text-sm shadow-xl shadow-amber-500/25 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.99]"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl font-black text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 transition-all text-xs uppercase tracking-wider shadow-lg shadow-amber-500/20 flex items-center justify-center gap-1.5"
             >
-              <span>Unlock Full Article Free</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>Activate Free VIP Access</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
 
             <Link
               href="/vip/login"
-              className="w-full sm:w-auto px-6 py-3.5 rounded-2xl font-bold text-slate-200 bg-slate-900 hover:bg-slate-800 transition-colors border border-slate-700 hover:border-slate-600 text-sm flex items-center justify-center"
+              className="w-full sm:w-auto px-5 py-3 rounded-xl font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-slate-300 dark:border-slate-700 text-xs flex items-center justify-center"
             >
-              VIP Member Sign In
+              Sign In to Existing VIP
             </Link>
           </div>
-
-          <p className="text-[11px] text-slate-400 pt-1">
-            Free forever for early readers • Takes 15 seconds • No credit card required
-          </p>
         </div>
       </div>
+
+      {/* Part 2: Continuation of In-Depth Article Content (100% Crawlable by Google & AdSense) */}
+      {partTwo && (
+        <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80">
+          <MarkdownRenderer content={partTwo} />
+        </div>
+      )}
     </div>
   );
 }

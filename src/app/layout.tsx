@@ -148,6 +148,25 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Instant Theme Initializer: prevents any dark flash when in light mode */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var stored = localStorage.getItem('theme');
+                  var isDark = stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                  if (isDark) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+
         <meta name="google-site-verification" content="-PKXYTi8BG4RF03is2wZFBpFZD949436znZp5h9agKI" />
         <meta name="google-site-verification" content="4rMlrKZ5JALf5abCB0z2hxmP7sqgeFEoQVzhWosm3b0" />
         <meta name="google-site-verification" content="googlea87b1dee8479f0e4" />
@@ -158,7 +177,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
 
-        {/* Google AdSense Account Verification Meta & Ad Engine */}
+        {/* Google AdSense Account Verification Meta & Official Ad Engine Script */}
         <meta name="google-adsense-account" content="ca-pub-9768860457233655" />
         <script
           async

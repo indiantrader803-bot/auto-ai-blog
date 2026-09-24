@@ -137,6 +137,15 @@ export default function AdminSidebar() {
       activeBg: "bg-gradient-to-r from-slate-700 to-slate-800",
       iconBg: "bg-purple-500/15 text-purple-400",
     },
+    {
+      href: "/admin/vip",
+      label: "VIP Members & Superadmin",
+      shortLabel: "VIP Admin",
+      icon: Lock,
+      color: "text-amber-400",
+      activeBg: "bg-gradient-to-r from-amber-600 to-yellow-600",
+      iconBg: "bg-amber-500/15 text-amber-400",
+    },
   ];
 
   const handleLogout = () => {

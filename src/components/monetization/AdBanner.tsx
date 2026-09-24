@@ -11,6 +11,41 @@ interface AdBannerProps {
   className?: string;
 }
 
+// Multi-geo currency & region detection
+interface GeoInfo {
+  region: "india" | "uk" | "eu" | "us" | "global";
+  currency: "INR" | "GBP" | "EUR" | "USD";
+  symbol: string;
+  flag: string;
+}
+
+function detectGeo(): GeoInfo {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    if (tz.includes("Kolkata") || tz.includes("Calcutta") || tz.includes("Asia/Dhaka") || tz.includes("Asia/Karachi")) {
+      return { region: "india", currency: "INR", symbol: "₹", flag: "🇮🇳" };
+    }
+    if (tz.includes("Europe/London") || tz.includes("Europe/Dublin")) {
+      return { region: "uk", currency: "GBP", symbol: "£", flag: "🇬🇧" };
+    }
+    if (tz.startsWith("Europe/")) {
+      return { region: "eu", currency: "EUR", symbol: "€", flag: "🇪🇺" };
+    }
+  } catch {}
+  return { region: "us", currency: "USD", symbol: "$", flag: "🇺🇸" };
+}
+
+// Geo-aware price formatter
+function formatGeoPrice(usdAmount: number, geo: GeoInfo): string {
+  const rates: Record<string, number> = { USD: 1, INR: 83.5, GBP: 0.79, EUR: 0.92 };
+  const rate = rates[geo.currency] || 1;
+  const converted = Math.round(usdAmount * rate);
+  if (geo.currency === "INR") return `₹${converted.toLocaleString("en-IN")}`;
+  if (geo.currency === "GBP") return `£${converted}`;
+  if (geo.currency === "EUR") return `€${converted}`;
+  return `$${usdAmount}`;
+}
+
 export default function AdBanner({
   slot = "article-mid",
   format = "horizontal",
@@ -18,6 +53,11 @@ export default function AdBanner({
   className = "",
 }: AdBannerProps) {
   const [creative, setCreative] = useState<DynamicAdCreative>(DYNAMIC_AD_CREATIVES[0]);
+  const [geo, setGeo] = useState<GeoInfo>({ region: "us", currency: "USD", symbol: "$", flag: "🇺🇸" });
+
+  useEffect(() => {
+    setGeo(detectGeo());
+  }, []);
 
   useEffect(() => {
     const matchedSlot = slot.includes("top")
@@ -88,6 +128,10 @@ export default function AdBanner({
     <div className={`my-6 flex flex-col items-center justify-center min-h-[110px] w-full [contain:layout] ${className}`}>
       <div className="w-full max-w-4xl p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl relative overflow-hidden group">
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-transparent pointer-events-none" />
+        {/* Geo Flag — top right corner */}
+        {geo.flag && (
+          <span className="absolute top-2 right-2 text-sm opacity-70" title={`${geo.currency} region`}>{geo.flag}</span>
+        )}
         <div className="flex items-start sm:items-center gap-3.5 relative z-10">
           <div className="w-12 h-12 rounded-xl bg-slate-800/90 border border-slate-700 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 transition-transform">
             {renderIcon(creative.iconType)}
@@ -100,6 +144,12 @@ export default function AdBanner({
               <span className="text-[11px] text-slate-400">
                 {creative.discountText}
               </span>
+              {/* Localized price hint for India/UK/EU */}
+              {geo.region !== "us" && (
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-700/60 text-slate-300 border border-slate-600/50">
+                  {geo.flag} Pay in {geo.currency}
+                </span>
+              )}
             </div>
             <h4 className="text-sm sm:text-base font-bold text-white mt-1">
               {creative.title}
@@ -123,3 +173,4 @@ export default function AdBanner({
     </div>
   );
 }
+
