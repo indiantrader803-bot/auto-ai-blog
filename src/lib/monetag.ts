@@ -12,9 +12,9 @@ export interface MonetagConfig {
 
 export function getMonetagConfig(): MonetagConfig {
   return {
-    pushScript: process.env.NEXT_PUBLIC_MONETAG_PUSH_SCRIPT || '',
-    vignetteScript: process.env.NEXT_PUBLIC_MONETAG_VIGNETTE_SCRIPT || '',
-    bannerZone: process.env.NEXT_PUBLIC_MONETAG_BANNER_ZONE || '',
+    pushScript: process.env.NEXT_PUBLIC_MONETAG_PUSH_SCRIPT || 'https://quge5.com/88/tag.min.js',
+    vignetteScript: process.env.NEXT_PUBLIC_MONETAG_VIGNETTE_SCRIPT || 'https://n6wxm.com/vignette.min.js',
+    bannerZone: process.env.NEXT_PUBLIC_MONETAG_BANNER_ZONE || '11880195',
   };
 }
 

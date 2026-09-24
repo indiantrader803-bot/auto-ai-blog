@@ -22,7 +22,7 @@ export default function MonetagBanner({
   const [useFallback, setUseFallback] = useState(false);
   const { isVip } = useVip();
 
-  const activeZone = zoneId || process.env.NEXT_PUBLIC_MONETAG_BANNER_ZONE || '8888888';
+  const activeZone = zoneId || process.env.NEXT_PUBLIC_MONETAG_BANNER_ZONE || '11880195';
   const isDummyZone = activeZone === '8888888' || !activeZone;
 
   // VIP members get a clean reading experience with zero intrusive third-party ads

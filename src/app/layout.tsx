@@ -185,6 +185,39 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
+        {/* ======================================================== */}
+        {/* 🚀 Monetag Official Multi-Format Ad Engine & Verification */}
+        {/* ======================================================== */}
+
+        {/* 1. Monetag Vignette (Full Screen / Interstitial Ad) - Zone 11802121 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(s){s.dataset.zone='11802121',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));`,
+          }}
+        />
+
+        {/* 2. Monetag MultiTag / In-Page Push & Auto-Optimized Ad Unit - Zone 285853 */}
+        <script
+          src="https://quge5.com/88/tag.min.js"
+          data-zone="285853"
+          async
+          data-cfasync="false"
+        />
+
+        {/* 3. Monetag High-eCPM Smart Tag - Zone 11880194 */}
+        <script
+          src="https://5gvci.com/act/files/tag.min.js?z=11880194"
+          data-cfasync="false"
+          async
+        />
+
+        {/* 4. Monetag Popunder / Direct Tag - Zone 11880195 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(s){s.dataset.zone='11880195',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));`,
+          }}
+        />
+
         {/* JSON-LD Schema.org SEO Structured Data */}
         <script
           type="application/ld+json"
