@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { hashPassword } from "@/lib/auth";
+import { hashPassword, ensureAuthTables } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -22,12 +22,25 @@ export async function POST(req: Request) {
       );
     }
 
-    const user = await prisma.user.findFirst({
-      where: {
-        resetPasswordToken: token,
-        resetPasswordExpires: { gt: new Date() },
-      },
-    });
+    await ensureAuthTables();
+
+    let user;
+    try {
+      user = await prisma.user.findFirst({
+        where: {
+          resetPasswordToken: token,
+          resetPasswordExpires: { gt: new Date() },
+        },
+      });
+    } catch {
+      await ensureAuthTables(true);
+      user = await prisma.user.findFirst({
+        where: {
+          resetPasswordToken: token,
+          resetPasswordExpires: { gt: new Date() },
+        },
+      });
+    }
 
     if (!user) {
       return NextResponse.json(

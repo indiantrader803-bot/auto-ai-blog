@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { hashPassword, createSession, VIP_SESSION_COOKIE } from "@/lib/auth";
+import { hashPassword, createSession, VIP_SESSION_COOKIE, ensureAuthTables, SUPERADMIN_EMAILS } from "@/lib/auth";
 import { sendVipWelcomeEmail } from "@/lib/emailNotification";
 
 export const dynamic = "force-dynamic";
@@ -25,10 +25,22 @@ export async function POST(req: Request) {
 
     const cleanEmail = email.toLowerCase().trim();
 
+    // Ensure database tables exist
+    await ensureAuthTables();
+
     // Check if user already exists
-    const existing = await prisma.user.findUnique({
-      where: { email: cleanEmail },
-    });
+    let existing;
+    try {
+      existing = await prisma.user.findUnique({
+        where: { email: cleanEmail },
+      });
+    } catch (dbErr: any) {
+      // Self-heal: retry after force-creating tables
+      await ensureAuthTables(true);
+      existing = await prisma.user.findUnique({
+        where: { email: cleanEmail },
+      });
+    }
 
     if (existing) {
       return NextResponse.json(
@@ -38,18 +50,35 @@ export async function POST(req: Request) {
     }
 
     const passwordHash = hashPassword(password);
+    const isSuperAdminEmail = SUPERADMIN_EMAILS.includes(cleanEmail);
 
-    // Create user with VIP access
-    const user = await prisma.user.create({
-      data: {
-        email: cleanEmail,
-        name: name ? name.trim() : null,
-        passwordHash,
-        isVip: true,
-        vipTier: "VIP_MEMBER",
-        emailVerified: true,
-      },
-    });
+    // Create user with VIP access (or SUPERADMIN if designated)
+    let user;
+    try {
+      user = await prisma.user.create({
+        data: {
+          email: cleanEmail,
+          name: name ? name.trim() : null,
+          passwordHash,
+          isVip: true,
+          vipTier: isSuperAdminEmail ? "SUPERADMIN" : "VIP_MEMBER",
+          emailVerified: true,
+        },
+      });
+    } catch (createErr: any) {
+      // Self-heal: retry creation once after force table verification
+      await ensureAuthTables(true);
+      user = await prisma.user.create({
+        data: {
+          email: cleanEmail,
+          name: name ? name.trim() : null,
+          passwordHash,
+          isVip: true,
+          vipTier: isSuperAdminEmail ? "SUPERADMIN" : "VIP_MEMBER",
+          emailVerified: true,
+        },
+      });
+    }
 
     // Create session token
     const sessionToken = await createSession(user.id);
@@ -68,7 +97,9 @@ export async function POST(req: Request) {
         isVip: user.isVip,
         vipTier: user.vipTier,
       },
-      message: "VIP Account created successfully!",
+      message: isSuperAdminEmail
+        ? "Superadmin VIP Account activated successfully!"
+        : "VIP Account created successfully!",
     });
 
     // Set HTTP-only secure cookie
@@ -84,7 +115,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("Register API error:", error);
     return NextResponse.json(
-      { error: "Failed to create account. Please try again." },
+      { error: error?.message || "Failed to create account. Please try again." },
       { status: 500 }
     );
   }

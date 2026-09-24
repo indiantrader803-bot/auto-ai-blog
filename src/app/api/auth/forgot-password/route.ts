@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { generateSecureToken } from "@/lib/auth";
+import { generateSecureToken, ensureAuthTables } from "@/lib/auth";
 import { sendPasswordResetEmail } from "@/lib/emailNotification";
 
 export const dynamic = "force-dynamic";
@@ -13,8 +13,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Email is required." }, { status: 400 });
     }
 
+    await ensureAuthTables();
+
     const cleanEmail = email.toLowerCase().trim();
-    const user = await prisma.user.findUnique({ where: { email: cleanEmail } });
+    let user;
+    try {
+      user = await prisma.user.findUnique({ where: { email: cleanEmail } });
+    } catch {
+      await ensureAuthTables(true);
+      user = await prisma.user.findUnique({ where: { email: cleanEmail } });
+    }
 
     // Always return success for security (prevent email enumeration)
     if (!user) {

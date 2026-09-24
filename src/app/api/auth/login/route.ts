@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { verifyPassword, createSession, VIP_SESSION_COOKIE } from "@/lib/auth";
+import { verifyPassword, createSession, VIP_SESSION_COOKIE, ensureAuthTables, SUPERADMIN_EMAILS } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -17,9 +17,21 @@ export async function POST(req: Request) {
 
     const cleanEmail = email.toLowerCase().trim();
 
-    const user = await prisma.user.findUnique({
-      where: { email: cleanEmail },
-    });
+    // Ensure database tables exist
+    await ensureAuthTables();
+
+    let user;
+    try {
+      user = await prisma.user.findUnique({
+        where: { email: cleanEmail },
+      });
+    } catch (dbErr) {
+      // Self-heal: retry after table creation
+      await ensureAuthTables(true);
+      user = await prisma.user.findUnique({
+        where: { email: cleanEmail },
+      });
+    }
 
     if (!user) {
       return NextResponse.json(
@@ -34,6 +46,18 @@ export async function POST(req: Request) {
         { error: "Invalid email or password." },
         { status: 401 }
       );
+    }
+
+    // Auto-promote designated superadmin emails if not already marked
+    if (SUPERADMIN_EMAILS.includes(cleanEmail) && user.vipTier !== "SUPERADMIN") {
+      try {
+        user = await prisma.user.update({
+          where: { id: user.id },
+          data: { vipTier: "SUPERADMIN", isVip: true },
+        });
+      } catch (tierErr) {
+        console.warn("Could not update superadmin tier:", tierErr);
+      }
     }
 
     // Create session
@@ -63,7 +87,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("Login API error:", error);
     return NextResponse.json(
-      { error: "Login failed. Please try again." },
+      { error: error?.message || "Login failed. Please try again." },
       { status: 500 }
     );
   }
