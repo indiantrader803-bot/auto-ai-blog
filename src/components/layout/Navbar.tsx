@@ -26,10 +26,15 @@ import {
   Bot,
   Compass,
   Plane,
+  Crown,
+  User,
+  LogOut,
+  KeyRound,
 } from "lucide-react";
 import SearchModal from "./SearchModal";
 import LanguageSelector from "./LanguageSelector";
 import PushNotificationBanner from "../common/PushNotificationBanner";
+import { useVip } from "@/context/VipAuthContext";
 
 export interface NavCategory {
   id?: string;
@@ -62,9 +67,11 @@ const DEFAULT_CATEGORIES: NavCategory[] = [
 ];
 
 export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps) {
+  const { isVip, user, refreshVipStatus } = useVip();
   const [isDark, setIsDark] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [categories, setCategories] = useState<NavCategory[]>(trendingCategories || DEFAULT_CATEGORIES);
   const [tickerPost, setTickerPost] = useState<{ title: string; slug: string }>(
@@ -359,13 +366,96 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
             </button>
 
-            {/* VIP Lounge CTA Button */}
-            <Link
-              href="/vip"
-              className="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider shadow-md shadow-amber-500/20 transition-all shrink-0 cursor-pointer"
-            >
-              <span>👑 VIP</span>
-            </Link>
+            {/* VIP Authentication / Profile Area */}
+            {user && isVip ? (
+              <div className="relative shrink-0">
+                <button
+                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                  className="flex items-center gap-2 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-gradient-to-r from-amber-500/15 via-teal-500/15 to-indigo-500/15 border border-amber-500/40 hover:border-amber-400 text-slate-900 dark:text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+                  title="VIP Member Menu"
+                >
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-400 text-slate-950 font-black text-[10px] flex items-center justify-center shrink-0 shadow-xs">
+                    {(user.name || user.email)[0].toUpperCase()}
+                  </div>
+                  <span className="hidden sm:inline-block max-w-[90px] truncate text-[11px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                    {user.name?.split(" ")[0] || "VIP"}
+                  </span>
+                  <ChevronDown className="w-3.5 h-3.5 opacity-60" />
+                </button>
+
+                {isProfileMenuOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-40"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                    />
+                    <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-2 z-50 animate-in fade-in-50 zoom-in-95 duration-150">
+                      <div className="p-2.5 pb-2 border-b border-slate-100 dark:border-slate-800">
+                        <div className="flex items-center gap-1.5 text-xs font-black text-slate-900 dark:text-white">
+                          <Crown className="w-3.5 h-3.5 text-amber-500" />
+                          <span className="truncate">{user.name || "VIP Member"}</span>
+                        </div>
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate mt-0.5">{user.email}</p>
+                        <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700">
+                          {user.vipTier || "VIP Member"}
+                        </span>
+                      </div>
+
+                      <div className="py-1">
+                        <Link
+                          href="/vip/profile"
+                          onClick={() => setIsProfileMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold transition-colors"
+                        >
+                          <User className="w-3.5 h-3.5 text-teal-500" />
+                          <span>My VIP Profile</span>
+                        </Link>
+
+                        <Link
+                          href="/vip"
+                          onClick={() => setIsProfileMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold transition-colors"
+                        >
+                          <Crown className="w-3.5 h-3.5 text-amber-500" />
+                          <span>VIP Lounge &amp; Perks</span>
+                        </Link>
+
+                        <Link
+                          href="/vip/profile#security"
+                          onClick={() => setIsProfileMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold transition-colors"
+                        >
+                          <KeyRound className="w-3.5 h-3.5 text-indigo-500" />
+                          <span>Change Password</span>
+                        </Link>
+                      </div>
+
+                      <div className="pt-1 border-t border-slate-100 dark:border-slate-800">
+                        <button
+                          onClick={async () => {
+                            setIsProfileMenuOpen(false);
+                            await fetch("/api/auth/logout", { method: "POST" });
+                            await refreshVipStatus();
+                            window.location.href = "/";
+                          }}
+                          className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 font-bold transition-colors cursor-pointer text-left"
+                        >
+                          <LogOut className="w-3.5 h-3.5" />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/vip/login"
+                className="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider shadow-md shadow-amber-500/20 transition-all shrink-0 cursor-pointer"
+              >
+                <span>👑 VIP</span>
+              </Link>
+            )}
 
             {/* Mobile / Tablet Menu Button */}
             <button
@@ -583,17 +673,65 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               </a>
             </div>
 
-            {/* Subscribe VIP Button */}
-            <div className="pt-2">
-              <a
-                href="#newsletter"
-                onClick={() => setIsMenuOpen(false)}
-                className="flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-xs font-black uppercase tracking-wider w-full shadow-lg shadow-indigo-600/30 text-center"
-              >
-                <Sparkles className="w-4 h-4" />
-                <span>Join VIP Newsletter Free</span>
-              </a>
-            </div>
+            {/* Mobile VIP Area */}
+            {user && isVip ? (
+              <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-2.5">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-400 text-slate-950 font-black text-xs flex items-center justify-center shrink-0 shadow-xs">
+                    {(user.name || user.email)[0].toUpperCase()}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-slate-900 dark:text-white truncate">{user.name || "VIP Member"}</p>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">{user.email}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <Link
+                    href="/vip/profile"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[11px] font-bold text-slate-800 dark:text-slate-200 text-center"
+                  >
+                    <User className="w-3.5 h-3.5 text-teal-500" /> Profile
+                  </Link>
+                  <Link
+                    href="/vip"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-xl bg-amber-500 text-slate-950 text-[11px] font-black uppercase tracking-wider text-center"
+                  >
+                    <Crown className="w-3.5 h-3.5" /> Lounge
+                  </Link>
+                </div>
+                <button
+                  onClick={async () => {
+                    setIsMenuOpen(false);
+                    await fetch("/api/auth/logout", { method: "POST" });
+                    await refreshVipStatus();
+                    window.location.href = "/";
+                  }}
+                  className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-rose-600 dark:text-rose-400 text-[11px] font-bold border border-rose-200 dark:border-rose-900/50 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+                >
+                  <LogOut className="w-3 h-3" /> Sign Out
+                </button>
+              </div>
+            ) : (
+              <div className="pt-2 space-y-2">
+                <Link
+                  href="/vip/register"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 text-xs font-black uppercase tracking-wider w-full shadow-lg shadow-amber-500/20 text-center"
+                >
+                  <Crown className="w-4 h-4 fill-current" />
+                  <span>Join VIP Free Forever</span>
+                </Link>
+                <Link
+                  href="/vip/login"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block text-center text-xs text-teal-600 dark:text-teal-400 font-bold py-1"
+                >
+                  Already VIP? Sign In
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </header>

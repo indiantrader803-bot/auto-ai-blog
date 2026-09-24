@@ -27,6 +27,7 @@ import KeyInsightBox from "@/components/blog/KeyInsightBox";
 import MonetagBanner from "@/components/ads/MonetagBanner";
 import VipContentGate from "@/components/vip/VipContentGate";
 import ArticleContentGate from "@/components/vip/ArticleContentGate";
+import { getCurrentUser } from "@/lib/auth";
 import { getArticleBySlug, getAllCatalogArticles } from "@/lib/content/articles";
 import { matchSponsorForArticle } from "@/lib/pipeline/agents/sponsorAgent";
 import { generateStructuredSchema } from "@/lib/pipeline/seoAffiliateEngine";
@@ -144,6 +145,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const cleanSlug = decodeURIComponent(params.slug || "");
+  const currentUser = await getCurrentUser();
+  const isVipUser = Boolean(currentUser?.isVip);
+
   let post: any = null;
   let relatedPosts: any[] = [];
   let prevPost: any = null;
@@ -413,6 +417,7 @@ export default async function BlogPostPage({ params }: Props) {
                 fullContent={linkedContent}
                 articleTitle={post.title}
                 views={post.views || 2800}
+                initialIsVip={isVipUser}
               />
             </div>
 
@@ -469,13 +474,14 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Mid-Article Ad Slot */}
             <AdBanner slot="article-mid" className="my-8" />
 
-            {/* Monetag Non-Intrusive Bottom Banner */}
-            <MonetagBanner slotType="article_bottom" className="my-8" />
+            {/* Monetag Non-Intrusive Bottom Banner (Excluded for VIP Members) */}
+            {!isVipUser && <MonetagBanner slotType="article_bottom" className="my-8" />}
 
             {/* In-Article Exclusive VIP Content Gate */}
             <VipContentGate
               fallbackTitle="VIP Technical Dossier & Execution Metrics Locked"
               fallbackDescription="Access deep mathematical proofs, institutional Pine Script order flows, and unredacted model weights by activating your complimentary VIP membership."
+              initialIsVip={isVipUser}
             >
               <div className="p-6 rounded-2xl bg-gradient-to-br from-amber-500/10 via-slate-900 to-slate-950 border border-amber-500/30 space-y-4">
                 <div className="flex items-center justify-between">

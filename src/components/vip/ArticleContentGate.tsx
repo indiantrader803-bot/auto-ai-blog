@@ -11,6 +11,7 @@ interface ArticleContentGateProps {
   isLatestOrExclusive?: boolean;
   articleTitle: string;
   views?: number;
+  initialIsVip?: boolean;
 }
 
 /**
@@ -25,6 +26,7 @@ interface ArticleContentGateProps {
  * 2. For VIP Members:
  *    - Displays exclusive VIP Member Recognition banner at top.
  *    - Full uncensored institutional coverage unlocked.
+ *    - Zero lock barriers or repetitive invitation terminals.
  * 
  * 3. For Regular / Non-VIP Readers:
  *    - Shows the initial paragraphs.
@@ -35,21 +37,23 @@ export default function ArticleContentGate({
   fullContent,
   articleTitle,
   views = 2800,
+  initialIsVip = false,
 }: ArticleContentGateProps) {
-  const { isVip } = useVip();
+  const { isVip, user } = useVip();
+  const unlocked = isVip || initialIsVip || Boolean(user?.isVip);
 
-  // If VIP user is logged in, show full article with VIP badge
-  if (isVip) {
+  // If VIP user is logged in, show full article with VIP badge and NEVER show the invitation lounge terminal
+  if (unlocked) {
     return (
       <div className="space-y-6">
         {/* VIP Member Recognition Banner */}
-        <div className="flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400">
+        <div className="flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-teal-500/15 to-indigo-500/15 border border-amber-500/30 text-amber-700 dark:text-amber-300 shadow-sm">
           <div className="flex items-center gap-2 text-xs sm:text-sm font-bold">
             <span className="text-base sm:text-lg">👑</span>
-            <span>VIP Unlocked: You are enjoying full uncensored institutional coverage</span>
+            <span>VIP Pass Unlocked: You are enjoying full uncensored institutional coverage</span>
           </div>
-          <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider">
-            Active VIP Pass
+          <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider shadow-xs">
+            Active VIP Member
           </span>
         </div>
 

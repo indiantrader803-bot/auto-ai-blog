@@ -330,7 +330,7 @@ export default function AdminSidebar() {
             <div>
               <div className="px-3 py-1 text-[10px] font-black uppercase text-slate-400 tracking-wider flex items-center justify-between">
                 <span>Management Modules</span>
-                <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono">10 Modules</span>
+                <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono">11 Modules</span>
               </div>
               <nav className="space-y-1 mt-2">
                 {navItems.map((item) => {

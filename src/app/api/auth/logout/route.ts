@@ -4,7 +4,7 @@ import { destroySession, VIP_SESSION_COOKIE } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
-export async function POST() {
+async function handleLogout() {
   try {
     const cookieStore = cookies();
     const token = cookieStore.get(VIP_SESSION_COOKIE)?.value;
@@ -13,10 +13,29 @@ export async function POST() {
       await destroySession(token);
     }
 
-    const response = NextResponse.json({ success: true, message: "Logged out." });
-    response.cookies.delete(VIP_SESSION_COOKIE);
+    const response = NextResponse.json({ success: true, message: "Logged out successfully." });
+    response.cookies.set(VIP_SESSION_COOKIE, "", {
+      path: "/",
+      maxAge: 0,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
     return response;
   } catch (error) {
-    return NextResponse.json({ success: true });
+    const response = NextResponse.json({ success: true });
+    response.cookies.set(VIP_SESSION_COOKIE, "", {
+      path: "/",
+      maxAge: 0,
+    });
+    return response;
   }
+}
+
+export async function POST() {
+  return handleLogout();
+}
+
+export async function GET() {
+  return handleLogout();
 }

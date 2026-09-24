@@ -22,6 +22,7 @@ import {
   LogOut,
   FileCode2,
 } from "lucide-react";
+import ChangePasswordForm from "@/components/vip/ChangePasswordForm";
 
 export const dynamic = "force-dynamic";
 
@@ -237,6 +238,9 @@ export default async function VipProfilePage() {
                 ))}
               </div>
             </div>
+
+            {/* Change Password & Security */}
+            <ChangePasswordForm />
 
             {/* Quick Links */}
             <div className="rounded-2xl bg-gradient-to-r from-teal-50 to-indigo-50 dark:from-teal-900/20 dark:to-indigo-900/20 border border-teal-200 dark:border-teal-800/50 p-6">

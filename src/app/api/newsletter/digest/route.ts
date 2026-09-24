@@ -1,90 +1,142 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAllCatalogArticles } from "@/lib/content/articles";
+import { sendDailyVipViralDigestEmail, ViralDigestArticle, DigestRecipient } from "@/lib/emailNotification";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  try {
-    let topPosts: any[] = [];
-    let subscribers = 1420;
+export async function GET(req: NextRequest) {
+  return handleDigest(req);
+}
 
+export async function POST(req: NextRequest) {
+  return handleDigest(req);
+}
+
+async function handleDigest(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const send = searchParams.get("send") === "true";
+    const secret = searchParams.get("secret");
+    const authHeader = req.headers.get("authorization");
+    const expectedSecret = process.env.CRON_SECRET || "auto-blog-secure-key-2025";
+
+    const isAuthorized =
+      secret === expectedSecret ||
+      authHeader === `Bearer ${expectedSecret}` ||
+      req.headers.get("x-admin-key") === expectedSecret;
+
+    // 1. Fetch Top 5 Viral Articles
+    let topPosts: ViralDigestArticle[] = [];
     try {
       const posts = await prisma.post.findMany({
         where: { status: "PUBLISHED" },
-        orderBy: { views: "desc" },
+        orderBy: [{ views: "desc" }, { publishedAt: "desc" }],
         take: 5,
-        select: {
-          title: true,
-          slug: true,
-          excerpt: true,
-          featuredImage: true,
-          publishedAt: true,
+        include: {
+          category: { select: { name: true } },
         },
       });
-      if (posts && posts.length > 0) topPosts = posts;
-      subscribers = (await prisma.newsletterSubscriber.count()) || subscribers;
+
+      if (posts && posts.length > 0) {
+        topPosts = posts.map((p) => ({
+          title: p.title,
+          slug: p.slug,
+          excerpt: p.excerpt,
+          featuredImage: p.featuredImage || undefined,
+          readTimeMinutes: p.readTimeMinutes || 5,
+          category: p.category?.name || "FRONTIER INTELLIGENCE",
+        }));
+      }
     } catch (_) {
+      // Fallback to static catalog articles
+    }
+
+    if (topPosts.length === 0) {
       const catalog = getAllCatalogArticles();
       topPosts = catalog.slice(0, 5).map((c) => ({
         title: c.title,
         slug: c.slug,
         excerpt: c.excerpt,
         featuredImage: c.featuredImage,
-        publishedAt: c.publishedAt,
+        readTimeMinutes: c.readTimeMinutes || 5,
+        category: typeof c.category === "string" ? c.category : "VIP INTELLIGENCE",
       }));
     }
 
-    const emailSubject = `🚀 Top AI & Tech Breakthroughs This Week (${new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })})`;
-    const htmlPreview = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <style>
-            body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f172a; color: #f8fafc; margin: 0; padding: 20px; }
-            .container { max-width: 600px; margin: 0 auto; background: #1e293b; border-radius: 16px; padding: 32px; border: 1px solid #334155; }
-            .header { text-align: center; border-bottom: 1px solid #334155; padding-bottom: 20px; margin-bottom: 24px; }
-            .title { font-size: 24px; font-weight: 900; color: #818cf8; margin: 0; }
-            .article { margin-bottom: 24px; border-bottom: 1px solid #334155; padding-bottom: 16px; }
-            .article-title { font-size: 18px; font-weight: 700; color: #ffffff; text-decoration: none; }
-            .article-excerpt { font-size: 14px; color: #94a3b8; margin-top: 8px; line-height: 1.5; }
-            .footer { text-align: center; font-size: 12px; color: #64748b; margin-top: 32px; }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1 class="title">SMARTMAG TECH WEEKLY DIGEST</h1>
-              <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">Top Autonomous AI & Engineering Chronicle</p>
-            </div>
+    // 2. Fetch VIP members & Newsletter Subscribers
+    const recipientMap = new Map<string, DigestRecipient>();
 
-            ${topPosts
-              .map(
-                (p) => `
-              <div class="article">
-                <a href="https://thesmartmag.com/blog/${p.slug}" class="article-title">${p.title}</a>
-                <p class="article-excerpt">${p.excerpt}</p>
-              </div>
-            `
-              )
-              .join("")}
+    try {
+      // Add all active VIP Users
+      const vipUsers = await prisma.user.findMany({
+        where: { isVip: true },
+        select: { email: true, name: true },
+      });
+      for (const u of vipUsers) {
+        if (u.email && u.email.includes("@")) {
+          recipientMap.set(u.email.toLowerCase().trim(), {
+            email: u.email.toLowerCase().trim(),
+            name: u.name || undefined,
+          });
+        }
+      }
 
-            <div class="footer">
-              Sent to ${subscribers} The SmartMag VIP subscribers. <br/>
-              © ${new Date().getFullYear()} The SmartMag. All rights reserved. • support@thesmartmag.com
-            </div>
-          </div>
-        </body>
-      </html>
-    `;
+      // Add all active newsletter subscribers
+      const subscribers = await prisma.newsletterSubscriber.findMany({
+        where: { status: "ACTIVE" },
+        select: { email: true },
+      });
+      for (const s of subscribers) {
+        if (s.email && s.email.includes("@")) {
+          const cleanEmail = s.email.toLowerCase().trim();
+          if (!recipientMap.has(cleanEmail)) {
+            recipientMap.set(cleanEmail, { email: cleanEmail });
+          }
+        }
+      }
+    } catch (err: any) {
+      console.warn("Could not query DB subscribers:", err.message);
+    }
 
+    // Always include admin as a recipient for audit/verification
+    const adminEmail = process.env.ADMIN_EMAIL || "arnab.laha2018@gmail.com";
+    if (!recipientMap.has(adminEmail)) {
+      recipientMap.set(adminEmail, { email: adminEmail, name: "Admin" });
+    }
+
+    const recipients = Array.from(recipientMap.values());
+
+    // 3. If send=true is requested and authorized, dispatch emails
+    if (send) {
+      if (!isAuthorized && process.env.NODE_ENV !== "development") {
+        return NextResponse.json({ error: "Unauthorized dispatch request" }, { status: 401 });
+      }
+
+      const dispatchResult = await sendDailyVipViralDigestEmail(topPosts, recipients);
+
+      return NextResponse.json({
+        success: true,
+        dispatched: true,
+        recipientsCount: recipients.length,
+        dispatchedCount: dispatchResult.dispatchedCount,
+        errors: dispatchResult.errors,
+        articlesFeatured: topPosts.length,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // 4. Otherwise, return preview payload
     return NextResponse.json({
-      subscribersCount: subscribers,
-      subject: emailSubject,
+      success: true,
+      subscribersCount: recipients.length,
+      topArticlesCount: topPosts.length,
       articles: topPosts,
-      htmlPreview,
+      recipientsPreview: recipients.slice(0, 10).map((r) => r.email),
+      info: "Pass ?send=true&secret=auto-blog-secure-key-2025 to dispatch daily viral briefing.",
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+

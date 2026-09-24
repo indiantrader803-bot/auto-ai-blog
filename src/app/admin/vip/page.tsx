@@ -59,7 +59,9 @@ export default function AdminVipPage() {
       const params = new URLSearchParams({ page: String(page), limit: "15" });
       if (query) params.set("q", query);
       if (tierFilter) params.set("tier", tierFilter);
-      const res = await fetch(`/api/admin/vip/users?${params}`);
+      const res = await fetch(`/api/admin/vip/users?${params}`, {
+        headers: { "x-admin-key": "auto-blog-secure-key-2025" },
+      });
       const data = await res.json();
       if (data.success) {
         setUsers(data.users);
@@ -83,7 +85,10 @@ export default function AdminVipPage() {
     try {
       const res = await fetch("/api/admin/vip/users", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-key": "auto-blog-secure-key-2025",
+        },
         body: JSON.stringify({ userId: user.id, isVip: !user.isVip }),
       });
       const data = await res.json();
@@ -105,7 +110,10 @@ export default function AdminVipPage() {
     try {
       const res = await fetch("/api/admin/vip/users", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-key": "auto-blog-secure-key-2025",
+        },
         body: JSON.stringify({ userId: user.id, vipTier: newTier }),
       });
       const data = await res.json();
@@ -126,7 +134,10 @@ export default function AdminVipPage() {
     if (!confirm(`Are you sure you want to permanently delete ${user.email}?`)) return;
     setDeletingId(user.id);
     try {
-      const res = await fetch(`/api/admin/vip/users?userId=${user.id}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/vip/users?userId=${user.id}`, {
+        method: "DELETE",
+        headers: { "x-admin-key": "auto-blog-secure-key-2025" },
+      });
       const data = await res.json();
       if (data.success) {
         setUsers((prev) => prev.filter((u) => u.id !== user.id));

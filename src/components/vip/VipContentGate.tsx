@@ -8,6 +8,7 @@ interface VipContentGateProps {
   fallbackTitle?: string;
   fallbackDescription?: string;
   teaserContent?: React.ReactNode;
+  initialIsVip?: boolean;
 }
 
 export default function VipContentGate({
@@ -15,8 +16,9 @@ export default function VipContentGate({
   fallbackTitle = 'VIP Exclusive Data & Dossier Locked',
   fallbackDescription = 'This proprietary analysis, data sheet, or model portfolio is reserved exclusively for SmartMag VIP Members.',
   teaserContent,
+  initialIsVip = false,
 }: VipContentGateProps) {
-  const [isVip, setIsVip] = useState<boolean | null>(null);
+  const [isVip, setIsVip] = useState<boolean | null>(initialIsVip ? true : null);
 
   useEffect(() => {
     async function checkAuth() {
