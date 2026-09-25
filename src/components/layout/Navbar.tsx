@@ -290,57 +290,6 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
             </div>
           </Link>
 
-          {/* Center Prominent Interactive Hubs (Desktop lg+ only) */}
-          <div className="hidden lg:flex items-center gap-2 xl:gap-3">
-            <Link
-              href="/trade"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:border-emerald-500 text-xs font-black uppercase tracking-wider transition-all shadow-xs group cursor-pointer"
-            >
-              <TrendingUp className="w-3.5 h-3.5 text-emerald-500 group-hover:scale-110 transition-transform" />
-              <span>Trade Hub</span>
-              <span className="px-1.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[8.5px] font-black">90% SPLIT</span>
-            </Link>
-
-            <Link
-              href="/best-ai-tools"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 border border-purple-500/30 hover:border-purple-500 text-xs font-black uppercase tracking-wider transition-all shadow-xs group cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-purple-500 group-hover:scale-110 transition-transform" />
-              <span>AI Tools</span>
-              <span className="px-1.5 py-0.5 rounded-full bg-purple-500 text-white text-[8.5px] font-black">2026</span>
-            </Link>
-
-            <Link
-              href="/travel"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/30 hover:border-sky-500 text-xs font-black uppercase tracking-wider transition-all shadow-xs group cursor-pointer"
-            >
-              <Plane className="w-3.5 h-3.5 text-sky-500 group-hover:scale-110 transition-transform" />
-              <span>Travel Deals</span>
-              <span className="px-1.5 py-0.5 rounded-full bg-sky-500 text-slate-950 text-[8.5px] font-black">DEALS</span>
-            </Link>
-
-            <Link
-              href="/apple"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900/90 dark:bg-zinc-900 hover:bg-black text-white border border-white/20 hover:border-white/40 text-xs font-black uppercase tracking-wider transition-all shadow-xs group cursor-pointer"
-            >
-              <span className="text-sm font-bold"></span>
-              <span>Apple Hub</span>
-              <span className="px-1.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[8.5px] font-black">18 PRO</span>
-            </Link>
-
-            <Link
-              href="/community"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30 hover:border-indigo-500 text-xs font-black uppercase tracking-wider transition-all shadow-xs group cursor-pointer"
-            >
-              <MessageSquare className="w-3.5 h-3.5 text-indigo-500 group-hover:scale-110 transition-transform" />
-              <span>Community</span>
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-            </Link>
-          </div>
-
           {/* Right Actions Bar */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Search Trigger */}

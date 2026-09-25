@@ -29,6 +29,10 @@ import {
   Database,
   Radio,
   Server,
+  Link2,
+  Share2,
+  PlusCircle,
+  Smartphone,
 } from "lucide-react";
 
 export default function AffiliateTrackingDashboardPage() {
@@ -39,6 +43,12 @@ export default function AffiliateTrackingDashboardPage() {
   const [filterCategory, setFilterCategory] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Campaign Creator State
+  const [campaignName, setCampaignName] = useState<string>("spring-promo-2026");
+  const [selectedProduct, setSelectedProduct] = useState<string>("iphone-18-pro-max");
+  const [campaignMedium, setCampaignMedium] = useState<string>("social_bio");
+  const [generatedTrackedLink, setGeneratedTrackedLink] = useState<string>("");
 
   const fetchAffiliateData = async () => {
     try {
@@ -271,6 +281,149 @@ export default function AffiliateTrackingDashboardPage() {
           </div>
           <div className="text-[11px] font-semibold text-amber-600 dark:text-amber-400">
             {totalClicks} Total Real Outbound Clicks
+          </div>
+        </div>
+      </div>
+
+      {/* 3.5 Admin Custom Affiliate Campaign & Link Builder */}
+      <div className="p-6 rounded-3xl bg-gradient-to-br from-indigo-900/40 via-purple-900/30 to-slate-900 border border-indigo-500/30 shadow-xl space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="p-2 rounded-xl bg-indigo-500/20 text-indigo-400">
+                <Share2 className="w-5 h-5" />
+              </span>
+              <h2 className="text-lg sm:text-xl font-black text-white font-serif">
+                Affiliate Product Campaign &amp; Tracked Link Builder
+              </h2>
+            </div>
+            <p className="text-xs text-slate-300 mt-1">
+              Select any high-commission product (Apple Hub, Prop Trading Firms, Travel Deals), name your marketing campaign, and generate an instant tracked link with UTM telemetry.
+            </p>
+          </div>
+          <span className="self-start sm:self-center px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold">
+            Live URL Redirector Active
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+              Select Affiliate Product / Offer
+            </label>
+            <select
+              value={selectedProduct}
+              onChange={(e) => setSelectedProduct(e.target.value)}
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-400"
+            >
+              <optgroup label="Apple Lineup 2026">
+                <option value="iphone-18-pro-max">iPhone 18 Pro Max (Flipkart / Croma / Amazon)</option>
+                <option value="iphone-18-pro">iPhone 18 Pro (5x Zoom)</option>
+                <option value="macbook-pro-m5">MacBook Pro M5 (Flipkart / Amazon)</option>
+                <option value="apple-watch-ultra-3">Apple Watch Ultra 3 (Titanium)</option>
+                <option value="airpods-pro-3">AirPods Pro 3 (Lossless Audio)</option>
+                <option value="apple-accessories">Apple MagSafe Accessories (10-12% Comm)</option>
+              </optgroup>
+              <optgroup label="Prop Trading Challenges">
+                <option value="ftmo-evaluation">Funded Trader Markets (FTM 10% Comm)</option>
+                <option value="atlasfunded-200k">Atlas Funded Prop Challenge (20% Comm)</option>
+                <option value="aquafunded-challenge">AquaFunded Prop Challenge (20% Comm)</option>
+                <option value="blueguardian-prop">Blue Guardian Prop Evaluation (15% Comm)</option>
+                <option value="pocketoption-50start">Pocket Option Trading (50% Deposit Match)</option>
+                <option value="delta-derivatives">Delta Exchange Crypto Derivatives (15% Rebate)</option>
+              </optgroup>
+              <optgroup label="Travel & Flight Bookings">
+                <option value="aviasales-flights">Aviasales Global Flights (50% RevShare)</option>
+                <option value="airhelp-claims">AirHelp Flight Delay Claims (€15-€35 CPA)</option>
+                <option value="saily-esim">Saily Global Travel eSIM (20% Comm)</option>
+                <option value="klook-tours">Klook Attraction Passes & Tours (5% Comm)</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+              Campaign Name
+            </label>
+            <input
+              type="text"
+              value={campaignName}
+              onChange={(e) => setCampaignName(e.target.value.toLowerCase().replace(/[^a-z0-9-_]/g, "-"))}
+              placeholder="e.g. twitter-launch, email-blast, reels-bio"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-400 placeholder-slate-500 font-mono"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+              Traffic Medium
+            </label>
+            <select
+              value={campaignMedium}
+              onChange={(e) => setCampaignMedium(e.target.value)}
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-400"
+            >
+              <option value="social_bio">Social Media Bio (Instagram, X, Threads)</option>
+              <option value="email_newsletter">VIP Email Newsletter Digest</option>
+              <option value="youtube_desc">YouTube Video Description / Pinned</option>
+              <option value="telegram_channel">Telegram VIP Alerts Channel</option>
+              <option value="website_banner">SmartMag Body Poster / Banner</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Generated Tracked Link Output */}
+        <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="space-y-1 min-w-0">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-1">
+              <Link2 className="w-3.5 h-3.5" /> Your Unique Tracked Campaign Link:
+            </span>
+            <p className="text-xs text-emerald-400 font-mono truncate select-all">
+              {typeof window !== "undefined" ? window.location.origin : "https://thesmartmag.com"}/api/analytics/track?product={selectedProduct}&campaign={campaignName || "default"}&source={campaignMedium}&target={encodeURIComponent(
+                selectedProduct.includes("iphone") || selectedProduct.includes("apple") || selectedProduct.includes("macbook") || selectedProduct.includes("airpods") || selectedProduct.includes("watch")
+                  ? `https://thesmartmag.com/apple${selectedProduct === "iphone-18-pro-max" ? "/iphone-18" : selectedProduct === "apple-accessories" ? "/accessories" : ""}`
+                  : selectedProduct.includes("ftmo") || selectedProduct.includes("funded")
+                  ? "https://fundedtradermarkets.com/ref/arnab"
+                  : selectedProduct.includes("pocketoption")
+                  ? "https://v4.lands-po.com/en/land/001-QT-02?utm_campaign=865170&utm_source=affiliate&code=50START"
+                  : selectedProduct.includes("delta")
+                  ? "https://www.delta.exchange/?code=YXQSZA"
+                  : selectedProduct.includes("aviasales")
+                  ? "https://aviasales.tpo.li/ZeF7BjUt"
+                  : selectedProduct.includes("airhelp")
+                  ? "https://airhelp.tpo.li/fpMMLvXF"
+                  : "https://thesmartmag.com"
+              )}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => {
+                const link = `${typeof window !== "undefined" ? window.location.origin : "https://thesmartmag.com"}/api/analytics/track?product=${selectedProduct}&campaign=${campaignName || "default"}&source=${campaignMedium}&target=${encodeURIComponent(
+                  selectedProduct.includes("iphone") || selectedProduct.includes("apple") || selectedProduct.includes("macbook") || selectedProduct.includes("airpods") || selectedProduct.includes("watch")
+                    ? `https://thesmartmag.com/apple${selectedProduct === "iphone-18-pro-max" ? "/iphone-18" : selectedProduct === "apple-accessories" ? "/accessories" : ""}`
+                    : selectedProduct.includes("ftmo") || selectedProduct.includes("funded")
+                    ? "https://fundedtradermarkets.com/ref/arnab"
+                    : selectedProduct.includes("pocketoption")
+                    ? "https://v4.lands-po.com/en/land/001-QT-02?utm_campaign=865170&utm_source=affiliate&code=50START"
+                    : selectedProduct.includes("delta")
+                    ? "https://www.delta.exchange/?code=YXQSZA"
+                    : selectedProduct.includes("aviasales")
+                    ? "https://aviasales.tpo.li/ZeF7BjUt"
+                    : selectedProduct.includes("airhelp")
+                    ? "https://airhelp.tpo.li/fpMMLvXF"
+                    : "https://thesmartmag.com"
+                )}`;
+                navigator.clipboard.writeText(link);
+                setCopiedId("campaign-link");
+                setTimeout(() => setCopiedId(null), 2500);
+              }}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
+            >
+              {copiedId === "campaign-link" ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
+              <span>{copiedId === "campaign-link" ? "Copied Tracked Link!" : "Copy Tracked Link"}</span>
+            </button>
           </div>
         </div>
       </div>

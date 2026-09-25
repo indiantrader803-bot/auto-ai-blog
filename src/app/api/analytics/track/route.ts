@@ -3,6 +3,44 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const targetUrl = searchParams.get("target") || searchParams.get("url") || searchParams.get("link");
+    const campaign = searchParams.get("campaign") || searchParams.get("utm_campaign") || "default";
+    const product = searchParams.get("product") || searchParams.get("offer") || "affiliate_link";
+    const source = searchParams.get("source") || searchParams.get("utm_source") || "thesmartmag";
+
+    if (!targetUrl) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+    // Record tracked click asynchronously
+    try {
+      await prisma.analyticsEvent.create({
+        data: {
+          eventType: "AFFILIATE_CLICK",
+          slug: product,
+          referrer: source,
+          metadata: JSON.stringify({
+            targetUrl,
+            campaign,
+            product,
+            source,
+            timestamp: new Date().toISOString(),
+          }),
+        },
+      });
+    } catch (e) {
+      console.error("Failed to record affiliate click:", e);
+    }
+
+    return NextResponse.redirect(targetUrl, 307);
+  } catch (err: any) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));

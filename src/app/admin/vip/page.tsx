@@ -16,6 +16,10 @@ import {
   Shield,
   TrendingUp,
   Users,
+  Eye,
+  Mail,
+  Calendar,
+  Key,
 } from "lucide-react";
 
 interface VipUser {
@@ -46,6 +50,7 @@ export default function AdminVipPage() {
   const [tierFilter, setTierFilter] = useState("");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [selectedUser, setSelectedUser] = useState<VipUser | null>(null);
   const [toast, setToast] = useState<{ type: "success" | "error"; msg: string } | null>(null);
 
   const showToast = (type: "success" | "error", msg: string) => {
@@ -297,14 +302,24 @@ export default function AdminVipPage() {
                       {new Date(user.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <button
-                        onClick={() => deleteUser(user)}
-                        disabled={deletingId === user.id}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-all disabled:opacity-50 cursor-pointer"
-                        title={`Delete ${user.email}`}
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      <div className="flex items-center justify-end gap-1.5">
+                        <button
+                          onClick={() => setSelectedUser(user)}
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-800 text-[11px] font-bold hover:bg-teal-100 transition-all cursor-pointer"
+                          title="Inspect User Details"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>Inspect</span>
+                        </button>
+                        <button
+                          onClick={() => deleteUser(user)}
+                          disabled={deletingId === user.id}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-all disabled:opacity-50 cursor-pointer"
+                          title={`Delete ${user.email}`}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -339,6 +354,102 @@ export default function AdminVipPage() {
           </div>
         )}
       </div>
+
+      {/* User Details Modal */}
+      {selectedUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative space-y-6">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-slate-950 font-black text-base shadow-md">
+                  {(selectedUser.name || selectedUser.email)[0].toUpperCase()}
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
+                    {selectedUser.name || "VIP Member"}
+                    {selectedUser.isVip && <Crown className="w-4 h-4 text-amber-500" />}
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{selectedUser.email}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedUser(null)}
+                className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* User Meta Cards */}
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                  <Shield className="w-3 h-3 text-teal-500" /> Tier Status
+                </span>
+                <p className="font-bold text-slate-900 dark:text-white">{selectedUser.vipTier.replace(/_/g, " ")}</p>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-500" /> VIP Privilege
+                </span>
+                <p className={`font-bold ${selectedUser.isVip ? "text-emerald-600 dark:text-emerald-400" : "text-slate-500"}`}>
+                  {selectedUser.isVip ? "Active Member" : "Non-VIP / Revoked"}
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                  <Calendar className="w-3 h-3 text-blue-500" /> Member Since
+                </span>
+                <p className="font-semibold text-slate-900 dark:text-white">
+                  {new Date(selectedUser.createdAt).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                  <Key className="w-3 h-3 text-purple-500" /> Active Sessions
+                </span>
+                <p className="font-semibold text-slate-900 dark:text-white">
+                  {selectedUser._count?.sessions || 1} logins recorded
+                </p>
+              </div>
+            </div>
+
+            {/* Quick Actions inside modal */}
+            <div className="p-4 rounded-2xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800/60 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-bold text-teal-900 dark:text-teal-200">Toggle VIP Privilege</p>
+                <p className="text-[11px] text-teal-700/80 dark:text-teal-400">Instantly grant or revoke paywall bypass</p>
+              </div>
+              <button
+                onClick={() => {
+                  toggleVip(selectedUser);
+                  setSelectedUser((prev) => prev ? { ...prev, isVip: !prev.isVip } : null);
+                }}
+                disabled={updatingId === selectedUser.id}
+                className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
+              >
+                {selectedUser.isVip ? "Revoke VIP" : "Grant VIP"}
+              </button>
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setSelectedUser(null)}
+                className="px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs transition-all cursor-pointer"
+              >
+                Close Inspector
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
