@@ -14,7 +14,7 @@ import AdBanner from "@/components/monetization/AdBanner";
 import NewsletterBanner from "@/components/monetization/NewsletterBanner";
 import AmazonAffiliateShowcase from "@/components/monetization/AmazonAffiliateShowcase";
 import MonetagBanner from "@/components/ads/MonetagBanner";
-import InteractiveHubPoster from "@/components/home/InteractiveHubPoster";
+import FeaturedHubsStrip from "@/components/home/FeaturedHubsStrip";
 import { Sparkles, TrendingUp, Compass, Flame, ArrowRight, Zap, Award, Layers, MessageSquare } from "lucide-react";
 
 export const revalidate = 60;
@@ -235,8 +235,8 @@ export default async function HomePage() {
         {/* Top Sponsor / Ad Banner */}
         <AdBanner slot="home-smartmag-top" className="mb-8" />
 
-        {/* 🌟 Luxury Interactive Ecosystem Master Poster (Apple Hub, Trade Hub, AI Tools, Travel Deals, Community) */}
-        <InteractiveHubPoster />
+        {/* 🌟 Compact Featured Ecosystem Hubs Strip with Animated Pulsing Badges */}
+        <FeaturedHubsStrip />
 
         {/* 1. SmartMag 1+3 Magazine Hero Grid (Always Shows Top Hot Topics) */}
         <SmartHeroGrid featured={featuredPost} subFeatured={subFeaturedPosts} />

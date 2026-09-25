@@ -30,6 +30,7 @@ import {
   User,
   LogOut,
   KeyRound,
+  Smartphone,
 } from "lucide-react";
 import SearchModal from "./SearchModal";
 import LanguageSelector from "./LanguageSelector";
@@ -436,18 +437,59 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
         {/* Tier 2: Category Navigation Bar with Edge-Fade & Zero Scrollbar */}
         <div className="hidden lg:block border-t border-slate-100 dark:border-slate-900 bg-slate-50/70 dark:bg-slate-950/70 relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <nav className="flex items-center gap-5 xl:gap-6 py-2.5 overflow-x-auto text-xs font-bold uppercase tracking-wider no-scrollbar scrollbar-none">
+            <nav className="flex items-center gap-4 xl:gap-5 py-2 overflow-x-auto text-xs font-bold uppercase tracking-wider no-scrollbar scrollbar-none">
               <Link
                 href="/"
-                className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap shrink-0 flex items-center gap-1.5"
+                className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap shrink-0 flex items-center gap-1.5 py-1 px-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900"
               >
                 <span>🏠 Home</span>
               </Link>
+
+              {/* 🌟 Animated Logo Badges for Key Interactive Hubs */}
+              <div className="flex items-center gap-2 pl-1 pr-3 border-r border-slate-200 dark:border-slate-800 shrink-0">
+                <Link
+                  href="/apple"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/10 dark:bg-zinc-800/80 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-zinc-950 transition-all border border-zinc-300 dark:border-zinc-700/80 group text-[11px] font-black lowercase tracking-normal"
+                >
+                  <Smartphone className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-300 group-hover:scale-110 transition-transform" />
+                  <span className="capitalize font-bold">Apple 2026</span>
+                  <span className="relative flex h-1.5 w-1.5 ml-0.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                  </span>
+                </Link>
+
+                <Link
+                  href="/trade"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-500 text-emerald-700 dark:text-emerald-400 hover:text-white transition-all border border-emerald-500/20 group text-[11px] font-bold"
+                >
+                  <TrendingUp className="w-3.5 h-3.5 group-hover:scale-110 transition-transform text-emerald-600 dark:text-emerald-400 group-hover:text-white" />
+                  <span>Trade Hub</span>
+                  <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-black">90%</span>
+                </Link>
+
+                <Link
+                  href="/best-ai-tools"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 hover:bg-purple-600 text-purple-700 dark:text-purple-300 hover:text-white transition-all border border-purple-500/20 group text-[11px] font-bold"
+                >
+                  <Sparkles className="w-3.5 h-3.5 group-hover:scale-110 transition-transform text-purple-600 dark:text-purple-400 group-hover:text-white" />
+                  <span>AI Tools</span>
+                </Link>
+
+                <Link
+                  href="/travel"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sky-500/10 hover:bg-sky-600 text-sky-700 dark:text-sky-300 hover:text-white transition-all border border-sky-500/20 group text-[11px] font-bold"
+                >
+                  <Plane className="w-3.5 h-3.5 group-hover:scale-110 transition-transform text-sky-600 dark:text-sky-400 group-hover:text-white" />
+                  <span>Travel Deals</span>
+                </Link>
+              </div>
+
               {categories.map((cat) => (
                 <Link
                   key={cat.slug}
                   href={`/category/${cat.slug}`}
-                  className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0 group"
+                  className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0 group text-[11px]"
                 >
                   <span>{cat.name}</span>
                   {cat.isHot && (
