@@ -29,9 +29,12 @@ export default function MonetagProvider({ children }: { children: React.ReactNod
     }
   };
 
+  // Disable ALL ads entirely inside admin dashboard
+  const isAdmin = pathname?.startsWith('/admin');
+
   // ✅ 1. Vignette when opening another article (e.g. /blog/...)
   useEffect(() => {
-    if (typeof window === 'undefined' || !pathname) return;
+    if (typeof window === 'undefined' || !pathname || isAdmin) return;
 
     // Trigger when user opens an article or navigates across articles
     const isArticlePage = pathname.startsWith('/blog/') || pathname.startsWith('/article/') || pathname.startsWith('/reviews/');
@@ -53,44 +56,17 @@ export default function MonetagProvider({ children }: { children: React.ReactNod
         }
       } catch (_) {}
     }
-  }, [pathname]);
+  }, [pathname, isAdmin]);
 
-  // ✅ 2. In-Page Push (after 8–10 seconds recommended delay)
+  // Clean-up any intrusive popups/push if on admin or non-consented pages
   useEffect(() => {
     if (typeof window === 'undefined') return;
-
-    // 8-10 seconds timing (9000ms optimal average for highest engagement without bounce)
-    const pushTimer = setTimeout(() => {
-      // Zone 285853 (In-Page Push / MultiTag)
-      loadScript('monetag-multitag-285853', (s) => {
-        s.src = 'https://quge5.com/88/tag.min.js';
-        s.dataset.zone = '285853';
-        s.async = true;
-        s.setAttribute('data-cfasync', 'false');
-      });
-
-      // Zone 11880194 (Smart Tag)
-      loadScript('monetag-smarttag-11880194', (s) => {
-        s.src = 'https://5gvci.com/act/files/tag.min.js?z=11880194';
-        s.async = true;
-        s.setAttribute('data-cfasync', 'false');
-      });
-    }, 9000); // 8-10 seconds
-
-    // Baseline Popunder / Direct Tag - Zone 11880195
-    const baselineTimer = setTimeout(() => {
-      loadScript('monetag-popunder-11880195', (s) => {
-        s.dataset.zone = '11880195';
-        s.src = 'https://nap5k.com/tag.min.js';
-        s.async = true;
-      });
-    }, 4000);
-
-    return () => {
-      clearTimeout(pushTimer);
-      clearTimeout(baselineTimer);
-    };
-  }, []);
+    if (isAdmin) {
+      // Remove any previously injected monetag scripts from admin DOM
+      const adElements = document.querySelectorAll('[id^="monetag-"]');
+      adElements.forEach((el) => el.remove());
+    }
+  }, [pathname, isAdmin]);
 
   return (
     <MonetagContext.Provider value={{ hasVignetteFired: !canShowVignette() }}>
