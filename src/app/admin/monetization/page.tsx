@@ -522,19 +522,19 @@ export default function MonetizationHubPage() {
 
         <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-bold uppercase tracking-wider">Total Value Engine</span>
-            <DollarSign className="w-4 h-4 text-purple-500" />
+            <span className="text-xs font-bold uppercase tracking-wider">Total Actual Revenue</span>
+            <DollarSign className="w-4 h-4 text-emerald-500" />
           </div>
           <div>
             <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-serif">
-              {realMetrics?.revenueLedger?.estimatedNetworkValue || "$622.50"}
+              {realTotalEarnings}
             </div>
-            <div className="text-xs font-bold text-purple-600 dark:text-purple-400 font-mono mt-0.5">
-              {realMetrics?.revenueLedger?.estimatedNetworkValueInr || "₹53,846.25"}
+            <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 font-mono mt-0.5">
+              {realMetrics?.revenueLedger?.totalActualRevenueInr || "₹0.00"}
             </div>
           </div>
-          <div className="text-[11px] font-semibold text-purple-600 flex items-center gap-1">
-            <span>Est. Network Accruals</span> • <span>Real DB: {realTotalEarnings} ({realMetrics?.revenueLedger?.totalActualRevenueInr || "₹0.00"})</span>
+          <div className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
+            <span>Verified Database Revenue</span> • <span className="text-slate-400">100% Real Ledger</span>
           </div>
         </div>
       </div>

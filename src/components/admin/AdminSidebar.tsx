@@ -22,6 +22,7 @@ import {
   ChevronRight,
   MoreHorizontal,
   Bot,
+  Users,
 } from "lucide-react";
 
 export default function AdminSidebar() {
@@ -127,6 +128,15 @@ export default function AdminSidebar() {
       color: "text-sky-400",
       activeBg: "bg-gradient-to-r from-sky-600 to-blue-600",
       iconBg: "bg-sky-500/15 text-sky-400",
+    },
+    {
+      href: "/admin/users",
+      label: "User Directory & Members",
+      shortLabel: "Users",
+      icon: Users,
+      color: "text-teal-400",
+      activeBg: "bg-gradient-to-r from-teal-600 to-cyan-600",
+      iconBg: "bg-teal-500/15 text-teal-400",
     },
     {
       href: "/admin/settings",

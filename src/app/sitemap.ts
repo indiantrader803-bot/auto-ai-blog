@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 import { getAllCatalogArticles } from "@/lib/content/articles";
+import { DESTINATIONS_DATA } from "@/lib/travel/destinationsData";
 
 export const dynamic = "force-dynamic";
 
@@ -283,5 +284,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  return [...staticPages, ...categoryEntries, ...postEntries];
+  const travelEntries: MetadataRoute.Sitemap = Object.keys(DESTINATIONS_DATA).map((slug) => ({
+    url: `${baseUrl}/travel/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.88,
+  }));
+
+  return [...staticPages, ...travelEntries, ...categoryEntries, ...postEntries];
 }

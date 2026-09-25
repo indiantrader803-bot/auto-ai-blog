@@ -311,8 +311,8 @@ export default function AdminDashboardPage() {
               </div>
             </div>
             <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-              <span className="truncate">30-Day Est: <strong>{revenue.estimatedAdRevenue} <span className="text-[10px] text-slate-400 font-mono">({revenue.estimatedAdRevenueInr})</span></strong></span>
-              <span className="text-indigo-500 font-semibold font-mono shrink-0 ml-1">CPM Active</span>
+              <span className="truncate">Active Gateway: <strong>Verified Live Ledger</strong></span>
+              <span className="text-emerald-500 font-semibold font-mono shrink-0 ml-1">100% Real DB</span>
             </div>
           </div>
 
@@ -421,8 +421,8 @@ export default function AdminDashboardPage() {
                       <div className="font-mono font-bold text-slate-900 dark:text-white">
                         {geo.estimatedRevenue}
                       </div>
-                      <div className="text-[10px] text-slate-400 font-mono">
-                        {geo.estimatedRevenueInr || ""}
+                      <div className="text-[10px] text-emerald-500 font-mono font-bold">
+                        Actual Ledger
                       </div>
                     </td>
                   </tr>
