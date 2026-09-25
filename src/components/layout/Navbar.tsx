@@ -320,6 +320,15 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
             </Link>
 
             <Link
+              href="/apple"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900/90 dark:bg-zinc-900 hover:bg-black text-white border border-white/20 hover:border-white/40 text-xs font-black uppercase tracking-wider transition-all shadow-xs group cursor-pointer"
+            >
+              <span className="text-sm font-bold"></span>
+              <span>Apple Hub</span>
+              <span className="px-1.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[8.5px] font-black">18 PRO</span>
+            </Link>
+
+            <Link
               href="/community"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30 hover:border-indigo-500 text-xs font-black uppercase tracking-wider transition-all shadow-xs group cursor-pointer"
             >
@@ -518,6 +527,21 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
 
             {/* Quick Interactive Tiles (2x2 Grid) */}
             <div className="grid grid-cols-2 gap-2.5">
+              <Link
+                href="/apple"
+                onClick={() => setIsMenuOpen(false)}
+                className="p-3 rounded-2xl bg-gradient-to-br from-zinc-800 via-zinc-900 to-black border border-white/20 hover:border-white/40 flex flex-col gap-1.5 transition-all text-white"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-black"></span>
+                  <span className="px-1.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[9px] font-black">18 PRO</span>
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-white">Apple Hub 2026</div>
+                  <div className="text-[10px] text-zinc-400">iPhone 18 &amp; Deals</div>
+                </div>
+              </Link>
+
               <Link
                 href="/travel"
                 onClick={() => setIsMenuOpen(false)}
