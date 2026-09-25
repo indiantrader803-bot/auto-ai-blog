@@ -241,6 +241,11 @@ export default async function HomePage() {
         {/* 1. SmartMag 1+3 Magazine Hero Grid (Always Shows Top Hot Topics) */}
         <SmartHeroGrid featured={featuredPost} subFeatured={subFeaturedPosts} />
 
+        {/* 🌟 Monetag Responsive Banner below Featured Section */}
+        <div className="my-8">
+          <MonetagBanner zoneId="11880195" slotType="homepage" className="w-full" />
+        </div>
+
         {/* 2. Trending Headlines Bar */}
         <TrendingBar posts={trendingPosts} />
 
