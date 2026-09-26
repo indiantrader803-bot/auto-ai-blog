@@ -56,6 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   let image = `${siteUrl}/default-og.jpg`;
   let publishedTime = new Date().toISOString();
   let tags: string[] = ["AI", "Tech", "Engineering"];
+  let exists = false;
 
   try {
     const post = await prisma.post.findUnique({
@@ -80,6 +81,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     });
 
     if (post) {
+      exists = true;
       title = post.seoTitle || post.title;
       description = post.seoDescription || post.excerpt;
       image = post.featuredImage || image;
@@ -88,6 +90,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     } else {
       const catalog = getArticleBySlug(cleanSlug);
       if (catalog) {
+        exists = true;
         title = catalog.seoTitle || catalog.title;
         description = catalog.seoDescription || catalog.excerpt;
         image = catalog.featuredImage || image;
@@ -107,11 +110,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: canonicalUrl,
     },
     robots: {
-      index: true,
-      follow: true,
+      index: !exists ? false : true,
+      follow: !exists ? false : true,
       googleBot: {
-        index: true,
-        follow: true,
+        index: !exists ? false : true,
+        follow: !exists ? false : true,
         "max-video-preview": -1,
         "max-image-preview": "large",
         "max-snippet": -1,
@@ -230,20 +233,9 @@ export default async function BlogPostPage({ params }: Props) {
     }
   }
 
-  // Fallback to first catalog article if not found
+  // If not found in database or catalog, return standard 404 (eliminates Soft 404 / Valueless Inventory for AdSense)
   if (!post) {
-    const fallback = getAllCatalogArticles()[0];
-    post = {
-      ...fallback,
-      slug: cleanSlug,
-      title: cleanSlug
-        .split("-")
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(" "),
-      publishedAt: new Date(),
-      tags: fallback.tags.map((t) => ({ tag: { name: t } })),
-      faqJson: JSON.stringify(fallback.faqs),
-    };
+    notFound();
   }
 
   const allCatalog = getAllCatalogArticles();
