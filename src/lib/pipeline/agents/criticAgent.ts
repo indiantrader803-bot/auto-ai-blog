@@ -57,21 +57,28 @@ Topic: "${topic}"
 Draft Title: "${draftTitle}"
 Draft Markdown:
 ${draftContent.slice(0, 3500)}
-
-ANTI-AI HUMANIZATION, TRANSLATION & QUALITY AUDIT RULES:
-1. Proofread for zero spelling errors, grammar mistakes, or awkward phrasing.
-2. Scrub all AI clichés: eliminate "In today's fast-paced world", "delve into", "tapestry", "revolutionize", "in conclusion", "furthermore", "it's crucial to note".
-3. Inject human rhythm & burstiness: short punchy declarations mixed with detailed technical explanations.
-4. Authentic developer tone: real architectural trade-offs, realistic benchmark metrics, honest caveats, and practical hands-on verdicts.
-5. Clean Markdown & UI compatibility: ensure sharp ## and ### headers, structured tables, code snippets, and takeaway callout blocks that render perfectly on all mobile, tablet, and desktop UI layouts.
-6. Verify global context & language translation clarity for international multi-language readers.
+ANTI-AI HUMANIZATION, VIRAL HEADLINE & FORMATTING RULES:
+1. PUNCHY, HIGH-CTR HEADLINE UPGRADE (CRITICAL):
+   - If the draft title is sleepy, corporate, or academic, transform it into an irresistible, curiosity-driven headline.
+   - Example boring: "Understanding Algorithmic Order Flow in Financial Markets"
+   - Example magnetic: "Why Wall Street Secretly Watches Footprint Charts (And What 99% of Traders Miss)"
+   - Keep titles clean, under 70 characters, with high emotional and intellectual hook value.
+2. ZERO TOLERANCE FOR AI CLICHÉS:
+   - Scrub all: "In today's fast-paced world", "delve into", "tapestry", "revolutionize", "in conclusion", "furthermore", "it's crucial to note", "game-changer".
+3. INJECT HUMAN BURSTINESS & REAL DETAIL:
+   - Mix short, decisive 4-word punches with rich technical explanations.
+   - Use candid developer and trader field-notes, real tradeoffs, concrete numbers, and actual benchmarks.
+4. RICH UI FORMATTING:
+   - Ensure sharp ## and ### headers, Markdown comparison tables, and blockquote callouts (> **Pro Tip:** / > **Insider Takeaway:**).
+5. SPELLING & GLOBAL CLARITY:
+   - Proofread for zero spelling errors, awkward grammar, or confusing jargon.
 
 Return STRICTLY a JSON object with this schema:
 {
   "score": number (0-100),
-  "feedback": "Short evaluation critique focusing on spelling accuracy, translation clarity, human authenticity, and technical punch",
-  "improvedTitle": "Optimized, high-converting human-style title",
-  "improvedContent": "The enhanced, fully humanized, spell-checked Markdown article with zero AI clichés",
+  "feedback": "Short evaluation critique focusing on headline magnetism, human authenticity, and structural depth",
+  "improvedTitle": "Irresistible, curiosity-sparking, high-CTR headline",
+  "improvedContent": "The enhanced, fully humanized, spell-checked Markdown article with rich formatting and zero AI clichés",
   "recommendations": ["point 1", "point 2"]
 }
 `;

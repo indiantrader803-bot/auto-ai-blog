@@ -83,23 +83,23 @@ export async function enrichMedia(
     }
   }
 
-  // 3. Fallback: High-quality AI Generated Image via Pollinations / Dynamic Seeded AI Canvas
+  // 3. Fallback: High-quality AI Generated Image via Pollinations / Seeded Photorealistic Canvas
   if (!imageResult.url) {
     const uniqueSeed = `${Date.now()}_${Math.floor(Math.random() * 1000000)}`;
     const visualStyles = [
-      "cinematic lighting, photorealistic 8k octane render, editorial composition",
-      "hyper-detailed digital painting, volumetric lighting, futuristic aesthetic",
-      "isometric 3D architectural render, clean modern minimalism, ray tracing",
-      "award-winning macro photography, ultra-detailed textures, moody bokeh",
-      "modern editorial magazine visual, vibrant corporate tech illustration"
+      "award-winning National Geographic editorial photography, Hasselblad medium format, dramatic cinematic lighting, photorealistic 8k, sharp focus, vibrant natural colors",
+      "futuristic cyber-tech aesthetic, volumetric neon lighting, cinematic octane 3D render, hyper-detailed, 8k resolution, ray tracing",
+      "commercial editorial magazine cover, minimalist luxury composition, soft morning studio lighting, high contrast, crisp textures",
+      "cinematic architectural photography, wide angle, dramatic golden hour sky, ultra-realistic textures, clean depth of field",
+      "Wall Street / Bloomberg executive macro photography, dynamic depth of field, sleek obsidian glass reflections, crisp details"
     ];
     const chosenStyle = visualStyles[Math.floor(Math.random() * visualStyles.length)];
-    const sanitizedTopic = encodeURIComponent(`${imageQuery} ${articleTitle.slice(0, 40)}`);
-    const prompt = `award-winning 4k wallpaper illustration of ${sanitizedTopic}, ${chosenStyle}, 16:9 aspect ratio, highly detailed`;
-    imageResult.url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1200&height=675&seed=${uniqueSeed}&nologo=true`;
-    imageResult.alt = `${articleTitle} - High Resolution Visual`;
-    imageResult.photographer = "AI Visual Intelligence Engine";
-    imageResult.photographerUrl = "https://pollinations.ai";
+    const cleanQuery = imageQuery.replace(/[^a-zA-Z0-9\s]/g, " ").slice(0, 50).trim();
+    const prompt = `masterpiece photograph of ${cleanQuery || articleTitle.slice(0, 45)}, ${chosenStyle}, 16:9 widescreen, no text, no watermarks`;
+    imageResult.url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1200&height=675&seed=${uniqueSeed}&nologo=true&enhance=true`;
+    imageResult.alt = `${articleTitle} - High Definition Visual`;
+    imageResult.photographer = "SmartMag Visual Studio";
+    imageResult.photographerUrl = "https://thesmartmag.com";
   }
 
   // 3.5. Optionally Upload to Amazon S3 CDN Bucket

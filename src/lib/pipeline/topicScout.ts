@@ -5,39 +5,54 @@ const parser = new Parser({
 });
 
 const DEFAULT_NICHE_TOPICS = [
-  "The Ultimate Solo Traveller's Guide: Exploring Hidden Wonders, Mountain Expeditions & Budget Backpacking",
-  "The World's Most Mesmerizing Cultural Festivals: From India's Radiant Diwali & Holi to Rio Carnival and Kyoto Gion Matsuri",
-  "Digital Nomad Travel Blueprint: High-Speed Satellite Internet, Packing Light & Remote Work Across 30 Countries",
-  "Himalayan High-Altitude Trekking: Safety Protocols, Acclimatization & Trail Packing Checklist",
-  "Global Festival Tourism: Experiencing Sacred Traditions, Heritage Celebrations & Street Carnivals",
-  "Viral Social Media Algorithms in 2026: Cracking TikTok, YouTube Shorts & Instagram Reels Distribution",
-  "AI Influencers & Digital Creators: How Autonomous Synthetic Avatars Are Generating Millions in Brand Sponsorships",
-  "Social Media Monetization Blueprint: Scaling High-Ticket Affiliate Funnels Across Twitter/X and LinkedIn",
-  "Nifty 50 & Sensex Technical Outlook: FII Inflows, DII Liquidity & Key Breakout Levels",
-  "Indian Stock Market: Banking, IT & Defence Sectors Poised for High-Growth in 2026",
-  "US Stock Markets (S&P 500, Nasdaq 100): Big Tech Earnings & Federal Reserve Rate Policy",
-  "Global Forex Trading: USD/INR, EUR/USD & Currency Hedging Strategies for Volatility",
-  "Commodity Supercycle: Gold, Silver & Crude Oil Technical Pivot Points and Geo-Economic Drivers",
-  "DeepSeek V3 vs Claude 3.7 Sonnet: The Open-Weights AI Reasoning Architecture War",
-  "Prop Trading Masterclass: Passing MFFU & Blue Guardian Funding Challenges with Algorithmic Risk Management",
-  "India's Telecom Revolution: 5G SA, Starlink Satellite Broadband vs Airtel OneWeb",
-  "Agentic AI Workflows and Autonomous Coding Systems in Enterprise Production",
-  "Semiconductor Manufacturing: TSMC 2nm N2 Node & High-NA EUV Breakthroughs",
-  "High-Yield Quantitative Strategies: Real-Time Algorithmic Execution on Global Markets",
-  "Zero-Trust Cloud Infrastructure: Hardening Enterprise Kubernetes Clusters",
-  "Post-Quantum Cryptography & Kyber Encryption for Financial Systems",
-  "Next.js 15 & Edge Computing: Sub-10ms Microservices Architecture"
+  // 🚀 AI & Frontier Tech
+  "OpenAI o3 & Claude 3.7 Sonnet: The Rise of Autonomous Self-Evolving AI Agents in 2026",
+  "Local LLMs on Apple Silicon: Running 70B Models with Zero Cloud Costs and High Token Throughput",
+  "Physical AI & Humanoid Robotics: How Figure 02 and Tesla Optimus Are Entering Global Assembly Lines",
+  "Agentic Coding in Production: Why Engineering Teams Are Replacing Traditional IDEs with Autonomous Dev Swarms",
+  "DeepSeek V3 vs Mistral Large 2: The Open-Weights Architecture Transforming Enterprise AI",
+  "The Next Computing Frontier: Quantum Neural Networks and Post-Quantum Financial Cryptography",
+  "Brain-Computer Interfaces in 2026: Neuralink Clinical Progress, BCI Gaming & Ethical Guardrails",
+  
+  // 📈 High-Frequency Trading & Prop Firms
+  "Algorithmic Order Flow Trading: Decoding Institutional Footprint Charts, Delta Spikes & Iceberg Orders",
+  "Prop Trading Survival Handbook: How Top 1% Funded Traders Pass $200k Challenges with Strict Risk Scaling",
+  "High-Frequency Market Making in 2026: Rust vs C++ for Microsecond Arbitrage on Global Exchanges",
+  "Delta Exchange & Crypto Derivatives: Hedging Perpetual Futures and Options Strategies for High Volatility",
+  "Zero-Loss Drawdown Discipline: The Mathematical Formula Behind Long-Term Funded Account Longevity",
+  "India's Retail Trading Explosion: Nifty 50 Zero-Day-to-Expiry (0DTE) Options Trading Dynamics",
+  
+  // ✈️ Luxury Travel, Remote Work & Cultural Wonders
+  "Kyoto to Tokyo on the Shinkansen: The Ultimate 10-Day AI-Curated Luxury Japan Itinerary",
+  "Switzerland Scenic Train Journeys: Glacier Express, First-Class Passes & Alpine Chalet Stays",
+  "Digital Nomad Empires in Bali & Lisbon: Cost of Living, Coworking Hubs & High-Speed Satellite Workspaces",
+  "Himalayan High-Altitude Expeditions: Surviving the Chadar Frozen River Trek and Rohtang Passes",
+  "The World's Most Surreal Cultural Carnivals: From Rio Sambadrome & Venice Masks to India's Mathura Holi",
+  "Secret Northern Lights Cabins: Lapland Igloos, Arctic Thermal Baths & Photography Checklist",
+  
+  // 📱 Gadgets, Hardware & Apple Ecosystem
+  "iPhone 18 Pro Max Teardown: 2nm A20 Pro Silicon, Variable Aperture Lens & All-Glass Unibody",
+  "Apple M5 Ultra MacBook Pro: Is 512GB Unified Memory Worth the Pro Creator Premium in 2026?",
+  "Spatial Computing Face-off: Apple Vision Pro 2 vs Meta Quest Pro 3 for Enterprise Workspaces",
+  "Next-Gen Foldables: Tri-Fold Displays, Zero-Crease Hinges & Tablet-Class Productivity on the Go",
+  
+  // ⚡ Emerging Wealth, Crypto & Global Macro
+  "Bitcoin Post-Halving Cycle: Institutional ETF Accumulation, Sovereign Reserves & Mining Realities",
+  "Global Macro Pivots: How Central Bank Liquidity Shifts Impact Stocks, Gold & Tech Valuations",
+  "Passive Income Playbook 2026: Automated AI Micro-SaaS and High-Yield Digital Product Funnels"
 ];
 
 const RSS_SOURCES = [
-  "https://trends.google.com/trends/trendingsearches/daily/rss?geo=IN",
   "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US",
-  "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
-  "https://www.moneycontrol.com/rss/MCtopnews.xml",
+  "https://trends.google.com/trends/trendingsearches/daily/rss?geo=IN",
+  "https://trends.google.com/trends/trendingsearches/daily/rss?geo=GB",
   "https://hnrss.org/frontpage",
   "https://techcrunch.com/feed/",
-  "https://mashable.com/feeds/rss/all",
-  "https://www.theverge.com/rss/index.xml"
+  "https://www.theverge.com/rss/index.xml",
+  "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
+  "https://www.wired.com/feed/rss",
+  "https://arstechnica.com/feed/",
+  "https://www.moneycontrol.com/rss/MCtopnews.xml"
 ];
 
 export async function scoutTrendingTopic(customNiche?: string): Promise<{
@@ -116,6 +131,12 @@ function categorizeTopic(title: string): string {
   }
   if (lower.includes("code") || lower.includes("javascript") || lower.includes("python") || lower.includes("react") || lower.includes("dev") || lower.includes("rust") || lower.includes("kubernetes")) {
     return "Development & Engineering";
+  }
+  if (lower.includes("iphone") || lower.includes("apple") || lower.includes("macbook") || lower.includes("ipad") || lower.includes("vision pro") || lower.includes("gadget") || lower.includes("hardware") || lower.includes("foldable") || lower.includes("samsung")) {
+    return "Technology & Gadgets";
+  }
+  if (lower.includes("crypto") || lower.includes("bitcoin") || lower.includes("ethereum") || lower.includes("halving") || lower.includes("blockchain") || lower.includes("token")) {
+    return "Finance & Markets";
   }
   return "Finance & Markets";
 }

@@ -394,11 +394,33 @@ export default async function BlogPostPage({ params }: Props) {
           {/* Right Main Article Body (Matching Mockup) */}
           <article className="lg:col-span-8 order-1 lg:order-2 space-y-8 min-w-0">
             {/* 1. AI Quick Summary Box with Audio & Translate buttons */}
-            <AiQuickSummary
-              title={post.title}
-              excerpt={post.excerpt}
-              category={post.category?.name}
-            />
+            {(() => {
+              // Extract dynamic key points from ## headers or early paragraphs for unique summary
+              const cleanContent = post.content || "";
+              const headerMatches = cleanContent
+                .split("\n")
+                .filter((l: string) => l.startsWith("## ") && !l.includes("FAQ") && !l.includes("Frequently"))
+                .map((l: string) => l.replace(/^##\s+/, "").trim())
+                .slice(0, 4);
+
+              const summaryPoints = headerMatches.length >= 3
+                ? headerMatches
+                : [
+                    `Strategic breakdown: Why ${post.title.slice(0, 45)} matters right now`,
+                    "Under-the-hood benchmarks, execution models & comparative metrics",
+                    "Practical pitfalls, risk management & structural trade-offs to avoid",
+                    "Future outlook & actionable key takeaways for practitioners",
+                  ];
+
+              return (
+                <AiQuickSummary
+                  title={post.title}
+                  excerpt={post.excerpt}
+                  category={post.category?.name}
+                  points={summaryPoints}
+                />
+              );
+            })()}
 
             {/* Embedded Audio Player */}
             <div id="article-audio-player">
@@ -423,8 +445,12 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* 3. Key Insight Highlight Callout */}
             <KeyInsightBox
-              title="Key Insight"
-              insight={`${post.title} represents a structural shift in modern execution paradigms. Strategic success hinges on timing, regulatory resilience, and foundational adoption.`}
+              title="Insider Key Takeaway"
+              insight={
+                post.excerpt && post.excerpt.length > 30
+                  ? post.excerpt
+                  : `Mastery in ${post.category?.name || "this domain"} requires rigorous risk discipline, deep structural awareness, and execution timing.`
+              }
             />
 
             {/* Contextual Savings & Promo Chip */}

@@ -189,6 +189,8 @@ export default function GeneratorStudioPage() {
               <option value="Technology">Technology & Gadgets</option>
               <option value="Development & Engineering">Development & Engineering</option>
               <option value="Finance & Markets">Finance & Markets</option>
+              <option value="Travel & Expeditions">Travel & Expeditions</option>
+              <option value="Festivals & Culture">Festivals & Culture</option>
               <option value="Productivity & Workflow">Productivity & Workflow</option>
             </select>
           </div>
@@ -198,17 +200,18 @@ export default function GeneratorStudioPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
-              Tone of Voice
+              Tone & Article Style
             </label>
             <select
               value={tone}
               onChange={(e) => setTone(e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              <option value="informative">Informative & Deep Research</option>
-              <option value="engaging">Engaging & Conversational</option>
-              <option value="authoritative">Authoritative & Technical</option>
-              <option value="analytical">Analytical & Data-Driven</option>
+              <option value="curiosity-driven, investigative, and captivating">Viral & Curiosity-Driven (High CTR)</option>
+              <option value="hands-on, blueprint-style, trench field notes">Trench Field Notes & Masterclass Blueprint</option>
+              <option value="deeply authoritative, investigative, and practical">Authoritative & Technical Deep-Dive</option>
+              <option value="conversational, witty, and fast-paced">Witty & Conversational (High Engagement)</option>
+              <option value="analytical, benchmark-driven, and financial">Wall Street / Benchmark Analytical</option>
             </select>
           </div>
 

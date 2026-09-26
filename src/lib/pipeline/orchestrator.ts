@@ -261,7 +261,7 @@ export async function runBlogPipeline(
     try {
       post = await prisma.post.create({
         data: {
-          title: aiResult.title,
+          title: refinedTitle,
           slug: finalSlug,
           excerpt: aiResult.excerpt,
           content: processedContent,
@@ -271,8 +271,8 @@ export async function runBlogPipeline(
           imagePhotographerUrl: mediaResult.imagePhotographerUrl,
           youtubeVideoId: mediaResult.youtubeVideoId,
           youtubeVideoTitle: mediaResult.youtubeVideoTitle,
-          seoTitle: aiResult.seoTitle,
-          seoDescription: aiResult.seoDescription,
+          seoTitle: seoResult.seoTitle,
+          seoDescription: seoResult.seoDescription,
           seoKeywords: seoKeywords.join(", "),
           faqJson,
           readTimeMinutes,
@@ -286,7 +286,7 @@ export async function runBlogPipeline(
         const fallbackSlug = `${finalSlug}-${Date.now().toString().slice(-4)}`;
         post = await prisma.post.create({
           data: {
-            title: aiResult.title,
+            title: refinedTitle,
             slug: fallbackSlug,
             excerpt: aiResult.excerpt,
             content: processedContent,

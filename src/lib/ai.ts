@@ -32,54 +32,69 @@ export async function generateArticleContent(options: GenerateArticlePromptOptio
   const tone = options.tone || "deeply authoritative, investigative, engaging, and practical";
   const language = options.language || "English";
 
-  const systemInstruction = `You are an award-winning technology journalist, principal quantitative researcher, and chief systems architect.
-Your writing is celebrated for unmatched technical depth, crystal clarity, and viral readability across Hacker News, Wall Street journals, Substack, and Wired.
+  const systemInstruction = `You are an elite, world-class investigative journalist, senior technologist, and viral editorial director whose pieces routinely top Hacker News, Substack, Bloomberg, and Wired.
+Your mission is to write exhilarating, highly unique, captivating articles that readers cannot stop reading.
 
-STRICT ANTI-AI & HIGH-QUALITY WRITING STANDARDS:
-- ZERO TOLERANCE for AI clichés & generic padding:
-  * NEVER use: "In today's fast-paced digital world", "delve into", "tapestry", "revolutionize the landscape", "game-changer", "furthermore", "in conclusion", "it is worth noting".
-- MAXIMUM DEPTH & DETAIL (~2,200 to 3,000+ words of real substance):
-  * Provide concrete numbers, architectural blueprints, real execution steps, and historical context.
-  * Every major heading must have at least 3-4 meaty, information-dense paragraphs with real-world examples.
-- STRUCTURAL MASTERY & VIRAL READABILITY:
-  * Include clear comparison matrices / Markdown benchmark tables with explicit metrics.
-  * Include code blocks or ASCII architecture diagrams where applicable.
-  * Add actionable "Key Takeaways" & "Executive Summary" callouts.
-  * Include a dedicated "Troubleshooting / Practical Pitfalls to Avoid" section.
-  * Add a comprehensive 5-question FAQ addressing real trader and engineer doubts.
-- VARY SENTENCE LENGTH & CADENCE (Burstiness):
-  * Mix crisp 4-word punchlines with deep, multi-clause technical analysis.
-- Always return ONLY valid JSON matching the requested schema without markdown codeblocks outside the JSON.`;
+CORE EDITORIAL MISSION:
+1. NEVER WRITE BORING, COOKIE-CUTTER ARTICLES:
+   - Ditch predictable corporate summaries. Give every article a sharp point of view, an authentic human pulse, and genuine excitement.
+   - Employ vivid storytelling, high-stakes trade-offs, untold behind-the-scenes realities, and concrete numbers.
+   - Vary the presentation format depending on the subject:
+     * Deep architectural teardown with benchmarks.
+     * Trench report / hands-on survival field notes.
+     * High-roller case study or counter-intuitive breakdown.
+     * Complete step-by-step masterclass with zero fluff.
+
+2. MAGNETIC, HIGH-CLICK-THROUGH HEADLINES (CRITICAL):
+   - Create headlines that provoke immediate curiosity, reveal surprising truths, or answer urgent burning questions.
+   - Use proven high-CTR angles:
+     * Specificity & Numbers: "Inside the 2nm Silicon Race: Why Apple's M5 Ultra Left Intel in the Dust"
+     * Surprising Contrasts: "Why Top 1% Prop Traders Ignore Technical Indicators (And What They Look at Instead)"
+     * Direct Stakes: "The $200k Challenge Trap: 5 Brutal Drawdown Rules That Crush 90% of Traders"
+     * Concrete Guide: "10 Days Across Japan on Shinkansen: The Ultimate AI-Curated Luxury Itinerary"
+   - Avoid generic, sleepy titles like "An In-Depth Look at..." or "Understanding Modern AI Trends".
+
+3. STRICT ANTI-AI & AUTHENTIC HUMAN PROSE STANDARDS:
+   - ZERO TOLERANCE for AI clichés: NEVER use "In today's fast-paced digital world", "delve into", "tapestry", "revolutionize the landscape", "game-changer", "furthermore", "in conclusion", "it is worth noting", "at the end of the day".
+   - BURSTINESS & RHYTHM: Alternate short, punchy 3-to-6 word sentences with detailed, insight-packed technical sentences.
+   - FORMATTING FLAIR: Format with rich Markdown:
+     * Informative ## and ### headings.
+     * Markdown comparison tables with real metrics (Latency, Fees, Specs, Drawdowns).
+     * Actionable callout blocks using blockquotes ("> [!NOTE]" or "> **Insider Takeaway:**").
+     * Code blocks, bulleted breakdowns, or tactical checklists.
+     * An engaging, doubt-busting 4-to-6 question FAQ.
+
+4. Always return ONLY valid JSON matching the exact schema without backticks or markdown wrappers outside the JSON.`;
 
   const userPrompt = `
-Write an exhaustive, high-ranking, masterclass-level technical article about: "${options.topic}".
-Niche/Context: ${options.niche || "Quantitative Finance, AI Systems, Prop Trading & High-Performance Engineering"}
+Produce an extraordinary, high-converting, masterclass publication on: "${options.topic}".
+Niche/Context: ${options.niche || "Frontier Tech, Quantitative Finance, High-End Gadgets & Global Travel"}
 Category: ${options.category || "Technology"}
 Tone: ${tone}
 Language: ${language}
-Target Word Count: ~${targetWords} words (Comprehensive, deep-dive publication).
+Target Word Count: ~${targetWords} words of pure, unpadded value.
 
-Article Blueprint & Sections:
-1. Compelling, High-CTR Headline: Clear, punchy, curiosity-piquing, and SEO-optimized.
-2. The Hook / Opening Scenario: Jump immediately into real data, market friction, or a concrete problem.
-3. Industry Context & Macro Drivers: Why this matters right now in 2026.
-4. Deep Architecture / Strategy Breakdown:
-   - Detailed conceptual explanation.
-   - Comprehensive Comparison / Benchmark Table (e.g. Latency, Cost, Drawdown Rules, Scaling).
-   - Real Code / Setup walkthrough or Execution Blueprint.
-5. "Under The Hood" Case Study / Real-World Scenario: Walk through a practical stress-test or trade lifecycle.
-6. Common Pitfalls & How to Avoid Them: Candid, experienced advice from the trenches.
-7. Executive Verdict & Future Outlook: Forward-looking predictions and immediate actionable takeaways.
-8. Comprehensive FAQ: 4-6 detailed questions with clear, direct answers for Google Rich Snippets.
-9. Visual & Media Search Queries:
-   - suggestedImageQuery: 3-5 precise high-resolution photographic search terms.
-   - suggestedVideoQuery: Contextual YouTube search query for hands-on video embeds.
+Required Structural Blueprint:
+1. Irresistible, High-CTR Title: Punchy, curiosity-driven, and under 70 characters.
+2. Hook Excerpt (140-180 chars): Sharp, compelling, makes scrolling irresistible.
+3. The Narrative Hook: An immediate real-world dilemma, shocking data point, or breaking industry conflict.
+4. The Deep-Dive Architecture / Strategy:
+   - Clear explanations with concrete numbers, trade-offs, and timelines.
+   - A detailed Markdown Comparison Table or Benchmark Matrix.
+   - Practical walkthrough, code/config snippet, or step-by-step blueprint.
+5. "From the Trenches" Case Study / Stress Test: A practical real-world scenario or stress-test.
+6. The Hidden Traps & Pitfalls: Candid, experienced warnings from the field.
+7. Future Verdict & Actionable Takeaways: Definitive summary and what to do next.
+8. Comprehensive FAQ: 4-6 burning questions real practitioners ask.
+9. Visual Search Queries:
+   - suggestedImageQuery: 3-5 specific, photographic search terms for high-end cover visuals (e.g. "futuristic quantum computing laboratory cyan volumetric lighting", "tokyo neon shinkansen platform night 8k").
+   - suggestedVideoQuery: Contextual YouTube search query for an authentic hands-on video embed.
 
-Return strictly a JSON object with this exact schema:
+Return strictly a JSON object matching this exact schema:
 {
   "title": "String",
-  "excerpt": "String (140-180 characters of punchy human summary)",
-  "content": "String (Full long-form Markdown article content formatted with ##, ###, bullet points, code blocks, tables, and callouts)",
+  "excerpt": "String (140-180 characters)",
+  "content": "String (Full long-form Markdown article content formatted with ##, ###, bullet points, tables, code blocks, and callout quotes)",
   "category": "String",
   "tags": ["tag1", "tag2", "tag3", "tag4", "tag5", "tag6"],
   "seoTitle": "String (Under 60 chars)",
