@@ -1,0 +1,46 @@
+name: Trigger Render Deploy
+
+# Render auto-deploys on push when "Auto-Deploy: Yes" is enabled on the service.
+# This workflow is a belt-and-braces fallback that ALSO triggers a deploy
+# explicitly on every push to main, so a missed webhook never strands a release.
+#
+# ONE-TIME SETUP (2 minutes, by repo owner):
+#   1. Render Dashboard -> your web service -> Settings -> Deploy Hook
+#      -> copy the hook URL (looks like https://api.render.com/deploy/srv-xxxx...)
+#   2. GitHub repo -> Settings -> Secrets and variables -> Actions
+#      -> New repository secret -> Name: RENDER_DEPLOY_HOOK_URL
+#      -> Value: paste the hook URL
+#   Done. Every push to main afterwards triggers both Render's native webhook
+#   and this explicit hook.
+#
+# If the secret is not set, this workflow exits 0 with a friendly reminder and
+# does nothing harmful.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deploy Hook
+        env:
+          HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$HOOK_URL" ]; then
+            echo "::warning::RENDER_DEPLOY_HOOK_URL secret is not set."
+            echo "Add it from Render Dashboard -> Service Settings -> Deploy Hook."
+            echo "Until then, rely on Render's native auto-deploy on push."
+            exit 0
+          fi
+          echo "Triggering Render deploy..."
+          code=$(curl -s -o /tmp/hook-response.txt -w "%{http_code}" -X POST "$HOOK_URL")
+          echo "Render responded with HTTP $code"
+          cat /tmp/hook-response.txt || true
+          if [ "$code" != "200" ]; then
+            echo "::error::Deploy hook failed with HTTP $code"
+            exit 1
+          fi
+          echo "Deploy triggered successfully."
