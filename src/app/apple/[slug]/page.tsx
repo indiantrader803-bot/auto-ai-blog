@@ -9,6 +9,7 @@ import {
   TAGGED_ACCESSORIES,
   APPLE_FAQ_ITEMS,
 } from "@/data/appleData";
+import { goLink } from "@/lib/goLink";
 import {
   Cpu,
   Camera,
@@ -212,7 +213,11 @@ export default function AppleProductDeepDivePage({ params }: Props) {
             {product.retailers.slice(0, 5).map((r, i) => (
               <a
                 key={i}
-                href={r.affiliateUrl}
+                href={goLink(r.affiliateUrl, {
+                  productId: product.id,
+                  store: r.store,
+                  placement: "deepdive_price_strip",
+                })}
                 target="_blank"
                 rel="noopener noreferrer nofollow sponsored"
                 className="px-4 py-2 rounded-full bg-white hover:bg-zinc-200 text-black text-xs font-bold transition-all flex items-center gap-1.5"
@@ -344,7 +349,11 @@ export default function AppleProductDeepDivePage({ params }: Props) {
                     </td>
                     <td className="px-5 py-4">
                       <a
-                        href={r.affiliateUrl}
+                        href={goLink(r.affiliateUrl, {
+                          productId: product.id,
+                          store: r.store,
+                          placement: "deepdive_compare_table",
+                        })}
                         target="_blank"
                         rel="noopener noreferrer nofollow sponsored"
                         className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-black text-xs font-bold hover:bg-zinc-200 transition-all whitespace-nowrap"
@@ -399,7 +408,11 @@ export default function AppleProductDeepDivePage({ params }: Props) {
                   </div>
                 </div>
                 <a
-                  href={acc.buyUrl}
+                  href={goLink(acc.buyUrl, {
+                    productId: product.id,
+                    store: acc.retailer,
+                    placement: "deepdive_accessories",
+                  })}
                   target="_blank"
                   rel="noopener noreferrer nofollow sponsored"
                   className="mt-5 px-4 py-2.5 rounded-full bg-white hover:bg-zinc-200 text-black text-xs font-bold transition-all flex items-center justify-center gap-1.5"

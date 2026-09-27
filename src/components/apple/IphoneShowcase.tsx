@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AppleProduct, APPLE_PRODUCTS } from "@/data/appleData";
 import { appleImg } from "@/lib/appleImages";
+import { goLink } from "@/lib/goLink";
 import { ShoppingBag, ChevronRight, Zap, Shield, Sparkles, ExternalLink, Cpu, Camera, Battery, HardDrive, Check, Star, Palette } from "lucide-react";
 
 export default function IphoneShowcase() {
@@ -226,7 +227,11 @@ export default function IphoneShowcase() {
                   {selectedProduct.retailers.map((r, i) => (
                     <a
                       key={i}
-                      href={r.affiliateUrl}
+                      href={goLink(r.affiliateUrl, {
+                        productId: selectedProduct.id,
+                        store: r.store,
+                        placement: "showcase_retailer_grid",
+                      })}
                       target="_blank"
                       rel="noopener noreferrer nofollow"
                       className="p-2.5 rounded-xl bg-zinc-800/80 hover:bg-zinc-700/90 border border-white/10 hover:border-white/30 transition-all flex flex-col justify-between group cursor-pointer"

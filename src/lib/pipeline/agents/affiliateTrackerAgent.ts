@@ -681,6 +681,103 @@ export const MASTER_AFFILIATE_PROGRAMS: AffiliateProgramData[] = [
     payoutStatus: "AVAILABLE",
     badge: "$20 BONUS",
   },
+  // ──────────────────────────────────────────────────────────────
+  // 🍎 Apple Hub Retailer Programs — clicks come from the /go
+  // tracked-redirect gateway (src/app/go/route.ts). Every buy button
+  // on the Apple hub logs an AFFILIATE_CLICK with store metadata that
+  // matches these platform names, so the dashboard below shows REAL  // per-retailer clicks.
+  // ──────────────────────────────────────────────────────────────
+  {
+    id: "aff_amazon_in",
+    platform: "Amazon",
+    name: "Amazon India Associates (Apple Devices & Accessories)",
+    category: "E-Commerce" as any,
+    targetUrl: "https://www.amazon.in/",
+    promoCode: "autoaiblog-21",
+    payoutModel: "4-12% Accessories / 0% Phones (per Amazon IN policy)",
+    baseCpa: 0,
+    clicks: 0,
+    uniqueClicks: 0,
+    purchases: 0,
+    conversionRate: 0,
+    epc: 0,
+    totalEarningsUSD: 0,
+    totalEarningsINR: 0,
+    payoutStatus: "AVAILABLE",
+    badge: "ASSOCIATES",
+  },
+  {
+    id: "aff_flipkart",
+    platform: "Flipkart",
+    name: "Flipkart Affiliate (Apple Devices)",
+    category: "E-Commerce" as any,
+    targetUrl: "https://www.flipkart.com/",
+    payoutModel: "Commission via affiliate network",
+    baseCpa: 0,
+    clicks: 0,
+    uniqueClicks: 0,
+    purchases: 0,
+    conversionRate: 0,
+    epc: 0,
+    totalEarningsUSD: 0,
+    totalEarningsINR: 0,
+    payoutStatus: "AVAILABLE",
+    badge: "AFFILIATE",
+  },
+  {
+    id: "aff_croma",
+    platform: "Croma",
+    name: "Croma (Tata Digital) — Apple Premium Reseller",
+    category: "E-Commerce" as any,
+    targetUrl: "https://www.croma.com/",
+    payoutModel: "Commission via Cuelinks",
+    baseCpa: 0,
+    clicks: 0,
+    uniqueClicks: 0,
+    purchases: 0,
+    conversionRate: 0,
+    epc: 0,
+    totalEarningsUSD: 0,
+    totalEarningsINR: 0,
+    payoutStatus: "AVAILABLE",
+    badge: "CUELINKS",
+  },
+  {
+    id: "aff_reliance_digital",
+    platform: "Reliance Digital",
+    name: "Reliance Digital — Apple Authorized Reseller",
+    category: "E-Commerce" as any,
+    targetUrl: "https://www.reliancedigital.com/",
+    payoutModel: "Commission via Cuelinks",
+    baseCpa: 0,
+    clicks: 0,
+    uniqueClicks: 0,
+    purchases: 0,
+    conversionRate: 0,
+    epc: 0,
+    totalEarningsUSD: 0,
+    totalEarningsINR: 0,
+    payoutStatus: "AVAILABLE",
+    badge: "CUELINKS",
+  },
+  {
+    id: "aff_vijay_sales",
+    platform: "Vijay Sales",
+    name: "Vijay Sales — Apple Authorized Reseller",
+    category: "E-Commerce" as any,
+    targetUrl: "https://www.vijaysales.com/",
+    payoutModel: "Commission via Cuelinks",
+    baseCpa: 0,
+    clicks: 0,
+    uniqueClicks: 0,
+    purchases: 0,
+    conversionRate: 0,
+    epc: 0,
+    totalEarningsUSD: 0,
+    totalEarningsINR: 0,
+    payoutStatus: "AVAILABLE",
+    badge: "CUELINKS",
+  },
 ];
 
 /**
@@ -718,9 +815,11 @@ export async function runAffiliateConversionFetcherAgent(): Promise<{
 
     const eventUrl = (meta.url || "").toLowerCase();
     const offerName = (meta.offerName || "").toLowerCase();
+    const goStore = (meta.store || "").toLowerCase();
+    const goGateway = meta.source === "go-gateway" || !!(meta.targetUrl && meta.store && meta.placement);
 
     // Match program precisely
-    const prog = livePrograms.find((p) => {
+    let prog = livePrograms.find((p) => {
       const target = p.targetUrl.toLowerCase();
       const plat = p.platform.toLowerCase();
       const name = p.name.toLowerCase();
@@ -730,6 +829,19 @@ export async function runAffiliateConversionFetcherAgent(): Promise<{
         (offerName && (offerName.includes(plat) || name.includes(offerName) || offerName.includes(name)))
       );
     });
+
+    // /go gateway events: match by retailer store name (Apple hub buy clicks)
+    if (!prog && goGateway && goStore) {
+      prog = livePrograms.find(
+        (p) =>
+          goStore === p.platform.toLowerCase() ||
+          (goStore.includes("amazon") && p.platform === "Amazon") ||
+          (goStore.includes("flipkart") && p.platform === "Flipkart") ||
+          (goStore.includes("croma") && p.platform === "Croma") ||
+          (goStore.includes("reliance") && p.platform === "Reliance Digital") ||
+          (goStore.includes("vijay") && p.platform === "Vijay Sales")
+      );
+    }
 
     if (prog) {
       prog.clicks += 1;

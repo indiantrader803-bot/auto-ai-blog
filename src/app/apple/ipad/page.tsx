@@ -3,6 +3,7 @@ import Link from "next/link";
 import AppleNavbar from "@/components/apple/AppleNavbar";
 import StickyMobileBuyBar from "@/components/apple/StickyMobileBuyBar";
 import { APPLE_PRODUCTS } from "@/data/appleData";
+import { goLink } from "@/lib/goLink";
 import { Tablet, Sparkles, Check, ExternalLink, ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -103,7 +104,11 @@ export default function IpadGuidePage() {
                     {ipad.retailers.slice(0, 4).map((r, i) => (
                       <a
                         key={i}
-                        href={r.affiliateUrl}
+                        href={goLink(r.affiliateUrl, {
+                          productId: ipad.id,
+                          store: r.store,
+                          placement: "ipad_page",
+                        })}
                         target="_blank"
                         rel="noopener noreferrer nofollow"
                         className="p-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-xs font-bold text-white flex items-center justify-between"

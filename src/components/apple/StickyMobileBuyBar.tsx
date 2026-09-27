@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ShoppingBag, Tag, ChevronUp, ExternalLink, Zap } from "lucide-react";
 import { APPLE_PRODUCTS } from "@/data/appleData";
+import { goLink } from "@/lib/goLink";
 
 export default function StickyMobileBuyBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +24,11 @@ export default function StickyMobileBuyBar() {
             {flagship.retailers.map((r, i) => (
               <a
                 key={i}
-                href={r.affiliateUrl}
+                href={goLink(r.affiliateUrl, {
+                  productId: flagship.id,
+                  store: r.store,
+                  placement: "sticky_mobile_bar",
+                })}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 className="p-2 rounded-xl bg-zinc-800 border border-white/5 flex items-center justify-between text-xs font-bold text-white hover:bg-zinc-700"

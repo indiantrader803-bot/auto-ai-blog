@@ -3,6 +3,7 @@ import Link from "next/link";
 import AppleNavbar from "@/components/apple/AppleNavbar";
 import StickyMobileBuyBar from "@/components/apple/StickyMobileBuyBar";
 import { APPLE_PRODUCTS } from "@/data/appleData";
+import { goLink } from "@/lib/goLink";
 import { Cpu, Camera, Battery, HardDrive, Star, ShieldCheck, Zap, ArrowRight, ExternalLink, Check, ShoppingBag, Sparkles } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -188,7 +189,11 @@ export default function Iphone18LaunchPage() {
                     {phone.retailers.slice(0, 4).map((r, i) => (
                       <a
                         key={i}
-                        href={r.affiliateUrl}
+                        href={goLink(r.affiliateUrl, {
+                          productId: phone.id,
+                          store: r.store,
+                          placement: "iphone18_models_grid",
+                        })}
                         target="_blank"
                         rel="noopener noreferrer nofollow"
                         className="p-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-white/10 flex items-center justify-between text-xs font-bold text-white transition-colors"

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { DAILY_APPLE_DEALS } from "@/data/appleData";
+import { goLink } from "@/lib/goLink";
 import { Tag, Clock, Zap, ArrowRight, ExternalLink, ShieldCheck, Flame, Gift } from "lucide-react";
 
 export default function AppleDeals() {
@@ -105,7 +106,11 @@ export default function AppleDeals() {
                 </div>
 
                 <a
-                  href={deal.affiliateUrl}
+                  href={goLink(deal.affiliateUrl, {
+                    productId: deal.id,
+                    store: deal.store,
+                    placement: "deals_section",
+                  })}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
                   className="px-4 py-2 rounded-full bg-white hover:bg-zinc-200 text-black font-bold text-xs transition-all flex items-center gap-1.5 shadow-md group-hover:scale-105 cursor-pointer"

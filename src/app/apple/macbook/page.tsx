@@ -3,6 +3,7 @@ import Link from "next/link";
 import AppleNavbar from "@/components/apple/AppleNavbar";
 import StickyMobileBuyBar from "@/components/apple/StickyMobileBuyBar";
 import { APPLE_PRODUCTS } from "@/data/appleData";
+import { goLink } from "@/lib/goLink";
 import { Laptop, Cpu, Battery, Star, ExternalLink, ArrowRight, Check, Sparkles, ShieldCheck } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -105,7 +106,11 @@ export default function MacbookGuidePage() {
                     {mbp.retailers.slice(0, 4).map((r, i) => (
                       <a
                         key={i}
-                        href={r.affiliateUrl}
+                        href={goLink(r.affiliateUrl, {
+                          productId: mbp.id,
+                          store: r.store,
+                          placement: "macbook_page",
+                        })}
                         target="_blank"
                         rel="noopener noreferrer nofollow"
                         className="p-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-xs font-bold text-white flex items-center justify-between"

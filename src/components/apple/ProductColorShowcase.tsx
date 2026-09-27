@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { AppleProduct } from "@/data/appleData";
 import { appleImg } from "@/lib/appleImages";
+import { goLink } from "@/lib/goLink";
 import { Star, ShoppingBag, ExternalLink, Check, Palette } from "lucide-react";
 
 /**
@@ -128,12 +129,16 @@ export default function ProductColorShowcase({ product }: { product: AppleProduc
           ))}
         </ul>
 
-        {/* Primary buy CTA row */}
+        {/* Primary buy CTA row — tracked via /go gateway */}
         <div className="flex flex-wrap gap-3">
           {product.retailers.slice(0, 3).map((r, i) => (
             <a
               key={i}
-              href={r.affiliateUrl}
+              href={goLink(r.affiliateUrl, {
+                productId: product.id,
+                store: r.store,
+                placement: "deepdive_hero",
+              })}
               target="_blank"
               rel="noopener noreferrer nofollow sponsored"
               className={`px-6 py-3 rounded-full font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 ${

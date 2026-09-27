@@ -100,8 +100,9 @@ export default function AffiliateTrackingDashboardPage() {
   const programs = data?.programs || [];
   const conversions = data?.recentConversions || [];
   const report = data?.report || {};
+  const productClicks = data?.productClicks || null;
 
-  const categories = ["ALL", "Travel & Flights", "Trading & Binary", "Crypto Derivatives", "Crypto INR", "Prop Trading", "SaaS & Tools"];
+  const categories = ["ALL", "Travel & Flights", "Trading & Binary", "Crypto Derivatives", "Crypto INR", "Prop Trading", "SaaS & Tools", "E-Commerce", "Cashback & Coupons"];
 
   const filteredPrograms = programs.filter((p: any) => {
     const matchesCat = filterCategory === "ALL" || p.category === filterCategory;
@@ -595,6 +596,103 @@ export default function AffiliateTrackingDashboardPage() {
           </table>
         </div>
       </div>
+
+      {/* 5.5 🛒 Product Buy-Click Analytics (from /go tracked gateway) */}
+      {productClicks && (
+        <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white font-serif flex items-center gap-2">
+                <Smartphone className="w-4 h-4 text-emerald-500" />
+                Product Buy-Click Analytics (Last 30 Days)
+              </h3>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                Every “Buy Now” click routes through the tracked <code className="px-1 rounded bg-slate-100 dark:bg-slate-800 font-mono">/go</code> gateway and lands in this ledger — per product, per retailer, per placement.
+              </p>
+            </div>
+            <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-600 dark:text-emerald-400 text-xs font-black font-mono">
+              {productClicks.totalBuyClicks30d ?? 0} TOTAL BUY CLICKS
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* Top Products */}
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800">
+              <div className="text-[10px] uppercase font-black tracking-wider text-slate-400 mb-3">Top Products</div>
+              {productClicks.topProducts?.length ? (
+                <div className="space-y-2">
+                  {productClicks.topProducts.slice(0, 6).map((p: any, i: number) => (
+                    <div key={i} className="flex items-center justify-between text-xs">
+                      <span className="text-slate-700 dark:text-slate-200 font-medium truncate max-w-[160px]">{p.name}</span>
+                      <span className="font-mono font-bold text-indigo-500">{p.clicks}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-[11px] text-slate-400">No buy clicks yet — they will appear here in real time.</p>
+              )}
+            </div>
+
+            {/* Top Retailers */}
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800">
+              <div className="text-[10px] uppercase font-black tracking-wider text-slate-400 mb-3">Top Retailers</div>
+              {productClicks.topStores?.length ? (
+                <div className="space-y-2">
+                  {productClicks.topStores.slice(0, 6).map((s: any, i: number) => (
+                    <div key={i} className="flex items-center justify-between text-xs">
+                      <span className="text-slate-700 dark:text-slate-200 font-medium">{s.name}</span>
+                      <span className="font-mono font-bold text-emerald-500">{s.clicks}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-[11px] text-slate-400">No retailer clicks yet.</p>
+              )}
+            </div>
+
+            {/* Top Placements */}
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800">
+              <div className="text-[10px] uppercase font-black tracking-wider text-slate-400 mb-3">Best Placements</div>
+              {productClicks.topPlacements?.length ? (
+                <div className="space-y-2">
+                  {productClicks.topPlacements.slice(0, 6).map((s: any, i: number) => (
+                    <div key={i} className="flex items-center justify-between text-xs">
+                      <span className="text-slate-700 dark:text-slate-200 font-medium font-mono text-[10px] truncate max-w-[150px]">{s.name}</span>
+                      <span className="font-mono font-bold text-amber-500">{s.clicks}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-[11px] text-slate-400">No placement data yet.</p>
+              )}
+            </div>
+          </div>
+
+          {/* 14-day sparkline trend */}
+          {productClicks.dailyTrend?.length > 0 && (
+            <div className="pt-2">
+              <div className="text-[10px] uppercase font-black tracking-wider text-slate-400 mb-2">Daily Trend (14 days)</div>
+              <div className="flex items-end gap-1 h-16">
+                {productClicks.dailyTrend.map((d: any, i: number) => {
+                  const max = Math.max(...productClicks.dailyTrend.map((x: any) => x.clicks), 1);
+                  return (
+                    <div
+                      key={i}
+                      className="flex-1 rounded-t bg-gradient-to-t from-indigo-500 to-emerald-400 min-h-[3px]"
+                      style={{ height: `${Math.max((d.clicks / max) * 100, 3)}%` }}
+                      title={`${d.day}: ${d.clicks} clicks`}
+                    />
+                  );
+                })}
+              </div>
+              <div className="flex justify-between text-[9px] text-slate-400 font-mono mt-1">
+                <span>{productClicks.dailyTrend[0]?.day}</span>
+                <span>today</span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* 6. Recent Converted User Purchases Feed */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

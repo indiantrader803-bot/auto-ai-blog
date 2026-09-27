@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { TAGGED_ACCESSORIES } from "@/data/appleData";
+import { goLink } from "@/lib/goLink";
 import { Star, ShoppingBag, ExternalLink, Sparkles, ShieldCheck, ArrowRight, Zap, Check } from "lucide-react";
 
 export default function HighCommissionAccessories() {
@@ -101,7 +102,11 @@ export default function HighCommissionAccessories() {
                 </div>
 
                 <a
-                  href={item.buyUrl}
+                  href={goLink(item.buyUrl, {
+                    productId: item.id,
+                    store: item.retailer,
+                    placement: "accessories_grid",
+                  })}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
                   className="px-4 py-2.5 rounded-full bg-white hover:bg-zinc-200 text-black font-bold text-xs transition-all flex items-center gap-1.5 shadow-md group-hover:scale-105 cursor-pointer"

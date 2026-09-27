@@ -3,6 +3,7 @@ import Link from "next/link";
 import AppleNavbar from "@/components/apple/AppleNavbar";
 import StickyMobileBuyBar from "@/components/apple/StickyMobileBuyBar";
 import { APPLE_PRODUCTS } from "@/data/appleData";
+import { goLink } from "@/lib/goLink";
 import { Star, ShieldCheck, Check, X, Camera, Battery, Cpu, Smartphone, ShoppingBag, ExternalLink, ArrowRight, Sparkles } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -233,7 +234,11 @@ export default function Iphone18ProMaxReviewPage() {
                 {phone.retailers.map((r, i) => (
                   <a
                     key={i}
-                    href={r.affiliateUrl}
+                    href={goLink(r.affiliateUrl, {
+                      productId: phone.id,
+                      store: r.store,
+                      placement: "review_buy_grid",
+                    })}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
                     className="p-3 rounded-2xl bg-zinc-800 hover:bg-zinc-700 border border-white/10 flex flex-col justify-between transition-colors"
