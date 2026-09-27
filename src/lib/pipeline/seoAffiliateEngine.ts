@@ -483,7 +483,8 @@ export function generateStructuredSchema(
   publishedAt: Date | string,
   featuredImage?: string,
   faq?: Array<{ question: string; answer: string }>,
-  siteUrl: string = "https://thesmartmag.com"
+  siteUrl: string = "https://thesmartmag.com",
+  video?: { youtubeVideoId?: string; youtubeVideoTitle?: string }
 ) {
   const articleSchema = {
     "@context": "https://schema.org",
@@ -511,8 +512,37 @@ export function generateStructuredSchema(
     },
   };
 
+  const schemaGraph: Record<string, unknown>[] = [articleSchema];
+
+  // VideoObject — makes THIS article page the video's canonical watch page.
+  // Resolves GSC Video indexing "Video isn't on a watch page" by declaring
+  // embedUrl + contentUrl + thumbnail for the embedded YouTube video.
+  if (video?.youtubeVideoId) {
+    const uploadDate = new Date(publishedAt).toISOString();
+    schemaGraph.push({
+      "@type": "VideoObject",
+      "@id": `${siteUrl}/blog/${slug}#video`,
+      name: video.youtubeVideoTitle || title,
+      description: excerpt || title,
+      thumbnailUrl: [
+        `https://img.youtube.com/vi/${video.youtubeVideoId}/maxresdefault.jpg`,
+        `https://img.youtube.com/vi/${video.youtubeVideoId}/hqdefault.jpg`,
+      ],
+      uploadDate,
+      publishDate: uploadDate,
+      embedUrl: `https://www.youtube-nocookie.com/embed/${video.youtubeVideoId}`,
+      contentUrl: `https://www.youtube.com/watch?v=${video.youtubeVideoId}`,
+      mainEntityOfPage: `${siteUrl}/blog/${slug}`,
+      publisher: {
+        "@type": "Organization",
+        name: "TheSmartMag",
+        logo: { "@type": "ImageObject", url: `${siteUrl}/icon-512.png` },
+      },
+    });
+  }
+
   if (!faq || faq.length === 0) {
-    return JSON.stringify(articleSchema);
+    return JSON.stringify(schemaGraph.length === 1 ? schemaGraph[0] : schemaGraph);
   }
 
   const faqSchema = {
@@ -528,5 +558,7 @@ export function generateStructuredSchema(
     })),
   };
 
-  return JSON.stringify([articleSchema, faqSchema]);
+  schemaGraph.push(faqSchema);
+
+  return JSON.stringify(schemaGraph);
 }

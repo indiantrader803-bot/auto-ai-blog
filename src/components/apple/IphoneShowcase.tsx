@@ -4,14 +4,24 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AppleProduct, APPLE_PRODUCTS } from "@/data/appleData";
-import { ShoppingBag, ChevronRight, Zap, Shield, Sparkles, ExternalLink, Cpu, Camera, Battery, HardDrive, Check, Star } from "lucide-react";
+import { appleImg } from "@/lib/appleImages";
+import { ShoppingBag, ChevronRight, Zap, Shield, Sparkles, ExternalLink, Cpu, Camera, Battery, HardDrive, Check, Star, Palette } from "lucide-react";
 
 export default function IphoneShowcase() {
   const iphones = APPLE_PRODUCTS.filter((p) => p.category === "iphone");
   const [selectedId, setSelectedId] = useState<string>("iphone-18-pro-max");
   const [activeRetailerModal, setActiveRetailerModal] = useState<AppleProduct | null>(null);
+  const [finishIdx, setFinishIdx] = useState(0);
 
   const selectedProduct = iphones.find((p) => p.id === selectedId) || iphones[0];
+  const finishes = selectedProduct.finishGallery ?? [];
+  const activeFinish = finishes.length > 0 ? finishes[Math.min(finishIdx, finishes.length - 1)] : null;
+  const heroSrc = activeFinish ? appleImg(activeFinish.slug, 1200) : selectedProduct.heroImage;
+
+  const selectPhone = (id: string) => {
+    setSelectedId(id);
+    setFinishIdx(0);
+  };
 
   return (
     <section id="iphone-showcase" className="py-20 bg-zinc-950 text-white border-b border-white/10">
@@ -34,7 +44,7 @@ export default function IphoneShowcase() {
           {iphones.map((phone) => (
             <button
               key={phone.id}
-              onClick={() => setSelectedId(phone.id)}
+              onClick={() => selectPhone(phone.id)}
               className={`px-4 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer flex items-center gap-2 ${
                 selectedId === phone.id
                   ? "bg-white text-black shadow-lg shadow-white/20 scale-105"
@@ -64,9 +74,9 @@ export default function IphoneShowcase() {
             <div className="lg:col-span-5 relative flex flex-col items-center justify-center">
               <div className="w-full aspect-[4/3] sm:aspect-square relative rounded-2xl overflow-hidden bg-gradient-to-tr from-zinc-800/40 via-zinc-900 to-black border border-white/10 flex items-center justify-center">
                 <img
-                  src={selectedProduct.heroImage}
-                  alt={selectedProduct.name}
-                  className="w-full h-full object-cover rounded-2xl transform hover:scale-105 transition-transform duration-500 opacity-90"
+                  src={heroSrc}
+                  alt={`${selectedProduct.name} in ${activeFinish?.label ?? "official finish"} — authentic Apple product image`}
+                  className="w-full h-full object-cover object-center rounded-2xl transform hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
 
@@ -82,20 +92,47 @@ export default function IphoneShowcase() {
                 </div>
               </div>
 
-              {/* Color Options Swatches */}
-              <div className="mt-5 flex items-center gap-2">
-                <span className="text-xs text-zinc-400 font-medium">Finishes:</span>
-                <div className="flex items-center gap-2">
-                  {selectedProduct.specs.colors.map((color, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2.5 py-1 rounded-full bg-zinc-800/90 border border-white/10 text-[11px] text-zinc-300 font-medium"
-                    >
-                      {color}
+              {/* Color Options — live finish switcher with authentic Apple renders */}
+              {finishes.length > 0 ? (
+                <div className="mt-5 flex flex-col items-center gap-2.5">
+                  <div className="flex items-center gap-2 text-xs text-zinc-400 font-medium">
+                    <Palette className="w-4 h-4" />
+                    <span>
+                      Finish: <span className="text-white font-bold">{activeFinish?.label}</span>
                     </span>
-                  ))}
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    {finishes.map((f, i) => (
+                      <button
+                        key={f.slug}
+                        onClick={() => setFinishIdx(i)}
+                        aria-label={`View ${selectedProduct.shortName} in ${f.label}`}
+                        title={f.label}
+                        className={`w-7 h-7 rounded-full border-2 transition-all cursor-pointer ${
+                          i === Math.min(finishIdx, finishes.length - 1)
+                            ? "border-white scale-110"
+                            : "border-white/20 hover:border-white/60"
+                        }`}
+                        style={{ backgroundColor: f.hex }}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="mt-5 flex items-center gap-2">
+                  <span className="text-xs text-zinc-400 font-medium">Finishes:</span>
+                  <div className="flex items-center gap-2">
+                    {selectedProduct.specs.colors.map((color, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2.5 py-1 rounded-full bg-zinc-800/90 border border-white/10 text-[11px] text-zinc-300 font-medium"
+                      >
+                        {color}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Specifications & Details Column */}

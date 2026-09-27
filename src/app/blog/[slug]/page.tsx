@@ -267,7 +267,12 @@ export default async function BlogPostPage({ params }: Props) {
     post.slug,
     post.publishedAt || new Date(),
     post.featuredImage || undefined,
-    faqs
+    faqs,
+    undefined,
+    // VideoObject schema: makes this article the video's canonical watch page
+    post.youtubeVideoId
+      ? { youtubeVideoId: post.youtubeVideoId, youtubeVideoTitle: post.youtubeVideoTitle }
+      : undefined
   );
 
   const heroImageSrc =

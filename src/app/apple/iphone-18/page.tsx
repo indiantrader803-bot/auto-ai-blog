@@ -140,8 +140,8 @@ export default function Iphone18LaunchPage() {
                   <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-black/60 border border-white/5 mb-6 relative">
                     <img
                       src={phone.heroImage}
-                      alt={phone.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      alt={`${phone.name} — official Apple product image in ${phone.specs.colors[0]}`}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
 
@@ -178,9 +178,7 @@ export default function Iphone18LaunchPage() {
                       <span>{phone.specs.battery}</span>
                     </div>
                   </div>
-                </div>
-
-                {/* Retailer Buy Buttons */}
+                </div>                  {/* Retailer Buy Buttons (affiliate-tagged) */}
                 <div className="mt-8 pt-4 border-t border-white/10 space-y-2">
                   <div className="text-[11px] font-mono uppercase text-zinc-400 font-bold">
                     Buy with Instant Cashback:

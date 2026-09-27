@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { HIGH_COMMISSION_ACCESSORIES } from "@/data/appleData";
+import { TAGGED_ACCESSORIES } from "@/data/appleData";
 import { Star, ShoppingBag, ExternalLink, Sparkles, ShieldCheck, ArrowRight, Zap, Check } from "lucide-react";
 
 export default function HighCommissionAccessories() {
@@ -33,7 +33,7 @@ export default function HighCommissionAccessories() {
 
         {/* Accessory Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {HIGH_COMMISSION_ACCESSORIES.map((item) => (
+          {TAGGED_ACCESSORIES.map((item) => (
             <div
               key={item.id}
               className="p-6 rounded-3xl bg-zinc-900/60 border border-white/10 hover:border-amber-500/40 transition-all duration-300 flex flex-col justify-between backdrop-blur-xl group shadow-lg"

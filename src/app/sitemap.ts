@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 import { getAllCatalogArticles } from "@/lib/content/articles";
 import { DESTINATIONS_DATA } from "@/lib/travel/destinationsData";
+import { APPLE_PRODUCTS } from "@/data/appleData";
 
 export const dynamic = "force-dynamic";
 
@@ -162,6 +163,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.92,
     },
+    // Individual Apple product deep-dive pages (dynamic [slug] routes)
+    ...APPLE_PRODUCTS.map(
+      (p): MetadataRoute.Sitemap[number] => ({
+        url: `${baseUrl}/apple/${p.slug}`,
+        lastModified: new Date(),
+        changeFrequency: "daily" as const,
+        priority: 0.95,
+      })
+    ),
     {
       url: `${baseUrl}/trade`,
       lastModified: new Date(),

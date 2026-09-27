@@ -1,3 +1,6 @@
+import { getPrimaryHero, getFinishes, type DeviceFinish } from "@/lib/appleImages";
+import { tagRetailerList, tagAffiliateUrl } from "@/lib/appleAffiliateLinks";
+
 export interface AppleProduct {
   id: string;
   name: string;
@@ -33,6 +36,8 @@ export interface AppleProduct {
     emiStartsAt: string;
   }[];
   heroImage: string;
+  /** Official Apple CDN finish gallery (per-color authentic renders). */
+  finishGallery?: DeviceFinish[];
   pros?: string[];
   cons?: string[];
   verdict?: string;
@@ -74,7 +79,7 @@ export interface AppleDeal {
   isHot: boolean;
 }
 
-export const APPLE_PRODUCTS: AppleProduct[] = [
+const APPLE_PRODUCTS_RAW: AppleProduct[] = [
   {
     id: "iphone-18-pro-max",
     name: "Apple iPhone 18 Pro Max",
@@ -94,7 +99,7 @@ export const APPLE_PRODUCTS: AppleProduct[] = [
       camera: "Triple 48MP: 48MP Main f/1.4-f/2.8 Variable Aperture + 48MP Ultra-Wide Macro + 48MP 5x Tetraprism Periscope",
       battery: "4,850 mAh (Up to 34 hours video playback, 35W wired, 25W MagSafe Qi2)",
       storage: "256GB / 512GB / 1TB / 2TB NVMe",
-      colors: ["Natural Titanium", "Desert Titanium", "Space Black", "Deep Marine Blue"],
+      colors: ["Glacier Titanium", "Silver Titanium", "Space Black", "Burgundy Titanium"],
       weight: "223 grams",
       biometrics: "Under-Display Face ID + Action Button 2.0",
       connectivity: "Wi-Fi 7, 5G Sub-6 & mmWave, Bluetooth 5.4, Ultra Wideband Gen 3, Thread",
@@ -148,7 +153,8 @@ export const APPLE_PRODUCTS: AppleProduct[] = [
         emiStartsAt: "₹6,662/mo",
       },
     ],
-    heroImage: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=1200&auto=format&fit=crop&q=80",
+    heroImage: getPrimaryHero("iphone-18-pro-max"),
+    finishGallery: getFinishes("iphone-18-pro-max"),
     pros: [
       "Revolutionary variable aperture lens produces unmatched native low-light shots and real bokeh",
       "TSMC 2nm A20 Pro handles console-level ray-tracing and complex on-device LLMs smoothly",
@@ -180,7 +186,7 @@ export const APPLE_PRODUCTS: AppleProduct[] = [
       camera: "Triple 48MP: 48MP Variable Aperture Main + 48MP Ultra-Wide + 48MP 5x Periscope Telephoto",
       battery: "3,650 mAh (Up to 28 hours video playback, 35W wired, 25W MagSafe Qi2)",
       storage: "128GB / 256GB / 512GB / 1TB NVMe",
-      colors: ["Natural Titanium", "Desert Titanium", "Space Black", "Deep Marine Blue"],
+      colors: ["Glacier Titanium", "Silver Titanium", "Space Black", "Burgundy Titanium"],
       weight: "189 grams",
       biometrics: "Under-Display Face ID + Action Button 2.0",
       connectivity: "Wi-Fi 7, 5G mmWave/Sub-6, Bluetooth 5.4, UWB Gen 3",
@@ -233,7 +239,8 @@ export const APPLE_PRODUCTS: AppleProduct[] = [
         emiStartsAt: "₹5,620/mo",
       },
     ],
-    heroImage: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=1200&auto=format&fit=crop&q=80",
+    heroImage: getPrimaryHero("iphone-18-pro"),
+    finishGallery: getFinishes("iphone-18-pro"),
   },
   {
     id: "iphone-18",
@@ -254,7 +261,7 @@ export const APPLE_PRODUCTS: AppleProduct[] = [
       camera: "Dual Fusion 48MP: 48MP Main f/1.6 with 2x lossless sensor-crop + 48MP Ultra-Wide Macro",
       battery: "3,560 mAh (Up to 23 hours video playback, 30W wired, 15W MagSafe)",
       storage: "128GB / 256GB / 512GB",
-      colors: ["Teal Green", "Ultramarine", "Pink", "White", "Black"],
+      colors: ["White", "Black", "Lavender", "Mist Blue", "Sage"],
       weight: "172 grams",
       biometrics: "Dynamic Island Face ID + Action Button",
       connectivity: "Wi-Fi 6E, 5G, Bluetooth 5.3, UWB Gen 2",
@@ -307,7 +314,8 @@ export const APPLE_PRODUCTS: AppleProduct[] = [
         emiStartsAt: "₹3,329/mo",
       },
     ],
-    heroImage: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=1200&auto=format&fit=crop&q=80",
+    heroImage: getPrimaryHero("iphone-18"),
+    finishGallery: getFinishes("iphone-18"),
   },
   {
     id: "iphone-17-pro-max",
@@ -328,7 +336,7 @@ export const APPLE_PRODUCTS: AppleProduct[] = [
       camera: "Triple 48MP: 48MP Main f/1.78 + 48MP Ultra-Wide + 48MP 5x Telephoto",
       battery: "4,685 mAh (Up to 31 hours video playback, 30W wired, 25W MagSafe)",
       storage: "256GB / 512GB / 1TB NVMe",
-      colors: ["Desert Titanium", "Natural Titanium", "White Titanium", "Black Titanium"],
+      colors: ["Cosmic Orange", "Deep Blue", "Silver"],
       weight: "227 grams",
       biometrics: "Dynamic Island Face ID + Camera Control Button",
       connectivity: "Wi-Fi 7, 5G, Bluetooth 5.3, UWB Gen 2",
@@ -381,7 +389,8 @@ export const APPLE_PRODUCTS: AppleProduct[] = [
         emiStartsAt: "₹5,537/mo",
       },
     ],
-    heroImage: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=1200&auto=format&fit=crop&q=80",
+    heroImage: getPrimaryHero("iphone-17-pro-max"),
+    finishGallery: getFinishes("iphone-17-pro-max"),
   },
   {
     id: "macbook-pro-m5",
@@ -455,7 +464,8 @@ export const APPLE_PRODUCTS: AppleProduct[] = [
         emiStartsAt: "₹6,954/mo",
       },
     ],
-    heroImage: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&auto=format&fit=crop&q=80",
+    heroImage: getPrimaryHero("macbook-pro-m5"),
+    finishGallery: getFinishes("macbook-pro-m5"),
   },
   {
     id: "apple-watch-ultra-3",
@@ -529,7 +539,8 @@ export const APPLE_PRODUCTS: AppleProduct[] = [
         emiStartsAt: "₹3,620/mo",
       },
     ],
-    heroImage: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=1200&auto=format&fit=crop&q=80",
+    heroImage: getPrimaryHero("apple-watch-ultra-3"),
+    finishGallery: getFinishes("apple-watch-ultra-3"),
   },
   {
     id: "airpods-pro-3",
@@ -603,7 +614,8 @@ export const APPLE_PRODUCTS: AppleProduct[] = [
         emiStartsAt: "₹1,908/mo",
       },
     ],
-    heroImage: "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=1200&auto=format&fit=crop&q=80",
+    heroImage: getPrimaryHero("airpods-pro-3"),
+    finishGallery: getFinishes("airpods-pro-3"),
   },
   {
     id: "ipad-pro-m4",
@@ -677,9 +689,18 @@ export const APPLE_PRODUCTS: AppleProduct[] = [
         emiStartsAt: "₹4,079/mo",
       },
     ],
-    heroImage: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=1200&auto=format&fit=crop&q=80",
+    heroImage: getPrimaryHero("ipad-pro-m4"),
+    finishGallery: getFinishes("ipad-pro-m4"),
   },
 ];
+
+/** Every retailer buy URL below is affiliate-tagged for the site owner. */
+const AFFILIATED_PRODUCTS: AppleProduct[] = APPLE_PRODUCTS_RAW.map((p) => ({
+  ...p,
+  retailers: tagRetailerList(p.retailers),
+}));
+
+export const APPLE_PRODUCTS = AFFILIATED_PRODUCTS;
 
 export const HIGH_COMMISSION_ACCESSORIES: AppleAccessory[] = [
   {
@@ -815,6 +836,11 @@ export const HIGH_COMMISSION_ACCESSORIES: AppleAccessory[] = [
     ],
   },
 ];
+
+/** Accessory buy links are Amazon/Croma — all affiliate-tagged. */
+export const TAGGED_ACCESSORIES: AppleAccessory[] = HIGH_COMMISSION_ACCESSORIES.map(
+  (a) => ({ ...a, buyUrl: tagAffiliateUrl(a.buyUrl, a.retailer) })
+);
 
 export const DAILY_APPLE_DEALS: AppleDeal[] = [
   {

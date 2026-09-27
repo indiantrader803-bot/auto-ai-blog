@@ -304,7 +304,7 @@ export default function DigitalProductsStorePage() {
                     Payment has been verified. Your instant download files for <b>{selectedProduct.title}</b> have been unlocked and dispatched to <b>{buyerEmail}</b>.
                   </p>
                   <a
-                    href="https://auto-ai-blog-web.onrender.com"
+                    href="/"
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold"
                   >
                     <Download className="w-4 h-4" /> Download Files Now
