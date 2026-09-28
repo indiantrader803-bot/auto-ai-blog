@@ -1,4 +1,5 @@
 import Parser from "rss-parser";
+import { prisma } from "../prisma";
 
 const parser = new Parser({
   timeout: 8000,
@@ -55,11 +56,57 @@ const RSS_SOURCES = [
   "https://www.moneycontrol.com/rss/MCtopnews.xml"
 ];
 
+async function getRecentTopicSignatures(): Promise<Set<string>> {
+  const signatures = new Set<string>();
+  const norm = (s: string) =>
+    s.toLowerCase().replace(/[^a-z0-9 ]/g, "").split(/\s+/).filter((w: string) => w.length > 3).sort().join(" ");
+  try {
+    const recent = await prisma.post.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: { publishedAt: "desc" },
+      take: 12,
+      select: { title: true },
+    });
+    for (const p of recent) {
+      if (p.title) signatures.add(norm(p.title));
+    }
+    // GenerationLog records the originally scouted topic — catch dupes even when the final title was rewritten
+    const recentLogs = await prisma.generationLog.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 12,
+      select: { topic: true },
+    });
+    for (const log of recentLogs) {
+      if (log.topic) signatures.add(norm(log.topic));
+    }
+  } catch (_) {}
+  return signatures;
+}
+
+function isDuplicateTopic(topic: string, recent: Set<string>): boolean {
+  const norm = (s: string) =>
+    s.toLowerCase().replace(/[^a-z0-9 ]/g, "").split(/\s+/).filter((w: string) => w.length > 3).sort().join(" ");
+  const signature = norm(topic);
+  if (!signature) return false;
+  // Exact-signature match or ≥60% word overlap with a recently published article
+  if (recent.has(signature)) return true;
+  const words = new Set(signature.split(" "));
+  for (const recentSig of Array.from(recent)) {
+    const recentWords = recentSig.split(" ");
+    if (recentWords.length === 0) continue;
+    const overlap = recentWords.filter((w: string) => words.has(w)).length / recentWords.length;
+    if (overlap >= 0.6) return true;
+  }
+  return false;
+}
+
 export async function scoutTrendingTopic(customNiche?: string): Promise<{
   topic: string;
   source: string;
   suggestedCategory: string;
 }> {
+  const recentSignatures = await getRecentTopicSignatures();
+
   // If user configured a specific niche or custom seed
   if (customNiche && customNiche.trim().length > 0 && Math.random() > 0.4) {
     const topic = `${customNiche} - ${DEFAULT_NICHE_TOPICS[Math.floor(Math.random() * DEFAULT_NICHE_TOPICS.length)]}`;
@@ -70,29 +117,38 @@ export async function scoutTrendingTopic(customNiche?: string): Promise<{
     };
   }
 
-  // Try fetching from Google Trends / Financial / Tech RSS
-  for (const feedUrl of RSS_SOURCES) {
-    try {
-      const feed = await parser.parseURL(feedUrl);
-      if (feed.items && feed.items.length > 0) {
-        const topItems = feed.items.slice(0, 10);
-        const randomItem = topItems[Math.floor(Math.random() * topItems.length)];
-        
-        if (randomItem.title && randomItem.title.trim().length > 5) {
-          return {
-            topic: cleanRssTitle(randomItem.title),
-            source: feed.title || feedUrl,
-            suggestedCategory: categorizeTopic(randomItem.title),
-          };
+  // Try fetching from Google Trends / Financial / Tech RSS — skipping topics already published recently
+  for (let attempt = 0; attempt < 6; attempt++) {
+    for (const feedUrl of RSS_SOURCES) {
+      try {
+        const feed = await parser.parseURL(feedUrl);
+        if (feed.items && feed.items.length > 0) {
+          const topItems = feed.items.slice(0, 10);
+          const randomItem = topItems[Math.floor(Math.random() * topItems.length)];
+
+          if (randomItem.title && randomItem.title.trim().length > 5) {
+            const cleaned = cleanRssTitle(randomItem.title);
+            if (isDuplicateTopic(cleaned, recentSignatures)) {
+              console.log(`[TOPIC SCOUT] Skipping duplicate topic: "${cleaned.slice(0, 60)}"`);
+              continue;
+            }
+            return {
+              topic: cleaned,
+              source: feed.title || feedUrl,
+              suggestedCategory: categorizeTopic(randomItem.title),
+            };
+          }
         }
+      } catch (e: any) {
+        console.warn(`Could not fetch RSS from ${feedUrl}, trying next source...`, e.message);
       }
-    } catch (e: any) {
-      console.warn(`Could not fetch RSS from ${feedUrl}, trying next source...`, e.message);
     }
   }
 
-  // Fallback to high-converting curated niche topics
-  const fallback = DEFAULT_NICHE_TOPICS[Math.floor(Math.random() * DEFAULT_NICHE_TOPICS.length)];
+  // Fallback to high-converting curated niche topics (also deduped)
+  const freshFallbacks = DEFAULT_NICHE_TOPICS.filter((t) => !isDuplicateTopic(t, recentSignatures));
+  const fallbackPool = freshFallbacks.length > 0 ? freshFallbacks : DEFAULT_NICHE_TOPICS;
+  const fallback = fallbackPool[Math.floor(Math.random() * fallbackPool.length)];
   return {
     topic: fallback,
     source: "Curated Global Market & Tech Pool",

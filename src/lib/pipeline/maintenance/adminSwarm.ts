@@ -440,10 +440,11 @@ export async function runFullAutonomousMaintenanceSwarm(options: {
   const syndicationReport = await autoSyndicateRecentPosts(options.webhookUrl);
   fleetReports.push(syndicationReport);
 
-  // 7. Optional Auto-Post Generator Trigger (defaults to false to focus on traffic & revenue)
+  // 7. Optional Auto-Post Generator Trigger — defaults to false; the /api/cron route owns the daily publish
+  //    (its 20h cooldown in the orchestrator prevents duplicate articles on the same day)
   let newPostResult = null;
   if (options.triggerNewPostGeneration) {
-    newPostResult = await runBlogPipeline({ autoPublish: true });
+    newPostResult = await runBlogPipeline({ autoPublish: true, fastMode: true });
     fleetReports.push({
       agentName: "Autonomous 24/7 Producer Agent",
       status: newPostResult.success ? "SUCCESS" : "FAILED",

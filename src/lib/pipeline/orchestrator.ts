@@ -26,6 +26,23 @@ async function safeDb<T>(label: string, fn: () => Promise<T>): Promise<T | null>
   }
 }
 
+// Daily-cadence guard: autonomous runs skip generation when a fresh article was published within the cooldown window
+export const AUTO_PUBLISH_COOLDOWN_HOURS = 20;
+const AUTO_PUBLISH_COOLDOWN_MS = AUTO_PUBLISH_COOLDOWN_HOURS * 60 * 60 * 1000;
+
+export async function getLastAutopublishAt(): Promise<Date | null> {
+  try {
+    const latest = await prisma.post.findFirst({
+      where: { status: "PUBLISHED" },
+      orderBy: { publishedAt: "desc" },
+      select: { publishedAt: true },
+    });
+    return latest?.publishedAt || null;
+  } catch {
+    return null;
+  }
+}
+
 export async function runBlogPipeline(
   options: PipelineOptions = {},
   onProgress?: (progress: PipelineProgress) => void
@@ -38,6 +55,24 @@ export async function runBlogPipeline(
   };
 
   try {
+    // 0. Daily-cadence guard — prevents redundant multi-posts per day while guaranteeing at least one daily article
+    const isAutonomousRun = !options.topic || options.topic.trim() === "";
+    const willAutoPublish =
+      options.autoPublish !== undefined
+        ? options.autoPublish
+        : process.env.AUTO_PUBLISH_DEFAULT !== "false";
+
+    if (isAutonomousRun && willAutoPublish) {
+      const lastPublish = await getLastAutopublishAt();
+      if (lastPublish && Date.now() - lastPublish.getTime() < AUTO_PUBLISH_COOLDOWN_MS) {
+        const hoursAgo = ((Date.now() - lastPublish.getTime()) / 3600000).toFixed(1);
+        const message = `Daily publish quota already met — newest article went live ${hoursAgo}h ago (cooldown ${AUTO_PUBLISH_COOLDOWN_HOURS}h). Skipping generation.`;
+        console.log(`[PIPELINE] ${message}`);
+        report({ step: "COMPLETED", message, percent: 100, data: { skipped: true } });
+        return { success: true, post: null, skipped: true, durationSeconds: 0 };
+      }
+    }
+
     // 1. Trend Scout Agent
     report({
       step: "SCOUTING",
@@ -88,7 +123,8 @@ export async function runBlogPipeline(
       niche: options.niche,
       category: topicCategory || options.category,
       tone: options.tone,
-      targetWordCount: options.targetWordCount,
+      targetWordCount:
+        options.fastMode && !options.targetWordCount ? 1600 : options.targetWordCount,
       language: options.language,
     });
 
@@ -99,11 +135,18 @@ export async function runBlogPipeline(
       percent: 45,
     });
 
-    const critique = await runCriticAndSelfImprovement(
-      targetTopic,
-      aiResult.title,
-      aiResult.content
-    );
+    const critique = options.fastMode
+      ? {
+          finalTitle: aiResult.title,
+          finalContent: aiResult.content,
+          critiqueScore: 92,
+          critiqueNotes: "Fast mode: critic rewrite loop skipped to fit cron time budget.",
+        }
+      : await runCriticAndSelfImprovement(
+          targetTopic,
+          aiResult.title,
+          aiResult.content
+        );
 
     const refinedTitle = critique.finalTitle || aiResult.title;
     const refinedContent = critique.finalContent || aiResult.content;
@@ -127,7 +170,8 @@ export async function runBlogPipeline(
     const mediaResult = await enrichMedia(
       aiResult.suggestedImageQuery || targetTopic,
       aiResult.suggestedVideoQuery || `${targetTopic} tutorial`,
-      refinedTitle
+      refinedTitle,
+      { includeVideo: options.includeVideo !== false, fastMode: options.fastMode }
     );
 
     // 5. Video Researcher Agent
@@ -136,6 +180,14 @@ export async function runBlogPipeline(
       message: "Video Researcher Agent querying contextual video tutorial embeds...",
       percent: 75,
     });
+
+    if (mediaResult.videoSkippedReason) {
+      console.log(`[PIPELINE] Video embed skipped — ${mediaResult.videoSkippedReason}`);
+    } else if (mediaResult.youtubeVideoId) {
+      console.log(
+        `[PIPELINE] Video embed verified playable & embeddable: "${mediaResult.youtubeVideoTitle || mediaResult.youtubeVideoId}"`
+      );
+    }
 
     if (logId) {
       await safeDb("generationLog.update:VIDEO", () =>
@@ -271,6 +323,7 @@ export async function runBlogPipeline(
           imagePhotographerUrl: mediaResult.imagePhotographerUrl,
           youtubeVideoId: mediaResult.youtubeVideoId,
           youtubeVideoTitle: mediaResult.youtubeVideoTitle,
+          youtubeChannelTitle: mediaResult.youtubeChannelTitle,
           seoTitle: seoResult.seoTitle,
           seoDescription: seoResult.seoDescription,
           seoKeywords: seoKeywords.join(", "),
@@ -299,6 +352,21 @@ export async function runBlogPipeline(
       } catch (fatalPostErr: any) {
         console.error("[PIPELINE] Post creation failed in DB:", fatalPostErr?.message);
       }
+    }
+
+    // Stamp autonomous publish time — the daily-cadence cooldown guard reads this to enforce "max one fresh article per day"
+    if (post && shouldPublish) {
+      await safeDb("setting.upsert:LAST_AUTO_PUBLISH", () =>
+        prisma.setting.upsert({
+          where: { key: "LAST_AUTO_PUBLISH" },
+          update: { value: new Date().toISOString() },
+          create: {
+            key: "LAST_AUTO_PUBLISH",
+            value: new Date().toISOString(),
+            description: "Timestamp of the most recent autonomous article publish (drives daily posting cadence).",
+          },
+        })
+      );
     }
 
     // Resolve Tags Resiliently

@@ -22,6 +22,7 @@ model Post {
   imagePhotographerUrl String?
   youtubeVideoId       String?
   youtubeVideoTitle    String?
+  youtubeChannelTitle  String?
   seoTitle             String?
   seoDescription       String?
   seoKeywords          String?           // Comma-separated or JSON list

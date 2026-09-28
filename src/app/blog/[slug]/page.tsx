@@ -468,14 +468,29 @@ export default async function BlogPostPage({ params }: Props) {
                   <h3 className="text-base font-bold mb-3 font-serif text-white">{post.youtubeVideoTitle}</h3>
                 )}
                 <div className="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-inner">
+                  {/* Lazy iframe: heavy YouTube player only loads when in view — keeps Core Web Vitals fast */}
                   <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${post.youtubeVideoId}`}
+                    src={`https://www.youtube-nocookie.com/embed/${post.youtubeVideoId}?rel=0`}
                     title={post.youtubeVideoTitle || "YouTube video player"}
+                    loading="lazy"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     className="absolute inset-0 w-full h-full border-0"
                   />
                 </div>
+                {/* Authentic source attribution — video remains the property of its original creator */}
+                <p className="mt-3 text-[11px] text-slate-400 flex flex-wrap items-center gap-1.5">
+                  <span>Video source: {post.youtubeChannelTitle || "YouTube"} via YouTube</span>
+                  <span aria-hidden>·</span>
+                  <a
+                    href={`https://www.youtube.com/watch?v=${post.youtubeVideoId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline text-slate-300 hover:text-white transition-colors"
+                  >
+                    Watch the original on YouTube
+                  </a>
+                </p>
               </section>
             )}
 

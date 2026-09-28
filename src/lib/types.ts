@@ -8,6 +8,8 @@ export interface PipelineOptions {
   includeVideo?: boolean;
   includeImages?: boolean;
   autoPublish?: boolean;
+  /** Skip the LLM critic rewrite & CDN upload so cron-triggered publishes finish before serverless timeouts. */
+  fastMode?: boolean;
   affiliateKeywords?: Array<{ keyword: string; url: string; label?: string }>;
 }
 
