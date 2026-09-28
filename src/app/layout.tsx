@@ -109,7 +109,7 @@ export const viewport: Viewport = {
   themeColor: "#4f46e5",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
+  // No maximumScale: zoom must stay enabled for WCAG/mobile-usability (a hard SEO ranking factor)
 };
 
 export default function RootLayout({
@@ -185,6 +185,17 @@ export default function RootLayout({
                     target: `${siteUrl}/search?q={search_term_string}`,
                     "query-input": "required name=search_term_string",
                   },
+                },
+                {
+                  "@type": "WebApplication",
+                  "@id": `${siteUrl}/#assistant`,
+                  name: "SmartMag AI Voice Assistant",
+                  applicationCategory: "UtilitiesApplication",
+                  operatingSystem: "Web",
+                  description:
+                    "Voice-enabled AI assistant that summarizes SmartMag articles, compares verified prop trading offers, plans trips, and answers research questions in real time.",
+                  url: siteUrl,
+                  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
                 },
                 {
                   "@type": "Organization",

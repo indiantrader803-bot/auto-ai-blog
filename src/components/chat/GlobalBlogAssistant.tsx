@@ -113,11 +113,6 @@ export default function GlobalBlogAssistant() {
 
   const isAdminPage = pathname?.startsWith("/admin") || false;
   const isTravelPage = isTravelHost || pathname?.startsWith("/travel") || false;
-  
-  if (isAdminPage) {
-    return null;
-  }
-  
   const activeMode: "BLOG" | "TRAVEL" = isTravelPage ? "TRAVEL" : "BLOG";
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -377,6 +372,12 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
 
   const currentPrompts = activeMode === "TRAVEL" ? TRAVEL_PROMPTS : BLOG_PROMPTS;
 
+  // Rules of Hooks: the early return happens only AFTER every hook above has run,
+  // so navigating between /admin and public routes can never break the hook order.
+  if (isAdminPage) {
+    return null;
+  }
+
   return (
     <>
       {/* Floating Video Modal */}
@@ -397,7 +398,7 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
             </div>
             <div className="aspect-video w-full">
               <iframe
-                src={`https://www.youtube.com/embed/${activeVideoModal}?autoplay=1`}
+                src={`https://www.youtube-nocookie.com/embed/${activeVideoModal}?autoplay=1&rel=0`}
                 title="YouTube video player"
                 className="w-full h-full border-0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
