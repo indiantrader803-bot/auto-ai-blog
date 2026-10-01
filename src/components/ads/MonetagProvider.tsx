@@ -29,12 +29,18 @@ export default function MonetagProvider({ children }: { children: React.ReactNod
     }
   };
 
-  // Disable ALL ads entirely inside admin dashboard
+  // Disable ALL ads entirely inside admin dashboard or for search engine crawlers
   const isAdmin = pathname?.startsWith('/admin');
 
   // ✅ 1. Vignette when opening another article (e.g. /blog/...)
   useEffect(() => {
     if (typeof window === 'undefined' || !pathname || isAdmin) return;
+
+    // Never show interstitial/vignette to search engine crawlers or Googlebot
+    const isBot = /bot|googlebot|crawler|spider|robot|crawling|mediapartners-google/i.test(
+      navigator.userAgent || ''
+    );
+    if (isBot) return;
 
     // Trigger when user opens an article or navigates across articles
     const isArticlePage = pathname.startsWith('/blog/') || pathname.startsWith('/article/') || pathname.startsWith('/reviews/');

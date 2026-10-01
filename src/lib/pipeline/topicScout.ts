@@ -1,59 +1,21 @@
 import Parser from "rss-parser";
 import { prisma } from "../prisma";
 
-const parser = new Parser({
-  timeout: 8000,
-});
-
-const DEFAULT_NICHE_TOPICS = [
-  // 🚀 AI & Frontier Tech
-  "OpenAI o3 & Claude 3.7 Sonnet: The Rise of Autonomous Self-Evolving AI Agents in 2026",
-  "Local LLMs on Apple Silicon: Running 70B Models with Zero Cloud Costs and High Token Throughput",
-  "Physical AI & Humanoid Robotics: How Figure 02 and Tesla Optimus Are Entering Global Assembly Lines",
-  "Agentic Coding in Production: Why Engineering Teams Are Replacing Traditional IDEs with Autonomous Dev Swarms",
-  "DeepSeek V3 vs Mistral Large 2: The Open-Weights Architecture Transforming Enterprise AI",
-  "The Next Computing Frontier: Quantum Neural Networks and Post-Quantum Financial Cryptography",
-  "Brain-Computer Interfaces in 2026: Neuralink Clinical Progress, BCI Gaming & Ethical Guardrails",
-  
-  // 📈 High-Frequency Trading & Prop Firms
-  "Algorithmic Order Flow Trading: Decoding Institutional Footprint Charts, Delta Spikes & Iceberg Orders",
-  "Prop Trading Survival Handbook: How Top 1% Funded Traders Pass $200k Challenges with Strict Risk Scaling",
-  "High-Frequency Market Making in 2026: Rust vs C++ for Microsecond Arbitrage on Global Exchanges",
-  "Delta Exchange & Crypto Derivatives: Hedging Perpetual Futures and Options Strategies for High Volatility",
-  "Zero-Loss Drawdown Discipline: The Mathematical Formula Behind Long-Term Funded Account Longevity",
-  "India's Retail Trading Explosion: Nifty 50 Zero-Day-to-Expiry (0DTE) Options Trading Dynamics",
-  
-  // ✈️ Luxury Travel, Remote Work & Cultural Wonders
-  "Kyoto to Tokyo on the Shinkansen: The Ultimate 10-Day AI-Curated Luxury Japan Itinerary",
-  "Switzerland Scenic Train Journeys: Glacier Express, First-Class Passes & Alpine Chalet Stays",
-  "Digital Nomad Empires in Bali & Lisbon: Cost of Living, Coworking Hubs & High-Speed Satellite Workspaces",
-  "Himalayan High-Altitude Expeditions: Surviving the Chadar Frozen River Trek and Rohtang Passes",
-  "The World's Most Surreal Cultural Carnivals: From Rio Sambadrome & Venice Masks to India's Mathura Holi",
-  "Secret Northern Lights Cabins: Lapland Igloos, Arctic Thermal Baths & Photography Checklist",
-  
-  // 📱 Gadgets, Hardware & Apple Ecosystem
-  "iPhone 18 Pro Max Teardown: 2nm A20 Pro Silicon, Variable Aperture Lens & All-Glass Unibody",
-  "Apple M5 Ultra MacBook Pro: Is 512GB Unified Memory Worth the Pro Creator Premium in 2026?",
-  "Spatial Computing Face-off: Apple Vision Pro 2 vs Meta Quest Pro 3 for Enterprise Workspaces",
-  "Next-Gen Foldables: Tri-Fold Displays, Zero-Crease Hinges & Tablet-Class Productivity on the Go",
-  
-  // ⚡ Emerging Wealth, Crypto & Global Macro
-  "Bitcoin Post-Halving Cycle: Institutional ETF Accumulation, Sovereign Reserves & Mining Realities",
-  "Global Macro Pivots: How Central Bank Liquidity Shifts Impact Stocks, Gold & Tech Valuations",
-  "Passive Income Playbook 2026: Automated AI Micro-SaaS and High-Yield Digital Product Funnels"
-];
+const parser = new Parser({ timeout: 8000 });
 
 const RSS_SOURCES = [
-  "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US",
-  "https://trends.google.com/trends/trendingsearches/daily/rss?geo=IN",
-  "https://trends.google.com/trends/trendingsearches/daily/rss?geo=GB",
-  "https://hnrss.org/frontpage",
+  // Highest-signal editorial feeds first — their titles are already stories, not search queries.
   "https://techcrunch.com/feed/",
   "https://www.theverge.com/rss/index.xml",
-  "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
-  "https://www.wired.com/feed/rss",
   "https://arstechnica.com/feed/",
-  "https://www.moneycontrol.com/rss/MCtopnews.xml"
+  "https://www.wired.com/feed/rss",
+  "https://hnrss.org/frontpage",
+  "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
+  "https://www.moneycontrol.com/rss/MCtopnews.xml",
+  // Raw Google Trends last: its items are search *queries* that need the editorial
+  // quality gate below before they can become article topics.
+  "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US",
+  "https://trends.google.com/trends/trendingsearches/daily/rss?geo=IN",
 ];
 
 async function getRecentTopicSignatures(): Promise<Set<string>> {
@@ -100,66 +62,120 @@ function isDuplicateTopic(topic: string, recent: Set<string>): boolean {
   return false;
 }
 
-export async function scoutTrendingTopic(customNiche?: string): Promise<{
+/**
+ * Trend phrases that are news-of-the-moment (a name, a passing meme, a
+ * one-day search spike). These decay within hours, are unrankable for a small
+ * site, and historically produced junk like "The Future of Musk, the Movie".
+ * We either drop them or anchor them to an evergreen angle.
+ */
+const EPHEMERAL_PATTERNS = [
+  /^(musk|elon musk),?\s+the\s+movie/i,
+  /netflix.*(series|film|movie|docuseries)/i,
+  /(box office|box-office) (hit|flop)/i,
+  /(trolled|roasted|viral video|leaked video|reacts to|response to|controversy)/i,
+  /(death|dead|dies|passed away|obituary|hospitali[sz]ed|arrest|arrested|jail|bail)/i,
+  /(live stream|live score|highlights|watch online|free stream)/i,
+  /(billion|million) (net worth|salary|earnings)/i,
+  /(world cup|ipl|election|match|fixture)( today| live)?$/i,
+  /^[A-Z][a-z]+,? the (movie|film|series|song)$/i,
+];
+
+/** Bona-fide news nouns that make a trend phrase durable enough to rank. */
+const SUBSTANTIVE_WORDS = [
+  "launch", "launched", "update", "upgraded", "review", "benchmark", "announced",
+  "released", "spec", "price", "pricing", "features", "how to", "guide",
+  "tutorial", "open source", "api", "model", "chip", "battery", "gpu", "cpu",
+  "ipo", "earnings", "regulation", "policy", "lawsuit", "ruling", "acquisition",
+  "funding", "startup", "debuts", "unveiled", "windows", "android", "ios",
+  "iphone", "macbook", "vision pro", "nvidia", "openai", "gemini", "claude",
+  "tesla", "quantum", "robot", "satellite", "5g", "chipset", "processor",
+];
+
+export interface ScoutedTopic {
   topic: string;
   source: string;
   suggestedCategory: string;
-}> {
-  const recentSignatures = await getRecentTopicSignatures();
-
-  // If user configured a specific niche or custom seed
-  if (customNiche && customNiche.trim().length > 0 && Math.random() > 0.4) {
-    const topic = `${customNiche} - ${DEFAULT_NICHE_TOPICS[Math.floor(Math.random() * DEFAULT_NICHE_TOPICS.length)]}`;
-    return {
-      topic,
-      source: "Custom Niche Config",
-      suggestedCategory: "Finance & Markets",
-    };
-  }
-
-  // Try fetching from Google Trends / Financial / Tech RSS — skipping topics already published recently
-  for (let attempt = 0; attempt < 6; attempt++) {
-    for (const feedUrl of RSS_SOURCES) {
-      try {
-        const feed = await parser.parseURL(feedUrl);
-        if (feed.items && feed.items.length > 0) {
-          const topItems = feed.items.slice(0, 10);
-          const randomItem = topItems[Math.floor(Math.random() * topItems.length)];
-
-          if (randomItem.title && randomItem.title.trim().length > 5) {
-            const cleaned = cleanRssTitle(randomItem.title);
-            if (isDuplicateTopic(cleaned, recentSignatures)) {
-              console.log(`[TOPIC SCOUT] Skipping duplicate topic: "${cleaned.slice(0, 60)}"`);
-              continue;
-            }
-            return {
-              topic: cleaned,
-              source: feed.title || feedUrl,
-              suggestedCategory: categorizeTopic(randomItem.title),
-            };
-          }
-        }
-      } catch (e: any) {
-        console.warn(`Could not fetch RSS from ${feedUrl}, trying next source...`, e.message);
-      }
-    }
-  }
-
-  // Fallback to high-converting curated niche topics (also deduped)
-  const freshFallbacks = DEFAULT_NICHE_TOPICS.filter((t) => !isDuplicateTopic(t, recentSignatures));
-  const fallbackPool = freshFallbacks.length > 0 ? freshFallbacks : DEFAULT_NICHE_TOPICS;
-  const fallback = fallbackPool[Math.floor(Math.random() * fallbackPool.length)];
-  return {
-    topic: fallback,
-    source: "Curated Global Market & Tech Pool",
-    suggestedCategory: categorizeTopic(fallback),
-  };
+  /** High-signal editorial angle that steers the writer agent & headline. */
+  angle?: string;
+  /** Rejected-phrase logging so operators can tune the gate. */
+  rejected?: string;
 }
 
+/** Strip site suffixes & HN prefixes from feed titles. */
 function cleanRssTitle(raw: string): string {
-  let title = raw.replace(/\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol)$/i, "");
-  title = title.replace(/^Show HN:\s*/i, "").replace(/^Ask HN:\s*/i, "");
+  let title = raw.replace(
+    /\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol|Ars Technica|WIRED)$/i,
+    ""
+  );
+  title = title.replace(/^(Show HN|Ask HN|Tell HN):\s*/i, "");
   return title.trim();
+}
+
+/**
+ * Editorial quality gate: is this phrase a durable topic a small publication
+ * can realistically rank for? News-feed titles pass; raw one-day search
+ * queries ("PNOE's new face mask wants to...") are rejected or reshaped.
+ */
+export function passesTopicQualityGate(phrase: string): boolean {
+  if (!phrase || phrase.trim().length < 18 || phrase.length > 140) return false;
+
+  // Must look like a story: contain a verb-ish noun phrase, not all-caps shouting.
+  const words = phrase.split(/\s+/);
+  if (words.length < 4 || words.length > 22) return false;
+
+  if (EPHEMERAL_PATTERNS.some((re) => re.test(phrase))) return false;
+
+  const lower = phrase.toLowerCase();
+  const hasSubstance = SUBSTANTIVE_WORDS.some((w) => lower.includes(w));
+  const looksLikeStory = /\b(how|why|what|new|next|first|inside|the)\b/i.test(phrase);
+  return hasSubstance || looksLikeStory;
+}
+
+/**
+ * Convert a raw trending search query into an evergreen, rankable topic by
+ * anchoring it to a durable editorial angle instead of the news-of-the-hour.
+ */
+export function reshapeEphemeralTrend(rawPhrase: string): string | null {
+  const clean = cleanRssTitle(rawPhrase);
+  if (!clean) return null;
+
+  // Extract a plausible product/technology/entity anchor from the phrase.
+  const anchorMatch = clean.match(
+    /\b(iphone|ipad|macbook|vision pro|airpods|pixel|galaxy|windows|android|chatgpt|openai|gemini|claude|nvidia|rtx|tesla|bitcoin|ethereum|gpt-\d|llm|ai model|robot|drone|ev|electric (car|scooter)|smartwatch|smart tv|laptop|router|ssd|gpu)\b/i
+  );
+
+  if (!anchorMatch) return null;
+  const anchor = anchorMatch[1].replace(/\s+/g, " ");
+
+  const ANGLES = [
+    `${anchor}: What Actually Changed and Who Benefits`,
+    `${anchor} Buyer's Guide: Specs, Prices & Real-World Trade-offs`,
+    `How ${anchor} Fits Into Your Setup: Honest Field Notes`,
+    `${anchor} vs the Competition: Benchmarks That Matter`,
+  ];
+  return ANGLES[Math.floor(Math.random() * ANGLES.length)];
+}
+
+/**
+ * Rotate a high-value evergreen angle for a given niche anchor so the site
+ * keeps publishing evergreen, monetizable content even when RSS is down.
+ */
+export function getEvergreenTopicForNiche(niche?: string): string {
+  const anchor = (niche || "").trim()
+    ? niche!.trim()
+    : ["AI tools", "iPhone", "budget laptops", "travel gear", "stock market basics", "crypto wallets"][
+        Math.floor(Math.random() * 6)
+      ];
+
+  const TEMPLATES = [
+    `Best ${anchor} in 2026: Tested Picks for Every Budget`,
+    `${anchor} Buyer's Guide: How to Choose Without Overpaying`,
+    `7 ${anchor} Mistakes Beginners Make (And How to Avoid Them)`,
+    `How to Get Started With ${anchor}: A Practical 2026 Playbook`,
+    `${anchor} vs the Alternatives: Which One Actually Fits You?`,
+    `What Nobody Tells You Before Buying ${anchor}`,
+  ];
+  return TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)];
 }
 
 function categorizeTopic(title: string): string {
@@ -167,13 +183,13 @@ function categorizeTopic(title: string): string {
   if (lower.includes("travel") || lower.includes("traveller") || lower.includes("backpack") || lower.includes("trek") || lower.includes("nomad") || lower.includes("expedition") || lower.includes("tourism") || lower.includes("itinerary") || lower.includes("destination") || lower.includes("hiking") || lower.includes("flight")) {
     return "Travel & Expeditions";
   }
-  if (lower.includes("festival") || lower.includes("festivle") || lower.includes("diwali") || lower.includes("holi") || lower.includes("carnival") || lower.includes("matsuri") || lower.includes("tradition") || lower.includes("celebration") || lower.includes("culture") || lower.includes("oktoberfest") || lower.includes("ritual")) {
+  if (lower.includes("festival") || lower.includes("diwali") || lower.includes("holi") || lower.includes("carnival") || lower.includes("tradition") || lower.includes("celebration") || lower.includes("culture")) {
     return "Festivals & Culture";
   }
   if (lower.includes("nifty") || lower.includes("sensex") || lower.includes("bse") || lower.includes("nse") || lower.includes("rupee") || lower.includes("sebi") || lower.includes("fii") || lower.includes("dii")) {
     return "Indian Markets";
   }
-  if (lower.includes("forex") || lower.includes("usd") || lower.includes("eur") || lower.includes("gbp") || lower.includes("jpy") || lower.includes("currency")) {
+  if (lower.includes("forex") || lower.includes("usd") || lower.includes("eur") || lower.includes("gbp") || lower.includes("currency")) {
     return "Forex & Currencies";
   }
   if (lower.includes("gold") || lower.includes("silver") || lower.includes("crude") || lower.includes("oil") || lower.includes("commodity") || lower.includes("metal") || lower.includes("natural gas")) {
@@ -182,17 +198,133 @@ function categorizeTopic(title: string): string {
   if (lower.includes("s&p") || lower.includes("nasdaq") || lower.includes("dow") || lower.includes("wall street") || lower.includes("fed") || lower.includes("nyse")) {
     return "US Markets";
   }
-  if (lower.includes("ai") || lower.includes("gpt") || lower.includes("llm") || lower.includes("model") || lower.includes("neural") || lower.includes("agent") || lower.includes("claude")) {
+  if (lower.includes("ai") || lower.includes("gpt") || lower.includes("llm") || lower.includes("model") || lower.includes("neural") || lower.includes("agent") || lower.includes("claude") || lower.includes("openai") || lower.includes("gemini")) {
     return "Artificial Intelligence";
   }
   if (lower.includes("code") || lower.includes("javascript") || lower.includes("python") || lower.includes("react") || lower.includes("dev") || lower.includes("rust") || lower.includes("kubernetes")) {
     return "Development & Engineering";
   }
-  if (lower.includes("iphone") || lower.includes("apple") || lower.includes("macbook") || lower.includes("ipad") || lower.includes("vision pro") || lower.includes("gadget") || lower.includes("hardware") || lower.includes("foldable") || lower.includes("samsung")) {
+  if (lower.includes("iphone") || lower.includes("apple") || lower.includes("macbook") || lower.includes("ipad") || lower.includes("vision pro") || lower.includes("gadget") || lower.includes("hardware") || lower.includes("foldable") || lower.includes("samsung") || lower.includes("pixel") || lower.includes("galaxy")) {
     return "Technology & Gadgets";
   }
-  if (lower.includes("crypto") || lower.includes("bitcoin") || lower.includes("ethereum") || lower.includes("halving") || lower.includes("blockchain") || lower.includes("token")) {
+  if (lower.includes("crypto") || lower.includes("bitcoin") || lower.includes("ethereum") || lower.includes("blockchain") || lower.includes("token")) {
     return "Finance & Markets";
   }
-  return "Finance & Markets";
+  return "Technology & Gadgets";
+}
+
+/** Pick a strong angle that gives the writer a sharp editorial spine. */
+function pickAngle(topic: string): string {
+  const ANGLES = [
+    "Open with a real-world scenario a reader recognizes, then explain what changed and who wins/loses.",
+    "Frame as a buyer's decision: concrete specs, prices, trade-offs, and a clear recommendation.",
+    "Field-notes angle: what practitioners actually do, what broke, what they'd do differently.",
+    "Counter-intuitive take: what everyone gets wrong about this topic, backed by numbers.",
+  ];
+  // Deterministic-ish rotation by topic length so prompts vary run to run.
+  const idx = topic.length % ANGLES.length;
+  return ANGLES[idx];
+}
+
+/**
+ * 🎯 Smart topic scout with an editorial quality gate.
+ *
+ * Strategy (smartest-first):
+ *   1. Reputable news RSS (TechCrunch, The Verge, Ars, HN…) — titles are real
+ *      stories, gated for substance & deduplicated against recent articles.
+ *   2. Google Trends — only passes if the phrase survives the gate, otherwise
+ *      reshaped into an evergreen angle around a recognizable product anchor.
+ *   3. Curated evergreen catalog — always publishable, monetizable topics.
+ */
+export async function scoutTrendingTopic(customNiche?: string): Promise<ScoutedTopic> {
+  const recentSignatures = await getRecentTopicSignatures();
+  const collected: ScoutedTopic[] = [];
+  const rejected: string[] = [];
+
+  for (const feedUrl of RSS_SOURCES) {
+    try {
+      const feed = await parser.parseURL(feedUrl);
+      const isRawTrends = feedUrl.includes("trends.google.com");
+
+      for (const item of (feed.items || []).slice(0, 12)) {
+        const raw = cleanRssTitle(item.title || "");
+        if (!raw) continue;
+
+        let topic: string;
+        if (isRawTrends && !passesTopicQualityGate(raw)) {
+          const reshaped = reshapeEphemeralTrend(raw);
+          if (!reshaped) {
+            rejected.push(raw);
+            continue;
+          }
+          topic = reshaped;
+        } else {
+          topic = raw;
+        }
+
+        if (isDuplicateTopic(topic, recentSignatures)) {
+          console.log(`[TopicScout] Skipping duplicate topic: "${topic.slice(0, 60)}"`);
+          continue;
+        }
+
+        collected.push({
+          topic,
+          source: feed.title || feedUrl,
+          suggestedCategory: categorizeTopic(topic),
+          angle: pickAngle(topic),
+        });
+      }
+    } catch (e: any) {
+      console.warn(`[TopicScout] Could not fetch RSS ${feedUrl}: ${e.message}`);
+    }
+  }
+
+  if (collected.length > 0) {
+    const pick = collected[Math.floor(Math.random() * collected.length)];
+    if (rejected.length > 0) {
+      console.log(`[TopicScout] Rejected ${rejected.length} ephemeral trend phrases, e.g. "${rejected[0]}"`);
+    }
+    return pick;
+  }
+
+  // Fallback 1: niche-anchored evergreen
+  if (customNiche && customNiche.trim().length > 0) {
+    return {
+      topic: getEvergreenTopicForNiche(customNiche),
+      source: "Curated Evergreen (Niche)",
+      suggestedCategory: categorizeTopic(customNiche),
+      angle: pickAngle(customNiche),
+    };
+  }
+
+  // Fallback 2: general evergreen catalog (deduplicated against recent posts)
+  let evergreen = getEvergreenTopicForNiche();
+  for (let i = 0; i < 6 && isDuplicateTopic(evergreen, recentSignatures); i++) {
+    evergreen = getEvergreenTopicForNiche();
+  }
+  return {
+    topic: evergreen,
+    source: "Curated Evergreen Pool",
+    suggestedCategory: categorizeTopic(evergreen),
+    angle: pickAngle(evergreen),
+  };
+}
+
+/**
+ * Build a compact list of recently published titles to inject into the writer
+ * prompt so the AI never repeats a headline pattern it already used.
+ */
+export async function getRecentArticleTitles(limit = 15): Promise<string[]> {
+  try {
+    const { prisma } = await import("../prisma");
+    const posts = await prisma.post.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: { publishedAt: "desc" },
+      take: limit,
+      select: { title: true },
+    });
+    return posts.map((p) => p.title);
+  } catch {
+    return [];
+  }
 }

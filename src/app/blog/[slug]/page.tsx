@@ -29,6 +29,7 @@ import VipContentGate from "@/components/vip/VipContentGate";
 import ArticleContentGate from "@/components/vip/ArticleContentGate";
 import { getCurrentUser } from "@/lib/auth";
 import { getArticleBySlug, getAllCatalogArticles } from "@/lib/content/articles";
+import ArticleVideoPlayer from "@/components/blog/ArticleVideoPlayer";
 import { matchSponsorForArticle } from "@/lib/pipeline/agents/sponsorAgent";
 import { generateStructuredSchema } from "@/lib/pipeline/seoAffiliateEngine";
 import { applySmartInternalLinks } from "@/lib/pipeline/internalLinkingEngine";
@@ -59,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   let exists = false;
 
   try {
-    const post = await prisma.post.findUnique({
+    let post = await prisma.post.findUnique({
       where: { slug: cleanSlug },
       select: {
         title: true,
@@ -79,6 +80,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       },
     });
+
+    if (!post) {
+      post = await prisma.post.findFirst({
+        where: {
+          OR: [
+            { slug: { equals: cleanSlug, mode: "insensitive" } },
+            { slug: { contains: cleanSlug.replace(/-\d+$/, ""), mode: "insensitive" } },
+          ],
+        },
+        select: {
+          title: true,
+          seoTitle: true,
+          excerpt: true,
+          seoDescription: true,
+          featuredImage: true,
+          publishedAt: true,
+          tags: {
+            select: {
+              tag: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    }
 
     if (post) {
       exists = true;
@@ -164,6 +193,21 @@ export default async function BlogPostPage({ params }: Props) {
         tags: { include: { tag: true } },
       },
     });
+
+    if (!post) {
+      post = await prisma.post.findFirst({
+        where: {
+          OR: [
+            { slug: { equals: cleanSlug, mode: "insensitive" } },
+            { slug: { contains: cleanSlug.replace(/-\d+$/, ""), mode: "insensitive" } },
+          ],
+        },
+        include: {
+          category: true,
+          tags: { include: { tag: true } },
+        },
+      });
+    }
 
     if (post) {
       await prisma.post.update({
@@ -453,45 +497,13 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Contextual Savings & Promo Chip */}
             <InstantSavingsChip category={post.category?.name} />
 
-            {/* Embedded Video (if present) */}
+            {/* Embedded Verified Free Video Player */}
             {post.youtubeVideoId && (
-              <section className="my-8 p-6 rounded-3xl bg-slate-950 text-white border border-slate-800 shadow-2xl">
-                <div className="flex items-center justify-between gap-3 mb-3">
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-rose-400">
-                    <Video className="w-4 h-4" /> Featured Video Workshop
-                  </div>
-                  <span className="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[10px] font-bold uppercase tracking-wider border border-rose-500/30">
-                    Verified
-                  </span>
-                </div>
-                {post.youtubeVideoTitle && (
-                  <h3 className="text-base font-bold mb-3 font-serif text-white">{post.youtubeVideoTitle}</h3>
-                )}
-                <div className="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-inner">
-                  {/* Lazy iframe: heavy YouTube player only loads when in view — keeps Core Web Vitals fast */}
-                  <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${post.youtubeVideoId}?rel=0`}
-                    title={post.youtubeVideoTitle || "YouTube video player"}
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="absolute inset-0 w-full h-full border-0"
-                  />
-                </div>
-                {/* Authentic source attribution — video remains the property of its original creator */}
-                <p className="mt-3 text-[11px] text-slate-400 flex flex-wrap items-center gap-1.5">
-                  <span>Video source: {post.youtubeChannelTitle || "YouTube"} via YouTube</span>
-                  <span aria-hidden>·</span>
-                  <a
-                    href={`https://www.youtube.com/watch?v=${post.youtubeVideoId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline text-slate-300 hover:text-white transition-colors"
-                  >
-                    Watch the original on YouTube
-                  </a>
-                </p>
-              </section>
+              <ArticleVideoPlayer
+                videoId={post.youtubeVideoId}
+                videoTitle={post.youtubeVideoTitle}
+                category={post.category?.name}
+              />
             )}
 
             {/* Matched Sponsor / Affiliate Card */}

@@ -7,6 +7,10 @@ export interface GenerateArticlePromptOptions {
   tone?: string;
   targetWordCount?: number;
   language?: string;
+  /** Recently published titles — injected so the model never repeats a pattern. */
+  recentTitles?: string[];
+  /** Editorial angle for this specific piece (from the topic scout). */
+  angle?: string;
 }
 
 export async function generateArticleContent(options: GenerateArticlePromptOptions): Promise<{
@@ -47,6 +51,8 @@ CORE EDITORIAL MISSION:
 
 2. MAGNETIC, HIGH-CLICK-THROUGH HEADLINES (CRITICAL):
    - Create headlines that provoke immediate curiosity, reveal surprising truths, or answer urgent burning questions.
+   - HARD BAN: never emit the template "The Future of X: Key Trends, Innovations & What's Next" or any "The Future of X" scaffold — it reads as low-quality AI spam and is banned by editorial policy.
+   - HARD BAN: never reuse the grammatical structure of any title listed in the recent-titles block.
    - Use proven high-CTR angles:
      * Specificity & Numbers: "Inside the 2nm Silicon Race: Why Apple's M5 Ultra Left Intel in the Dust"
      * Surprising Contrasts: "Why Top 1% Prop Traders Ignore Technical Indicators (And What They Look at Instead)"
@@ -66,6 +72,17 @@ CORE EDITORIAL MISSION:
 
 4. Always return ONLY valid JSON matching the exact schema without backticks or markdown wrappers outside the JSON.`;
 
+  // Inject recent titles so the model provably avoids repeating headline
+  // patterns already on the site (fixes the "every article has the same
+  // template" failure mode).
+  const recentTitlesBlock =
+    options.recentTitles && options.recentTitles.length > 0
+      ? `\nTITLES ALREADY PUBLISHED (do NOT reuse their phrasing, structure, or pattern; every new title must look different from all of these):\n${options.recentTitles
+          .slice(0, 15)
+          .map((t, i) => `${i + 1}. ${t}`)
+          .join("\n")}\n`
+      : "";
+
   const userPrompt = `
 Produce an extraordinary, high-converting, masterclass publication on: "${options.topic}".
 Niche/Context: ${options.niche || "Frontier Tech, Quantitative Finance, High-End Gadgets & Global Travel"}
@@ -73,9 +90,9 @@ Category: ${options.category || "Technology"}
 Tone: ${tone}
 Language: ${language}
 Target Word Count: ~${targetWords} words of pure, unpadded value.
-
+${options.angle ? `\nEDITORIAL ANGLE (build the entire narrative around this): ${options.angle}\n` : ""}${recentTitlesBlock}
 Required Structural Blueprint:
-1. Irresistible, High-CTR Title: Punchy, curiosity-driven, and under 70 characters.
+1. Irresistible, High-CTR Title: Punchy, curiosity-driven, and under 70 characters. NEVER use lazy scaffolding like "The Future of X: Key Trends, Innovations & What's Next" — that pattern is BANNED site-wide.
 2. Hook Excerpt (140-180 chars): Sharp, compelling, makes scrolling irresistible.
 3. The Narrative Hook: An immediate real-world dilemma, shocking data point, or breaking industry conflict.
 4. The Deep-Dive Architecture / Strategy:
@@ -235,7 +252,7 @@ Return strictly a JSON object matching this exact schema:
 
   // 4. Fallback Mock Generator if no keys are yet configured
   console.info("Notice: No GEMINI_API_KEY, OPENAI_API_KEY, or AWS BEDROCK configured yet. Using structured high-quality fallback template.");
-  return generateOfflineArticle(options.topic, options.category || "Technology");
+  return { ...generateOfflineArticle(options.topic, options.category || "Technology"), _offlineTemplate: true } as any;
 }
 
 function parseAiJsonResponse(rawText: string, fallbackTopic: string) {
@@ -267,8 +284,16 @@ function parseAiJsonResponse(rawText: string, fallbackTopic: string) {
 }
 
 function generateOfflineArticle(topic: string, category: string) {
+  // Rotate several title formats so even offline drafts never look mass-produced.
+  const OFFLINE_TITLES = [
+    `Behind the Hype: What Deploying ${topic} in Production Actually Taught Us`,
+    `${topic}: The Field Guide Engineers Wish They Had Sooner`,
+    `We Stress-Tested ${topic} for 90 Days — Here's the Honest Verdict`,
+    `How ${topic} Really Works (Minus the Marketing Deck)`,
+  ];
+  const offlineTitle = OFFLINE_TITLES[Math.floor(Math.random() * OFFLINE_TITLES.length)];
   return {
-    title: `Behind the Hype: What Deploying ${topic} in Production Actually Taught Us`,
+    title: offlineTitle,
     excerpt: `We ran ${topic} across live production traffic for 90 days. Here are the unvarnished latency benchmarks, hidden architectural gotchas, and real ROI.`,
     content: `## Why Everyone Is Talking About ${topic} (And What They Get Wrong)
 

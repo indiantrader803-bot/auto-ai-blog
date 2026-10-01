@@ -1,5 +1,5 @@
 import { prisma } from "../prisma";
-import { scoutTrendingTopic } from "./topicScout";
+import { scoutTrendingTopic, getRecentArticleTitles } from "./topicScout";
 import { generateArticleContent } from "../ai";
 import { enrichMedia } from "./mediaEnricher";
 import { runSeoMasterAgent } from "./agents/seoAgent";
@@ -82,11 +82,27 @@ export async function runBlogPipeline(
 
     let targetTopic = options.topic;
     let topicCategory = options.category;
+    let topicAngle = options.angle;
 
     if (!targetTopic || targetTopic.trim() === "") {
       const scoutResult = await scoutTrendingTopic(options.niche);
       targetTopic = scoutResult.topic;
       if (!topicCategory) topicCategory = scoutResult.suggestedCategory;
+      if (!topicAngle) topicAngle = scoutResult.angle;
+    }
+
+    // Slug-level dedupe: if a near-identical article was already published,
+    // bail instead of flooding the blog with repeats (a key cause of the
+    // repetitive-catalog problem).
+    const recentTitles = await getRecentArticleTitles(15);
+    const topicKey = targetTopic.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
+    const nearDuplicate = recentTitles.some((t) => {
+      const tKey = t.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
+      return tKey === topicKey;
+    });
+    if (nearDuplicate && !options.topic) {
+      console.log(`[PIPELINE] Skipping near-duplicate topic "${targetTopic}" — already published recently.`);
+      return { success: false, error: "near-duplicate-topic" };
     }
 
     // Create DB generation log record (resilient)
@@ -126,6 +142,8 @@ export async function runBlogPipeline(
       targetWordCount:
         options.fastMode && !options.targetWordCount ? 1600 : options.targetWordCount,
       language: options.language,
+      angle: topicAngle,
+      recentTitles,
     });
 
     // 3. Editorial Critic & Self-Improvement Agent
@@ -352,6 +370,14 @@ export async function runBlogPipeline(
       } catch (fatalPostErr: any) {
         console.error("[PIPELINE] Post creation failed in DB:", fatalPostErr?.message);
       }
+    }
+
+    // Quality gate: never flood the catalog with template fallback articles.
+    // The offline template is a stop-gap for humans, not a publisher.
+    const usedOfflineTemplate = !!(aiResult as any)?._offlineTemplate;
+    if (usedOfflineTemplate && !options.topic && shouldPublish) {
+      console.warn("[PIPELINE] Offline fallback template reached the publisher in autonomous mode — withholding publish.");
+      return { success: false, error: "offline-template-withheld" };
     }
 
     // Stamp autonomous publish time — the daily-cadence cooldown guard reads this to enforce "max one fresh article per day"

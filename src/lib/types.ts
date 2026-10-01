@@ -11,6 +11,8 @@ export interface PipelineOptions {
   /** Skip the LLM critic rewrite & CDN upload so cron-triggered publishes finish before serverless timeouts. */
   fastMode?: boolean;
   affiliateKeywords?: Array<{ keyword: string; url: string; label?: string }>;
+  /** Editorial angle chosen by the topic scout. */
+  angle?: string;
 }
 
 export interface GeneratedArticle {

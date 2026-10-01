@@ -44,7 +44,17 @@ export async function PUT(
 ) {
   try {
     const body = await req.json();
-    const { title, excerpt, content, status, seoTitle, seoDescription, featuredImage } = body;
+    const {
+      title,
+      excerpt,
+      content,
+      status,
+      seoTitle,
+      seoDescription,
+      featuredImage,
+      youtubeVideoId,
+      youtubeVideoTitle,
+    } = body;
 
     const updated = await prisma.post.update({
       where: { id: params.id },
@@ -56,6 +66,8 @@ export async function PUT(
         seoTitle,
         seoDescription,
         featuredImage,
+        youtubeVideoId: youtubeVideoId !== undefined ? youtubeVideoId : undefined,
+        youtubeVideoTitle: youtubeVideoTitle !== undefined ? youtubeVideoTitle : undefined,
       },
     });
 
