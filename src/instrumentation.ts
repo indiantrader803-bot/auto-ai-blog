@@ -5,6 +5,23 @@ export async function register() {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com";
     const port = process.env.PORT || 10000;
 
+    // 🛠️ 0. Auto-sync database columns if schema was upgraded
+    setTimeout(async () => {
+      try {
+        const { prisma } = await import("@/lib/prisma");
+        await prisma.$executeRawUnsafe(`
+          ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "youtubeVideoId" TEXT;
+          ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "youtubeVideoTitle" TEXT;
+          ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "youtubeChannelTitle" TEXT;
+          ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "imagePhotographer" TEXT;
+          ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "imagePhotographerUrl" TEXT;
+        `);
+        console.log("✅ [DB Schema Auto-Sync] Verified Post table schema & columns.");
+      } catch (err: any) {
+        console.warn("DB Schema Auto-Sync notice:", err.message);
+      }
+    }, 2000);
+
     // ⚡ 1. Auto-run initial swarm 10 seconds after server startup
     setTimeout(async () => {
       try {

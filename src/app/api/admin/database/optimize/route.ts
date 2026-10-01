@@ -50,6 +50,22 @@ async function handleOptimize(req: NextRequest) {
 
   try {
     // ==========================================
+    // 0. Ensure Database Schema Columns
+    // ==========================================
+    try {
+      await prisma.$executeRawUnsafe(`
+        ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "youtubeVideoId" TEXT;
+        ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "youtubeVideoTitle" TEXT;
+        ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "youtubeChannelTitle" TEXT;
+        ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "imagePhotographer" TEXT;
+        ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "imagePhotographerUrl" TEXT;
+      `);
+      results.details.push("Verified Post table columns (youtube & photographer columns).");
+    } catch (schemaErr: any) {
+      results.details.push(`Schema column sync notice: ${schemaErr.message}`);
+    }
+
+    // ==========================================
     // 1. Purge Bloated GenerationLog Table
     // ==========================================
     // GenerationLog contains large JSON strings of AI reasoning traces
