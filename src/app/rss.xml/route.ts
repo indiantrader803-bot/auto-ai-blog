@@ -53,15 +53,28 @@ export async function GET() {
     }
   }
 
+  function escapeXml(unsafe: string): string {
+    return (unsafe || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;");
+  }
+
+  function cleanCdata(text: string): string {
+    return (text || "").replace(/]]>/g, "]]&gt;");
+  }
+
   const rssItemsXml = items
     .map(
       (item) => `
     <item>
-      <title><![CDATA[${item.title}]]></title>
+      <title><![CDATA[${cleanCdata(item.title)}]]></title>
       <link>${siteUrl}/blog/${item.slug}</link>
       <guid isPermaLink="true">${siteUrl}/blog/${item.slug}</guid>
-      <description><![CDATA[${item.excerpt}]]></description>
-      <category>${item.category}</category>
+      <description><![CDATA[${cleanCdata(item.excerpt)}]]></description>
+      <category>${escapeXml(item.category)}</category>
       <pubDate>${item.publishedAt}</pubDate>
     </item>`
     )
