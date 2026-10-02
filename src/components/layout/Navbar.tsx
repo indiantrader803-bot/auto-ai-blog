@@ -448,6 +448,15 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               {/* 🌟 Animated Logo Badges for Key Interactive Hubs */}
               <div className="flex items-center gap-2 pl-1 pr-3 border-r border-slate-200 dark:border-slate-800 shrink-0">
                 <Link
+                  href="/store"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-purple-500/15 hover:from-amber-500 hover:to-rose-500 text-amber-700 dark:text-amber-300 hover:text-white transition-all border border-amber-500/30 group text-[11px] font-black"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500 group-hover:text-white group-hover:scale-110 transition-transform animate-pulse" />
+                  <span>AI Store</span>
+                  <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 group-hover:bg-white group-hover:text-amber-700 font-black">50% OFF</span>
+                </Link>
+
+                <Link
                   href="/apple"
                   className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/10 dark:bg-zinc-800/80 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-zinc-950 transition-all border border-zinc-300 dark:border-zinc-700/80 group text-[11px] font-black lowercase tracking-normal"
                 >
@@ -516,8 +525,23 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               </div>
             </div>
 
-            {/* Quick Interactive Tiles (2x2 Grid) */}
+            {/* Quick Interactive Tiles (3x2 Grid) */}
             <div className="grid grid-cols-2 gap-2.5">
+              <Link
+                href="/store"
+                onClick={() => setIsMenuOpen(false)}
+                className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/20 via-rose-500/10 to-purple-500/20 border border-amber-500/40 hover:border-amber-400 flex flex-col gap-1.5 transition-all text-white"
+              >
+                <div className="flex items-center justify-between">
+                  <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
+                  <span className="px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[9px] font-black">50% OFF</span>
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">AI Digital Store</div>
+                  <div className="text-[10px] text-slate-500 dark:text-zinc-400">Toolkits &amp; Cheat Sheets</div>
+                </div>
+              </Link>
+
               <Link
                 href="/apple"
                 onClick={() => setIsMenuOpen(false)}

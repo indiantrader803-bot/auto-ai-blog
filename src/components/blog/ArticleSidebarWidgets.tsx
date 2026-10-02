@@ -125,7 +125,41 @@ export default function ArticleSidebarWidgets({
         </nav>
       </div>
 
-      {/* 2. Stay Informed Newsletter Card */}
+      {/* 2. Instant AI Production Toolkits & Cheat Sheets Card */}
+      <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-slate-900 to-slate-950 p-5 shadow-lg text-white space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950">
+            Digital Store
+          </span>
+          <span className="text-[10px] text-amber-300 font-bold">50% OFF</span>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-black font-serif text-white">
+            500+ Ultimate AI Prompt PowerPack &amp; Blueprints
+          </h4>
+          <p className="text-[11px] text-slate-300 mt-1 leading-relaxed">
+            Battle-tested prompts for traders, engineers &amp; agencies. Instant PDF &amp; code download.
+          </p>
+        </div>
+
+        <div className="flex items-center justify-between pt-2 border-t border-white/10">
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-lg font-black text-amber-400 font-serif">₹149 / $2.99</span>
+            <span className="text-[10px] line-through text-slate-400 font-serif">₹1,499</span>
+          </div>
+
+          <Link
+            href="/store"
+            className="px-3.5 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-md transition-all flex items-center gap-1"
+          >
+            <span>Get Now</span>
+            <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+      </div>
+
+      {/* 3. Stay Informed Newsletter Card */}
       <div className="rounded-2xl border border-slate-200 dark:border-slate-800/80 bg-white/90 dark:bg-[#0b1329]/80 p-5 shadow-sm backdrop-blur-sm transition-colors">
         <h4 className="text-sm font-bold text-slate-900 dark:text-white">
           Stay Informed
@@ -162,7 +196,7 @@ export default function ArticleSidebarWidgets({
         )}
       </div>
 
-      {/* 3. Smarter Insights Vertical Promo Banner */}
+      {/* 4. Smarter Insights Vertical Promo Banner */}
       <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800/80 shadow-md group min-h-[340px] flex flex-col justify-end p-6 text-white transition-all">
         {/* Background Image with Fallback Cityscape Gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-sky-900/60 via-slate-900/80 to-slate-950 z-10" />

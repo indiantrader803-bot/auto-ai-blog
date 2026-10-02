@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -6,11 +6,16 @@ export const dynamic = "force-dynamic";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { productId, productTitle, priceINR, buyerEmail, paymentMethod, utrOrTxnId } = body;
+    const { productId, productTitle, price, priceINR, currency, buyerEmail, paymentMethod, utrOrTxnId } = body;
 
     if (!buyerEmail || !productId) {
       return NextResponse.json({ error: "Missing buyer details" }, { status: 400 });
     }
+
+    const effectiveCurrency = currency || (priceINR ? "INR" : "USD");
+    const effectivePrice = price || priceINR || 299;
+    const finalPriceINR = effectiveCurrency === "INR" ? effectivePrice : Math.round(effectivePrice * 86.5);
+    const finalPriceUSD = effectiveCurrency === "USD" ? effectivePrice : parseFloat((effectivePrice / 86.5).toFixed(2));
 
     // Log the conversion event directly to AnalyticsEvent
     try {
@@ -21,7 +26,9 @@ export async function POST(req: Request) {
           referrer: paymentMethod || "DIRECT_UPI",
           metadata: JSON.stringify({
             productTitle,
-            priceINR,
+            price: finalPriceUSD,
+            priceINR: finalPriceINR,
+            currency: effectiveCurrency,
             buyerEmail,
             paymentMethod,
             utrOrTxnId: utrOrTxnId || "AUTO_VERIFIED",
