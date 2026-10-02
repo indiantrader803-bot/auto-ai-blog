@@ -62,9 +62,11 @@ export async function GET(req: NextRequest) {
             featuredImage: true,
             imageAlt: true,
             readTimeMinutes: true,
+            status: true,
             views: true,
             shares: true,
             publishedAt: true,
+            createdAt: true,
             category: {
               select: {
                 id: true,

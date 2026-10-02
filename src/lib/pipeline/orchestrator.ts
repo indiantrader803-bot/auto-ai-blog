@@ -9,6 +9,7 @@ import { PipelineOptions, PipelineProgress } from "../types";
 import { generateSlug } from "../utils";
 import { applySmartInternalLinks } from "./internalLinkingEngine";
 import { generateCatchyViralHeadline } from "./agents/headlineGenerator";
+import { pingSearchEngines } from "./agents/trafficBoosterAgent";
 
 /**
  * Safely execute a Prisma database operation.
@@ -463,7 +464,7 @@ export async function runBlogPipeline(
       }
     }
 
-    // 8. Auto-Trigger Viral Social Promotion Campaign
+    // 8. Auto-Trigger Viral Social Promotion Campaign & Instant Search Engine Ping (IndexNow, Bing, Yahoo)
     if (post && post.title) {
       try {
         await runPromotionAgent({
@@ -475,6 +476,18 @@ export async function runBlogPipeline(
           content: post.content,
         });
       } catch (_) {}
+
+      // Instant ping to IndexNow gateway (Bing, Yandex, Yahoo) & sitemap aggregators
+      if (shouldPublish && post.slug) {
+        try {
+          const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com").replace(/\/$/, "");
+          const postUrl = `${siteUrl}/blog/${post.slug}`;
+          console.log(`[PIPELINE] Notifying IndexNow & Search Engine gateways for: ${postUrl}`);
+          pingSearchEngines([postUrl]).catch((err) =>
+            console.warn("[PIPELINE] Search engine ping non-fatal notice:", err)
+          );
+        } catch (_) {}
+      }
     }
 
     // If database was unavailable, create an in-memory post object for the response
