@@ -9,13 +9,11 @@ export async function register() {
     setTimeout(async () => {
       try {
         const { prisma } = await import("@/lib/prisma");
-        await prisma.$executeRawUnsafe(`
-          ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "youtubeVideoId" TEXT;
-          ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "youtubeVideoTitle" TEXT;
-          ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "youtubeChannelTitle" TEXT;
-          ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "imagePhotographer" TEXT;
-          ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "imagePhotographerUrl" TEXT;
-        `);
+        await prisma.$executeRawUnsafe(`ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "youtubeVideoId" TEXT;`);
+        await prisma.$executeRawUnsafe(`ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "youtubeVideoTitle" TEXT;`);
+        await prisma.$executeRawUnsafe(`ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "youtubeChannelTitle" TEXT;`);
+        await prisma.$executeRawUnsafe(`ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "imagePhotographer" TEXT;`);
+        await prisma.$executeRawUnsafe(`ALTER TABLE "Post" ADD COLUMN IF NOT EXISTS "imagePhotographerUrl" TEXT;`);
         console.log("✅ [DB Schema Auto-Sync] Verified Post table schema & columns.");
       } catch (err: any) {
         console.warn("DB Schema Auto-Sync notice:", err.message);
