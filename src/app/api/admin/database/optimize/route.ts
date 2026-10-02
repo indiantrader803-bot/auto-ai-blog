@@ -219,6 +219,7 @@ async function handleOptimize(req: NextRequest) {
             { excerpt: { startsWith: "Discover the monumental shifts" } },
           ],
         },
+        take: 100,
         select: {
           id: true,
           title: true,
