@@ -113,6 +113,61 @@ export function runSeoMasterAgent(options: {
     }
   }
 
+  // 5b. High-Authority External Backlinks & Citation Synthesizer
+  // Google E-E-A-T and Search ranking models heavily favor articles citing authoritative external references
+  // (e.g. arXiv, GitHub, Bloomberg, TechCrunch, Nature, official docs).
+  const externalAuthorityLinks: Array<{ keywordRegex: RegExp; anchor: string; url: string }> = [
+    {
+      keywordRegex: /\b(arXiv|research paper|benchmark paper|empirical study)\b/i,
+      anchor: "$1",
+      url: "https://arxiv.org/abs/2303.08774",
+    },
+    {
+      keywordRegex: /\b(GitHub|open-source repository|source code)\b/i,
+      anchor: "$1",
+      url: "https://github.com/trending",
+    },
+    {
+      keywordRegex: /\b(PyTorch|Hugging Face|Transformers)\b/i,
+      anchor: "$1",
+      url: "https://huggingface.co/models",
+    },
+    {
+      keywordRegex: /\b(SEC filing|regulatory filing|Form 10-K)\b/i,
+      anchor: "$1",
+      url: "https://www.sec.gov/edgar/searchedgar/companysearch",
+    },
+    {
+      keywordRegex: /\b(Bloomberg|institutional liquidity|macroeconomic catalyst)\b/i,
+      anchor: "$1",
+      url: "https://www.bloomberg.com/markets",
+    },
+    {
+      keywordRegex: /\b(TechCrunch|venture capital|tech ecosystem)\b/i,
+      anchor: "$1",
+      url: "https://techcrunch.com",
+    },
+    {
+      keywordRegex: /\b(UNESCO|heritage site|local tourism board)\b/i,
+      anchor: "$1",
+      url: "https://whc.unesco.org/en/list/",
+    },
+  ];
+
+  let externalLinksCount = 0;
+  for (const ext of externalAuthorityLinks) {
+    if (externalLinksCount >= 2) break;
+    // Match only if keyword is not already wrapped inside markdown link [text](url)
+    const matchPattern = new RegExp(`\\b(${ext.keywordRegex.source.replace(/^\\b|\\b$/g, "")})\\b(?![^\\[]*\\])`, "i");
+    if (matchPattern.test(processedContent)) {
+      processedContent = processedContent.replace(
+        matchPattern,
+        `[$1](${ext.url}){:target="_blank" rel="noopener noreferrer"}`
+      );
+      externalLinksCount++;
+    }
+  }
+
   // 6. Calculate Read Time & Heading Breakdown
   const readTimeMinutes = calculateReadingTime(processedContent);
   const h2Matches = (processedContent.match(/^##\s+/gm) || []).length;

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { generateCatchyViralHeadline } from "@/lib/pipeline/agents/headlineGenerator";
 
 export const dynamic = "force-dynamic";
 
@@ -207,7 +208,55 @@ async function handleOptimize(req: NextRequest) {
     }
 
     // ==========================================
-    // 5. Final Active Count
+    // 5. Retro-actively Rewrite Repetitive & Boring Titles
+    // ==========================================
+    try {
+      const repetitivePosts = await prisma.post.findMany({
+        where: {
+          OR: [
+            { title: { startsWith: "The Future of" } },
+            { title: { contains: "Key Trends, Innovations" } },
+            { excerpt: { startsWith: "Discover the monumental shifts" } },
+          ],
+        },
+        select: {
+          id: true,
+          title: true,
+          excerpt: true,
+          category: { select: { name: true } },
+        },
+      });
+
+      let rewrittenCount = 0;
+      for (const p of repetitivePosts) {
+        const catName = p.category?.name || "Technology";
+        const transformed = generateCatchyViralHeadline(p.title, catName);
+        await prisma.post.update({
+          where: { id: p.id },
+          data: {
+            title: transformed.title,
+            excerpt: p.excerpt.startsWith("Discover the monumental shifts")
+              ? transformed.excerpt
+              : p.excerpt,
+            seoTitle: transformed.title.slice(0, 60),
+            seoDescription: transformed.excerpt.slice(0, 160),
+          },
+        });
+        rewrittenCount++;
+      }
+
+      results.repetitiveTitlesRewritten = rewrittenCount;
+      if (rewrittenCount > 0) {
+        results.details.push(
+          `Modernized ${rewrittenCount} legacy repetitive titles ("The Future of...") with high-CTR viral hooks.`
+        );
+      }
+    } catch (titleErr: any) {
+      results.details.push(`Title modernization notice: ${titleErr.message}`);
+    }
+
+    // ==========================================
+    // 6. Final Active Count
     // ==========================================
     const finalCount = await prisma.post.count();
     results.remainingPosts = finalCount;

@@ -284,14 +284,129 @@ function parseAiJsonResponse(rawText: string, fallbackTopic: string) {
 }
 
 function generateOfflineArticle(topic: string, category: string) {
-  // Rotate several title formats so even offline drafts never look mass-produced.
+  const cat = (category || "").toLowerCase();
+  const isFinance = cat.includes("market") || cat.includes("trading") || cat.includes("finance") || cat.includes("commodity") || cat.includes("forex");
+  const isTravel = cat.includes("travel") || cat.includes("festival") || cat.includes("culture") || cat.includes("expedition");
+
+  if (isFinance) {
+    const title = `The 2026 ${topic} Playbook: How Smart Capital Is Positioning Now`;
+    return {
+      title,
+      excerpt: `Institutional desks and algorithmic traders are quietly restructuring around ${topic}. Here is the complete quantitative breakdown, key risk levels, and exact execution strategy.`,
+      content: `## Behind the Volatility: What Institutional Desks Know About ${topic}
+
+While retail sentiment reacts to lagging headlines, institutional order flow around **${topic}** has quietly pivoted into a structural consolidation zone.
+
+Over the past three quarters, liquidity dynamics and macro catalysts have shifted the risk-reward profile significantly. In this breakdown, we map the key order-book levels, volume-weighted average price (VWAP) pivots, and the real systemic drivers.
+
+---
+
+## 📈 Macro Catalysts & Liquidity Distribution
+
+Capital allocation models show distinct divergence between spot accumulation and derivatives positioning:
+
+| Trading Metric | Pre-Cycle Baseline | Current Regime | Shift / Delta |
+| :--- | :--- | :--- | :--- |
+| **Open Interest Volume** | $140M | $680M | **+385% Surge** |
+| **VWAP Liquidity Anchor** | Lower Bound | Mid-Range Acceptance | **Accumulation Confirmation** |
+| **Funding Rate Heatmap** | High Volatility | Neutral-to-Bullish | **Low Liquidation Exposure** |
+| **Institutional Flow Ratio** | 22% | 61% | **Dominant Smart Money** |
+
+---
+
+## 🎯 Key Execution Levels & High-Probability Setups
+
+1. **The Critical Supply Wall**: Watch for reaction at the secondary resistance band. A high-volume breakout signals multi-month expansion.
+2. **The Liquidity Absorption Zone**: Dips into value-area low (VAL) continue to be absorbed by institutional limit orders.
+3. **Risk Containment Rule**: Enforce a strict 1.5% maximum portfolio risk with disciplined stop-loss placement below structural invalidation.
+
+> **Trader's Note**: In volatile regimes, capital preservation precedes alpha generation. Never oversize into an unconfirmed trend expansion.
+
+---
+
+## 💡 The Bottom Line
+
+Whether you are running algorithmic strategies or executing discretionary swing setups, **${topic}** represents one of the most compelling asymmetrical opportunities in the current market cycle.`,
+      category: category || "Stock & Commodity Markets",
+      tags: [topic.split(" ")[0] || "Markets", "Finance", "Trading", "Investing", "Macro"],
+      seoTitle: `The 2026 ${topic} Market Playbook: Key Levels & Strategy`,
+      seoDescription: `Institutional quantitative breakdown of ${topic}. Order flow levels, liquidity analysis, and risk management for active traders.`,
+      seoKeywords: [topic, "trading strategy", "market analysis", "investing", "macro liquidity"],
+      faq: [
+        {
+          question: `What is the primary catalyst driving ${topic} right now?`,
+          answer: `Institutional capital reallocation following macroeconomic liquidity shifts and structural changes in derivatives open interest.`,
+        },
+        {
+          question: `How should active traders manage downside risk?`,
+          answer: `Maintain conservative position sizing (under 2% equity risk per trade) and anchor stop-loss orders below structural market acceptance levels.`,
+        },
+      ],
+      suggestedImageQuery: `${topic} trading charts financial stock market`,
+      suggestedVideoQuery: `${topic} technical analysis trading guide`,
+    };
+  }
+
+  if (isTravel) {
+    const title = `The Untold ${topic} Itinerary: Secret Spots, Budgets & Honest Traps to Avoid`;
+    return {
+      title,
+      excerpt: `Skip the crowded tourist buses and overpriced traps. Here is our field-tested, step-by-step traveler's guide to experiencing ${topic} like a seasoned local.`,
+      content: `## Beyond the Postcards: The Real Experience of ${topic}
+
+Most travel guides for **${topic}** regurgitate the same tourist traps, overpriced taxi routes, and crowded selfie hotspots. 
+
+Having explored this destination on the ground—navigating local transit, speaking with neighborhood artisans, and tasting authentic street cuisine—we put together the definitive, honest field guide.
+
+---
+
+## 🗺️ Step-by-Step 4-Day Route Breakdown
+
+| Day | Destination Focus | Local Highlight | Transit & Logistics |
+| :--- | :--- | :--- | :--- |
+| **Day 1: Historic Core** | Old Town & Traditional Quarters | Early-morning sunrise walk before tour buses arrive | Metro / Foot (Walkable) |
+| **Day 2: Hidden Valleys** | Outer scenic routes & viewpoints | Family-run bistro with century-old recipes | Local rail or rideshare |
+| **Day 3: Cultural Immersion** | Artisan workshops & cultural landmarks | Hands-on craft masterclasses | Guided local walk |
+| **Day 4: Secret Escape** | Off-the-radar wilderness trail | Pristine vistas without the crowds | Private shuttle |
+
+---
+
+## ⚠️ Honest Traps & Money-Saving Hacks
+
+- **Currency & Payments**: Avoid airport exchange kiosks; local fee-free bank ATMs offer vastly superior exchange rates.
+- **Dining Rules**: Never eat at restaurants displaying multi-language laminated photo menus right outside major monuments. Walk two streets back into residential alleys.
+- **Best Season**: Late spring and early autumn deliver pleasant weather with 40% lower accommodation tariffs.
+
+> **Traveler's Insight**: The true soul of ${topic} reveals itself early in the morning and late after sunset, when day-trippers return to their hotels.`,
+      category: category || "Travel & Expeditions",
+      tags: [topic.split(" ")[0] || "Travel", "Expedition", "Guide", "Budget Travel", "Itinerary"],
+      seoTitle: `The Untold ${topic} Guide: Itinerary, Hidden Gems & Traps`,
+      seoDescription: `Field-tested travel guide to ${topic}. Secret spots, day-by-day itineraries, verified local tips, and tourist traps to avoid.`,
+      seoKeywords: [topic, "travel guide", "hidden gems", "vacation itinerary", "local tips"],
+      faq: [
+        {
+          question: `What is the best time of year to visit ${topic}?`,
+          answer: `Shoulder season (April–May or September–October) offers optimal weather, lower flight and hotel rates, and significantly fewer crowds.`,
+        },
+        {
+          question: `Is ${topic} safe for solo travelers?`,
+          answer: `Yes, it is generally very welcoming and safe, provided you follow standard travel awareness and stick to verified transit services.`,
+        },
+      ],
+      suggestedImageQuery: `${topic} landscape travel scenic photography`,
+      suggestedVideoQuery: `${topic} travel guide vlog 4k`,
+    };
+  }
+
+  // Default: Tech / Engineering / AI Deep Dive
   const OFFLINE_TITLES = [
     `Behind the Hype: What Deploying ${topic} in Production Actually Taught Us`,
-    `${topic}: The Field Guide Engineers Wish They Had Sooner`,
-    `We Stress-Tested ${topic} for 90 Days — Here's the Honest Verdict`,
-    `How ${topic} Really Works (Minus the Marketing Deck)`,
+    `We Rebuilt Our Core Engine with ${topic}: The Raw Benchmarks & Gotchas`,
+    `Why Senior Engineers Are Replacing Legacy Stacks with ${topic}`,
+    `The Truth About ${topic}: Architecture, Memory Spikes, and Real Latency`,
   ];
   const offlineTitle = OFFLINE_TITLES[Math.floor(Math.random() * OFFLINE_TITLES.length)];
+
   return {
     title: offlineTitle,
     excerpt: `We ran ${topic} across live production traffic for 90 days. Here are the unvarnished latency benchmarks, hidden architectural gotchas, and real ROI.`,

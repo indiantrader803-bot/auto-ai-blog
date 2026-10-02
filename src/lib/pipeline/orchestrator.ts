@@ -8,6 +8,7 @@ import { runPromotionAgent } from "./agents/promotionAgent";
 import { PipelineOptions, PipelineProgress } from "../types";
 import { generateSlug } from "../utils";
 import { applySmartInternalLinks } from "./internalLinkingEngine";
+import { generateCatchyViralHeadline } from "./agents/headlineGenerator";
 
 /**
  * Safely execute a Prisma database operation.
@@ -134,6 +135,13 @@ export async function runBlogPipeline(
       );
     }
 
+    // Viral Catchy Angle & Hook Injection:
+    // If targetTopic looks repetitive or dry, generate a high-CTR angle
+    const hookSuggestion = generateCatchyViralHeadline(targetTopic, topicCategory || options.category || "Technology");
+    if (!topicAngle) {
+      topicAngle = hookSuggestion.angle;
+    }
+
     const aiResult = await generateArticleContent({
       topic: targetTopic,
       niche: options.niche,
@@ -166,8 +174,21 @@ export async function runBlogPipeline(
           aiResult.content
         );
 
-    const refinedTitle = critique.finalTitle || aiResult.title;
-    const refinedContent = critique.finalContent || aiResult.content;
+    let refinedTitle = critique.finalTitle || aiResult.title;
+    let refinedContent = critique.finalContent || aiResult.content;
+    let refinedExcerpt = aiResult.excerpt;
+
+    // Strict Anti-Repetition Guard:
+    // If the title still contains 'The Future of' or generic 'Key Trends', transform it immediately
+    if (
+      !refinedTitle ||
+      /^the future of/i.test(refinedTitle) ||
+      /key trends/i.test(refinedTitle) ||
+      /what's next/i.test(refinedTitle)
+    ) {
+      refinedTitle = hookSuggestion.title;
+      refinedExcerpt = hookSuggestion.excerpt;
+    }
 
     // 4. Art Director & Media Enrichment Agent
     report({
@@ -234,7 +255,7 @@ export async function runBlogPipeline(
 
     const seoResult = runSeoMasterAgent({
       title: refinedTitle,
-      excerpt: aiResult.excerpt,
+      excerpt: refinedExcerpt || aiResult.excerpt,
       content: refinedContent,
       category: aiResult.category || options.category || "Technology",
       tags: aiResult.tags,
@@ -333,7 +354,7 @@ export async function runBlogPipeline(
         data: {
           title: refinedTitle,
           slug: finalSlug,
-          excerpt: aiResult.excerpt,
+          excerpt: refinedExcerpt || aiResult.excerpt,
           content: processedContent,
           featuredImage: mediaResult.featuredImage,
           imageAlt: mediaResult.imageAlt,
