@@ -21,6 +21,7 @@ import FactCheckedBadge from "@/components/blog/FactCheckedBadge";
 import InstantSavingsChip from "@/components/blog/InstantSavingsChip";
 import ArticleSidebarWidgets from "@/components/blog/ArticleSidebarWidgets";
 import AiQuickSummary from "@/components/blog/AiQuickSummary";
+import ArticleSelectionToolbar from "@/components/blog/ArticleSelectionToolbar";
 import ArticleHeroActions from "@/components/blog/ArticleHeroActions";
 import RelatedArticlesGrid from "@/components/blog/RelatedArticlesGrid";
 import KeyInsightBox from "@/components/blog/KeyInsightBox";
@@ -336,6 +337,7 @@ export default async function BlogPostPage({ params }: Props) {
       {/* Reading Progress & Telemetry */}
       <ReadingProgressBar />
       <ArticleTracker slug={post.slug} title={post.title} />
+      <ArticleSelectionToolbar articleTitle={post.title} />
       <FloatingShareDock title={post.title} slug={post.slug} />
 
       <Navbar />

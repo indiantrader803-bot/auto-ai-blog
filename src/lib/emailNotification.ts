@@ -203,7 +203,7 @@ export async function sendVipWelcomeEmail(email: string, name?: string): Promise
       const res = await dispatchResendEmail({
         to: email,
         from: OFFICIAL_SENDERS.vip,
-        subject: "👑 Your VIP Elite Access is Activated | TheSmartMag",
+        subject: "👑 Your VIP Elite Access is Activated | How to Use AI Voice & Context Intel",
         html: `
           <!DOCTYPE html>
           <html lang="en">
@@ -214,10 +214,11 @@ export async function sendVipWelcomeEmail(email: string, name?: string): Promise
             <meta name="supported-color-schemes" content="light dark">
             <style>
               body { margin: 0; padding: 24px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f8fafc; color: #0f172a; }
-              .card { max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 36px 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+              .card { max-width: 620px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 36px 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
               .badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background-color: #e0f2fe; color: #0284c7; font-weight: bold; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
               .title { font-size: 26px; margin: 16px 0 8px 0; font-family: Georgia, serif; color: #0f172a; }
-              .benefits-box { background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: 20px; margin: 20px 0; }
+              .features-box { background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: 20px; margin: 20px 0; }
+              .demo-box { background: linear-gradient(135deg, #090e1a, #111a33); border: 1px solid #2a3b66; border-radius: 16px; padding: 22px; margin: 24px 0; color: #ffffff; text-align: center; }
               .btn { display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #0d9488, #06b6d4); color: #ffffff !important; text-decoration: none; font-weight: 800; border-radius: 12px; font-size: 14px; }
               .footer { border-top: 1px solid #e2e8f0; margin-top: 28px; padding-top: 18px; text-align: center; font-size: 12px; color: #64748b; line-height: 1.6; }
               @media (prefers-color-scheme: dark) {
@@ -225,7 +226,7 @@ export async function sendVipWelcomeEmail(email: string, name?: string): Promise
                 .card { background-color: #070c18 !important; border-color: #1e293b !important; box-shadow: 0 4px 25px rgba(0,0,0,0.6) !important; }
                 .badge { background-color: rgba(20, 184, 166, 0.2) !important; color: #2dd4bf !important; }
                 .title { color: #ffffff !important; }
-                .benefits-box { background-color: #0b1329 !important; border-color: #1e293b !important; }
+                .features-box { background-color: #0b1329 !important; border-color: #1e293b !important; }
                 .footer { border-color: #1e293b !important; color: #64748b !important; }
               }
             </style>
@@ -233,35 +234,54 @@ export async function sendVipWelcomeEmail(email: string, name?: string): Promise
           <body>
             <div class="card">
               <div style="text-align: center; margin-bottom: 24px;">
-                <span class="badge">VIP Elite Activated</span>
-                <h1 class="title">Welcome to TheSmartMag VIP</h1>
-                <p style="color: #64748b; font-size: 14px; margin: 0;">Institutional Research • Proprietary Quant Models • Secret Deals</p>
+                <span class="badge">👑 VIP Elite Unlocked</span>
+                <h1 class="title">Welcome to TheSmartMag Inner Circle</h1>
+                <p style="color: #64748b; font-size: 14px; margin: 0;">Autonomous AI Research • Audio Voice Narrator • Context Intel</p>
               </div>
 
               <p style="font-size: 15px; line-height: 1.6;">${greeting}</p>
               <p style="font-size: 15px; line-height: 1.6;">
-                Your VIP Elite membership has been officially registered and verified. As a member of our inner circle, you have unlocked:
+                Your VIP Elite membership has been officially registered and verified with institutional access. Here is your quick-start guide to the newly released AI tools available across all our articles:
               </p>
 
-              <div class="benefits-box">
-                <p style="margin: 0 0 10px 0; color: #0d9488; font-weight: bold; font-size: 14px;">✓ Unlocked VIP Benefits:</p>
-                <ul style="margin: 0; padding-left: 20px; font-size: 13.5px; line-height: 1.8;">
-                  <li><strong>Private Quant Data Models:</strong> High-probability Pine Script indicators & order-flow algorithms.</li>
-                  <li><strong>Exclusive VIP Research Briefs:</strong> Unredacted hedge fund positioning & AI chip supply bottlenecks.</li>
-                  <li><strong>Secret Flight & Hotel Flash Vouchers:</strong> Up to 40% exclusive travel partner promo codes.</li>
-                  <li><strong>VIP Lounge Access:</strong> Ad-free clean reading mode and downloadable PDF dossiers.</li>
-                </ul>
+              {/* Feature 1: Highlight AI Context & Voice */}
+              <div class="features-box">
+                <p style="margin: 0 0 10px 0; color: #0d9488; font-weight: bold; font-size: 14.5px;">
+                  ✨ NEW FEATURE: Highlight &amp; Analyze Any Article Context
+                </p>
+                <ol style="margin: 0; padding-left: 20px; font-size: 13.5px; line-height: 1.8;">
+                  <li><strong>Select Any Sentence or Technical Term:</strong> While reading any article, simply highlight any text with your mouse or finger.</li>
+                  <li><strong>Click &quot;AI Deep Intel&quot;:</strong> Our deep-reasoning multi-agent swarm instantly researches the phrase, breaking down the exact meaning, implications, and risks in a popup modal.</li>
+                  <li><strong>Listen With AI Audio Voice:</strong> Click &quot;Listen to Intel&quot; to hear a studio-quality neural voice explain the context, or click &quot;Original&quot; to have the selected text read directly into your headphones.</li>
+                  <li><strong>Uncensored Pine Scripts &amp; Dossiers:</strong> Download proprietary institutional order-flow algorithms and PDF reports directly in the VIP lounge.</li>
+                </ol>
               </div>
 
-              <div style="text-align: center; margin: 30px 0;">
+              {/* Demo Video Walkthrough Box */}
+              <div class="demo-box">
+                <p style="font-size: 12px; font-weight: 800; color: #2dd4bf; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 6px 0;">
+                  🎬 Interactive Feature Demo Video
+                </p>
+                <h3 style="font-size: 17px; margin: 0 0 10px 0; color: #ffffff;">
+                  Watch How to Use AI Context Research &amp; Voice Narration
+                </h3>
+                <p style="font-size: 13px; color: #94a3b8; margin: 0 0 16px 0; line-height: 1.5;">
+                  See how highlighting text unlocks instant deep intelligence, audio synthesis, and institutional takeaways.
+                </p>
+                <a href="https://thesmartmag.com/blog/introduction-the-rapid-rise-of-slovenia-s-si-domain-sees-a-surge-in-registrations-after-trump-s-super-intelligence-order" style="display: inline-block; padding: 10px 24px; background: rgba(45, 212, 191, 0.2); border: 1px solid rgba(45, 212, 191, 0.5); color: #2dd4bf; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: 700;">
+                  ▶ Watch Interactive Demo in Live Article →
+                </a>
+              </div>
+
+              <div style="text-align: center; margin: 28px 0 16px 0;">
                 <a href="https://thesmartmag.com/vip" class="btn">
-                  Access Your VIP Portal →
+                  Access Your VIP Member Lounge →
                 </a>
               </div>
 
               <div class="footer">
                 TheSmartMag Global Media • Delivered to ${email} • support@thesmartmag.com<br/>
-                If you did not create this account, please ignore this email.
+                © ${new Date().getFullYear()} TheSmartMag. All rights reserved.
               </div>
             </div>
           </body>

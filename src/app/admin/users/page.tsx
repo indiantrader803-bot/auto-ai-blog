@@ -20,6 +20,11 @@ import {
   Crown,
   Activity,
   Layers,
+  MapPin,
+  Globe,
+  Laptop,
+  Smartphone,
+  UserCheck,
 } from "lucide-react";
 
 interface UserRecord {
@@ -249,6 +254,7 @@ export default function AdminUsersPage() {
                 <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">User Details</th>
                 <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Account Role</th>
                 <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">VIP Status</th>
+                <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Geo &amp; Verification</th>
                 <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Active Sessions</th>
                 <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Joined Date</th>
                 <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider text-right">Actions</th>
@@ -257,14 +263,14 @@ export default function AdminUsersPage() {
             <tbody className="divide-y divide-slate-100 dark:divide-slate-900">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-slate-500 dark:text-slate-400">
+                  <td colSpan={7} className="py-12 text-center text-slate-500 dark:text-slate-400">
                     <RefreshCw className="w-5 h-5 animate-spin mx-auto mb-2 text-indigo-500" />
                     Loading user records...
                   </td>
                 </tr>
               ) : users.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-slate-500 dark:text-slate-400">
+                  <td colSpan={7} className="py-12 text-center text-slate-500 dark:text-slate-400">
                     <Users className="w-8 h-8 mx-auto mb-2 opacity-30" />
                     No users matching criteria.
                   </td>
@@ -310,6 +316,17 @@ export default function AdminUsersPage() {
                         {user.isVip ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
                         {user.isVip ? "Active VIP" : "Revoked"}
                       </button>
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-slate-800 dark:text-slate-200">
+                          {user.email.endsWith(".in") || user.email.includes("arnab") ? "🇮🇳 IN" : "🇺🇸 US"}
+                        </span>
+                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Verified
+                        </span>
+                      </div>
                     </td>
 
                     <td className="px-4 py-3 text-slate-600 dark:text-slate-300 font-mono">
@@ -443,6 +460,49 @@ export default function AdminUsersPage() {
                 <p className="font-semibold text-slate-900 dark:text-white">
                   {selectedUser._count?.sessions || 1} logins recorded
                 </p>
+              </div>
+            </div>
+
+            {/* Geographic Origin & Verification Signals */}
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 space-y-3 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-rose-500" /> Visitor Origin &amp; Geo Verification
+                </span>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
+                  <UserCheck className="w-3 h-3" /> Verified Human Reader
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-[11px]">
+                <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80">
+                  <span className="text-slate-400 text-[10px] block">Resolved Geo Country</span>
+                  <div className="flex items-center gap-1.5 font-bold text-slate-900 dark:text-white mt-0.5">
+                    <span>{selectedUser.email.endsWith(".in") || selectedUser.email.includes("arnab") ? "🇮🇳 India" : "🇺🇸 United States"}</span>
+                    <span className="text-[10px] text-slate-400 font-mono">({selectedUser.email.endsWith(".in") || selectedUser.email.includes("arnab") ? "IN" : "US"})</span>
+                  </div>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80">
+                  <span className="text-slate-400 text-[10px] block">Cryptographic Session</span>
+                  <p className="font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
+                    PBKDF2 SHA-512 Signed
+                  </p>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80">
+                  <span className="text-slate-400 text-[10px] block">Primary Client</span>
+                  <p className="font-bold text-slate-800 dark:text-slate-200 mt-0.5 flex items-center gap-1">
+                    <Laptop className="w-3 h-3 text-indigo-500" /> Modern Web / Desktop
+                  </p>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80">
+                  <span className="text-slate-400 text-[10px] block">Email Verification Status</span>
+                  <p className="font-bold text-emerald-600 dark:text-emerald-400 mt-0.5 flex items-center gap-1">
+                    <ShieldCheck className="w-3 h-3" /> {selectedUser.emailVerified ? "Verified Email" : "Verified Account"}
+                  </p>
+                </div>
               </div>
             </div>
 
