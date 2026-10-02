@@ -474,6 +474,15 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Fact-Checked Quality Seal */}
             <FactCheckedBadge category={post.category?.name} authorName="SmartMag Editorial Board" />
 
+            {/* Embedded Verified Free Video Player (Prominent Top Placement for Google Video Watch Page Indexing) */}
+            {post.youtubeVideoId && (
+              <ArticleVideoPlayer
+                videoId={post.youtubeVideoId}
+                videoTitle={post.youtubeVideoTitle}
+                category={post.category?.name}
+              />
+            )}
+
             {/* 2. Main Markdown Article Content with VIP Content Gating */}
             <div id="article-body">
               <ArticleContentGate
@@ -496,15 +505,6 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Contextual Savings & Promo Chip */}
             <InstantSavingsChip category={post.category?.name} />
-
-            {/* Embedded Verified Free Video Player */}
-            {post.youtubeVideoId && (
-              <ArticleVideoPlayer
-                videoId={post.youtubeVideoId}
-                videoTitle={post.youtubeVideoTitle}
-                category={post.category?.name}
-              />
-            )}
 
             {/* Matched Sponsor / Affiliate Card */}
             <AffiliateCard

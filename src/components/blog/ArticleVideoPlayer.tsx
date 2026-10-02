@@ -36,7 +36,16 @@ export default function ArticleVideoPlayer({
   const titleText = videoTitle || `${category || "Tech & Trading"} Video Masterclass`;
 
   return (
-    <section className="my-8 rounded-3xl bg-slate-950 text-white border border-slate-800/80 shadow-2xl overflow-hidden transition-all">
+    <section
+      id="watch-video"
+      itemScope
+      itemType="https://schema.org/VideoObject"
+      className="my-8 rounded-3xl bg-slate-950 text-white border border-slate-800/80 shadow-2xl overflow-hidden transition-all"
+    >
+      <meta itemProp="name" content={titleText} />
+      <meta itemProp="embedUrl" content={`https://www.youtube-nocookie.com/embed/${cleanId}`} />
+      <meta itemProp="thumbnailUrl" content={`https://img.youtube.com/vi/${cleanId}/hqdefault.jpg`} />
+
       {/* Top Header Badge */}
       <div className="p-4 sm:p-5 border-b border-slate-800/80 flex flex-wrap items-center justify-between gap-3 bg-gradient-to-r from-slate-900 to-slate-950">
         <div className="flex items-center gap-2.5">
@@ -44,7 +53,7 @@ export default function ArticleVideoPlayer({
             <Video className="w-4 h-4" />
           </div>
           <div>
-            <h4 className="text-sm font-bold text-white font-serif tracking-tight line-clamp-1">
+            <h4 itemProp="headline" className="text-sm font-bold text-white font-serif tracking-tight line-clamp-1">
               {titleText}
             </h4>
             <p className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5">
