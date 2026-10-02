@@ -14,8 +14,26 @@ export default function ArticleTracker({ slug, title }: Props) {
   useEffect(() => {
     if (!slug) return;
 
-    // 1. Initial Page View tracking
+    // 1. Initial Page View tracking with Geo, Device & Auth verification
     try {
+      // High-accuracy client timezone and language detection
+      let detectedTimezone = "";
+      let detectedLocale = "";
+      try {
+        detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+        detectedLocale = navigator.language || "";
+      } catch (_) {}
+
+      // Device & Screen details
+      const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator?.userAgent || "");
+      const deviceType = isMobile ? "Mobile Device" : "Desktop PC / Laptop";
+
+      // Detect VIP / Authenticated cookie presence
+      const hasVipCookie = typeof document !== "undefined" && (
+        document.cookie.includes("smartmag_vip_session") || 
+        document.cookie.includes("vip_session")
+      );
+
       fetch("/api/analytics/track", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -25,6 +43,10 @@ export default function ArticleTracker({ slug, title }: Props) {
           referrer: document.referrer || "direct",
           metadata: {
             title,
+            timezone: detectedTimezone,
+            locale: detectedLocale,
+            deviceType,
+            authStatus: hasVipCookie ? "VIP_MEMBER" : "VERIFIED_GUEST",
             userAgent: typeof navigator !== "undefined" ? navigator.userAgent : undefined,
             screen: typeof window !== "undefined" ? `${window.innerWidth}x${window.innerHeight}` : undefined,
           },

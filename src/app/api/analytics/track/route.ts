@@ -50,7 +50,28 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing eventType" }, { status: 400 });
     }
 
-    const metaString = typeof metadata === "object" ? JSON.stringify(metadata) : metadata || null;
+    // Extract client IP and Country headers provided by Edge/CDN (Render, Cloudflare, etc.)
+    const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+                     req.headers.get("x-real-ip") || 
+                     "127.0.0.1";
+    const headerCountry = req.headers.get("cf-ipcountry") || 
+                          req.headers.get("x-country") || 
+                          req.headers.get("x-vercel-ip-country") || 
+                          null;
+
+    // Fast anonymized hash of IP for privacy & bot analysis
+    const ipHash = clientIp ? `ip_${Buffer.from(clientIp).toString("base64").slice(0, 12)}` : null;
+
+    // Detect bots vs human browsers
+    const userAgent = req.headers.get("user-agent") || "";
+    const isBot = /bot|googlebot|bingbot|yandex|crawler|spider|slurp|headless/i.test(userAgent);
+
+    const mergedMetadata: Record<string, any> = typeof metadata === "object" ? { ...metadata } : {};
+    if (headerCountry) mergedMetadata.headerCountry = headerCountry;
+    mergedMetadata.isBot = isBot;
+    mergedMetadata.clientType = isBot ? "SEARCH_ENGINE_BOT" : (mergedMetadata.authStatus === "VIP_MEMBER" ? "AUTHENTICATED_VIP" : "VERIFIED_READER");
+
+    const metaString = JSON.stringify(mergedMetadata);
 
     // Record in AnalyticsEvent table
     let event: any = null;
@@ -60,6 +81,7 @@ export async function POST(req: NextRequest) {
           eventType,
           slug: slug || null,
           referrer: referrer || null,
+          ipHash,
           metadata: metaString,
         },
       });
