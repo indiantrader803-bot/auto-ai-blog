@@ -219,7 +219,8 @@ async function handleOptimize(req: NextRequest) {
             { excerpt: { startsWith: "Discover the monumental shifts" } },
           ],
         },
-        take: 100,
+        orderBy: { createdAt: "desc" },
+        take: 300,
         select: {
           id: true,
           title: true,
