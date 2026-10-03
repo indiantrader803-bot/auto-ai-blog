@@ -29,22 +29,22 @@ export const metadata: Metadata = {
 
 export default function AppleDealsPage() {
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans pb-16 md:pb-0">
+    <div className="min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-white selection:bg-slate-900 selection:text-white dark:selection:bg-white dark:selection:text-black font-sans pb-16 md:pb-0 transition-colors duration-200">
       <AppleNavbar />
 
       {/* Header */}
-      <section className="py-16 sm:py-20 border-b border-white/10 relative overflow-hidden">
+      <section className="py-16 sm:py-20 border-b border-slate-200/80 dark:border-white/10 relative overflow-hidden">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono text-emerald-400 uppercase tracking-widest mb-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono text-emerald-600 dark:text-emerald-400 uppercase tracking-widest mb-6 shadow-xs">
             <Flame className="w-3.5 h-3.5" /> Live Price Drop Radar
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-extrabold font-serif text-white tracking-tight leading-tight">
+          <h1 className="text-4xl sm:text-6xl font-extrabold font-serif text-slate-900 dark:text-white tracking-tight leading-tight">
             Daily Apple Deals &amp; Discounts. <br />
-            <span className="text-zinc-400 font-light">Verified Across All Authorized Indian Retailers.</span>
+            <span className="text-slate-500 dark:text-zinc-400 font-light">Verified Across All Authorized Indian Retailers.</span>
           </h1>
 
-          <p className="mt-4 text-base sm:text-lg text-zinc-400 font-light max-w-2xl mx-auto">
+          <p className="mt-4 text-base sm:text-lg text-slate-600 dark:text-zinc-400 font-light max-w-2xl mx-auto">
             We scan Flipkart, Croma, Reliance Digital, Vijay Sales, and Amazon India hourly to aggregate instant card discounts, exchange bonuses, and 0% EMI plans.
           </p>
         </div>

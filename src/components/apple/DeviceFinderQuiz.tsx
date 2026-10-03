@@ -32,7 +32,7 @@ export default function DeviceFinderQuiz() {
     } else {
       // Phone
       if (answers.budget === "under-70k") {
-        matchId = "iphone-18"; // or entry
+        matchId = "iphone-18";
       } else if (answers.budget === "70k-100k") {
         matchId = "iphone-18";
       } else if (answers.budget === "100k-140k") {
@@ -42,7 +42,6 @@ export default function DeviceFinderQuiz() {
           matchId = "iphone-18-pro";
         }
       } else {
-        // Above 140k
         matchId = "iphone-18-pro-max";
       }
     }
@@ -58,32 +57,32 @@ export default function DeviceFinderQuiz() {
   };
 
   return (
-    <section id="device-finder" className="py-20 bg-black text-white border-b border-white/10 relative">
+    <section id="device-finder" className="py-20 bg-slate-50 dark:bg-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 relative transition-colors duration-200">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-xs font-mono text-purple-400 uppercase tracking-widest mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-xs font-mono text-purple-600 dark:text-purple-400 uppercase tracking-widest mb-3">
             <Sparkles className="w-3.5 h-3.5" /> AI Device Matcher
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold font-serif text-white tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-extrabold font-serif text-slate-900 dark:text-white tracking-tight">
             Which Apple Device Fits You?
           </h2>
-          <p className="mt-2 text-zinc-400 text-sm sm:text-base font-light">
+          <p className="mt-2 text-slate-600 dark:text-zinc-400 text-sm sm:text-base font-light">
             Answer 3 quick questions. Our algorithmic selector analyzes your workload, budget, and camera priorities to suggest the exact best device.
           </p>
         </div>
 
         {/* Quiz Container Card */}
-        <div className="p-6 sm:p-10 rounded-3xl bg-zinc-900/70 border border-white/10 backdrop-blur-xl shadow-2xl">
+        <div className="p-6 sm:p-10 rounded-3xl bg-white dark:bg-zinc-900/70 border border-slate-200/90 dark:border-white/10 backdrop-blur-xl shadow-xl dark:shadow-2xl">
           {step < 4 && (
-            <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10 text-xs font-mono text-zinc-400">
+            <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-200/80 dark:border-white/10 text-xs font-mono text-slate-500 dark:text-zinc-400">
               <span>Question {step} of 3</span>
               <div className="flex items-center gap-1.5">
                 {[1, 2, 3].map((i) => (
                   <span
                     key={i}
                     className={`h-1.5 rounded-full transition-all ${
-                      step >= i ? "w-6 bg-white" : "w-2 bg-zinc-700"
+                      step >= i ? "w-6 bg-slate-900 dark:bg-white" : "w-2 bg-slate-300 dark:bg-zinc-700"
                     }`}
                   />
                 ))}
@@ -94,7 +93,7 @@ export default function DeviceFinderQuiz() {
           {/* STEP 1: Form Factor */}
           {step === 1 && (
             <div className="space-y-6">
-              <h3 className="text-xl sm:text-2xl font-bold text-white">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
                 What type of device are you primarily looking for?
               </h3>
 
@@ -113,12 +112,12 @@ export default function DeviceFinderQuiz() {
                     }}
                     className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                       answers.formFactor === opt.id
-                        ? "bg-white text-black border-white"
-                        : "bg-zinc-800/60 hover:bg-zinc-800 text-white border-white/10"
+                        ? "bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-black dark:border-white shadow-md"
+                        : "bg-slate-50 hover:bg-slate-100 dark:bg-zinc-800/60 dark:hover:bg-zinc-800 text-slate-900 dark:text-white border-slate-200 dark:border-white/10"
                     }`}
                   >
                     <div className="font-bold text-sm sm:text-base">{opt.label}</div>
-                    <div className={`text-xs mt-1 ${answers.formFactor === opt.id ? "text-zinc-700" : "text-zinc-400"}`}>
+                    <div className={`text-xs mt-1 ${answers.formFactor === opt.id ? "text-slate-300 dark:text-zinc-700" : "text-slate-500 dark:text-zinc-400"}`}>
                       {opt.desc}
                     </div>
                   </button>
@@ -130,7 +129,7 @@ export default function DeviceFinderQuiz() {
           {/* STEP 2: Budget */}
           {step === 2 && (
             <div className="space-y-6">
-              <h3 className="text-xl sm:text-2xl font-bold text-white">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
                 What is your estimated target budget?
               </h3>
 
@@ -149,12 +148,12 @@ export default function DeviceFinderQuiz() {
                     }}
                     className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                       answers.budget === opt.id
-                        ? "bg-white text-black border-white"
-                        : "bg-zinc-800/60 hover:bg-zinc-800 text-white border-white/10"
+                        ? "bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-black dark:border-white shadow-md"
+                        : "bg-slate-50 hover:bg-slate-100 dark:bg-zinc-800/60 dark:hover:bg-zinc-800 text-slate-900 dark:text-white border-slate-200 dark:border-white/10"
                     }`}
                   >
                     <div className="font-bold text-sm sm:text-base">{opt.label}</div>
-                    <div className={`text-xs mt-1 ${answers.budget === opt.id ? "text-zinc-700" : "text-zinc-400"}`}>
+                    <div className={`text-xs mt-1 ${answers.budget === opt.id ? "text-slate-300 dark:text-zinc-700" : "text-slate-500 dark:text-zinc-400"}`}>
                       {opt.desc}
                     </div>
                   </button>
@@ -164,7 +163,7 @@ export default function DeviceFinderQuiz() {
               <div className="pt-2">
                 <button
                   onClick={() => setStep(1)}
-                  className="text-xs text-zinc-400 hover:text-white underline cursor-pointer"
+                  className="text-xs text-slate-500 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-white underline cursor-pointer"
                 >
                   ← Back to Previous Question
                 </button>
@@ -175,7 +174,7 @@ export default function DeviceFinderQuiz() {
           {/* STEP 3: Priority */}
           {step === 3 && (
             <div className="space-y-6">
-              <h3 className="text-xl sm:text-2xl font-bold text-white">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
                 What feature matters most to your workflow?
               </h3>
 
@@ -193,12 +192,12 @@ export default function DeviceFinderQuiz() {
                     }}
                     className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                       answers.priority === opt.id
-                        ? "bg-white text-black border-white"
-                        : "bg-zinc-800/60 hover:bg-zinc-800 text-white border-white/10"
+                        ? "bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-black dark:border-white shadow-md"
+                        : "bg-slate-50 hover:bg-slate-100 dark:bg-zinc-800/60 dark:hover:bg-zinc-800 text-slate-900 dark:text-white border-slate-200 dark:border-white/10"
                     }`}
                   >
                     <div className="font-bold text-sm sm:text-base">{opt.label}</div>
-                    <div className={`text-xs mt-1 ${answers.priority === opt.id ? "text-zinc-700" : "text-zinc-400"}`}>
+                    <div className={`text-xs mt-1 ${answers.priority === opt.id ? "text-slate-300 dark:text-zinc-700" : "text-slate-500 dark:text-zinc-400"}`}>
                       {opt.desc}
                     </div>
                   </button>
@@ -208,14 +207,14 @@ export default function DeviceFinderQuiz() {
               <div className="flex items-center justify-between pt-4">
                 <button
                   onClick={() => setStep(2)}
-                  className="text-xs text-zinc-400 hover:text-white underline cursor-pointer"
+                  className="text-xs text-slate-500 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-white underline cursor-pointer"
                 >
                   ← Back
                 </button>
 
                 <button
                   onClick={calculateRecommendation}
-                  className="px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-emerald-500/20 cursor-pointer flex items-center gap-2"
+                  className="px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-emerald-500/20 cursor-pointer flex items-center gap-2"
                 >
                   <span>Reveal My Match</span>
                   <ArrowRight className="w-4 h-4" />
@@ -228,13 +227,13 @@ export default function DeviceFinderQuiz() {
           {step === 4 && result && (
             <div className="space-y-6 animate-in fade-in zoom-in-95 duration-200">
               <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold font-mono uppercase tracking-wider">
+                <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 text-xs font-bold font-mono uppercase tracking-wider">
                   🎯 98% Match to Your Preferences
                 </span>
 
                 <button
                   onClick={resetQuiz}
-                  className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-white transition-colors cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>Retake Quiz</span>
@@ -242,7 +241,7 @@ export default function DeviceFinderQuiz() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center pt-2">
-                <div className="sm:col-span-4 aspect-square rounded-2xl overflow-hidden bg-black border border-white/10 relative">
+                <div className="sm:col-span-4 aspect-square rounded-2xl overflow-hidden bg-slate-100 dark:bg-black border border-slate-200 dark:border-white/10 relative">
                   <img
                     src={result.heroImage}
                     alt={result.name}
@@ -251,24 +250,24 @@ export default function DeviceFinderQuiz() {
                 </div>
 
                 <div className="sm:col-span-8 space-y-3">
-                  <h4 className="text-2xl sm:text-3xl font-extrabold text-white">
+                  <h4 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
                     {result.name}
                   </h4>
-                  <p className="text-sm text-zinc-300 font-light leading-relaxed">
+                  <p className="text-sm text-slate-600 dark:text-zinc-300 font-light leading-relaxed">
                     {result.tagline}
                   </p>
 
-                  <div className="p-3 rounded-xl bg-black/60 border border-white/10 flex items-baseline justify-between">
-                    <span className="text-xs text-zinc-400 font-mono">Effective Online Price:</span>
-                    <span className="text-xl font-black text-emerald-400 font-mono">
+                  <div className="p-3 rounded-xl bg-slate-100 dark:bg-black/60 border border-slate-200 dark:border-white/10 flex items-baseline justify-between">
+                    <span className="text-xs text-slate-500 dark:text-zinc-400 font-mono">Effective Online Price:</span>
+                    <span className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
                       ₹{result.startingPriceInr.toLocaleString("en-IN")}
                     </span>
                   </div>
 
-                  <div className="space-y-1.5 text-xs text-zinc-400">
+                  <div className="space-y-1.5 text-xs text-slate-500 dark:text-zinc-400">
                     {result.keyHighlights.slice(0, 2).map((h, i) => (
                       <div key={i} className="flex items-start gap-1.5">
-                        <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                        <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                         <span>{h}</span>
                       </div>
                     ))}
@@ -277,7 +276,7 @@ export default function DeviceFinderQuiz() {
                   <div className="pt-2 flex flex-wrap items-center gap-3">
                     <Link
                       href={`/apple/${result.slug}`}
-                      className="px-5 py-2.5 rounded-full bg-white hover:bg-zinc-200 text-black font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-1.5"
+                      className="px-5 py-2.5 rounded-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-black font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-sm"
                     >
                       <ShoppingBag className="w-3.5 h-3.5" />
                       <span>View Deals &amp; Retailers</span>
@@ -285,7 +284,7 @@ export default function DeviceFinderQuiz() {
 
                     <Link
                       href="/apple/deals"
-                      className="px-5 py-2.5 rounded-full bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold transition-all"
+                      className="px-5 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-900 dark:text-white text-xs font-bold transition-all border border-slate-200 dark:border-transparent"
                     >
                       Check Bank Offers
                     </Link>

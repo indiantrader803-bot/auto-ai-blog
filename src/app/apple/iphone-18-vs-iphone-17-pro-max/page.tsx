@@ -53,7 +53,7 @@ export default function Iphone18Vs17ProMaxPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans pb-16 md:pb-0">
+    <div className="min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-white selection:bg-slate-900 selection:text-white dark:selection:bg-white dark:selection:text-black font-sans pb-16 md:pb-0 transition-colors duration-200">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -62,62 +62,62 @@ export default function Iphone18Vs17ProMaxPage() {
       <AppleNavbar />
 
       {/* Hero Head-to-Head Header */}
-      <section className="py-14 sm:py-20 border-b border-white/10 relative overflow-hidden">
+      <section className="py-14 sm:py-20 border-b border-slate-200/80 dark:border-white/10 relative overflow-hidden">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-xs font-mono text-indigo-400 uppercase tracking-widest mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-xs font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-4 shadow-xs">
             <GitCompare className="w-3.5 h-3.5" /> Flagship Showdown 2026
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold font-serif text-white tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold font-serif text-slate-900 dark:text-white tracking-tight leading-tight">
             iPhone 18 Pro Max <br />
-            <span className="text-zinc-500 font-light">vs</span> iPhone 17 Pro Max
+            <span className="text-slate-400 dark:text-zinc-500 font-light">vs</span> iPhone 17 Pro Max
           </h1>
 
-          <p className="mt-4 text-sm sm:text-lg text-zinc-400 font-light max-w-2xl mx-auto">
+          <p className="mt-4 text-sm sm:text-lg text-slate-600 dark:text-zinc-400 font-light max-w-2xl mx-auto">
             Is the new 2nm A20 Pro and mechanical variable aperture camera worth the premium over last year&apos;s heavily discounted titanium flagship? Here is our comprehensive breakdown.
           </p>
         </div>
       </section>
 
       {/* Side-by-Side Quick Summary Cards */}
-      <section className="py-12 border-b border-white/10">
+      <section className="py-12 border-b border-slate-200/80 dark:border-white/10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* 18 Pro Max */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-zinc-900/70 border border-white/10 backdrop-blur-xl relative overflow-hidden space-y-4">
+            <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-zinc-900/70 border border-slate-200/90 dark:border-white/10 backdrop-blur-xl relative overflow-hidden space-y-4 shadow-md dark:shadow-xl">
               <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold font-mono uppercase">
+                <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 text-xs font-bold font-mono uppercase">
                   Winner: The Pinnacle 2026
                 </span>
-                <span className="text-xs text-zinc-400 font-mono">₹1,59,900</span>
+                <span className="text-xs text-slate-500 dark:text-zinc-400 font-mono">₹1,59,900</span>
               </div>
 
-              <h2 className="text-2xl font-bold text-white">{p18.name}</h2>
-              <p className="text-xs text-zinc-400 leading-relaxed font-light">{p18.tagline}</p>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{p18.name}</h2>
+              <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed font-light">{p18.tagline}</p>
 
-              <div className="space-y-2 text-xs text-zinc-300 pt-2 border-t border-white/10">
+              <div className="space-y-2 text-xs text-slate-700 dark:text-zinc-300 pt-2 border-t border-slate-200/80 dark:border-white/10">
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Silicon Process:</span>
-                  <span className="font-bold text-emerald-400">TSMC 2nm GAA (A20 Pro)</span>
+                  <span className="text-slate-400 dark:text-zinc-500">Silicon Process:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400">TSMC 2nm GAA (A20 Pro)</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Camera Optics:</span>
-                  <span className="font-bold text-emerald-400">f/1.4-f/2.8 Variable Aperture</span>
+                  <span className="text-slate-400 dark:text-zinc-500">Camera Optics:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400">f/1.4-f/2.8 Variable Aperture</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Peak Brightness:</span>
-                  <span className="font-bold text-emerald-400">3,000 Nits Micro-Lens</span>
+                  <span className="text-slate-400 dark:text-zinc-500">Peak Brightness:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400">3,000 Nits Micro-Lens</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Battery Stamina:</span>
-                  <span className="font-bold text-emerald-400">34 Hours Video</span>
+                  <span className="text-slate-400 dark:text-zinc-500">Battery Stamina:</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400">34 Hours Video</span>
                 </div>
               </div>
 
               <div className="pt-2">
                 <Link
                   href="/apple/iphone-18"
-                  className="w-full py-3 rounded-full bg-white hover:bg-zinc-200 text-black font-bold text-xs uppercase tracking-wider text-center block transition-all"
+                  className="w-full py-3 rounded-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-black font-bold text-xs uppercase tracking-wider text-center block transition-all shadow-sm"
                 >
                   View iPhone 18 Deals
                 </Link>
@@ -125,33 +125,33 @@ export default function Iphone18Vs17ProMaxPage() {
             </div>
 
             {/* 17 Pro Max */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-zinc-900/40 border border-white/10 backdrop-blur-xl relative overflow-hidden space-y-4">
+            <div className="p-6 sm:p-8 rounded-3xl bg-slate-100/70 dark:bg-zinc-900/40 border border-slate-200/90 dark:border-white/10 backdrop-blur-xl relative overflow-hidden space-y-4 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold font-mono uppercase">
+                <span className="px-3 py-1 rounded-full bg-amber-500/15 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400 text-xs font-bold font-mono uppercase">
                   Best Value Buy: ₹25,000 Cheaper
                 </span>
-                <span className="text-xs text-zinc-400 font-mono">₹1,28,900 (Clearance)</span>
+                <span className="text-xs text-slate-500 dark:text-zinc-400 font-mono">₹1,28,900 (Clearance)</span>
               </div>
 
-              <h2 className="text-2xl font-bold text-white">{p17.name}</h2>
-              <p className="text-xs text-zinc-400 leading-relaxed font-light">{p17.tagline}</p>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{p17.name}</h2>
+              <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed font-light">{p17.tagline}</p>
 
-              <div className="space-y-2 text-xs text-zinc-300 pt-2 border-t border-white/10">
+              <div className="space-y-2 text-xs text-slate-700 dark:text-zinc-300 pt-2 border-t border-slate-200/80 dark:border-white/10">
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Silicon Process:</span>
-                  <span className="font-bold text-zinc-300">TSMC 3nm N3E (A19 Pro)</span>
+                  <span className="text-slate-400 dark:text-zinc-500">Silicon Process:</span>
+                  <span className="font-bold text-slate-800 dark:text-zinc-300">TSMC 3nm N3E (A19 Pro)</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Camera Optics:</span>
-                  <span className="font-bold text-zinc-300">f/1.78 Fixed Aperture</span>
+                  <span className="text-slate-400 dark:text-zinc-500">Camera Optics:</span>
+                  <span className="font-bold text-slate-800 dark:text-zinc-300">f/1.78 Fixed Aperture</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Peak Brightness:</span>
-                  <span className="font-bold text-zinc-300">2,000 Nits Super Retina</span>
+                  <span className="text-slate-400 dark:text-zinc-500">Peak Brightness:</span>
+                  <span className="font-bold text-slate-800 dark:text-zinc-300">2,000 Nits Super Retina</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Battery Stamina:</span>
-                  <span className="font-bold text-zinc-300">31 Hours Video</span>
+                  <span className="text-slate-400 dark:text-zinc-500">Battery Stamina:</span>
+                  <span className="font-bold text-slate-800 dark:text-zinc-300">31 Hours Video</span>
                 </div>
               </div>
 
@@ -160,7 +160,7 @@ export default function Iphone18Vs17ProMaxPage() {
                   href="https://www.flipkart.com/search?q=iphone+17+pro+max"
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  className="w-full py-3 rounded-full bg-zinc-800 hover:bg-zinc-700 text-white border border-white/10 font-bold text-xs uppercase tracking-wider text-center block transition-all"
+                  className="w-full py-3 rounded-full bg-white dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 font-bold text-xs uppercase tracking-wider text-center block transition-all shadow-2xs"
                 >
                   Check Flipkart Clearance Stock
                 </a>

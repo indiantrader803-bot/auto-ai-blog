@@ -58,26 +58,26 @@ export default function ComparisonEngine() {
       explanation: "On-device diffusion models, real-time voice translation, and smart canvas",
     },
     {
-      feature: "Weight & Ergonomics",
-      valA: modelA.specs.weight,
-      valB: modelB.specs.weight,
-      winner: parseInt(modelA.specs.weight) <= parseInt(modelB.specs.weight) ? "A" : "B",
-      explanation: "Single-handed palm fatigue during prolonged reading or gaming",
+      feature: "Chassis & Build Material",
+      valA: `${modelA.specs.colors.join(", ")} (${modelA.specs.weight})`,
+      valB: `${modelB.specs.colors.join(", ")} (${modelB.specs.weight})`,
+      winner: "A",
+      explanation: "Heat dissipation geometry and drop resistance",
     },
   ];
 
   return (
-    <section id="comparison-engine" className="py-20 bg-black text-white border-b border-white/10 relative">
+    <section id="comparison-engine" className="py-20 bg-slate-50 dark:bg-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 relative transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-xs font-mono text-indigo-400 uppercase tracking-widest mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-xs font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-3">
             <GitCompare className="w-3.5 h-3.5" /> Interactive Comparison Engine
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold font-serif text-white tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-extrabold font-serif text-slate-900 dark:text-white tracking-tight">
             Compare Every iPhone Spec Side-by-Side.
           </h2>
-          <p className="mt-3 text-zinc-400 text-sm sm:text-base font-light">
+          <p className="mt-3 text-slate-600 dark:text-zinc-400 text-sm sm:text-base font-light">
             Select two models below to instantly analyze real-world performance differences, optical camera advances, battery life, and pricing in India.
           </p>
         </div>
@@ -85,52 +85,52 @@ export default function ComparisonEngine() {
         {/* Model Selectors */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-8">
           {/* Model A Selector Card */}
-          <div className="p-6 rounded-3xl bg-zinc-900/70 border border-white/10 backdrop-blur-md">
+          <div className="p-6 rounded-3xl bg-white dark:bg-zinc-900/70 border border-slate-200/90 dark:border-white/10 backdrop-blur-md shadow-md dark:shadow-xl">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs uppercase font-mono font-bold text-zinc-400">Select Model A:</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono font-bold">Primary</span>
+              <span className="text-xs uppercase font-mono font-bold text-slate-500 dark:text-zinc-400">Select Model A:</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300 font-mono font-bold">Primary</span>
             </div>
             <select
               value={modelAId}
               onChange={(e) => setModelAId(e.target.value)}
-              className="w-full bg-zinc-800 border border-white/20 rounded-2xl px-4 py-3 text-white text-sm font-bold focus:outline-hidden focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+              className="w-full bg-slate-50 dark:bg-zinc-800 border border-slate-300 dark:border-white/20 rounded-2xl px-4 py-3 text-slate-900 dark:text-white text-sm font-bold focus:outline-hidden focus:ring-2 focus:ring-indigo-500 cursor-pointer"
             >
               {iphones.map((p) => (
-                <option key={p.id} value={p.id}>
+                <option key={p.id} value={p.id} className="bg-white dark:bg-zinc-800 text-slate-900 dark:text-white">
                   {p.name} (₹{p.startingPriceInr.toLocaleString("en-IN")})
                 </option>
               ))}
             </select>
 
-            <div className="mt-4 flex items-center justify-between pt-3 border-t border-white/10">
-              <span className="text-xs text-zinc-400">Best Online Price:</span>
-              <span className="text-base font-black text-emerald-400 font-mono">
+            <div className="mt-4 flex items-center justify-between pt-3 border-t border-slate-200/80 dark:border-white/10">
+              <span className="text-xs text-slate-500 dark:text-zinc-400">Best Online Price:</span>
+              <span className="text-base font-black text-emerald-600 dark:text-emerald-400 font-mono">
                 ₹{modelA.startingPriceInr.toLocaleString("en-IN")}
               </span>
             </div>
           </div>
 
           {/* Model B Selector Card */}
-          <div className="p-6 rounded-3xl bg-zinc-900/70 border border-white/10 backdrop-blur-md">
+          <div className="p-6 rounded-3xl bg-white dark:bg-zinc-900/70 border border-slate-200/90 dark:border-white/10 backdrop-blur-md shadow-md dark:shadow-xl">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs uppercase font-mono font-bold text-zinc-400">Select Model B:</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-700 text-zinc-300 font-mono font-bold">Compare Against</span>
+              <span className="text-xs uppercase font-mono font-bold text-slate-500 dark:text-zinc-400">Select Model B:</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-700 text-slate-700 dark:text-zinc-300 font-mono font-bold">Compare Against</span>
             </div>
             <select
               value={modelBId}
               onChange={(e) => setModelBId(e.target.value)}
-              className="w-full bg-zinc-800 border border-white/20 rounded-2xl px-4 py-3 text-white text-sm font-bold focus:outline-hidden focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+              className="w-full bg-slate-50 dark:bg-zinc-800 border border-slate-300 dark:border-white/20 rounded-2xl px-4 py-3 text-slate-900 dark:text-white text-sm font-bold focus:outline-hidden focus:ring-2 focus:ring-indigo-500 cursor-pointer"
             >
               {iphones.map((p) => (
-                <option key={p.id} value={p.id}>
+                <option key={p.id} value={p.id} className="bg-white dark:bg-zinc-800 text-slate-900 dark:text-white">
                   {p.name} (₹{p.startingPriceInr.toLocaleString("en-IN")})
                 </option>
               ))}
             </select>
 
-            <div className="mt-4 flex items-center justify-between pt-3 border-t border-white/10">
-              <span className="text-xs text-zinc-400">Best Online Price:</span>
-              <span className="text-base font-black text-emerald-400 font-mono">
+            <div className="mt-4 flex items-center justify-between pt-3 border-t border-slate-200/80 dark:border-white/10">
+              <span className="text-xs text-slate-500 dark:text-zinc-400">Best Online Price:</span>
+              <span className="text-base font-black text-emerald-600 dark:text-emerald-400 font-mono">
                 ₹{modelB.startingPriceInr.toLocaleString("en-IN")}
               </span>
             </div>
@@ -138,51 +138,51 @@ export default function ComparisonEngine() {
         </div>
 
         {/* Side-by-Side Comparison Table */}
-        <div className="rounded-3xl border border-white/10 bg-zinc-900/40 backdrop-blur-xl overflow-hidden shadow-2xl">
+        <div className="rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-zinc-900/40 backdrop-blur-xl overflow-hidden shadow-xl dark:shadow-2xl">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-white/10 bg-zinc-900/90 text-xs uppercase font-mono tracking-wider text-zinc-400">
+                <tr className="border-b border-slate-200/80 dark:border-white/10 bg-slate-100/80 dark:bg-zinc-900/90 text-xs uppercase font-mono tracking-wider text-slate-500 dark:text-zinc-400">
                   <th className="p-4 sm:p-5 w-1/4">Key Specification</th>
-                  <th className="p-4 sm:p-5 w-3/8 text-white font-bold bg-indigo-950/20 border-r border-white/5">
+                  <th className="p-4 sm:p-5 w-3/8 text-slate-900 dark:text-white font-bold bg-indigo-50/50 dark:bg-indigo-950/20 border-r border-slate-200/80 dark:border-white/5">
                     <div className="flex items-center gap-2">
                       <span>{modelA.shortName}</span>
-                      <span className="text-[9px] px-1.5 py-0.2 rounded bg-indigo-500 text-white font-mono">Model A</span>
+                      <span className="text-[9px] px-1.5 py-0.2 rounded bg-indigo-600 text-white font-mono">Model A</span>
                     </div>
                   </th>
-                  <th className="p-4 sm:p-5 w-3/8 text-zinc-300 font-semibold">
+                  <th className="p-4 sm:p-5 w-3/8 text-slate-700 dark:text-zinc-300 font-semibold">
                     <div className="flex items-center gap-2">
                       <span>{modelB.shortName}</span>
-                      <span className="text-[9px] px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-400 font-mono">Model B</span>
+                      <span className="text-[9px] px-1.5 py-0.2 rounded bg-slate-200 dark:bg-zinc-800 text-slate-700 dark:text-zinc-400 font-mono">Model B</span>
                     </div>
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 text-sm">
+              <tbody className="divide-y divide-slate-100 dark:divide-white/5 text-sm">
                 {comparisonRows.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={idx} className="hover:bg-slate-50/80 dark:hover:bg-white/[0.02] transition-colors">
                     <td className="p-4 sm:p-5 align-top">
-                      <div className="font-bold text-white text-xs sm:text-sm">{row.feature}</div>
-                      <div className="text-[11px] text-zinc-500 mt-0.5 leading-snug">{row.explanation}</div>
+                      <div className="font-bold text-slate-900 dark:text-white text-xs sm:text-sm">{row.feature}</div>
+                      <div className="text-[11px] text-slate-500 dark:text-zinc-500 mt-0.5 leading-snug">{row.explanation}</div>
                     </td>
-                    <td className="p-4 sm:p-5 align-top bg-indigo-950/10 border-r border-white/5">
+                    <td className="p-4 sm:p-5 align-top bg-indigo-50/20 dark:bg-indigo-950/10 border-r border-slate-200/80 dark:border-white/5">
                       <div className="flex items-start gap-2">
                         {row.winner === "A" && (
-                          <span className="shrink-0 mt-0.5 w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold">
+                          <span className="shrink-0 mt-0.5 w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 flex items-center justify-center text-[10px] font-bold">
                             ✓
                           </span>
                         )}
-                        <span className="text-zinc-200 text-xs sm:text-sm leading-relaxed">{row.valA}</span>
+                        <span className="text-slate-800 dark:text-zinc-200 text-xs sm:text-sm leading-relaxed">{row.valA}</span>
                       </div>
                     </td>
                     <td className="p-4 sm:p-5 align-top">
                       <div className="flex items-start gap-2">
                         {row.winner === "B" && (
-                          <span className="shrink-0 mt-0.5 w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold">
+                          <span className="shrink-0 mt-0.5 w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 flex items-center justify-center text-[10px] font-bold">
                             ✓
                           </span>
                         )}
-                        <span className="text-zinc-400 text-xs sm:text-sm leading-relaxed">{row.valB}</span>
+                        <span className="text-slate-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed">{row.valB}</span>
                       </div>
                     </td>
                   </tr>
@@ -192,10 +192,10 @@ export default function ComparisonEngine() {
           </div>
 
           {/* Quick Buy CTA Footer on Table */}
-          <div className="p-5 sm:p-6 bg-zinc-950 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="p-5 sm:p-6 bg-slate-50 dark:bg-zinc-950 border-t border-slate-200/80 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-center sm:text-left">
-              <div className="text-xs uppercase font-mono text-zinc-400">TheSmartMag Verdict:</div>
-              <div className="text-sm font-medium text-zinc-200 mt-0.5">
+              <div className="text-xs uppercase font-mono text-slate-500 dark:text-zinc-400">TheSmartMag Verdict:</div>
+              <div className="text-sm font-medium text-slate-800 dark:text-zinc-200 mt-0.5">
                 {modelA.releaseYear > modelB.releaseYear
                   ? `${modelA.shortName} offers unmatched 2nm silicon efficiency & superior optics. ${modelB.shortName} remains great if bought at clearance prices.`
                   : `Both models showcase Apple's elite engineering. Pick ${modelA.shortName} for premium titanium & zoom or ${modelB.shortName} for lighter everyday portability.`}
@@ -205,14 +205,14 @@ export default function ComparisonEngine() {
             <div className="flex items-center gap-3 shrink-0">
               <Link
                 href="/apple/iphone-18-vs-iphone-17-pro-max"
-                className="px-5 py-2.5 rounded-full bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold transition-all"
+                className="px-5 py-2.5 rounded-full bg-slate-200 hover:bg-slate-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-900 dark:text-white text-xs font-bold transition-all shadow-xs"
               >
                 Read Flagship Head-to-Head
               </Link>
 
               <Link
                 href={`/apple/${modelA.slug}`}
-                className="px-5 py-2.5 rounded-full bg-white hover:bg-zinc-200 text-black text-xs font-bold transition-all flex items-center gap-1.5 shadow-md"
+                className="px-5 py-2.5 rounded-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-black text-xs font-bold transition-all flex items-center gap-1.5 shadow-md"
               >
                 <span>Buy {modelA.shortName}</span>
                 <ArrowRight className="w-3.5 h-3.5" />

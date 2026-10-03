@@ -27,22 +27,22 @@ export const metadata: Metadata = {
 
 export default function AppleAccessoriesPage() {
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans pb-16 md:pb-0">
+    <div className="min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-white selection:bg-slate-900 selection:text-white dark:selection:bg-white dark:selection:text-black font-sans pb-16 md:pb-0 transition-colors duration-200">
       <AppleNavbar />
 
       {/* Header */}
-      <section className="py-16 sm:py-20 border-b border-white/10 relative overflow-hidden">
+      <section className="py-16 sm:py-20 border-b border-slate-200/80 dark:border-white/10 relative overflow-hidden">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-mono text-amber-400 uppercase tracking-widest mb-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-mono text-amber-600 dark:text-amber-400 uppercase tracking-widest mb-6">
             <Sparkles className="w-3.5 h-3.5" /> High-Utility Gear 2026
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-extrabold font-serif text-white tracking-tight leading-tight">
+          <h1 className="text-4xl sm:text-6xl font-extrabold font-serif text-slate-900 dark:text-white tracking-tight leading-tight">
             Curated Apple Accessories. <br />
-            <span className="text-zinc-400 font-light">Engineered for Durability &amp; 25W MagSafe Speed.</span>
+            <span className="text-slate-500 dark:text-zinc-400 font-light">Engineered for Durability &amp; 25W MagSafe Speed.</span>
           </h1>
 
-          <p className="mt-4 text-base sm:text-lg text-zinc-400 font-light max-w-2xl mx-auto">
+          <p className="mt-4 text-base sm:text-lg text-slate-600 dark:text-zinc-400 font-light max-w-2xl mx-auto">
             High-converting, lab-tested cases, sapphire glass protectors, Qi2 magnetic battery packs, and titanium watch bands designed for Apple&apos;s 2026 flagship ecosystem.
           </p>
         </div>

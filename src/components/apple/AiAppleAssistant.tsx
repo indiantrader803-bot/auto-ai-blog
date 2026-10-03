@@ -63,23 +63,23 @@ export default function AiAppleAssistant() {
   };
 
   return (
-    <section id="ai-assistant" className="py-20 bg-black text-white border-b border-white/10 relative">
+    <section id="ai-assistant" className="py-20 bg-slate-50 dark:bg-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 relative transition-colors duration-200">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-xs font-mono text-indigo-400 uppercase tracking-widest mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-xs font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-3">
             <Bot className="w-3.5 h-3.5" /> 24/7 Apple Intelligence Advisor
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold font-serif text-white tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-extrabold font-serif text-slate-900 dark:text-white tracking-tight">
             Ask the Apple Genius AI.
           </h2>
-          <p className="mt-2 text-zinc-400 text-sm sm:text-base font-light">
+          <p className="mt-2 text-slate-600 dark:text-zinc-400 text-sm sm:text-base font-light">
             Have a specific buying dilemma? Ask our real-time advisor for side-by-side advice, exchange recommendations, and hardware comparisons.
           </p>
         </div>
 
         {/* Chat Box */}
-        <div className="rounded-3xl bg-zinc-900/70 border border-white/10 backdrop-blur-xl shadow-2xl flex flex-col overflow-hidden">
+        <div className="rounded-3xl bg-white dark:bg-zinc-900/70 border border-slate-200/90 dark:border-white/10 backdrop-blur-xl shadow-xl dark:shadow-2xl flex flex-col overflow-hidden">
           {/* Messages Stream */}
           <div className="p-6 space-y-4 max-h-[420px] overflow-y-auto no-scrollbar">
             {messages.map((m, idx) => (
@@ -90,7 +90,7 @@ export default function AiAppleAssistant() {
                 }`}
               >
                 {m.sender === "assistant" && (
-                  <div className="w-7 h-7 rounded-xl bg-white text-black font-bold flex items-center justify-center shrink-0 text-xs">
+                  <div className="w-7 h-7 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-black font-bold flex items-center justify-center shrink-0 text-xs shadow-xs">
                     
                   </div>
                 )}
@@ -99,14 +99,14 @@ export default function AiAppleAssistant() {
                   className={`max-w-[85%] p-4 rounded-2xl ${
                     m.sender === "user"
                       ? "bg-indigo-600 text-white rounded-tr-xs"
-                      : "bg-zinc-800/80 text-zinc-200 border border-white/5 rounded-tl-xs"
+                      : "bg-slate-100 dark:bg-zinc-800/80 text-slate-800 dark:text-zinc-200 border border-slate-200/80 dark:border-white/5 rounded-tl-xs"
                   }`}
                 >
                   {m.text}
                 </div>
 
                 {m.sender === "user" && (
-                  <div className="w-7 h-7 rounded-xl bg-zinc-700 text-white flex items-center justify-center shrink-0">
+                  <div className="w-7 h-7 rounded-xl bg-slate-200 dark:bg-zinc-700 text-slate-700 dark:text-white flex items-center justify-center shrink-0">
                     <User className="w-4 h-4" />
                   </div>
                 )}
@@ -114,27 +114,27 @@ export default function AiAppleAssistant() {
             ))}
 
             {isLoading && (
-              <div className="flex gap-3 items-center text-xs text-zinc-400">
-                <div className="w-7 h-7 rounded-xl bg-white text-black font-bold flex items-center justify-center shrink-0 text-xs">
+              <div className="flex gap-3 items-center text-xs text-slate-500 dark:text-zinc-400">
+                <div className="w-7 h-7 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-black font-bold flex items-center justify-center shrink-0 text-xs">
                   
                 </div>
-                <div className="p-3 rounded-2xl bg-zinc-800/60 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-bounce" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-bounce delay-100" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-bounce delay-200" />
+                <div className="p-3 rounded-2xl bg-slate-100 dark:bg-zinc-800/60 flex items-center gap-1.5 border border-slate-200/80 dark:border-transparent">
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-500 dark:bg-zinc-400 animate-bounce" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-500 dark:bg-zinc-400 animate-bounce delay-100" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-500 dark:bg-zinc-400 animate-bounce delay-200" />
                 </div>
               </div>
             )}
           </div>
 
           {/* Quick Prompts */}
-          <div className="px-6 py-3 bg-black/40 border-t border-white/5 flex items-center gap-2 overflow-x-auto no-scrollbar">
-            <span className="text-[11px] font-mono text-zinc-500 uppercase shrink-0">Try:</span>
+          <div className="px-6 py-3 bg-slate-50 dark:bg-black/40 border-t border-slate-200/80 dark:border-white/5 flex items-center gap-2 overflow-x-auto no-scrollbar">
+            <span className="text-[11px] font-mono text-slate-400 dark:text-zinc-500 uppercase shrink-0">Try:</span>
             {quickPrompts.map((q, i) => (
               <button
                 key={i}
                 onClick={() => handleSend(q)}
-                className="px-3 py-1 rounded-full bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 text-xs whitespace-nowrap transition-colors border border-white/5 cursor-pointer shrink-0"
+                className="px-3 py-1 rounded-full bg-white dark:bg-zinc-800/80 hover:bg-slate-100 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-300 text-xs whitespace-nowrap transition-colors border border-slate-200 dark:border-white/5 cursor-pointer shrink-0 shadow-2xs"
               >
                 {q}
               </button>
@@ -147,19 +147,19 @@ export default function AiAppleAssistant() {
               e.preventDefault();
               handleSend();
             }}
-            className="p-4 bg-zinc-950 border-t border-white/10 flex items-center gap-2"
+            className="p-4 bg-slate-50/80 dark:bg-zinc-950 border-t border-slate-200/80 dark:border-white/10 flex items-center gap-2"
           >
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask anything (e.g., iPhone 18 vs 17 Pro, trade-in value, best deals)..."
-              className="flex-1 bg-zinc-900 border border-white/10 rounded-full px-5 py-3 text-sm text-white placeholder-zinc-500 focus:outline-hidden focus:border-white/30"
+              className="flex-1 bg-white dark:bg-zinc-900 border border-slate-300 dark:border-white/10 rounded-full px-5 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-zinc-500 focus:outline-hidden focus:border-slate-500 dark:focus:border-white/30"
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="w-11 h-11 rounded-full bg-white hover:bg-zinc-200 disabled:opacity-40 text-black flex items-center justify-center transition-all shrink-0 cursor-pointer shadow-md"
+              className="w-11 h-11 rounded-full bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-zinc-200 disabled:opacity-40 text-white dark:text-black flex items-center justify-center transition-all shrink-0 cursor-pointer shadow-md"
             >
               <Send className="w-4 h-4" />
             </button>

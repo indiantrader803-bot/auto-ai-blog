@@ -22,10 +22,10 @@ export default function ProductColorShowcase({ product }: { product: AppleProduc
     product.retailers.find((r) => r.priceInr === bestPrice) ?? product.retailers[0];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center text-slate-900 dark:text-white transition-colors duration-200">
       {/* Visual column — official Apple CDN image per finish */}
       <div className="lg:col-span-5 flex flex-col items-center">
-        <div className="w-full aspect-square max-w-lg relative rounded-3xl overflow-hidden bg-gradient-to-tr from-zinc-800/40 via-zinc-900 to-black border border-white/10 flex items-center justify-center">
+        <div className="w-full aspect-square max-w-lg relative rounded-3xl overflow-hidden bg-slate-100 dark:bg-gradient-to-tr dark:from-zinc-800/40 dark:via-zinc-900 dark:to-black border border-slate-200 dark:border-white/10 flex items-center justify-center shadow-md dark:shadow-none">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={heroSrc}
@@ -33,14 +33,14 @@ export default function ProductColorShowcase({ product }: { product: AppleProduc
             className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
             loading="eager"
           />
-          <div className="absolute bottom-4 left-4 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-xs font-bold text-white">
+          <div className="absolute bottom-4 left-4 flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 dark:bg-black/70 backdrop-blur-md border border-white/20 text-xs font-bold text-white shadow-xs">
             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
             <span>{product.rating} / 5</span>
-            <span className="text-zinc-400 font-normal">
+            <span className="text-zinc-300 dark:text-zinc-400 font-normal">
               ({product.reviewCount.toLocaleString()})
             </span>
           </div>
-          <span className="absolute bottom-4 right-4 px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-bold font-mono">
+          <span className="absolute bottom-4 right-4 px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 dark:text-emerald-400 text-xs font-bold font-mono">
             100% Authentic
           </span>
         </div>
@@ -48,11 +48,11 @@ export default function ProductColorShowcase({ product }: { product: AppleProduc
         {/* Color finish picker */}
         {finishes.length > 0 && (
           <div className="mt-6 flex flex-col items-center gap-3">
-            <div className="flex items-center gap-2 text-xs text-zinc-400 font-medium">
+            <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-zinc-400 font-medium">
               <Palette className="w-4 h-4" />
               <span>
                 Finish:{" "}
-                <span className="text-white font-bold">{active?.label}</span>
+                <span className="text-slate-900 dark:text-white font-bold">{active?.label}</span>
               </span>
             </div>
             <div className="flex items-center gap-3">
@@ -64,8 +64,8 @@ export default function ProductColorShowcase({ product }: { product: AppleProduc
                   title={f.label}
                   className={`w-9 h-9 rounded-full border-2 transition-all cursor-pointer flex items-center justify-center ${
                     i === Math.min(activeIdx, finishes.length - 1)
-                      ? "border-white scale-110 shadow-lg shadow-white/20"
-                      : "border-white/20 hover:border-white/60"
+                      ? "border-slate-900 dark:border-white scale-110 shadow-lg shadow-slate-900/20 dark:shadow-white/20"
+                      : "border-slate-300 dark:border-white/20 hover:border-slate-600 dark:hover:border-white/60"
                   }`}
                   style={{ backgroundColor: f.hex }}
                 >
@@ -75,7 +75,7 @@ export default function ProductColorShowcase({ product }: { product: AppleProduc
                 </button>
               ))}
             </div>
-            <span className="text-[10px] uppercase font-mono tracking-widest text-zinc-500">
+            <span className="text-[10px] uppercase font-mono tracking-widest text-slate-400 dark:text-zinc-500">
               Official Apple imagery — {finishes.length} finishes
             </span>
           </div>
@@ -86,34 +86,34 @@ export default function ProductColorShowcase({ product }: { product: AppleProduc
       <div className="lg:col-span-7 space-y-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-wider font-mono">
+            <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300 text-xs font-bold uppercase tracking-wider font-mono">
               {product.badge || `${product.releaseYear} Edition`}
             </span>
-            <span className="text-zinc-500">•</span>
-            <span className="text-xs text-zinc-400">{product.specs.weight}</span>
+            <span className="text-slate-400 dark:text-zinc-500">•</span>
+            <span className="text-xs text-slate-500 dark:text-zinc-400">{product.specs.weight}</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-serif text-white tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-serif text-slate-900 dark:text-white tracking-tight">
             {product.name}
           </h1>
-          <p className="mt-3 text-zinc-300 text-sm sm:text-base font-light leading-relaxed">
+          <p className="mt-3 text-slate-600 dark:text-zinc-300 text-sm sm:text-base font-light leading-relaxed">
             {product.tagline}
           </p>
         </div>
 
         {/* Price block */}
-        <div className="flex flex-wrap items-baseline gap-3 p-4 rounded-2xl bg-black/60 border border-white/10">
-          <span className="text-xs uppercase font-mono text-zinc-400">From</span>
-          <span className="text-2xl sm:text-3xl font-black text-white font-mono">
+        <div className="flex flex-wrap items-baseline gap-3 p-4 rounded-2xl bg-slate-100 dark:bg-black/60 border border-slate-200 dark:border-white/10">
+          <span className="text-xs uppercase font-mono text-slate-500 dark:text-zinc-400">From</span>
+          <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono">
             ₹{product.startingPriceInr.toLocaleString("en-IN")}
           </span>
           {product.originalPriceInr && (
-            <span className="text-sm line-through text-zinc-500 font-mono">
+            <span className="text-sm line-through text-slate-400 dark:text-zinc-500 font-mono">
               ₹{product.originalPriceInr.toLocaleString("en-IN")}
             </span>
           )}
           {bestPrice < product.startingPriceInr && (
-            <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 text-xs font-bold">
+            <span className="px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 text-xs font-bold">
               Lowest today: ₹{bestPrice.toLocaleString("en-IN")} on {bestRetailer.store}
             </span>
           )}
@@ -122,8 +122,8 @@ export default function ProductColorShowcase({ product }: { product: AppleProduc
         {/* Highlight bullets */}
         <ul className="space-y-2.5">
           {product.keyHighlights.slice(0, 4).map((h, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-zinc-300">
-              <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+            <li key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-zinc-300">
+              <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
               {h}
             </li>
           ))}
@@ -143,8 +143,8 @@ export default function ProductColorShowcase({ product }: { product: AppleProduc
               rel="noopener noreferrer nofollow sponsored"
               className={`px-6 py-3 rounded-full font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 ${
                 i === 0
-                  ? "bg-white hover:bg-zinc-200 text-black shadow-lg"
-                  : "bg-zinc-800 hover:bg-zinc-700 text-white border border-white/10"
+                  ? "bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-black shadow-lg shadow-slate-900/15 dark:shadow-white/20"
+                  : "bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-900 dark:text-white border border-slate-200 dark:border-white/10"
               }`}
             >
               <ShoppingBag className="w-4 h-4" />
@@ -155,7 +155,7 @@ export default function ProductColorShowcase({ product }: { product: AppleProduc
             </a>
           ))}
         </div>
-        <p className="text-[11px] text-zinc-500 flex items-center gap-1.5">
+        <p className="text-[11px] text-slate-400 dark:text-zinc-500 flex items-center gap-1.5">
           <ExternalLink className="w-3 h-3" />
           Secure checkout on the retailer&apos;s official store. TheSmartMag earns a commission on
           qualifying purchases — you pay nothing extra.
