@@ -128,15 +128,15 @@ export async function enrichMedia(
   if (!imageResult.url) {
     const uniqueSeed = `${Date.now()}_${Math.floor(Math.random() * 1000000)}`;
     const visualStyles = [
-      "award-winning National Geographic editorial photography, Hasselblad medium format, dramatic cinematic lighting, photorealistic 8k, sharp focus, vibrant natural colors",
-      "futuristic cyber-tech aesthetic, volumetric neon lighting, cinematic octane 3D render, hyper-detailed, 8k resolution, ray tracing",
-      "commercial editorial magazine cover, minimalist luxury composition, soft morning studio lighting, high contrast, crisp textures",
-      "cinematic architectural photography, wide angle, dramatic golden hour sky, ultra-realistic textures, clean depth of field",
-      "Wall Street / Bloomberg executive macro photography, dynamic depth of field, sleek obsidian glass reflections, crisp details"
+      "bright natural daylight editorial photography, soft morning sunlight, airy atmosphere, crystal clear focus, 8k resolution, vibrant lifelike colors, clean composition",
+      "contemporary sunlit innovation studio, bright white modern architectural background, clean glass surfaces, crisp professional photography, warm natural illumination",
+      "commercial editorial magazine cover photography, bright minimalist composition, clean soft lightbox lighting, vibrant crisp textures, 8k commercial quality",
+      "breathtaking natural landscape photography in bright morning sun, crystal clear vibrant colors, crisp depth of field, uplifting and inspiring",
+      "clean modern executive workstation, sun-drenched Scandinavian office with large windows, bright ambient daylight, sharp macro focus"
     ];
     const chosenStyle = visualStyles[Math.floor(Math.random() * visualStyles.length)];
     const cleanQuery = imageQuery.replace(/[^a-zA-Z0-9\s]/g, " ").slice(0, 50).trim();
-    const prompt = `masterpiece photograph of ${cleanQuery || articleTitle.slice(0, 45)}, ${chosenStyle}, 16:9 widescreen, no text, no watermarks`;
+    const prompt = `award-winning bright photograph illustrating ${cleanQuery || articleTitle.slice(0, 45)}, ${chosenStyle}, 16:9 widescreen, bright and clear, no dark shadows, no text, no watermarks`;
     imageResult.url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1200&height=675&seed=${uniqueSeed}&nologo=true&enhance=true`;
     imageResult.alt = `${articleTitle} - High Definition Visual`;
     imageResult.photographer = "SmartMag Visual Studio";

@@ -410,7 +410,7 @@ export default async function BlogPostPage({ params }: Props) {
 
           {/* Right Column: Hero Graphic / Featured Image */}
           <div className="lg:col-span-5">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800/80 aspect-[16/11] bg-slate-950">
+            <div className="relative rounded-3xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-800/80 aspect-[16/11] bg-slate-100 dark:bg-slate-800">
               <ArticleImage
                 src={heroImageSrc}
                 alt={post.imageAlt || post.title}

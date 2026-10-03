@@ -14,25 +14,28 @@ function getTopicSpecificAiImage(altOrTitle: string): string {
   );
 
   const lower = cleanTitle.toLowerCase();
-  let styleContext = "award-winning editorial journalism photography, Hasselblad medium format, cinematic lighting, 8k resolution, ultra realistic";
+  // Bright, naturally lit, meaningful editorial photography & modern clean journalism style
+  let styleContext = "bright natural daylight photography, clear airy atmosphere, soft sunlight, crisp focus, clean editorial journalism aesthetic, professional Hasselblad camera, 8k resolution, vibrant lifelike colors, no dark shadows";
 
   if (lower.includes("prop") || lower.includes("trad") || lower.includes("forex") || lower.includes("market") || lower.includes("stock") || lower.includes("finance") || lower.includes("ftm") || lower.includes("atlas")) {
-    styleContext = "modern quantitative trading floor with high-definition financial candlestick charts on curved screens, dark atmospheric lighting, Wall Street Bloomberg terminal aesthetic, photorealistic 8k";
+    styleContext = "modern sunlit corporate trading desk with sleek monitors displaying clean colorful financial charts, bright natural morning daylight from large floor-to-ceiling office windows, contemporary glass architecture, crisp sharp photography, vibrant and professional";
   } else if (lower.includes("ai") || lower.includes("model") || lower.includes("llm") || lower.includes("claude") || lower.includes("gpt") || lower.includes("agent") || lower.includes("swarm")) {
-    styleContext = "futuristic neural intelligence optical processor chip, glowing photonic laser circuits, ultra-detailed quantum computing hardware photography, cinematic cyberpunk lighting";
+    styleContext = "bright futuristic innovation lab with gleaming white architecture, clean crystalline holographic neural network diagrams, soft ambient daylight, modern clean tech photography, inspiring and transparent, vibrant cyan and warm gold accents";
   } else if (lower.includes("code") || lower.includes("engineer") || lower.includes("software") || lower.includes("dev") || lower.includes("api") || lower.includes("cloud") || lower.includes("server")) {
-    styleContext = "sleek minimalist multi-monitor developer workstation in modern glass architecture office at twilight, neon code telemetry, hyper-detailed photography";
-  } else if (lower.includes("security") || lower.includes("hack") || lower.includes("privacy") || lower.includes("safe")) {
-    styleContext = "advanced cybersecurity data defense matrix, glowing digital firewall shields, biometric cryptography, moody cinematic lighting";
+    styleContext = "bright modern Scandinavian software engineering workspace, warm natural daylight, oak wood desk with dual high-res screens showing clean modern code and UI, indoor greenery, crisp depth of field, inviting and bright";
+  } else if (lower.includes("security") || lower.includes("privacy") || lower.includes("safe") || lower.includes("defense")) {
+    styleContext = "bright high-tech corporate cybersecurity control room, clean white and bright blue lighting, pristine glass interfaces, crystalline security architecture diagrams, professional daylight aesthetic";
   } else if (lower.includes("gadget") || lower.includes("hardware") || lower.includes("phone") || lower.includes("apple") || lower.includes("chip") || lower.includes("nvidia")) {
-    styleContext = "luxury industrial product photography, machined aerospace titanium and glass chassis, clean studio lighting, 8k commercial magazine quality";
-  } else if (lower.includes("game") || lower.includes("gaming") || lower.includes("steam") || lower.includes("console") || lower.includes("switch") || lower.includes("gta") || lower.includes("unreal")) {
-    styleContext = "next-gen cinematic video game capture, Unreal Engine 5.5 photorealism, volumetric ray tracing, high octane cyberpunk battle scene, 8k resolution wallpaper";
-  } else if (lower.includes("animation") || lower.includes("anime") || lower.includes("arcane") || lower.includes("pixar") || lower.includes("spider-verse") || lower.includes("ghibli") || lower.includes("film") || lower.includes("movie")) {
-    styleContext = "masterpiece animation cinematography, Studio Ghibli meets Arcane style, breathtaking hand-painted lighting, expressive vibrant characters, 8k theatrical render";
+    styleContext = "premium commercial product photography on a clean light marble surface, soft natural studio lightbox illumination, pristine reflections, crisp macro details, luxurious and bright";
+  } else if (lower.includes("travel") || lower.includes("expedition") || lower.includes("flight") || lower.includes("destination") || lower.includes("hotel")) {
+    styleContext = "breathtaking panoramic travel photography, golden morning sunlight, crystal clear azure waters and lush green landscapes, vibrant natural daylight, National Geographic magazine cover quality";
+  } else if (lower.includes("game") || lower.includes("gaming") || lower.includes("unreal")) {
+    styleContext = "vibrant next-gen game environment, bright golden hour sunlight, majestic open world landscape, Unreal Engine 5.5 photorealism, crystal clear skies, colorful and uplifting";
+  } else if (lower.includes("animation") || lower.includes("anime") || lower.includes("art") || lower.includes("music")) {
+    styleContext = "vibrant artistic studio scene, bright daylight pouring through artist loft windows, colorful palettes, inspiring modern creative atmosphere, rich warm natural light";
   }
 
-  const prompt = `editorial 4k visual of ${cleanTitle}, ${styleContext}, 16:9 widescreen, hyper realistic, no watermarks, master photography`;
+  const prompt = `award-winning bright editorial photograph illustrating ${cleanTitle}, ${styleContext}, clean composition, 16:9 widescreen, crystal clear focus, bright and inviting, no dark moody shadows, no watermarks`;
   return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1200&height=675&seed=${hash}&nologo=true`;
 }
 
@@ -73,7 +76,7 @@ export default function ArticleImage({
       const hash = Math.abs(
         alt.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0)
       );
-      const prompt = `award winning high resolution digital art representing ${alt.slice(0, 50)}, volumetric light, cinematic, 8k`;
+      const prompt = `award winning bright editorial photography illustrating ${alt.slice(0, 50)}, soft natural morning sunlight, clean bright background, vibrant colors, crystal clear 8k focus`;
       setImgSrc(`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1200&height=675&seed=${hash + 101}&nologo=true`);
       setErrorCount(2);
     }

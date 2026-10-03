@@ -17,9 +17,9 @@ export default function SmartHeroGrid({ featured, subFeatured }: SmartHeroGridPr
         <ArticleImage
           src={featured.featuredImage}
           alt={featured.imageAlt || featured.title}
-          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.82] dark:brightness-[0.72]"
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.95]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/40 to-transparent" />
 
         {/* Top Badges */}
         <div className="absolute top-6 left-6 right-6 flex items-center justify-between z-10">
@@ -97,9 +97,9 @@ export default function SmartHeroGrid({ featured, subFeatured }: SmartHeroGridPr
             <ArticleImage
               src={post.featuredImage}
               alt={post.title}
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out brightness-[0.78] dark:brightness-[0.68]"
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out brightness-[0.92]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/45 to-transparent" />
 
             <div className="relative z-10 space-y-2">
               <div className="flex items-center justify-between">

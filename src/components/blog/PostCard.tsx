@@ -37,13 +37,13 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
     return (
       <article className="group relative rounded-3xl overflow-hidden border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 shadow-xl hover:shadow-2xl transition-all duration-500 grid grid-cols-1 lg:grid-cols-12 gap-0">
         {/* Cover Photo Area */}
-        <div className="lg:col-span-7 relative h-72 sm:h-96 lg:h-full min-h-[380px] overflow-hidden bg-slate-950">
+        <div className="lg:col-span-7 relative h-72 sm:h-96 lg:h-full min-h-[380px] overflow-hidden bg-slate-100 dark:bg-slate-800">
           <ArticleImage
             src={imageUrl}
             alt={post.imageAlt || post.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent lg:hidden" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent lg:hidden" />
           
           <div className="absolute top-4 left-4 flex flex-wrap items-center gap-2">
             <span className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-indigo-600 text-white shadow-lg flex items-center gap-1.5 backdrop-blur-md">
@@ -127,7 +127,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
     <article className="group rounded-3xl overflow-hidden border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900 hover:border-indigo-500/40 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
       <div>
         {/* Card Thumbnail */}
-        <div className="relative h-52 overflow-hidden bg-slate-950">
+        <div className="relative h-52 overflow-hidden bg-slate-100 dark:bg-slate-800">
           <ArticleImage
             src={imageUrl}
             alt={post.imageAlt || post.title}
