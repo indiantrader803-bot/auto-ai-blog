@@ -106,6 +106,51 @@ export async function POST(req: Request) {
         return NextResponse.json({ success: true, report });
       }
 
+      case "PRUNE_UNDERPERFORMING": {
+        const { runAutomaticArticlePruningAgent } = await import("@/lib/pipeline/agents/salesConversionOptimizerAgent");
+        const report = await runAutomaticArticlePruningAgent();
+        return NextResponse.json({
+          success: true,
+          report: {
+            agentName: "Autonomous Article Pruning & Database Storage Freer Agent",
+            status: "SUCCESS",
+            timestamp: new Date().toISOString(),
+            summary: `Scanned ${report.scannedCount} articles. Pruned ${report.prunedCount} low-reach unread posts, freed ~${report.freedStorageKbEstimated} KB storage. Retained ${report.retainedHighValueCount} articles.`,
+            details: report,
+          },
+        });
+      }
+
+      case "MODERNIZE_TITLES": {
+        const { runRetroactiveHeadlineModernizerAgent } = await import("@/lib/pipeline/agents/salesConversionOptimizerAgent");
+        const report = await runRetroactiveHeadlineModernizerAgent();
+        return NextResponse.json({
+          success: true,
+          report: {
+            agentName: "Retroactive Repetitive Title & Excerpt Modernizer Agent",
+            status: "SUCCESS",
+            timestamp: new Date().toISOString(),
+            summary: `Audited ${report.scannedCount} articles. Modernized ${report.rewrittenCount} repetitive 'The Future of...' titles.`,
+            details: report,
+          },
+        });
+      }
+
+      case "SELF_IMPROVEMENT_SALES": {
+        const { runSelfImprovementSalesAgent } = await import("@/lib/pipeline/agents/salesConversionOptimizerAgent");
+        const report = await runSelfImprovementSalesAgent();
+        return NextResponse.json({
+          success: true,
+          report: {
+            agentName: "Continuous Self-Improvement & Sales Conversion Optimization Agent",
+            status: "SUCCESS",
+            timestamp: new Date().toISOString(),
+            summary: `Analyzed telemetry of ${report.analyzedArticlesCount} top-converting articles. Swarm memory calibrated.`,
+            details: report,
+          },
+        });
+      }
+
       default: {
         return NextResponse.json(
           { error: "Unknown maintenance action requested." },

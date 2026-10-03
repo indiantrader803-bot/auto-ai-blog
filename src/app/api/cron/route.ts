@@ -33,20 +33,20 @@ async function handleCron(req: NextRequest) {
   try {
     console.log("24/7 Autonomous Content Engine triggered — daily article generation runs FIRST...");
 
-    // 1. DAILY ARTICLE PUBLISH — runs first so it always completes even if later steps are slow
-    //    fastMode skips the critic rewrite loop so the publish cycle fits comfortably in the time budget.
+    // 1. MULTI-ARTICLE DAILY PUBLISH (Cadence: every ~3.5 hours)
+    // Allows multiple editor agents to publish fresh articles across diverse topics everyday
     const lastPublish = await getLastAutopublishAt();
     const hoursSincePublish = lastPublish
       ? (Date.now() - lastPublish.getTime()) / 3600000
       : Number.POSITIVE_INFINITY;
 
     let newPostResult: any = null;
-    if (hoursSincePublish < 20) {
+    if (hoursSincePublish < 3.5) {
       newPostResult = {
         success: true,
         post: null,
         skipped: true,
-        message: `Daily quota met — newest article published ${hoursSincePublish.toFixed(1)}h ago (20h cadence). No new generation needed.`,
+        message: `Multi-article cadence active — newest article published ${hoursSincePublish.toFixed(1)}h ago (3.5h window). Next editor agent dispatch shortly.`,
       };
       console.log(`[CRON] ${newPostResult.message}`);
     } else {

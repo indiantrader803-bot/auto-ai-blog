@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { generateCatchyViralHeadline } from "@/lib/pipeline/agents/headlineGenerator";
+import {
+  runAutomaticArticlePruningAgent,
+  runSelfImprovementSalesAgent,
+} from "@/lib/pipeline/agents/salesConversionOptimizerAgent";
 
 export const dynamic = "force-dynamic";
 
@@ -255,6 +259,32 @@ async function handleOptimize(req: NextRequest) {
       }
     } catch (titleErr: any) {
       results.details.push(`Title modernization notice: ${titleErr.message}`);
+    }
+
+    // ==========================================
+    // 5b. Prune Underperforming Articles (2-3 Day Window) & Free Database Space
+    // ==========================================
+    try {
+      const pruneReport = await runAutomaticArticlePruningAgent();
+      results.articlesPruned = pruneReport.prunedCount;
+      results.storageFreedKb = pruneReport.freedStorageKbEstimated;
+      results.details.push(
+        `Pruned ${pruneReport.prunedCount} low-engagement posts older than 48-72h. Freed ~${pruneReport.freedStorageKbEstimated} KB storage. Retained ${pruneReport.retainedHighValueCount} high-traffic articles.`
+      );
+    } catch (pruneErr: any) {
+      results.details.push(`Article pruner notice: ${pruneErr.message}`);
+    }
+
+    // ==========================================
+    // 5c. Run Self-Improvement & Sales Conversion Intelligence
+    // ==========================================
+    try {
+      const salesReport = await runSelfImprovementSalesAgent();
+      results.details.push(
+        `Self-improvement directive updated from ${salesReport.analyzedArticlesCount} top-converting articles.`
+      );
+    } catch (salesErr: any) {
+      results.details.push(`Sales intelligence notice: ${salesErr.message}`);
     }
 
     // ==========================================

@@ -9,6 +9,11 @@ import {
 } from "../agents/trafficBoosterAgent";
 import { runAffiliateConversionFetcherAgent } from "../agents/affiliateTrackerAgent";
 import { runAdBannerIntelligenceAgent } from "../agents/adBannerIntelligenceAgent";
+import {
+  runAutomaticArticlePruningAgent,
+  runRetroactiveHeadlineModernizerAgent,
+  runSelfImprovementSalesAgent,
+} from "../agents/salesConversionOptimizerAgent";
 import { runBlogPipeline } from "../orchestrator";
 import { getAllCatalogArticles } from "../../content/articles";
 
@@ -439,6 +444,66 @@ export async function runFullAutonomousMaintenanceSwarm(options: {
   // 6. Viral Social Syndication Agent
   const syndicationReport = await autoSyndicateRecentPosts(options.webhookUrl);
   fleetReports.push(syndicationReport);
+
+  // 6b. Retroactive Repetitive Title & Excerpt Modernizer Agent
+  try {
+    const titleModReport = await runRetroactiveHeadlineModernizerAgent();
+    fleetReports.push({
+      agentName: "Retroactive Repetitive Title & Excerpt Modernizer Agent",
+      status: "SUCCESS",
+      timestamp: new Date().toISOString(),
+      summary: `Audited ${titleModReport.scannedCount} articles for repetitive 'The Future of...' patterns. Transformed ${titleModReport.rewrittenCount} records into high-CTR viral hooks.`,
+      details: titleModReport,
+    });
+  } catch (titleModErr: any) {
+    fleetReports.push({
+      agentName: "Retroactive Repetitive Title & Excerpt Modernizer Agent",
+      status: "WARNING",
+      timestamp: new Date().toISOString(),
+      summary: `Title modernization note: ${titleModErr.message}`,
+      details: { error: titleModErr.message },
+    });
+  }
+
+  // 6c. Automatic Underperforming Article Pruning & Storage Freer Agent (2-3 day window)
+  try {
+    const pruningReport = await runAutomaticArticlePruningAgent();
+    fleetReports.push({
+      agentName: "Autonomous Article Pruning & Database Storage Freer Agent",
+      status: "SUCCESS",
+      timestamp: new Date().toISOString(),
+      summary: `Scanned ${pruningReport.scannedCount} articles older than 48-72h. Pruned ${pruningReport.prunedCount} low-reach unread posts, retained ${pruningReport.retainedHighValueCount} high-engagement assets, and freed ~${pruningReport.freedStorageKbEstimated} KB of database storage.`,
+      details: pruningReport,
+    });
+  } catch (pruneErr: any) {
+    fleetReports.push({
+      agentName: "Autonomous Article Pruning & Database Storage Freer Agent",
+      status: "WARNING",
+      timestamp: new Date().toISOString(),
+      summary: `Storage freer agent notice: ${pruneErr.message}`,
+      details: { error: pruneErr.message },
+    });
+  }
+
+  // 6d. Continuous Self-Improvement & Sales Conversion Optimization Agent
+  try {
+    const selfImproveReport = await runSelfImprovementSalesAgent();
+    fleetReports.push({
+      agentName: "Continuous Self-Improvement & Sales Conversion Optimization Agent",
+      status: "SUCCESS",
+      timestamp: new Date().toISOString(),
+      summary: `Analyzed telemetry of ${selfImproveReport.analyzedArticlesCount} top-converting articles. Synthesized high-yield directives and calibrated agent collective memory for maximum affiliate revenue.`,
+      details: selfImproveReport,
+    });
+  } catch (selfImpErr: any) {
+    fleetReports.push({
+      agentName: "Continuous Self-Improvement & Sales Conversion Optimization Agent",
+      status: "WARNING",
+      timestamp: new Date().toISOString(),
+      summary: `Self-improvement sales optimization notice: ${selfImpErr.message}`,
+      details: { error: selfImpErr.message },
+    });
+  }
 
   // 7. Optional Auto-Post Generator Trigger — defaults to false; the /api/cron route owns the daily publish
   //    (its 20h cooldown in the orchestrator prevents duplicate articles on the same day)

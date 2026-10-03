@@ -28,8 +28,8 @@ async function safeDb<T>(label: string, fn: () => Promise<T>): Promise<T | null>
   }
 }
 
-// Daily-cadence guard: autonomous runs skip generation when a fresh article was published within the cooldown window
-export const AUTO_PUBLISH_COOLDOWN_HOURS = 20;
+// Multi-editor cadence guard: allows multiple articles to publish throughout the day (every ~3-4 hours) across different topics
+export const AUTO_PUBLISH_COOLDOWN_HOURS = 3;
 const AUTO_PUBLISH_COOLDOWN_MS = AUTO_PUBLISH_COOLDOWN_HOURS * 60 * 60 * 1000;
 
 export async function getLastAutopublishAt(): Promise<Date | null> {

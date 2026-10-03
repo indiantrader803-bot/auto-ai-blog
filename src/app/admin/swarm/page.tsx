@@ -21,6 +21,8 @@ import {
   Radio,
   Copy,
   Check,
+  Trash2,
+  Wand2,
 } from "lucide-react";
 
 export default function SwarmMaintenancePage() {
@@ -313,36 +315,135 @@ export default function SwarmMaintenancePage() {
             </button>
           </div>
 
-          {/* Agent 5: Autonomous 24/7 Publishing Producer */}
-          <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between space-y-4 lg:col-span-2">
+          {/* Agent 5: Automatic Article Pruner & Storage Freer (2-3 Day Auto-Prune) */}
+          <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between space-y-4">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-400">
-                  Agent 05 (Core Publisher)
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-400">
+                  Agent 05
                 </span>
                 <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-1">
-                  <Radio className="w-3 h-3 animate-pulse" /> Ready
+                  <Radio className="w-3 h-3 animate-pulse" /> Active (48-72h)
                 </span>
               </div>
               <h3 className="text-sm font-bold text-white font-serif">
-                🤖 Autonomous 24/7 Producer &amp; Writer
+                🗑️ Article Pruner &amp; Storage Freer
               </h3>
               <p className="text-xs text-slate-400 leading-relaxed">
-                Continuous cycle: Trends Scout → Claude 4.5 Writer → Editorial Critic → Media Enricher → SEO Schemas → Instant Auto-Publishing.
+                Prunes low-reach unread posts older than 2-3 days (&lt;350 views) to free DB storage while preserving evergreen cornerstone reviews.
+              </p>
+            </div>
+
+            <button
+              onClick={() => handleRunSingleAgent("PRUNE_UNDERPERFORMING", "Article Pruner")}
+              disabled={activeRunningAgent === "Article Pruner"}
+              className="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-xs font-bold text-rose-300 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+            >
+              {activeRunningAgent === "Article Pruner" ? (
+                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Trash2 className="w-3.5 h-3.5" />
+              )}
+              Free Storage &amp; Prune Unread
+            </button>
+          </div>
+
+          {/* Agent 6: Headline & Excerpt Modernizer Agent */}
+          <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-cyan-500/20 text-cyan-400">
+                  Agent 06
+                </span>
+                <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-1">
+                  <Radio className="w-3 h-3 animate-pulse" /> Active
+                </span>
+              </div>
+              <h3 className="text-sm font-bold text-white font-serif">
+                ⚡ Headline Modernizer &amp; Viral Hook
+              </h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Eliminates repetitive &quot;The Future of...&quot; boilerplate and rewrites existing headlines into high-CTR curiosity hooks.
+              </p>
+            </div>
+
+            <button
+              onClick={() => handleRunSingleAgent("MODERNIZE_TITLES", "Headline Modernizer")}
+              disabled={activeRunningAgent === "Headline Modernizer"}
+              className="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-xs font-bold text-cyan-300 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+            >
+              {activeRunningAgent === "Headline Modernizer" ? (
+                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Wand2 className="w-3.5 h-3.5" />
+              )}
+              Modernize Legacy Titles
+            </button>
+          </div>
+
+          {/* Agent 7: Continuous Self-Improvement & Sales Conversion Agent */}
+          <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-400">
+                  Agent 07
+                </span>
+                <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-1">
+                  <Radio className="w-3 h-3 animate-pulse" /> Active
+                </span>
+              </div>
+              <h3 className="text-sm font-bold text-white font-serif">
+                💡 Self-Improvement &amp; Sales Conversion
+              </h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Analyzes top-performing posts, updates collective swarm memory, and enforces high-converting affiliate discount hooks.
+              </p>
+            </div>
+
+            <button
+              onClick={() => handleRunSingleAgent("SELF_IMPROVEMENT_SALES", "Self-Improvement Sales Agent")}
+              disabled={activeRunningAgent === "Self-Improvement Sales Agent"}
+              className="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-xs font-bold text-amber-300 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+            >
+              {activeRunningAgent === "Self-Improvement Sales Agent" ? (
+                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Flame className="w-3.5 h-3.5" />
+              )}
+              Optimize Sales Directives
+            </button>
+          </div>
+
+          {/* Agent 8: Autonomous Multi-Editor Publisher */}
+          <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between space-y-4 lg:col-span-3">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-indigo-500/20 text-indigo-400">
+                  Agent 08 (Multi-Editor Swarm)
+                </span>
+                <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-1">
+                  <Radio className="w-3 h-3 animate-pulse" /> 3.5h Multi-Publish Active
+                </span>
+              </div>
+              <h3 className="text-sm font-bold text-white font-serif">
+                🤖 Autonomous Multi-Editor Publishing Fleet
+              </h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Scouts diverse breaking topics across AI, Quant Finance, Indian Markets, Luxury Expeditions, and Cloud Engineering. Publishes multiple times daily with instant Google indexing.
               </p>
             </div>
 
             <button
               onClick={handleRunFullSwarm}
               disabled={isRunningFullSwarm}
-              className="w-full py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-xs font-bold text-white flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-md shadow-indigo-600/30"
+              className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-xs font-bold text-white flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-md shadow-indigo-600/30"
             >
               {isRunningFullSwarm ? (
                 <RefreshCw className="w-3.5 h-3.5 animate-spin" />
               ) : (
                 <Zap className="w-3.5 h-3.5" />
               )}
-              Produce &amp; Publish New Article Now
+              Trigger Full Swarm &amp; Publish Next Diverse Article
             </button>
           </div>
         </div>
