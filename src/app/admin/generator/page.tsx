@@ -22,14 +22,31 @@ export default function GeneratorStudioPage() {
   const [generatedPost, setGeneratedPost] = useState<any>(null);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleGenerate = async (e?: React.FormEvent) => {
+  const handleGenerate = async (e?: React.FormEvent, overrideOptions?: { topic?: string; niche?: string; category?: string }) => {
     if (e) e.preventDefault();
+
+    const DIVERSE_PILLARS = [
+      { niche: "US & Global Stock Markets, Macro Economics & Quant Desks", category: "Finance & Markets" },
+      { niche: "Indian Stock Markets, Nifty 50, Sensex & FII Inflows", category: "Indian Markets" },
+      { niche: "Next-Gen Frontier AI, Autonomous Multi-Agent Swarms & LLMs", category: "Artificial Intelligence" },
+      { niche: "Luxury World Travel, Secret Expeditions & Verified Flight Guides", category: "Travel & Expeditions" },
+      { niche: "High-Performance Software Engineering, Cloud Infrastructure & Systems Architecture", category: "Development & Engineering" },
+      { niche: "Consumer Tech Breakthroughs, Next-Gen Hardware & Apple Silicon", category: "Technology" },
+      { niche: "Forex Trading Strategies, Global Currencies & Central Bank Liquidity", category: "Finance & Markets" },
+      { niche: "Commodities Supercycle, Gold, Silver & Energy Markets", category: "Finance & Markets" }
+    ];
+
+    const randomPillar = DIVERSE_PILLARS[Math.floor(Math.random() * DIVERSE_PILLARS.length)];
+    const chosenTopic = overrideOptions?.topic !== undefined ? overrideOptions.topic : topic.trim();
+    const isAutoRun = !chosenTopic;
+    const chosenNiche = isAutoRun ? (overrideOptions?.niche || randomPillar.niche) : niche;
+    const chosenCategory = isAutoRun ? (overrideOptions?.category || randomPillar.category) : category;
 
     setIsModalOpen(true);
     setPipelineStatus("running");
     setCurrentStep("SCOUTING");
     setProgressPercent(15);
-    setModalMessage("Scouting trending topics & headlines...");
+    setModalMessage("Scouting trending topics & viral headlines across global feeds...");
     setGeneratedPost(null);
     setErrorMessage("");
 
@@ -63,9 +80,9 @@ export default function GeneratorStudioPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          topic: topic.trim() || undefined,
-          niche,
-          category,
+          topic: chosenTopic || undefined,
+          niche: chosenNiche,
+          category: chosenCategory,
           tone,
           targetWordCount,
           includeVideo,

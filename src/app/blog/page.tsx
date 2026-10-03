@@ -56,20 +56,33 @@ export default async function BlogIndexPage() {
     console.warn("Blog index DB fetch notice:", e);
   }
 
-  if (posts.length === 0) {
-    // Fallback to bundled catalog so the page is never empty
-    posts = getAllCatalogArticles()
-      .slice(0, 24)
-      .map((a) => ({
+  const allCatalog = getAllCatalogArticles();
+  const seenSlugs = new Set<string>();
+  const combinedPosts: PostCard[] = [];
+
+  for (const p of posts) {
+    if (!seenSlugs.has(p.slug)) {
+      seenSlugs.add(p.slug);
+      combinedPosts.push(p);
+    }
+  }
+
+  for (const a of allCatalog) {
+    if (!seenSlugs.has(a.slug)) {
+      seenSlugs.add(a.slug);
+      combinedPosts.push({
         slug: a.slug,
         title: a.title,
         excerpt: a.excerpt,
         featuredImage: a.featuredImage,
         publishedAt: a.publishedAt,
         readTimeMinutes: a.readTimeMinutes,
-        category: null,
-      }));
+        category: a.category,
+      });
+    }
   }
+
+  posts = combinedPosts;
 
   const jsonLd = {
     "@context": "https://schema.org",

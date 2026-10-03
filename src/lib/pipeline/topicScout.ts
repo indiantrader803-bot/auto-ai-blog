@@ -4,16 +4,20 @@ import { prisma } from "../prisma";
 const parser = new Parser({ timeout: 8000 });
 
 const RSS_SOURCES = [
-  // Highest-signal editorial feeds first — their titles are already stories, not search queries.
+  // Highest-signal editorial feeds across core publication pillars:
+  // Tech, AI & Engineering
   "https://techcrunch.com/feed/",
   "https://www.theverge.com/rss/index.xml",
   "https://arstechnica.com/feed/",
   "https://www.wired.com/feed/rss",
   "https://hnrss.org/frontpage",
+  // Markets, Economy & Quant Trading
   "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
   "https://www.moneycontrol.com/rss/MCtopnews.xml",
-  // Raw Google Trends last: its items are search *queries* that need the editorial
-  // quality gate below before they can become article topics.
+  // Global Travel, Expeditions & Secret Destinations
+  "https://www.lonelyplanet.com/news/rss",
+  "https://www.cntraveler.com/feed/rss",
+  // Raw Google Trends for hot breaking search volume
   "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US",
   "https://trends.google.com/trends/trendingsearches/daily/rss?geo=IN",
 ];
@@ -26,7 +30,7 @@ async function getRecentTopicSignatures(): Promise<Set<string>> {
     const recent = await prisma.post.findMany({
       where: { status: "PUBLISHED" },
       orderBy: { publishedAt: "desc" },
-      take: 12,
+      take: 30,
       select: { title: true },
     });
     for (const p of recent) {
@@ -35,7 +39,7 @@ async function getRecentTopicSignatures(): Promise<Set<string>> {
     // GenerationLog records the originally scouted topic — catch dupes even when the final title was rewritten
     const recentLogs = await prisma.generationLog.findMany({
       orderBy: { createdAt: "desc" },
-      take: 12,
+      take: 30,
       select: { topic: true },
     });
     for (const log of recentLogs) {
@@ -161,19 +165,32 @@ export function reshapeEphemeralTrend(rawPhrase: string): string | null {
  * keeps publishing evergreen, monetizable content even when RSS is down.
  */
 export function getEvergreenTopicForNiche(niche?: string): string {
+  const DIVERSE_ANCHORS = [
+    "Autonomous AI Agent Swarms & Tool Calling",
+    "Nifty 50 Breakout Setups & FII Liquidity Flow",
+    "US Semiconductor Stocks & AI Hardware Supercycle",
+    "Hidden Luxury Travel Expeditions in Southeast Asia",
+    "Prop Firm Evaluation Rules & Payout Risk Management",
+    "Distributed Microservices with Next.js & Rust",
+    "Apple M4 Ultra Silicon vs High-End GPUs",
+    "Gold & Commodity Supercycles in High Inflation",
+    "Secret European Train Routes & Budget Hacks",
+    "Zero-Trust Kubernetes Security & eBPF Networks",
+    "Algorithmic Day Trading Desks & Python Backtesting",
+    "Solo Remote Work Expeditions in Latin America",
+  ];
+
   const anchor = (niche || "").trim()
     ? niche!.trim()
-    : ["AI tools", "iPhone", "budget laptops", "travel gear", "stock market basics", "crypto wallets"][
-        Math.floor(Math.random() * 6)
-      ];
+    : DIVERSE_ANCHORS[Math.floor(Math.random() * DIVERSE_ANCHORS.length)];
 
   const TEMPLATES = [
-    `Best ${anchor} in 2026: Tested Picks for Every Budget`,
-    `${anchor} Buyer's Guide: How to Choose Without Overpaying`,
-    `7 ${anchor} Mistakes Beginners Make (And How to Avoid Them)`,
-    `How to Get Started With ${anchor}: A Practical 2026 Playbook`,
-    `${anchor} vs the Alternatives: Which One Actually Fits You?`,
-    `What Nobody Tells You Before Buying ${anchor}`,
+    `The 2026 ${anchor} Playbook: Crucial Insights & Practical Realities`,
+    `Mastering ${anchor}: The Complete Guide for Modern Practitioners`,
+    `What Industry Experts Won't Tell You About ${anchor}`,
+    `Tested Field Notes: Practical Lessons from ${anchor}`,
+    `Why ${anchor} Is Shaking the Industry (And How to Position Now)`,
+    `The Real-World Architecture of ${anchor}: Benchmarks & Deep Analysis`,
   ];
   return TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)];
 }

@@ -132,9 +132,9 @@ export function generateCatchyViralHeadline(rawTopic: string, category: string =
     ];
   }
 
-  // Deterministic seed based on topic string length + character code sum to ensure variety
-  const charCodeSum = cleanTopic.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  const selected = headlineTemplates[charCodeSum % headlineTemplates.length];
+  // Randomly select among templates with variety
+  const randomIndex = Math.floor(Math.random() * headlineTemplates.length);
+  const selected = headlineTemplates[randomIndex];
 
   return selected;
 }

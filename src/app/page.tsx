@@ -16,7 +16,7 @@ import AmazonAffiliateShowcase from "@/components/monetization/AmazonAffiliateSh
 import MonetagBanner from "@/components/ads/MonetagBanner";
 import { Sparkles, TrendingUp, Compass, Flame, ArrowRight, Zap, Award, Layers, MessageSquare } from "lucide-react";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "TheSmartMag | AI Tech Innovations, Quant Trading, Prop Firms & Luxury Travel",
@@ -26,82 +26,6 @@ export const metadata: Metadata = {
     canonical: "https://thesmartmag.com",
   },
 };
-
-// Rich initial magazine articles for instant high-fidelity rendering
-const FALLBACK_POSTS = [
-  {
-    id: "post_1",
-    title: "Autonomous AI Agent Swarms in 2026: How Coordinated Multi-Agent Systems Are Reshaping Enterprise Automation",
-    slug: "autonomous-ai-agent-swarms-2026-enterprise-automation",
-    excerpt: "An architectural deep-dive into decentralized AI agent-to-agent communication protocols, dynamic task allocation, and emergent problem-solving workflows redefining production engineering.",
-    featuredImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "Neural network artificial intelligence node visualization",
-    readTimeMinutes: 7,
-    views: 1840,
-    publishedAt: new Date(),
-    category: { name: "Artificial Intelligence", slug: "artificial-intelligence" },
-  },
-  {
-    id: "post_2",
-    title: "Building High-Throughput TypeScript Microservices with Next.js 14 and Edge Compute",
-    slug: "building-high-throughput-typescript-microservices",
-    excerpt: "Architectural blueprints for sub-10ms global latency, distributed edge KV caching, and frictionless serverless deployment pipelines.",
-    featuredImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "Programming code on monitors",
-    readTimeMinutes: 5,
-    views: 1210,
-    publishedAt: new Date(),
-    category: { name: "Development & Engineering", slug: "development-and-engineering" },
-  },
-  {
-    id: "post_3",
-    title: "Algorithmic Market Intelligence: Deploying Generative Models for Real-Time Macro Sentiment",
-    slug: "algorithmic-market-intelligence-generative-sentiment",
-    excerpt: "How quantitative funds and retail traders deploy fine-tuned SLMs to parse earning calls, SEC filings, and global liquidity trends.",
-    featuredImage: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "Financial stock market charts",
-    readTimeMinutes: 6,
-    views: 940,
-    publishedAt: new Date(),
-    category: { name: "Finance & Markets", slug: "finance-and-markets" },
-  },
-  {
-    id: "post_4",
-    title: "The Rise of Local AI: Running 70B Quantized Models on Consumer Silicon",
-    slug: "the-agentic-revolution-autonomous-ai-swarms",
-    excerpt: "Benchmarking Ollama, llama.cpp, and vLLM across modern desktop GPUs and Apple M4 chips for private, zero-latency inference.",
-    featuredImage: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "Cyber security matrix code visual",
-    readTimeMinutes: 8,
-    views: 1560,
-    publishedAt: new Date(),
-    category: { name: "Technology", slug: "technology" },
-  },
-  {
-    id: "post_5",
-    title: "Claude Sonnet 4.5 vs GPT-5: Comprehensive Coding & Long-Context Architecture Benchmark",
-    slug: "claude-sonnet-vs-gpt5-comprehensive-coding-benchmark",
-    excerpt: "Testing frontier reasoning models across full-stack refactors, complex SQL schema migrations, and real-time multi-agent orchestration.",
-    featuredImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "AI artificial intelligence conceptual art",
-    readTimeMinutes: 9,
-    views: 2100,
-    publishedAt: new Date(),
-    category: { name: "Artificial Intelligence", slug: "artificial-intelligence" },
-  },
-  {
-    id: "post_6",
-    title: "Zero-Trust Cloud Infrastructure: Hardening Kubernetes Clusters for Mission-Critical Production",
-    slug: "zero-trust-cloud-infrastructure-kubernetes-hardening",
-    excerpt: "Step-by-step security blueprint for mTLS service meshes, eBPF network observability, and continuous vulnerability scanning.",
-    featuredImage: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "Server cloud infrastructure server room",
-    readTimeMinutes: 6,
-    views: 820,
-    publishedAt: new Date(),
-    category: { name: "Development & Engineering", slug: "development-and-engineering" },
-  }
-];
 
 import { getAllCatalogArticles } from "@/lib/content/articles";
 
@@ -151,30 +75,32 @@ export default async function HomePage() {
 
   const allCatalog = getAllCatalogArticles();
 
-  // Combine DB posts and Catalog articles, ensuring no duplicate slugs
+  // Combine DB posts and Catalog articles, ensuring no duplicate slugs.
+  // DB posts are prioritized first: genuine published articles always appear before catalog items.
   const seenSlugs = new Set<string>();
-  const combinedPosts: any[] = [];
+  const dbList: any[] = [];
+  const catalogList: any[] = [];
 
   for (const p of dbPosts) {
     if (!seenSlugs.has(p.slug)) {
       seenSlugs.add(p.slug);
-      combinedPosts.push(p);
+      dbList.push(p);
     }
   }
 
   for (const c of allCatalog) {
     if (!seenSlugs.has(c.slug)) {
       seenSlugs.add(c.slug);
-      combinedPosts.push(c);
+      catalogList.push(c);
     }
   }
 
-  // Ensure newest published articles appear at the top hero & recent sections
-  const displayPosts = combinedPosts.sort((a, b) => {
-    const timeA = new Date(a.publishedAt || 0).getTime();
-    const timeB = new Date(b.publishedAt || 0).getTime();
-    return timeB - timeA;
-  });
+  // Sort DB posts by publishedAt desc, and catalog fallback posts by publishedAt desc
+  const sortedDb = dbList.sort((a, b) => new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime());
+  const sortedCatalog = catalogList.sort((a, b) => new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime());
+
+  // Genuine database posts always lead, followed by backfilled catalog posts
+  const displayPosts = [...sortedDb, ...sortedCatalog];
 
   const featuredPost = displayPosts[0];
   const subFeaturedPosts = displayPosts.slice(1, 4);
