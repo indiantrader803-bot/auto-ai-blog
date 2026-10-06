@@ -6,9 +6,11 @@ import { useRouter } from "next/navigation";
 import { Crown, Lock, Mail, User, ArrowRight, AlertCircle, CheckCircle2 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { useVip } from "@/context/VipAuthContext";
 
 export default function VipRegisterPage() {
   const router = useRouter();
+  const { refreshVipStatus } = useVip();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,8 +33,8 @@ export default function VipRegisterPage() {
       if (!res.ok) {
         setError(data.error || "Failed to create account.");
       } else {
-        router.push("/vip");
-        router.refresh();
+        await refreshVipStatus();
+        window.location.href = "/vip";
       }
     } catch {
       setError("An unexpected error occurred. Please try again.");
