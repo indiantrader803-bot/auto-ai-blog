@@ -17,6 +17,9 @@ const RSS_SOURCES = [
   // Global Travel, Expeditions & Secret Destinations
   "https://www.lonelyplanet.com/news/rss",
   "https://www.cntraveler.com/feed/rss",
+  // National & International Defense, Aerospace & Strategic Tech
+  "https://www.defensenews.com/arc/outboundfeeds/rss/",
+  "https://breakingdefense.com/feed/",
   // Raw Google Trends for hot breaking search volume
   "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US",
   "https://trends.google.com/trends/trendingsearches/daily/rss?geo=IN",
@@ -167,6 +170,8 @@ export function reshapeEphemeralTrend(rawPhrase: string): string | null {
 export function getEvergreenTopicForNiche(niche?: string): string {
   const DIVERSE_ANCHORS = [
     "Autonomous AI Agent Swarms & Tool Calling",
+    "National & Global Air Defence Shield Architectures (S-400, Kusha, Iron Dome)",
+    "Hypersonic Missile Interceptors & Space-Agnostic Radar Systems",
     "Nifty 50 Breakout Setups & FII Liquidity Flow",
     "US Semiconductor Stocks & AI Hardware Supercycle",
     "Hidden Luxury Travel Expeditions in Southeast Asia",
@@ -197,6 +202,9 @@ export function getEvergreenTopicForNiche(niche?: string): string {
 
 function categorizeTopic(title: string): string {
   const lower = title.toLowerCase();
+  if (lower.includes("defence") || lower.includes("defense") || lower.includes("missile") || lower.includes("radar") || lower.includes("air defence") || lower.includes("air defense") || lower.includes("s-400") || lower.includes("patriot") || lower.includes("iron dome") || lower.includes("kusha") || lower.includes("hypersonic") || lower.includes("military") || lower.includes("interceptor")) {
+    return "Air Defence & Strategic Tech";
+  }
   if (lower.includes("travel") || lower.includes("traveller") || lower.includes("backpack") || lower.includes("trek") || lower.includes("nomad") || lower.includes("expedition") || lower.includes("tourism") || lower.includes("itinerary") || lower.includes("destination") || lower.includes("hiking") || lower.includes("flight")) {
     return "Travel & Expeditions";
   }

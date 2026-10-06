@@ -42,6 +42,12 @@ const TOPIC_PHOTO_POOLS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1601662528567-526cd06f6582?w=1200&auto=format&fit=crop&q=80",
   ],
+  defense: [
+    "https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=1200&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1579965342575-16428a7c8881?w=1200&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1519074069444-1ba4ea16e6f4?w=1200&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80",
+  ],
   general: [
     "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&auto=format&fit=crop&q=80",
@@ -121,6 +127,19 @@ function getBespokeArticleImage(titleOrAlt: string): string {
     text.includes("kerala")
   ) {
     pool = TOPIC_PHOTO_POOLS.travel;
+  } else if (
+    text.includes("defence") ||
+    text.includes("defense") ||
+    text.includes("missile") ||
+    text.includes("radar") ||
+    text.includes("s-400") ||
+    text.includes("patriot") ||
+    text.includes("iron dome") ||
+    text.includes("kusha") ||
+    text.includes("aerospace") ||
+    text.includes("military")
+  ) {
+    pool = TOPIC_PHOTO_POOLS.defense;
   }
 
   const index = hash % pool.length;

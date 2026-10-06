@@ -324,6 +324,11 @@ export default async function BlogPostPage({ params }: Props) {
 
   const linkedContent = await applySmartInternalLinks(post.content || "", cleanSlug);
 
+  // 1-Hour VIP Early Access Window Calculation
+  const postPublishedTime = post.publishedAt ? new Date(post.publishedAt).getTime() : Date.now();
+  const minutesSincePublish = Math.max(0, Math.floor((Date.now() - postPublishedTime) / (60 * 1000)));
+  const isWithinVipEarlyWindow = minutesSincePublish < 60;
+
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#070c18] text-slate-900 dark:text-slate-100 font-sans transition-colors">
       {/* Schema Markup for Googlebot */}
@@ -367,15 +372,52 @@ export default async function BlogPostPage({ params }: Props) {
           </span>
         </nav>
 
+        {/* 🌟 VIP Early Access Status Banner */}
+        {isWithinVipEarlyWindow && (
+          <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-500/10 to-indigo-500/15 border border-amber-500/40 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">⚡</span>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950">
+                    VIP 1-Hour Early Access
+                  </span>
+                  <span className="text-xs text-amber-700 dark:text-amber-300 font-semibold">
+                    Published {minutesSincePublish} mins ago
+                  </span>
+                </div>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                  {isVipUser
+                    ? "Welcome VIP Member: You are reading this exclusive article before public feed syndication."
+                    : "VIP Exclusive Window: Active VIP members get 1-hour early reading privilege before public syndication."}
+                </p>
+              </div>
+            </div>
+            {!isVipUser && (
+              <Link
+                href="/vip/register"
+                className="shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-all shadow-sm"
+              >
+                Get VIP Access
+              </Link>
+            )}
+          </div>
+        )}
+
         {/* 🌟 Split 2-Column Hero Header (Matching Mockup) */}
         <header className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-12">
           {/* Left Column: Category, Title, Excerpt, Metadata & Actions */}
           <div className="lg:col-span-7 space-y-4">
             {post.category && (
-              <div>
+              <div className="flex items-center gap-2">
                 <span className="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-teal-600 dark:bg-teal-500 text-white shadow-sm">
                   {post.category.name}
                 </span>
+                {isWithinVipEarlyWindow && (
+                  <span className="inline-block px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30">
+                    ⚡ 1h Early VIP
+                  </span>
+                )}
               </div>
             )}
 

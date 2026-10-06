@@ -21,11 +21,36 @@ const TravelEssentialsHub = dynamic(() => import("@/components/travel/TravelEsse
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "SmartMag Travel: AI Trip Planner, Cheap Flights, eSIMs & Attraction Passes",
+  title: "SmartMag Travel: AI Trip Planner, Cheap Flights, Luxury Hotels & Vacation Deals",
   description:
-    "Plan your entire vacation with SmartMag AI: Instant personalized trip baskets, cheap flight radar on Aviasales, airport transfers, 200+ eSIM cellular packages, and skip-the-line attraction passes.",
+    "Plan your entire vacation with SmartMag AI: Instant personalized trip itineraries, cheap flights on Aviasales, luxury hotel bookings, airport transfers, eSIM cellular packages, and discount attraction passes.",
+  keywords: [
+    "SmartMag Travel",
+    "travel site",
+    "best travel website 2026",
+    "AI trip planner",
+    "cheap flights booking",
+    "luxury hotel deals",
+    "travel guide",
+    "budget travel hacks",
+    "airport transfers",
+    "international travel eSIM",
+    "holiday packages",
+    "Manali trip guide",
+    "Goa vacation",
+    "Kerala backwaters",
+    "Dubai luxury travel",
+    "Japan cherry blossom tour",
+    "Bali vacation packages",
+  ],
   alternates: {
     canonical: "https://thesmartmag.com/travel",
+  },
+  openGraph: {
+    title: "SmartMag Travel: AI Vacation Planner & Global Deals",
+    description: "Cheap flight radar, hotel discounts, airport transfers & attraction passes.",
+    url: "https://thesmartmag.com/travel",
+    siteName: "TheSmartMag",
   },
 };
 
@@ -41,8 +66,8 @@ export default function TravelHubPage() {
             "@graph": [
               {
                 "@type": "WebSite",
-                "@id": "https://travel.thesmartmag.com/#website",
-                url: "https://travel.thesmartmag.com",
+                "@id": "https://thesmartmag.com/travel#website",
+                url: "https://thesmartmag.com/travel",
                 name: "SmartMag Travel: AI Vacation Planner & Deals",
                 description:
                   "Plan flights, luxury hotels, airport transfers, eSIM cellular packages, and attraction passes across 25+ global destinations.",
@@ -56,17 +81,17 @@ export default function TravelHubPage() {
                 "@type": "ItemList",
                 name: "Top Trending Travel Destinations 2026",
                 itemListElement: [
-                  { "@type": "ListItem", position: 1, name: "Manali & Himachal Snow Valleys", url: "https://travel.thesmartmag.com/manali" },
-                  { "@type": "ListItem", position: 2, name: "Goa Coastal Beaches & Nightlife", url: "https://travel.thesmartmag.com/goa" },
-                  { "@type": "ListItem", position: 3, name: "Kerala Backwaters & Munnar Tea Hills", url: "https://travel.thesmartmag.com/kerala" },
-                  { "@type": "ListItem", position: 4, name: "Dubai Luxury & Desert Safari", url: "https://travel.thesmartmag.com/dubai" },
-                  { "@type": "ListItem", position: 5, name: "Japan Cherry Blossom & Kyoto Temples", url: "https://travel.thesmartmag.com/japan" },
-                  { "@type": "ListItem", position: 6, name: "Bali Tropical Beaches & Ubud Villas", url: "https://travel.thesmartmag.com/bali" },
-                  { "@type": "ListItem", position: 7, name: "Maldives Overwater Luxury Resorts", url: "https://travel.thesmartmag.com/maldives" },
-                  { "@type": "ListItem", position: 8, name: "Switzerland Alpine Scenic Trains & Peaks", url: "https://travel.thesmartmag.com/switzerland" },
-                  { "@type": "ListItem", position: 9, name: "Kashmir Gulmarg Snow & Dal Lake Shikaras", url: "https://travel.thesmartmag.com/kashmir" },
-                  { "@type": "ListItem", position: 10, name: "Ladakh High Passes & Pangong Lake", url: "https://travel.thesmartmag.com/ladakh" },
-                  { "@type": "ListItem", position: 11, name: "Thailand Island Hopping & Bangkok Nightlife", url: "https://travel.thesmartmag.com/thailand" },
+                  { "@type": "ListItem", position: 1, name: "Manali & Himachal Snow Valleys", url: "https://thesmartmag.com/travel/manali" },
+                  { "@type": "ListItem", position: 2, name: "Goa Coastal Beaches & Nightlife", url: "https://thesmartmag.com/travel/goa" },
+                  { "@type": "ListItem", position: 3, name: "Kerala Backwaters & Munnar Tea Hills", url: "https://thesmartmag.com/travel/kerala" },
+                  { "@type": "ListItem", position: 4, name: "Dubai Luxury & Desert Safari", url: "https://thesmartmag.com/travel/dubai" },
+                  { "@type": "ListItem", position: 5, name: "Japan Cherry Blossom & Kyoto Temples", url: "https://thesmartmag.com/travel/japan" },
+                  { "@type": "ListItem", position: 6, name: "Bali Tropical Beaches & Ubud Villas", url: "https://thesmartmag.com/travel/bali" },
+                  { "@type": "ListItem", position: 7, name: "Maldives Overwater Luxury Resorts", url: "https://thesmartmag.com/travel/maldives" },
+                  { "@type": "ListItem", position: 8, name: "Switzerland Alpine Scenic Trains & Peaks", url: "https://thesmartmag.com/travel/switzerland" },
+                  { "@type": "ListItem", position: 9, name: "Kashmir Gulmarg Snow & Dal Lake Shikaras", url: "https://thesmartmag.com/travel/kashmir" },
+                  { "@type": "ListItem", position: 10, name: "Ladakh High Passes & Pangong Lake", url: "https://thesmartmag.com/travel/ladakh" },
+                  { "@type": "ListItem", position: 11, name: "Thailand Island Hopping & Bangkok Nightlife", url: "https://thesmartmag.com/travel/thailand" },
                 ],
               },
               {

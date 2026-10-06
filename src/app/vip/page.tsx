@@ -264,9 +264,12 @@ export default async function VipLoungePage() {
         <section className="mb-14">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-200 dark:border-slate-800">
             <div className="space-y-1">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 flex items-center gap-1">
                   👑 VIP UNLOCKED FEED
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 flex items-center gap-1">
+                  ⚡ 1-Hour Early Access Privileges
                 </span>
                 <span className="text-xs text-amber-600 dark:text-amber-400 font-mono font-bold">100% Uncensored Access</span>
               </div>
@@ -275,8 +278,8 @@ export default async function VipLoungePage() {
               </h2>
               <p className="text-xs text-slate-600 dark:text-slate-400">
                 {user
-                  ? "As an authenticated VIP member, you have full unredacted access to every analysis and code snippet below."
-                  : "Normal viewers can preview a 1/3 glimpse. Log in or create a complimentary account to unlock the full institutional dossiers."}
+                  ? "As an active VIP member, all freshly scouted articles and deep dives appear here 1 hour before general public distribution, fully uncensored with executable scripts."
+                  : "Normal viewers see articles only after public release with a 1/3 glimpse gate. Sign up free to unlock 1-hour early release access and full institutional dossiers."}
               </p>
             </div>
           </div>
