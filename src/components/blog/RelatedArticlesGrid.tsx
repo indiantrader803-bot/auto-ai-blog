@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import ArticleImage from "./ArticleImage";
 import { formatDate } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 
@@ -65,12 +65,10 @@ export default function RelatedArticlesGrid({
             >
               {/* Thumbnail Container */}
               <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-slate-950 mb-3">
-                <Image
-                  src={imgUrl}
+                <ArticleImage
+                  src={item.featuredImage}
                   alt={item.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 {/* Category Pill Overlay */}
                 <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1">

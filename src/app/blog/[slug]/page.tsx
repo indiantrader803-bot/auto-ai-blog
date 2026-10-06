@@ -320,9 +320,7 @@ export default async function BlogPostPage({ params }: Props) {
       : undefined
   );
 
-  const heroImageSrc =
-    post.featuredImage ||
-    "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop";
+  const heroImageSrc = post.featuredImage || null;
 
   const linkedContent = await applySmartInternalLinks(post.content || "", cleanSlug);
 
