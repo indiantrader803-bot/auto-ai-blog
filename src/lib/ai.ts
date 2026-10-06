@@ -11,6 +11,8 @@ export interface GenerateArticlePromptOptions {
   recentTitles?: string[];
   /** Editorial angle for this specific piece (from the topic scout). */
   angle?: string;
+  /** Content format: News, Evergreen Guide, or Market/Analytical Deep-Dive. */
+  format?: "News" | "Evergreen Guide" | "Market/Analytical Deep-Dive";
 }
 
 export async function generateArticleContent(options: GenerateArticlePromptOptions): Promise<{
@@ -90,6 +92,7 @@ Category: ${options.category || "Technology"}
 Tone: ${tone}
 Language: ${language}
 Target Word Count: ~${targetWords} words of pure, unpadded value.
+Content Format: ${options.format || "Market/Analytical Deep-Dive"} (Choose appropriate structure: News for breaking developments & implications; Evergreen Guide for timeless, step-by-step masterclasses; Market/Analytical Deep-Dive for quantitative & architectural teardowns).
 ${options.angle ? `\nEDITORIAL ANGLE (build the entire narrative around this): ${options.angle}\n` : ""}${recentTitlesBlock}
 Required Structural Blueprint:
 1. Irresistible, High-CTR Title: Punchy, curiosity-driven, and under 70 characters. NEVER use lazy scaffolding like "The Future of X: Key Trends, Innovations & What's Next" — that pattern is BANNED site-wide.
@@ -409,12 +412,12 @@ Having explored this destination on the ground—navigating local transit, speak
 
   return {
     title: offlineTitle,
-    excerpt: `We ran ${topic} across live production traffic for 90 days. Here are the unvarnished latency benchmarks, hidden architectural gotchas, and real ROI.`,
+    excerpt: `Here is what investors, developers, and industry practitioners need to know about ${topic}: unvarnished benchmarks, architectural trade-offs, and strategic reality.`,
     content: `## Why Everyone Is Talking About ${topic} (And What They Get Wrong)
 
-Most discussions around **${topic}** stop at high-level marketing slides. But when you connect actual production workloads, the reality is far more nuanced.
+Most discussions around **${topic}** stop at high-level marketing slides. But when you examine actual production workloads and real-world deployment patterns, the reality is far more nuanced.
 
-Over the past three months, our engineering team put ${topic} through rigorous stress testing. We wanted to answer one fundamental question: *Does it deliver tangible architectural advantages, or is it just another layer of operational debt?*
+Here is what investors, developers, and industry practitioners need to know about ${topic}. We examine the core architecture, systemic trade-offs, and strategic realities to answer one fundamental question: *Does it deliver tangible advantages, or is it just another layer of operational debt?*
 
 Here is our honest breakdown.
 

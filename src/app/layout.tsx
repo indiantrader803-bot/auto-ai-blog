@@ -7,6 +7,7 @@ import FloatingSubscribeButton from "@/components/growth/FloatingSubscribeButton
 import GlobalBlogAssistant from "@/components/chat/GlobalBlogAssistant";
 import GoogleTranslateProvider from "@/components/layout/GoogleTranslateProvider";
 import MonetagProvider from "@/components/ads/MonetagProvider";
+import BiceaAdProvider from "@/components/ads/BiceaAdProvider";
 import { TravelCurrencyProvider } from "@/context/TravelCurrencyContext";
 import { VipAuthProvider } from "@/context/VipAuthContext";
 
@@ -19,10 +20,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     template: "%s | TheSmartMag",
-    default: "TheSmartMag | AI Tech Innovations, Quant Trading, Prop Firms & Luxury Travel",
+    default: "TheSmartMag | AI, Technology, Finance & Markets",
   },
   description:
-    "TheSmartMag is a premier digital publication and AI-powered intelligence platform delivering in-depth insights on artificial intelligence, algorithmic trading, prop firm comparisons & promo codes, software engineering, and verified worldwide luxury travel itineraries & booking deals.",
+    "TheSmartMag covers artificial intelligence, technology, finance, markets and emerging trends with practical guides, analysis, news and insights.",
   keywords: [
     "TheSmartMag",
     "SmartMag Tech",
@@ -57,9 +58,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "TheSmartMag | AI Tech Innovations, Quant Trading, Prop Firms & Luxury Travel",
+    title: "TheSmartMag | AI, Technology, Finance & Markets",
     description:
-      "Premier digital publication & AI intelligence hub featuring artificial intelligence breakthroughs, prop trading firm reviews & promo codes, algorithmic finance, and verified luxury travel itineraries.",
+      "TheSmartMag covers artificial intelligence, technology, finance, markets and emerging trends with practical guides, analysis, news and insights.",
     url: siteUrl,
     siteName: "TheSmartMag",
     locale: "en_US",
@@ -69,15 +70,15 @@ export const metadata: Metadata = {
         url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
         width: 1200,
         height: 630,
-        alt: "TheSmartMag - Frontier AI, Quant Trading & Luxury Travel",
+        alt: "TheSmartMag - AI, Technology, Finance & Markets",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TheSmartMag | AI Tech Innovations, Quant Trading, Prop Firms & Luxury Travel",
+    title: "TheSmartMag | AI, Technology, Finance & Markets",
     description:
-      "Premier digital publication & AI intelligence hub featuring artificial intelligence breakthroughs, prop trading firm reviews & promo codes, algorithmic finance, and verified luxury travel itineraries.",
+      "TheSmartMag covers artificial intelligence, technology, finance, markets and emerging trends with practical guides, analysis, news and insights.",
     creator: "@thesmartmag",
     site: "@thesmartmag",
     images: [
@@ -175,7 +176,7 @@ export default function RootLayout({
                   url: siteUrl,
                   name: "TheSmartMag",
                   description:
-                    "TheSmartMag is a premier digital publication and AI-powered intelligence platform delivering in-depth insights on artificial intelligence, algorithmic trading, prop firm comparisons & promo codes, software engineering, and verified worldwide luxury travel itineraries & booking deals.",
+                    "TheSmartMag covers artificial intelligence, technology, finance, markets and emerging trends with practical guides, analysis, news and insights.",
                   publisher: {
                     "@id": `${siteUrl}/#organization`,
                   },
@@ -243,12 +244,14 @@ export default function RootLayout({
         <GoogleTranslateProvider />
         <TravelCurrencyProvider>
           <VipAuthProvider>
-            <MonetagProvider>
-              {children}
-              <ExitIntentModal />
-              <FloatingSubscribeButton />
-              <GlobalBlogAssistant />
-            </MonetagProvider>
+            <BiceaAdProvider>
+              <MonetagProvider>
+                {children}
+                <ExitIntentModal />
+                <FloatingSubscribeButton />
+                <GlobalBlogAssistant />
+              </MonetagProvider>
+            </BiceaAdProvider>
           </VipAuthProvider>
         </TravelCurrencyProvider>
       </body>

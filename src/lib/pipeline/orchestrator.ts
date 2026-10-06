@@ -143,6 +143,14 @@ export async function runBlogPipeline(
       topicAngle = hookSuggestion.angle;
     }
 
+    const catLower = (topicCategory || options.category || "").toLowerCase();
+    const detectedFormat: "News" | "Evergreen Guide" | "Market/Analytical Deep-Dive" =
+      targetTopic.toLowerCase().includes("how to") || targetTopic.toLowerCase().includes("guide") || targetTopic.toLowerCase().includes("itinerary")
+        ? "Evergreen Guide"
+        : catLower.includes("market") || catLower.includes("trade") || catLower.includes("finance") || catLower.includes("commodit")
+        ? "Market/Analytical Deep-Dive"
+        : "News";
+
     const aiResult = await generateArticleContent({
       topic: targetTopic,
       niche: options.niche,
@@ -153,6 +161,7 @@ export async function runBlogPipeline(
       language: options.language,
       angle: topicAngle,
       recentTitles,
+      format: detectedFormat,
     });
 
     // 3. Editorial Critic & Self-Improvement Agent

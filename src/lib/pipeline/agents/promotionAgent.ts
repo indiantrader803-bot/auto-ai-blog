@@ -106,7 +106,7 @@ function buildExpandedSocialCampaign(
 ): SocialPromotionCampaign {
   const audience = detectSearchIntentAndAudience(input.title, input.content || "", input.category || "");
 
-  const hookTweet = `1/ ⚡ Most teams misunderstand ${input.title}. We ran it under live production stress testing for 90 days. Here are the 5 unvarnished takeaways: 🧵👇`;
+  const hookTweet = `1/ ⚡ What investors, developers, and practitioners need to know about ${input.title}. Here are the 5 unvarnished takeaways: 🧵👇`;
   const tweets = [
     `2/ The core bottleneck isn't raw speed—it's state synchronization under peak concurrency. Once we tuned our async event queues, P95 latency dropped by 84%.`,
     `3/ Memory footprint shrank from 4.2GB down to 720MB per pod by stripping out synchronous polling in favor of event-driven streaming.`,

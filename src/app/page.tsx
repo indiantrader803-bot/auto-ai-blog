@@ -19,9 +19,9 @@ import { Sparkles, TrendingUp, Compass, Flame, ArrowRight, Zap, Award, Layers, M
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "TheSmartMag | AI Tech Innovations, Quant Trading, Prop Firms & Luxury Travel",
+  title: "TheSmartMag | AI, Technology, Finance & Markets",
   description:
-    "TheSmartMag is a premier digital publication and AI-powered intelligence platform delivering in-depth insights on artificial intelligence, algorithmic trading, prop firm comparisons & promo codes, software engineering, and verified worldwide luxury travel itineraries & booking deals.",
+    "TheSmartMag covers artificial intelligence, technology, finance, markets and emerging trends with practical guides, analysis, news and insights.",
   alternates: {
     canonical: "https://thesmartmag.com",
   },
@@ -157,6 +157,9 @@ export default async function HomePage() {
       />
 
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        {/* Semantic Homepage H1 */}
+        <h1 className="sr-only">TheSmartMag — AI, Technology, Finance &amp; Markets</h1>
+
         {/* Top Sponsor / Ad Banner */}
         <AdBanner slot="home-smartmag-top" className="mb-8" />
 

@@ -47,7 +47,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-xs text-slate-400 leading-relaxed">
-              SmartMag Tech Edition is an autonomous editorial publication delivering real-time breakdowns of frontier AI models, cloud infrastructure, developer frameworks, and tech hardware.
+              TheSmartMag is an autonomous editorial publication delivering real-time breakdowns of frontier AI models, cloud infrastructure, developer frameworks, finance, and tech hardware.
             </p>
 
             <div className="pt-2 flex items-center gap-2 text-xs text-slate-400">
@@ -215,7 +215,7 @@ export default function Footer() {
 
         {/* Bottom Strip */}
         <div className="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <p>© {currentYear} SmartMag Tech Edition. All rights reserved.</p>
+          <p>© {currentYear} TheSmartMag. All rights reserved.</p>
 
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
