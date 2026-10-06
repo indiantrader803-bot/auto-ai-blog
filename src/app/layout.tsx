@@ -26,10 +26,14 @@ export const metadata: Metadata = {
     "TheSmartMag covers artificial intelligence, technology, finance, markets and emerging trends with practical guides, analysis, news and insights.",
   keywords: [
     "TheSmartMag",
+    "thesmartmag",
+    "smartmag",
+    "smart mag",
     "SmartMag Tech",
     "SmartMag Travel",
     "Artificial Intelligence News",
     "AI Agents and LLMs",
+    "Tech Magazine",
     "Prop Trading Firm Reviews",
     "Best Prop Firms 2026",
     "FTMO vs FTM",
@@ -43,11 +47,20 @@ export const metadata: Metadata = {
     "Quantitative Finance",
     "Luxury Travel Itineraries",
     "Verified Hotel Booking Deals",
-    "Airport Transfers",
-    "Agoda Booking Discounts",
     "Software Engineering Trends",
     "Machine Learning Tutorials",
   ],
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icon-192.png" },
+    ],
+    shortcut: "/favicon.ico",
+  },
   authors: [{ name: "TheSmartMag Editorial Team", url: siteUrl }],
   creator: "TheSmartMag",
   publisher: "TheSmartMag Media Network",
@@ -67,10 +80,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
-        width: 1200,
-        height: 630,
-        alt: "TheSmartMag - AI, Technology, Finance & Markets",
+        url: "/logo.png",
+        width: 1024,
+        height: 1024,
+        alt: "TheSmartMag - Official Brand Logo",
       },
     ],
   },
@@ -79,10 +92,10 @@ export const metadata: Metadata = {
     title: "TheSmartMag | AI, Technology, Finance & Markets",
     description:
       "TheSmartMag covers artificial intelligence, technology, finance, markets and emerging trends with practical guides, analysis, news and insights.",
-    creator: "@thesmartmag",
-    site: "@thesmartmag",
+    creator: "@Theindainta9go",
+    site: "@Theindainta9go",
     images: [
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
+      "/logo.png",
     ],
   },
   robots: {
@@ -110,7 +123,6 @@ export const viewport: Viewport = {
   themeColor: "#4f46e5",
   width: "device-width",
   initialScale: 1,
-  // No maximumScale: zoom must stay enabled for WCAG/mobile-usability (a hard SEO ranking factor)
 };
 
 export default function RootLayout({

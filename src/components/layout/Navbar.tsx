@@ -268,9 +268,11 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
           {/* Brand Logo with Badge */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0 group">
             <div className="relative">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-all duration-300">
-                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-              </div>
+              <img
+                src="/icon-square.png"
+                alt="TheSmartMag Logo"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl object-cover shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-all duration-300 border border-indigo-500/30"
+              />
               <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5 sm:h-3 sm:w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-emerald-500 border-2 border-white dark:border-slate-950"></span>

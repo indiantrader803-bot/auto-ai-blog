@@ -144,6 +144,48 @@ export default function AboutPage() {
               </Link>: Direct channels for press inquiries, correction tips, and partnerships.
             </li>
           </ul>
+
+          {/* Brand Assets & Official Logo Download */}
+          <div className="mt-8 p-6 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-purple-950/30 to-slate-900 border border-indigo-500/30 space-y-5">
+            <div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1">
+                Official Brand Assets &amp; Media Kit
+              </h3>
+              <p className="text-xs text-slate-300">
+                Official high-definition vector logos optimized for web headers, press kits, and publications (&lt;100 KB, 5:1 aspect ratio).
+              </p>
+            </div>
+
+            {/* 5:1 Aspect Ratio Banner Preview */}
+            <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="w-full md:max-w-md">
+                <img
+                  src="/logo-5x1.png"
+                  alt="TheSmartMag 5:1 Banner Logo"
+                  className="w-full h-auto rounded-lg border border-slate-800 shadow-sm"
+                />
+                <span className="block text-[11px] text-slate-400 mt-1">Recommended Header / Publisher Format (5:1 Ratio, 1000x200px, 94 KB)</span>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+                <a
+                  href="/logo-5x1.png"
+                  download="TheSmartMag-Logo-5x1.png"
+                  className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs tracking-wide shadow-md shadow-indigo-600/30 transition-all flex items-center justify-center gap-2"
+                >
+                  <span>Download 5:1 Logo (94 KB)</span>
+                  <span>↓</span>
+                </a>
+                <a
+                  href="/icon-square.png"
+                  download="TheSmartMag-Icon.png"
+                  className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs tracking-wide border border-slate-700 transition-all flex items-center justify-center gap-2"
+                >
+                  <span>Square Emblem (1:1)</span>
+                  <span>↓</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
 

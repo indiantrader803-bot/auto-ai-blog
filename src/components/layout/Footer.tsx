@@ -33,9 +33,11 @@ export default function Footer() {
           {/* Col 1: Brand Bio & Socials */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform">
-                <Sparkles className="w-5 h-5" />
-              </div>
+              <img
+                src="/icon-square.png"
+                alt="TheSmartMag Logo"
+                className="w-10 h-10 rounded-xl object-cover shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform border border-indigo-500/30"
+              />
               <div className="flex flex-col">
                 <span className="font-serif font-black text-2xl text-white tracking-tight">
                   SMART<span className="text-indigo-400">MAG</span>
