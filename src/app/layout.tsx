@@ -27,9 +27,13 @@ export const metadata: Metadata = {
   keywords: [
     "TheSmartMag",
     "thesmartmag",
+    "thesmartmag.com",
     "smartmag",
     "smart mag",
+    "ded dimag",
+    "deddimag",
     "SmartMag Tech",
+    "SmartMag Magazine",
     "SmartMag Travel",
     "Artificial Intelligence News",
     "AI Agents and LLMs",
