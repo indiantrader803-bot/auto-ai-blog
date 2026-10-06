@@ -28,6 +28,7 @@ import KeyInsightBox from "@/components/blog/KeyInsightBox";
 import MonetagBanner from "@/components/ads/MonetagBanner";
 import VipContentGate from "@/components/vip/VipContentGate";
 import ArticleContentGate from "@/components/vip/ArticleContentGate";
+import ArticleContentExplainer from "@/components/blog/ArticleContentExplainer";
 import { getCurrentUser } from "@/lib/auth";
 import { getArticleBySlug, getAllCatalogArticles } from "@/lib/content/articles";
 import ArticleVideoPlayer from "@/components/blog/ArticleVideoPlayer";
@@ -524,6 +525,14 @@ export default async function BlogPostPage({ params }: Props) {
                 category={post.category?.name}
               />
             )}
+
+            {/* 🌟 Interactive Article Content Explainer (Deep Intel & Conceptual Roadmap) */}
+            <ArticleContentExplainer
+              title={post.title}
+              category={post.category?.name}
+              content={post.content || ""}
+              excerpt={post.excerpt}
+            />
 
             {/* 2. Main Markdown Article Content with VIP Content Gating */}
             <div id="article-body">

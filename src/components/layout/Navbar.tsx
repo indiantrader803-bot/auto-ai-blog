@@ -447,8 +447,18 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
                 <span>🏠 Home</span>
               </Link>
 
-              {/* 🌟 Animated Logo Badges for Key Interactive Hubs */}
+              {/* 🌟 New Topics Shown First in Desktop View */}
               <div className="flex items-center gap-2 pl-1 pr-3 border-r border-slate-200 dark:border-slate-800 shrink-0">
+                {/* 🛡️ NEW TOPIC: Air Defence & National/International Security */}
+                <Link
+                  href="/category/air-defence"
+                  className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-red-600/20 via-orange-600/15 to-amber-600/20 hover:from-red-600 hover:to-orange-600 text-red-700 dark:text-red-300 hover:text-white transition-all border border-red-500/40 group text-[11px] font-black tracking-wide shadow-xs"
+                >
+                  <span className="text-sm">🛡️</span>
+                  <span>Air Defence</span>
+                  <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-red-600 text-white font-black animate-pulse">NEW</span>
+                </Link>
+
                 <Link
                   href="/store"
                   className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-purple-500/15 hover:from-amber-500 hover:to-rose-500 text-amber-700 dark:text-amber-300 hover:text-white transition-all border border-amber-500/30 group text-[11px] font-black"
