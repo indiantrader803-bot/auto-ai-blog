@@ -33,7 +33,7 @@ export default function VipLoginPage() {
         setError(data.error || "Login failed. Please check your credentials.");
       } else {
         await refreshVipStatus();
-        window.location.href = "/vip";
+        window.location.href = "/";
       }
     } catch {
       setError("An unexpected error occurred. Please try again.");

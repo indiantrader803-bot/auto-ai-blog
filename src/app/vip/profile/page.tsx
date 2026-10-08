@@ -158,24 +158,7 @@ export default async function VipProfilePage() {
                 <Lock className="w-3.5 h-3.5 text-slate-400" />
                 Change Password
               </Link>
-              {superAdmin && (
-                <Link
-                  href="/admin/vip"
-                  className="flex items-center gap-2.5 w-full px-4 py-2.5 rounded-xl text-xs font-semibold border border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/40 transition-all"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5 text-purple-500" />
-                  Superadmin VIP Panel
-                </Link>
-              )}
-              {superAdmin && (
-                <Link
-                  href="/admin"
-                  className="flex items-center gap-2.5 w-full px-4 py-2.5 rounded-xl text-xs font-semibold border border-indigo-200 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-all"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
-                  Admin Dashboard
-                </Link>
-              )}
+
               <form action="/api/auth/logout" method="POST">
                 <button
                   type="submit"

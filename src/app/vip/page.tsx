@@ -63,34 +63,7 @@ export default async function VipLoungePage() {
 
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
 
-        {/* Superadmin Quick Access */}
-        {isSuperAdmin && (
-          <div className="mb-6 p-3.5 rounded-2xl bg-gradient-to-r from-purple-500/10 to-indigo-500/10 dark:from-purple-900/40 dark:to-indigo-900/40 border border-purple-200 dark:border-purple-700/60 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-purple-500/20 border border-purple-400/30 flex items-center justify-center">
-                <ShieldCheck className="w-4 h-4 text-purple-500 dark:text-purple-400" />
-              </div>
-              <div>
-                <p className="text-xs font-black text-purple-700 dark:text-purple-300 uppercase tracking-wider">Superadmin Access Active</p>
-                <p className="text-[11px] text-slate-600 dark:text-slate-400">You have full VIP management privileges.</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Link
-                href="/vip/profile"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-purple-400 transition-all"
-              >
-                <User className="w-3.5 h-3.5" /> My Profile
-              </Link>
-              <Link
-                href="/admin/vip"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white transition-all shadow-sm"
-              >
-                <Settings className="w-3.5 h-3.5" /> VIP Admin Panel
-              </Link>
-            </div>
-          </div>
-        )}
+
 
         {/* VIP Top Status Banner */}
         <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-slate-100 via-white to-indigo-50 dark:from-slate-900 dark:via-[#0d1f35] dark:to-slate-900 border border-slate-200 dark:border-teal-500/30 p-8 sm:p-12 mb-12 shadow-md dark:shadow-2xl transition-colors duration-300">
@@ -305,14 +278,7 @@ export default async function VipLoungePage() {
               >
                 <User className="w-3.5 h-3.5" /> My Profile
               </Link>
-              {isSuperAdmin && (
-                <Link
-                  href="/admin/vip"
-                  className="px-4 py-2 rounded-xl text-xs font-semibold bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/40 dark:hover:bg-purple-800/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700 transition-colors flex items-center gap-1.5"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5" /> Admin Panel
-                </Link>
-              )}
+
               <form action="/api/auth/logout" method="POST">
                 <button
                   type="submit"

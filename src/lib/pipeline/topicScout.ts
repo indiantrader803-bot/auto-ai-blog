@@ -5,6 +5,11 @@ const parser = new Parser({ timeout: 8000 });
 
 const RSS_SOURCES = [
   // Highest-signal editorial feeds across core publication pillars:
+  // Breaking Global & Business News
+  "https://feeds.bbci.co.uk/news/world/rss.xml",
+  "https://feeds.bbci.co.uk/news/business/rss.xml",
+  "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+  "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml",
   // Tech, AI & Engineering
   "https://techcrunch.com/feed/",
   "https://www.theverge.com/rss/index.xml",
@@ -183,6 +188,11 @@ export function getEvergreenTopicForNiche(niche?: string): string {
     "Zero-Trust Kubernetes Security & eBPF Networks",
     "Algorithmic Day Trading Desks & Python Backtesting",
     "Solo Remote Work Expeditions in Latin America",
+    "Quantum Computing Breakthroughs & Commercial Cryptography",
+    "Electric Aviation & Next-Gen eVTOL Urban Air Mobility",
+    "Global Central Bank Digital Currencies & Cross-Border Settlement",
+    "Generative AI Video Models & Hollywood Production Pipelines",
+    "Commercial Spaceflight & Low-Earth Orbit Satellite Megaconstellations",
   ];
 
   const anchor = (niche || "").trim()
