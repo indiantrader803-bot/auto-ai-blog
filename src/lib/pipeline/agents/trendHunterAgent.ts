@@ -24,7 +24,11 @@ const LIVE_TRENDING_FEEDS = [
   { url: "https://techcrunch.com/feed/", source: "TechCrunch Innovation", category: "Artificial Intelligence" },
   { url: "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms", source: "Economic Times Markets", category: "Indian Markets" },
   { url: "https://www.theverge.com/rss/index.xml", source: "The Verge Tech & Social", category: "Technology & Gadgets" },
-  { url: "https://mashable.com/feeds/rss/all", source: "Mashable Digital Culture", category: "Social Media & Tech" }
+  { url: "https://feeds.feedburner.com/ign/all", source: "IGN Gaming & PS5", category: "PlayStation & Gaming" },
+  { url: "https://www.animenewsnetwork.com/news/rss.xml", source: "Anime News Network", category: "Anime & Manga" },
+  { url: "https://variety.com/feed/", source: "Variety TV & Film", category: "TV & OTT" },
+  { url: "https://www.billboard.com/feed/", source: "Billboard Music News", category: "Music" },
+  { url: "https://mashable.com/feeds/rss/all", source: "Mashable Digital Culture", category: "Celebrity & Trending" }
 ];
 
 const CURATED_HOT_TOPIC_RADAR = [

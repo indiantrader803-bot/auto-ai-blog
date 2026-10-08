@@ -48,6 +48,24 @@ const TOPIC_PHOTO_POOLS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1519074069444-1ba4ea16e6f4?w=1200&auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80",
   ],
+  gaming: [
+    "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=1200&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=1200&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&auto=format&fit=crop&q=80",
+  ],
+  anime: [
+    "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=1200&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1200&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1563089145-599997674d42?w=1200&auto=format&fit=crop&q=80",
+  ],
+  entertainment: [
+    "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1200&auto=format&fit=crop&q=80",
+  ],
   general: [
     "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&auto=format&fit=crop&q=80",
@@ -140,6 +158,41 @@ function getBespokeArticleImage(titleOrAlt: string): string {
     text.includes("military")
   ) {
     pool = TOPIC_PHOTO_POOLS.defense;
+  } else if (
+    text.includes("game") ||
+    text.includes("gaming") ||
+    text.includes("playstation") ||
+    text.includes("ps5") ||
+    text.includes("xbox") ||
+    text.includes("nintendo") ||
+    text.includes("gta") ||
+    text.includes("esport")
+  ) {
+    pool = TOPIC_PHOTO_POOLS.gaming;
+  } else if (
+    text.includes("anime") ||
+    text.includes("manga") ||
+    text.includes("animation") ||
+    text.includes("cartoon") ||
+    text.includes("ghibli") ||
+    text.includes("jujutsu") ||
+    text.includes("one piece")
+  ) {
+    pool = TOPIC_PHOTO_POOLS.anime;
+  } else if (
+    text.includes("tv") ||
+    text.includes("movie") ||
+    text.includes("cinema") ||
+    text.includes("netflix") ||
+    text.includes("ott") ||
+    text.includes("streaming") ||
+    text.includes("music") ||
+    text.includes("song") ||
+    text.includes("celebrity") ||
+    text.includes("hollywood") ||
+    text.includes("album")
+  ) {
+    pool = TOPIC_PHOTO_POOLS.entertainment;
   }
 
   const index = hash % pool.length;

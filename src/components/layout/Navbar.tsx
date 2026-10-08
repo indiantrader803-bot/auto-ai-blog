@@ -498,8 +498,51 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
                 </Link>
 
                 <Link
+                  href="/category/gaming-and-platforms"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 hover:bg-blue-600 text-blue-700 dark:text-blue-300 hover:text-white transition-all border border-blue-500/30 group text-[11px] font-bold shrink-0"
+                >
+                  <span>🎮 PlayStation &amp; Gaming</span>
+                  <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-blue-600 text-white font-black">PS5</span>
+                </Link>
+
+                <Link
+                  href="/category/anime-and-manga"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-fuchsia-500/10 hover:bg-fuchsia-600 text-fuchsia-700 dark:text-fuchsia-300 hover:text-white transition-all border border-fuchsia-500/30 group text-[11px] font-bold shrink-0"
+                >
+                  <span>🧙 Anime &amp; Manga</span>
+                </Link>
+
+                <Link
+                  href="/category/animation-and-cinema"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500/10 hover:bg-orange-600 text-orange-700 dark:text-orange-300 hover:text-white transition-all border border-orange-500/30 group text-[11px] font-bold shrink-0"
+                >
+                  <span>🐭 Animation &amp; Cartoons</span>
+                </Link>
+
+                <Link
+                  href="/category/tv-and-ott"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 hover:bg-rose-600 text-rose-700 dark:text-rose-300 hover:text-white transition-all border border-rose-500/30 group text-[11px] font-bold shrink-0"
+                >
+                  <span>📺 TV &amp; OTT</span>
+                </Link>
+
+                <Link
+                  href="/category/music-and-culture"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-600 text-emerald-700 dark:text-emerald-300 hover:text-white transition-all border border-emerald-500/30 group text-[11px] font-bold shrink-0"
+                >
+                  <span>🎵 Music</span>
+                </Link>
+
+                <Link
+                  href="/category/celebrity-and-trends"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 hover:bg-purple-600 text-purple-700 dark:text-purple-300 hover:text-white transition-all border border-purple-500/30 group text-[11px] font-bold shrink-0"
+                >
+                  <span>⭐ Celebrity &amp; Trending</span>
+                </Link>
+
+                <Link
                   href="/travel"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sky-500/10 hover:bg-sky-600 text-sky-700 dark:text-sky-300 hover:text-white transition-all border border-sky-500/20 group text-[11px] font-bold"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sky-500/10 hover:bg-sky-600 text-sky-700 dark:text-sky-300 hover:text-white transition-all border border-sky-500/20 group text-[11px] font-bold shrink-0"
                 >
                   <Plane className="w-3.5 h-3.5 group-hover:scale-110 transition-transform text-sky-600 dark:text-sky-400 group-hover:text-white" />
                   <span>Travel Deals</span>
@@ -646,13 +689,61 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               <Link
                 href="/category/air-defence"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-gradient-to-r from-red-500/10 to-amber-500/10 border border-red-500/30 text-xs font-black uppercase tracking-wider text-red-700 dark:text-red-300 transition-colors"
+                className="flex items-center justify-between px-3 py-2 rounded-xl bg-gradient-to-r from-red-500/10 to-amber-500/10 border border-red-500/30 text-xs font-black uppercase tracking-wider text-red-700 dark:text-red-300 transition-colors"
               >
                 <div className="flex items-center gap-2">
                   <span>🛡️ Air Defence &amp; Strategic Tech</span>
                   <span className="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[9px] font-black">NEW</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-red-500" />
+              </Link>
+              <Link
+                href="/category/gaming-and-platforms"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-between px-3 py-2 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs font-bold text-blue-700 dark:text-blue-300 transition-colors"
+              >
+                <span>🎮 PlayStation &amp; Gaming</span>
+                <ChevronRight className="w-3.5 h-3.5 text-blue-400" />
+              </Link>
+              <Link
+                href="/category/anime-and-manga"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-between px-3 py-2 rounded-xl bg-fuchsia-500/10 border border-fuchsia-500/20 text-xs font-bold text-fuchsia-700 dark:text-fuchsia-300 transition-colors"
+              >
+                <span>🧙 Anime &amp; Manga</span>
+                <ChevronRight className="w-3.5 h-3.5 text-fuchsia-400" />
+              </Link>
+              <Link
+                href="/category/animation-and-cinema"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-between px-3 py-2 rounded-xl bg-orange-500/10 border border-orange-500/20 text-xs font-bold text-orange-700 dark:text-orange-300 transition-colors"
+              >
+                <span>🐭 Animation &amp; Cartoons</span>
+                <ChevronRight className="w-3.5 h-3.5 text-orange-400" />
+              </Link>
+              <Link
+                href="/category/tv-and-ott"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-between px-3 py-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs font-bold text-rose-700 dark:text-rose-300 transition-colors"
+              >
+                <span>📺 TV &amp; OTT</span>
+                <ChevronRight className="w-3.5 h-3.5 text-rose-400" />
+              </Link>
+              <Link
+                href="/category/music-and-culture"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-between px-3 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-700 dark:text-emerald-300 transition-colors"
+              >
+                <span>🎵 Music</span>
+                <ChevronRight className="w-3.5 h-3.5 text-emerald-400" />
+              </Link>
+              <Link
+                href="/category/celebrity-and-trends"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-between px-3 py-2 rounded-xl bg-purple-500/10 border border-purple-500/20 text-xs font-bold text-purple-700 dark:text-purple-300 transition-colors"
+              >
+                <span>⭐ Celebrity &amp; Trending</span>
+                <ChevronRight className="w-3.5 h-3.5 text-purple-400" />
               </Link>
               {categories.map((cat) => (
                 <Link

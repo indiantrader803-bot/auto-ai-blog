@@ -25,6 +25,16 @@ const RSS_SOURCES = [
   // National & International Defense, Aerospace & Strategic Tech
   "https://www.defensenews.com/arc/outboundfeeds/rss/",
   "https://breakingdefense.com/feed/",
+  // 🎮 PlayStation, Gaming & Esports
+  "https://feeds.feedburner.com/ign/all",
+  "https://kotaku.com/rss",
+  // 🧙 Anime & Manga
+  "https://www.animenewsnetwork.com/news/rss.xml",
+  // 📺 TV & Streaming, OTT, Hollywood & Celebrity
+  "https://variety.com/feed/",
+  "https://deadline.com/feed/",
+  // 🎵 Music & Pop Culture
+  "https://www.billboard.com/feed/",
   // Raw Google Trends for hot breaking search volume
   "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US",
   "https://trends.google.com/trends/trendingsearches/daily/rss?geo=IN",
@@ -241,6 +251,24 @@ function categorizeTopic(title: string): string {
   }
   if (lower.includes("iphone") || lower.includes("apple") || lower.includes("macbook") || lower.includes("ipad") || lower.includes("vision pro") || lower.includes("gadget") || lower.includes("hardware") || lower.includes("foldable") || lower.includes("samsung") || lower.includes("pixel") || lower.includes("galaxy")) {
     return "Technology & Gadgets";
+  }
+  if (lower.includes("playstation") || lower.includes("ps5") || lower.includes("ps6") || lower.includes("xbox") || lower.includes("nintendo") || lower.includes("gta") || lower.includes("game") || lower.includes("gaming") || lower.includes("steam") || lower.includes("esports")) {
+    return "PlayStation & Gaming";
+  }
+  if (lower.includes("anime") || lower.includes("manga") || lower.includes("crunchyroll") || lower.includes("jujutsu") || lower.includes("one piece") || lower.includes("demon slayer") || lower.includes("solo leveling") || lower.includes("otaku")) {
+    return "Anime & Manga";
+  }
+  if (lower.includes("animation") || lower.includes("cartoon") || lower.includes("disney") || lower.includes("pixar") || lower.includes("dreamworks") || lower.includes("ghibli") || lower.includes("animated")) {
+    return "Animation & Cartoons";
+  }
+  if (lower.includes("netflix") || lower.includes("streaming") || lower.includes("tv show") || lower.includes("ott") || lower.includes("hbo") || lower.includes("series") || lower.includes("prime video") || lower.includes("season")) {
+    return "TV & OTT";
+  }
+  if (lower.includes("music") || lower.includes("song") || lower.includes("album") || lower.includes("spotify") || lower.includes("billboard") || lower.includes("grammy") || lower.includes("concert") || lower.includes("track")) {
+    return "Music";
+  }
+  if (lower.includes("celebrity") || lower.includes("actor") || lower.includes("actress") || lower.includes("hollywood") || lower.includes("bollywood") || lower.includes("paparazzi") || lower.includes("star") || lower.includes("met gala")) {
+    return "Celebrity & Trending";
   }
   if (lower.includes("crypto") || lower.includes("bitcoin") || lower.includes("ethereum") || lower.includes("blockchain") || lower.includes("token")) {
     return "Finance & Markets";
