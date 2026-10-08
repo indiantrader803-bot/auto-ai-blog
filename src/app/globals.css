@@ -137,3 +137,23 @@ body {
   display: none !important;
 }
 
+/* 24/7 Continuous Smooth Marquee Ticker */
+@keyframes scrollNavMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-nav-marquee {
+  display: flex;
+  width: max-content;
+  animation: scrollNavMarquee 42s linear infinite;
+}
+
+.animate-nav-marquee:hover {
+  animation-play-state: paused;
+}
+

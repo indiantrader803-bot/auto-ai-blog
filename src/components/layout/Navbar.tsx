@@ -437,131 +437,150 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
         </div>
 
         {/* Tier 2: Category Navigation Bar with Edge-Fade & Zero Scrollbar */}
-        <div className="hidden lg:block border-t border-slate-100 dark:border-slate-900 bg-slate-50/70 dark:bg-slate-950/70 relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <nav className="flex items-center gap-4 xl:gap-5 py-2 overflow-x-auto text-xs font-bold uppercase tracking-wider no-scrollbar scrollbar-none">
-              <Link
-                href="/"
-                className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap shrink-0 flex items-center gap-1.5 py-1 px-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900"
-              >
-                <span>🏠 Home</span>
-              </Link>
+        {/* Tier 2: 24/7 Continuous Smooth Auto-Scrolling Marquee Navigation Bar */}
+        <div className="hidden lg:block border-t border-slate-100 dark:border-slate-900 bg-slate-50/80 dark:bg-slate-950/80 relative overflow-hidden backdrop-blur-sm">
+          {/* Subtle Left & Right Edge Fade Masks */}
+          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-slate-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-slate-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
 
-              {/* 🌟 New Topics Shown First in Desktop View */}
-              <div className="flex items-center gap-2 pl-1 pr-3 border-r border-slate-200 dark:border-slate-800 shrink-0">
-                {/* 🛡️ NEW TOPIC: Air Defence & National/International Security */}
-                <Link
-                  href="/category/air-defence"
-                  className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-red-600/20 via-orange-600/15 to-amber-600/20 hover:from-red-600 hover:to-orange-600 text-red-700 dark:text-red-300 hover:text-white transition-all border border-red-500/40 group text-[11px] font-black tracking-wide shadow-xs"
-                >
-                  <span className="text-sm">🛡️</span>
-                  <span>Air Defence</span>
-                  <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-red-600 text-white font-black animate-pulse">NEW</span>
-                </Link>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+            <div className="flex items-center py-2 animate-nav-marquee select-none group">
+              {/* Loop A & Loop B for seamless 24/7 infinite scrolling without reset glitches */}
+              {[1, 2].map((iteration) => (
+                <div key={iteration} className="flex items-center gap-4 xl:gap-5 shrink-0 pr-4 xl:pr-5">
+                  <Link
+                    href="/"
+                    className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors whitespace-nowrap shrink-0 flex items-center gap-1.5 py-1 px-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 text-xs font-black uppercase tracking-wider"
+                  >
+                    <span>🏠 Home</span>
+                  </Link>
 
-                <Link
-                  href="/store"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-purple-500/15 hover:from-amber-500 hover:to-rose-500 text-amber-700 dark:text-amber-300 hover:text-white transition-all border border-amber-500/30 group text-[11px] font-black"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500 group-hover:text-white group-hover:scale-110 transition-transform animate-pulse" />
-                  <span>AI Store</span>
-                  <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 group-hover:bg-white group-hover:text-amber-700 font-black">50% OFF</span>
-                </Link>
+                  {/* 🛡️ Air Defence */}
+                  <Link
+                    href="/category/air-defence"
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-red-600/20 via-orange-600/15 to-amber-600/20 hover:from-red-600 hover:to-orange-600 text-red-700 dark:text-red-300 hover:text-white transition-all border border-red-500/40 group text-[11px] font-black tracking-wide shadow-xs shrink-0"
+                  >
+                    <span className="text-sm">🛡️</span>
+                    <span>Air Defence</span>
+                    <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-red-600 text-white font-black animate-pulse">NEW</span>
+                  </Link>
 
-                <Link
-                  href="/apple"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/10 dark:bg-zinc-800/80 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-zinc-950 transition-all border border-zinc-300 dark:border-zinc-700/80 group text-[11px] font-black lowercase tracking-normal"
-                >
-                  <Smartphone className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-300 group-hover:scale-110 transition-transform" />
-                  <span className="capitalize font-bold">Apple 2026</span>
-                  <span className="relative flex h-1.5 w-1.5 ml-0.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-                  </span>
-                </Link>
+                  {/* AI Store */}
+                  <Link
+                    href="/store"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-purple-500/15 hover:from-amber-500 hover:to-rose-500 text-amber-700 dark:text-amber-300 hover:text-white transition-all border border-amber-500/30 group text-[11px] font-black shrink-0"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500 group-hover:text-white group-hover:scale-110 transition-transform animate-pulse" />
+                    <span>AI Store</span>
+                    <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 group-hover:bg-white group-hover:text-amber-700 font-black">50% OFF</span>
+                  </Link>
 
-                <Link
-                  href="/trade"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-500 text-emerald-700 dark:text-emerald-400 hover:text-white transition-all border border-emerald-500/20 group text-[11px] font-bold"
-                >
-                  <TrendingUp className="w-3.5 h-3.5 group-hover:scale-110 transition-transform text-emerald-600 dark:text-emerald-400 group-hover:text-white" />
-                  <span>Trade Hub</span>
-                  <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-black">90%</span>
-                </Link>
+                  {/* Apple 2026 */}
+                  <Link
+                    href="/apple"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/10 dark:bg-zinc-800/80 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-zinc-950 transition-all border border-zinc-300 dark:border-zinc-700/80 group text-[11px] font-black lowercase tracking-normal shrink-0"
+                  >
+                    <Smartphone className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-300 group-hover:scale-110 transition-transform" />
+                    <span className="capitalize font-bold">Apple 2026</span>
+                    <span className="relative flex h-1.5 w-1.5 ml-0.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                    </span>
+                  </Link>
 
-                <Link
-                  href="/best-ai-tools"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 hover:bg-purple-600 text-purple-700 dark:text-purple-300 hover:text-white transition-all border border-purple-500/20 group text-[11px] font-bold"
-                >
-                  <Sparkles className="w-3.5 h-3.5 group-hover:scale-110 transition-transform text-purple-600 dark:text-purple-400 group-hover:text-white" />
-                  <span>AI Tools</span>
-                </Link>
+                  {/* Trade Hub */}
+                  <Link
+                    href="/trade"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-500 text-emerald-700 dark:text-emerald-400 hover:text-white transition-all border border-emerald-500/20 group text-[11px] font-bold shrink-0"
+                  >
+                    <TrendingUp className="w-3.5 h-3.5 group-hover:scale-110 transition-transform text-emerald-600 dark:text-emerald-400 group-hover:text-white" />
+                    <span>Trade Hub</span>
+                    <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-black">90%</span>
+                  </Link>
 
-                <Link
-                  href="/category/gaming-and-platforms"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 hover:bg-blue-600 text-blue-700 dark:text-blue-300 hover:text-white transition-all border border-blue-500/30 group text-[11px] font-bold shrink-0"
-                >
-                  <span>🎮 PlayStation &amp; Gaming</span>
-                  <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-blue-600 text-white font-black">PS5</span>
-                </Link>
+                  {/* AI Tools */}
+                  <Link
+                    href="/best-ai-tools"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 hover:bg-purple-600 text-purple-700 dark:text-purple-300 hover:text-white transition-all border border-purple-500/20 group text-[11px] font-bold shrink-0"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 group-hover:scale-110 transition-transform text-purple-600 dark:text-purple-400 group-hover:text-white" />
+                    <span>AI Tools</span>
+                  </Link>
 
-                <Link
-                  href="/category/anime-and-manga"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-fuchsia-500/10 hover:bg-fuchsia-600 text-fuchsia-700 dark:text-fuchsia-300 hover:text-white transition-all border border-fuchsia-500/30 group text-[11px] font-bold shrink-0"
-                >
-                  <span>🧙 Anime &amp; Manga</span>
-                </Link>
+                  {/* 🎮 PlayStation & Gaming */}
+                  <Link
+                    href="/category/gaming-and-platforms"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 hover:bg-blue-600 text-blue-700 dark:text-blue-300 hover:text-white transition-all border border-blue-500/30 group text-[11px] font-bold shrink-0"
+                  >
+                    <span>🎮 PlayStation &amp; Gaming</span>
+                    <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-blue-600 text-white font-black">PS5</span>
+                  </Link>
 
-                <Link
-                  href="/category/animation-and-cinema"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500/10 hover:bg-orange-600 text-orange-700 dark:text-orange-300 hover:text-white transition-all border border-orange-500/30 group text-[11px] font-bold shrink-0"
-                >
-                  <span>🐭 Animation &amp; Cartoons</span>
-                </Link>
+                  {/* 🧙 Anime & Manga */}
+                  <Link
+                    href="/category/anime-and-manga"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-fuchsia-500/10 hover:bg-fuchsia-600 text-fuchsia-700 dark:text-fuchsia-300 hover:text-white transition-all border border-fuchsia-500/30 group text-[11px] font-bold shrink-0"
+                  >
+                    <span>🧙 Anime &amp; Manga</span>
+                  </Link>
 
-                <Link
-                  href="/category/tv-and-ott"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 hover:bg-rose-600 text-rose-700 dark:text-rose-300 hover:text-white transition-all border border-rose-500/30 group text-[11px] font-bold shrink-0"
-                >
-                  <span>📺 TV &amp; OTT</span>
-                </Link>
+                  {/* 🐭 Animation & Cartoons */}
+                  <Link
+                    href="/category/animation-and-cinema"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500/10 hover:bg-orange-600 text-orange-700 dark:text-orange-300 hover:text-white transition-all border border-orange-500/30 group text-[11px] font-bold shrink-0"
+                  >
+                    <span>🐭 Animation &amp; Cartoons</span>
+                  </Link>
 
-                <Link
-                  href="/category/music-and-culture"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-600 text-emerald-700 dark:text-emerald-300 hover:text-white transition-all border border-emerald-500/30 group text-[11px] font-bold shrink-0"
-                >
-                  <span>🎵 Music</span>
-                </Link>
+                  {/* 📺 TV & OTT */}
+                  <Link
+                    href="/category/tv-and-ott"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 hover:bg-rose-600 text-rose-700 dark:text-rose-300 hover:text-white transition-all border border-rose-500/30 group text-[11px] font-bold shrink-0"
+                  >
+                    <span>📺 TV &amp; OTT</span>
+                  </Link>
 
-                <Link
-                  href="/category/celebrity-and-trends"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 hover:bg-purple-600 text-purple-700 dark:text-purple-300 hover:text-white transition-all border border-purple-500/30 group text-[11px] font-bold shrink-0"
-                >
-                  <span>⭐ Celebrity &amp; Trending</span>
-                </Link>
+                  {/* 🎵 Music */}
+                  <Link
+                    href="/category/music-and-culture"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-600 text-emerald-700 dark:text-emerald-300 hover:text-white transition-all border border-emerald-500/30 group text-[11px] font-bold shrink-0"
+                  >
+                    <span>🎵 Music</span>
+                  </Link>
 
-                <Link
-                  href="/travel"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sky-500/10 hover:bg-sky-600 text-sky-700 dark:text-sky-300 hover:text-white transition-all border border-sky-500/20 group text-[11px] font-bold shrink-0"
-                >
-                  <Plane className="w-3.5 h-3.5 group-hover:scale-110 transition-transform text-sky-600 dark:text-sky-400 group-hover:text-white" />
-                  <span>Travel Deals</span>
-                </Link>
-              </div>
+                  {/* ⭐ Celebrity & Trending */}
+                  <Link
+                    href="/category/celebrity-and-trends"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 hover:bg-purple-600 text-purple-700 dark:text-purple-300 hover:text-white transition-all border border-purple-500/30 group text-[11px] font-bold shrink-0"
+                  >
+                    <span>⭐ Celebrity &amp; Trending</span>
+                  </Link>
 
-              {categories.map((cat) => (
-                <Link
-                  key={cat.slug}
-                  href={`/category/${cat.slug}`}
-                  className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0 group text-[11px]"
-                >
-                  <span>{cat.name}</span>
-                  {cat.isHot && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse group-hover:scale-125 transition-transform" />
-                  )}
-                </Link>
+                  {/* ✈️ Travel Deals */}
+                  <Link
+                    href="/travel"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sky-500/10 hover:bg-sky-600 text-sky-700 dark:text-sky-300 hover:text-white transition-all border border-sky-500/20 group text-[11px] font-bold shrink-0"
+                  >
+                    <Plane className="w-3.5 h-3.5 group-hover:scale-110 transition-transform text-sky-600 dark:text-sky-400 group-hover:text-white" />
+                    <span>Travel Deals</span>
+                  </Link>
+
+                  {/* Dynamic Database Categories */}
+                  {categories.map((cat) => (
+                    <Link
+                      key={`${iteration}-${cat.slug}`}
+                      href={`/category/${cat.slug}`}
+                      className="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0 group text-[11px] font-semibold"
+                    >
+                      <span>{cat.name}</span>
+                      {cat.isHot && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse group-hover:scale-125 transition-transform" />
+                      )}
+                    </Link>
+                  ))}
+                </div>
               ))}
-            </nav>
+            </div>
           </div>
         </div>
 
