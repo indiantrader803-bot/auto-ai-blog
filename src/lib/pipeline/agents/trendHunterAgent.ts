@@ -14,12 +14,16 @@ export interface DiscoveredTrend {
 }
 
 const LIVE_TRENDING_FEEDS = [
+  { url: "https://feeds.bbci.co.uk/news/world/rss.xml", source: "BBC World News", category: "Global Breaking News" },
+  { url: "https://feeds.bbci.co.uk/news/business/rss.xml", source: "BBC Global Business", category: "Global Markets" },
+  { url: "https://www.defensenews.com/arc/outboundfeeds/rss/", source: "Defense News Worldwide", category: "Air Defence & Strategic Tech" },
+  { url: "https://breakingdefense.com/feed/", source: "Breaking Defense Tactical", category: "Air Defence & Strategic Tech" },
   { url: "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US", source: "Google Trends (US)", category: "US Markets" },
   { url: "https://trends.google.com/trends/trendingsearches/daily/rss?geo=IN", source: "Google Trends (India)", category: "Indian Markets" },
   { url: "https://hnrss.org/frontpage", source: "Hacker News Frontier", category: "Technology" },
   { url: "https://techcrunch.com/feed/", source: "TechCrunch Innovation", category: "Artificial Intelligence" },
   { url: "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms", source: "Economic Times Markets", category: "Indian Markets" },
-  { url: "https://www.theverge.com/rss/index.xml", source: "The Verge Tech & Social", category: "Social Media & Tech" },
+  { url: "https://www.theverge.com/rss/index.xml", source: "The Verge Tech & Social", category: "Technology & Gadgets" },
   { url: "https://mashable.com/feeds/rss/all", source: "Mashable Digital Culture", category: "Social Media & Tech" }
 ];
 

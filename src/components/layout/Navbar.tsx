@@ -643,6 +643,17 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
                 <span>📰 Featured Stories</span>
                 <ChevronRight className="w-4 h-4 text-slate-400" />
               </Link>
+              <Link
+                href="/category/air-defence"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-gradient-to-r from-red-500/10 to-amber-500/10 border border-red-500/30 text-xs font-black uppercase tracking-wider text-red-700 dark:text-red-300 transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <span>🛡️ Air Defence &amp; Strategic Tech</span>
+                  <span className="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[9px] font-black">NEW</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-red-500" />
+              </Link>
               {categories.map((cat) => (
                 <Link
                   key={cat.slug}

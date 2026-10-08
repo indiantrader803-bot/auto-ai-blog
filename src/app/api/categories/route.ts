@@ -54,6 +54,9 @@ export async function GET() {
 
         // Emoji / Icon decorator mapping
         const emojiMap: Record<string, string> = {
+          "air-defence": "🛡️",
+          "air-defence-strategic-tech": "🛡️",
+          "defense-and-aerospace": "🚀",
           "artificial-intelligence": "🤖",
           "technology": "⚡",
           "travel-and-expeditions": "✈️",
@@ -71,6 +74,8 @@ export async function GET() {
           "productivity-and-workflow": "⚡",
           "gaming-and-platforms": "🎮",
           "animation-and-cinema": "🎬",
+          "quantum-computing": "⚛️",
+          "electric-aviation": "🛫",
         };
 
         const emoji = emojiMap[cat.slug] || "🔥";
