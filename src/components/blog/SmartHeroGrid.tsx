@@ -17,6 +17,7 @@ export default function SmartHeroGrid({ featured, subFeatured }: SmartHeroGridPr
         <ArticleImage
           src={featured.featuredImage}
           alt={featured.imageAlt || featured.title}
+          priority={true}
           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.95]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/40 to-transparent" />

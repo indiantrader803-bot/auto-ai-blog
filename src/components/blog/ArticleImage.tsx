@@ -219,6 +219,7 @@ export default function ArticleImage({
     !src ||
     src.includes("photo-1618005182384-a83a8bd57fbe") ||
     src.includes("placeholder") ||
+    src.includes("pollinations.ai") ||
     src.includes("dummy");
 
   const resolvedSource = isRepetitiveOrGeneric ? getBespokeArticleImage(alt) : src;

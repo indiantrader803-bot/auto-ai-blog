@@ -16,7 +16,7 @@ import AmazonAffiliateShowcase from "@/components/monetization/AmazonAffiliateSh
 import MonetagBanner from "@/components/ads/MonetagBanner";
 import { Sparkles, TrendingUp, Compass, Flame, ArrowRight, Zap, Award, Layers, MessageSquare } from "lucide-react";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "TheSmartMag | AI, Technology, Finance & Markets",

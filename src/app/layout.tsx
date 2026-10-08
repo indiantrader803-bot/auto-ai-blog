@@ -11,8 +11,7 @@ import BiceaAdProvider from "@/components/ads/BiceaAdProvider";
 import { TravelCurrencyProvider } from "@/context/TravelCurrencyContext";
 import { VipAuthProvider } from "@/context/VipAuthContext";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
 
@@ -182,10 +181,11 @@ export default function RootLayout({
 
         {/* Google AdSense Account Verification Meta & Official Ad Engine Script */}
         <meta name="google-adsense-account" content="ca-pub-9768860457233655" />
-        <script
-          async
+        <Script
+          id="google-adsense"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9768860457233655"
           crossOrigin="anonymous"
+          strategy="lazyOnload"
         />
 
         {/* ======================================================== */}
@@ -248,26 +248,10 @@ export default function RootLayout({
         />
 
         {/* Travelpayouts Global Affiliate & Travel Widget Script */}
-        <script
-          // @ts-ignore
-          nowprocket=""
-          data-noptimize="1"
-          data-cfasync="false"
-          data-wpfc-render="false"
-          seraph-accel-crit="1"
-          data-no-defer="1"
-          data-cmp-ab="2"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function () {
-                  var script = document.createElement("script");
-                  script.async = 1;
-                  script.setAttribute("data-cmp-ab","2");
-                  script.src = 'https://tpembars.com/NTczNzkw.js?t=573790';
-                  document.head.appendChild(script);
-              })();
-            `,
-          }}
+        <Script
+          id="travelpayouts-widget-script"
+          src="https://tpembars.com/NTczNzkw.js?t=573790"
+          strategy="lazyOnload"
         />
       </head>
       <body className="min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white font-sans">

@@ -269,8 +269,10 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
           <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0 group">
             <div className="relative">
               <img
-                src="/icon-square.png"
+                src="/icon-64.png"
                 alt="TheSmartMag Logo"
+                width={40}
+                height={40}
                 className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl object-cover shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-all duration-300 border border-indigo-500/30"
               />
               <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5 sm:h-3 sm:w-3">
