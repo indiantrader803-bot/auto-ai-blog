@@ -5,6 +5,7 @@ import "@/styles/ads.css";
 import ExitIntentModal from "@/components/growth/ExitIntentModal";
 import FloatingSubscribeButton from "@/components/growth/FloatingSubscribeButton";
 import GlobalBlogAssistant from "@/components/chat/GlobalBlogAssistant";
+import SmartCompanion3D from "@/components/chat/SmartCompanion3D";
 import GoogleTranslateProvider from "@/components/layout/GoogleTranslateProvider";
 import MonetagProvider from "@/components/ads/MonetagProvider";
 import BiceaAdProvider from "@/components/ads/BiceaAdProvider";
@@ -264,6 +265,7 @@ export default function RootLayout({
                 <ExitIntentModal />
                 <FloatingSubscribeButton />
                 <GlobalBlogAssistant />
+                <SmartCompanion3D />
               </MonetagProvider>
             </BiceaAdProvider>
           </VipAuthProvider>
