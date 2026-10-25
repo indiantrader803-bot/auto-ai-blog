@@ -496,11 +496,11 @@ export function generateStructuredSchema(
     dateModified: new Date(publishedAt).toISOString(),
     author: {
       "@type": "Person",
-      name: "SmartMag Tech Editorial Board",
+      name: "TheSmartMag Editorial Board",
     },
     publisher: {
       "@type": "Organization",
-      name: "SmartMag Tech Chronicle",
+      name: "TheSmartMag",
       logo: {
         "@type": "ImageObject",
         url: `${siteUrl}/logo.png`,

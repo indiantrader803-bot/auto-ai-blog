@@ -35,14 +35,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${categoryTitle} | SmartMag Tech Chronicle`,
+      title: `${categoryTitle} | TheSmartMag`,
       description: `Explore the latest high-impact breakdowns, benchmarks, and guides in ${categoryTitle}.`,
       url: canonicalUrl,
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${categoryTitle} | SmartMag Tech Chronicle`,
+      title: `${categoryTitle} | TheSmartMag`,
       description: `Explore the latest high-impact breakdowns, benchmarks, and guides in ${categoryTitle}.`,
     },
   };
