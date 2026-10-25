@@ -31,6 +31,15 @@ async function handleCron(req: NextRequest) {
   }
 
   try {
+    // 0. Continuous Storage Auto-Purge: Keep DB well below 500MB free cap
+    try {
+      const twoDaysAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
+      await Promise.all([
+        prisma.generationLog.deleteMany({ where: { createdAt: { lt: twoDaysAgo } } }).catch(() => {}),
+        prisma.analyticsEvent.deleteMany({ where: { createdAt: { lt: twoDaysAgo } } }).catch(() => {}),
+      ]);
+    } catch (_) {}
+
     console.log("24/7 Autonomous Content Engine triggered — daily article generation runs FIRST...");
 
     // 1. MULTI-ARTICLE DAILY PUBLISH (Cadence: every ~3.5 hours)

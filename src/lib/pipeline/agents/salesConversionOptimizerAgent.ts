@@ -34,7 +34,7 @@ export interface SelfImprovementReport {
  * Evergreen pillar reviews (e.g., FTM, Atlas, top tech guides) are strictly protected.
  */
 export async function runAutomaticArticlePruningAgent(): Promise<PruneAndStorageReport> {
-  const threeDaysAgo = new Date(Date.now() - 48 * 60 * 60 * 1000); // 48-72h window
+  const threeDaysAgo = new Date(Date.now() - 72 * 60 * 60 * 1000); // 48-72h window
   let scannedCount = 0;
   let prunedCount = 0;
   let retainedHighValueCount = 0;
@@ -56,7 +56,7 @@ export async function runAutomaticArticlePruningAgent(): Promise<PruneAndStorage
         publishedAt: true,
       },
       orderBy: { views: "asc" },
-      take: 200,
+      take: 500,
     });
 
     scannedCount = candidates.length;
