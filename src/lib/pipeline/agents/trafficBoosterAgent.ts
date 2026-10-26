@@ -108,30 +108,40 @@ export async function pingSearchEngines(articleUrls?: string[]): Promise<Indexin
     };
 
     const indexNowGateways = [
-      { name: "IndexNow Global Gateway", url: "https://api.indexnow.org/indexnow" },
       { name: "Microsoft Bing IndexNow", url: "https://www.bing.com/indexnow" },
+      { name: "IndexNow Global Gateway", url: "https://api.indexnow.org/indexnow" },
       { name: "Yandex IndexNow", url: "https://yandex.com/indexnow" },
     ];
 
     for (const gateway of indexNowGateways) {
       try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 6000);
+
         const res = await fetch(gateway.url, {
           method: "POST",
-          headers: { "Content-Type": "application/json; charset=utf-8" },
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "User-Agent": "TheSmartMag-Indexer/1.0",
+          },
           body: JSON.stringify(indexNowPayload),
+          signal: controller.signal,
         }).catch(() => null);
+        clearTimeout(timeout);
 
         results.push({
           engine: gateway.name,
           status: res && (res.ok || res.status === 200 || res.status === 202) ? "SUCCESS" : "WARNING",
-          message: res ? `${gateway.name} accepted ${urls.length} URLs (HTTP ${res.status})` : "Dispatched to gateway",
+          message: res
+            ? `${gateway.name} processed ${urls.length} URLs (HTTP ${res.status})`
+            : `${gateway.name} notification dispatched (network timeout/reset suppressed)`,
           urlsSubmitted: urls.length,
         });
       } catch (e: any) {
         results.push({
           engine: gateway.name,
           status: "WARNING",
-          message: `Notice: ${e.message}`,
+          message: `Gateway notice: ${e.message}`,
           urlsSubmitted: urls.length,
         });
       }
