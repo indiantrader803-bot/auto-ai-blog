@@ -102,8 +102,8 @@ export async function pingSearchEngines(articleUrls?: string[]): Promise<Indexin
     const host = new URL(siteUrl).hostname;
     const indexNowPayload = {
       host,
-      key: "autoai_indexnow_protocol_key",
-      keyLocation: `${siteUrl}/indexnow.txt`,
+      key: "d8a24a942684a28b19bade6d874e8fa6",
+      keyLocation: `${siteUrl}/d8a24a942684a28b19bade6d874e8fa6.txt`,
       urlList: urls.slice(0, 100),
     };
 
