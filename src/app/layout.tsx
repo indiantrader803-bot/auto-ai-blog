@@ -182,11 +182,10 @@ export default function RootLayout({
 
         {/* Google AdSense Account Verification Meta & Official Ad Engine Script */}
         <meta name="google-adsense-account" content="ca-pub-9768860457233655" />
-        <Script
-          id="google-adsense"
+        <script
+          async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9768860457233655"
           crossOrigin="anonymous"
-          strategy="lazyOnload"
         />
 
         {/* ======================================================== */}
