@@ -517,15 +517,6 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Fact-Checked Quality Seal */}
             <FactCheckedBadge category={post.category?.name} authorName="SmartMag Editorial Board" />
 
-            {/* Embedded Verified Free Video Player (Prominent Top Placement for Google Video Watch Page Indexing) */}
-            {post.youtubeVideoId && (
-              <ArticleVideoPlayer
-                videoId={post.youtubeVideoId}
-                videoTitle={post.youtubeVideoTitle}
-                category={post.category?.name}
-              />
-            )}
-
             {/* 🌟 Interactive Article Content Explainer (Deep Intel & Conceptual Roadmap) */}
             <ArticleContentExplainer
               title={post.title}
