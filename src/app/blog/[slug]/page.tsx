@@ -539,6 +539,7 @@ export default async function BlogPostPage({ params }: Props) {
                 articleTitle={post.title}
                 views={post.views || 2800}
                 initialIsVip={isVipUser}
+                slug={post.slug}
               />
             </div>
 
