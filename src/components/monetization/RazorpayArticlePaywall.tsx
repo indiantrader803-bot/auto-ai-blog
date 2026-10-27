@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Script from "next/script";
-import { Lock, Sparkles, ShieldCheck, CheckCircle2, ArrowRight, Zap, Crown } from "lucide-react";
+import { Lock, Sparkles, ShieldCheck, CheckCircle2, ArrowRight, Zap, Crown, Globe } from "lucide-react";
+import { useTravelCurrency } from "@/context/TravelCurrencyContext";
 
 interface RazorpayArticlePaywallProps {
   articleTitle: string;
@@ -16,6 +17,76 @@ declare global {
   }
 }
 
+// Localized Currency & Price Matrix (Targeting US, UK, EU, UAE, India)
+// Auto-detects local currency, charges user in their native currency, or defaults to clean local equivalents
+const MULTI_CURRENCY_PRICING: Record<
+  string,
+  {
+    currency: string;
+    symbol: string;
+    flag: string;
+    pass: { amountSubunits: number; display: string };
+    all_access: { amountSubunits: number; display: string };
+  }
+> = {
+  INR: {
+    currency: "INR",
+    symbol: "₹",
+    flag: "🇮🇳",
+    pass: { amountSubunits: 1900, display: "₹19" },
+    all_access: { amountSubunits: 9900, display: "₹99" },
+  },
+  USD: {
+    currency: "USD",
+    symbol: "$",
+    flag: "🇺🇸",
+    pass: { amountSubunits: 99, display: "$0.99" },
+    all_access: { amountSubunits: 499, display: "$4.99" },
+  },
+  EUR: {
+    currency: "EUR",
+    symbol: "€",
+    flag: "🇪🇺",
+    pass: { amountSubunits: 99, display: "€0.99" },
+    all_access: { amountSubunits: 499, display: "€4.99" },
+  },
+  GBP: {
+    currency: "GBP",
+    symbol: "£",
+    flag: "🇬🇧",
+    pass: { amountSubunits: 79, display: "£0.79" },
+    all_access: { amountSubunits: 399, display: "£3.99" },
+  },
+  AED: {
+    currency: "AED",
+    symbol: "AED ",
+    flag: "🇦🇪",
+    pass: { amountSubunits: 350, display: "AED 3.50" },
+    all_access: { amountSubunits: 1800, display: "AED 18" },
+  },
+  CAD: {
+    currency: "CAD",
+    symbol: "CA$",
+    flag: "🇨🇦",
+    pass: { amountSubunits: 129, display: "CA$1.29" },
+    all_access: { amountSubunits: 699, display: "CA$6.99" },
+  },
+  AUD: {
+    currency: "AUD",
+    symbol: "A$",
+    flag: "🇦🇺",
+    pass: { amountSubunits: 149, display: "A$1.49" },
+    all_access: { amountSubunits: 799, display: "A$7.99" },
+  },
+  SGD: {
+    currency: "SGD",
+    symbol: "S$",
+    flag: "🇸🇬",
+    pass: { amountSubunits: 129, display: "S$1.29" },
+    all_access: { amountSubunits: 649, display: "S$6.49" },
+  },
+};
+
 export default function RazorpayArticlePaywall({
   articleTitle,
   articleSlug = "",
@@ -24,43 +95,66 @@ export default function RazorpayArticlePaywall({
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [selectedTier, setSelectedTier] = useState<"pass" | "all_access">("pass");
+  const [activeCurrencyCode, setActiveCurrencyCode] = useState<string>("INR");
 
-  // Tier 1: Single Article Lifetime Pass (₹19 / 1900 paise)
-  // Tier 2: VIP All-Access 30-Day Pass (₹99 / 9900 paise)
-  const tierConfig = {
-    pass: {
-      amount: 1900,
-      displayPrice: "₹19",
-      label: "Single Deep-Dive Pass",
-      sublabel: "Instant 1-Click Access to Full Technical Analysis & Code",
-    },
-    all_access: {
-      amount: 9900,
-      displayPrice: "₹99",
-      label: "All-Access 30-Day VIP Pass",
-      sublabel: "Read ALL Articles, Pine Script Indicators & Research PDFs",
-    },
-  };
+  // Automatically detect visitor's country / timezone on mount
+  useEffect(() => {
+    try {
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      if (timeZone.includes("Calcutta") || timeZone.includes("Kolkata") || timeZone.includes("Asia/Delhi")) {
+        setActiveCurrencyCode("INR");
+      } else if (timeZone.includes("London") || timeZone.includes("Europe/London") || timeZone.includes("GB")) {
+        setActiveCurrencyCode("GBP");
+      } else if (timeZone.includes("Europe/Berlin") || timeZone.includes("Paris") || timeZone.includes("Rome") || timeZone.includes("Madrid")) {
+        setActiveCurrencyCode("EUR");
+      } else if (timeZone.includes("Dubai") || timeZone.includes("Asia/Dubai")) {
+        setActiveCurrencyCode("AED");
+      } else if (timeZone.includes("Toronto") || timeZone.includes("Vancouver") || timeZone.includes("Canada")) {
+        setActiveCurrencyCode("CAD");
+      } else if (timeZone.includes("Sydney") || timeZone.includes("Melbourne") || timeZone.includes("Australia")) {
+        setActiveCurrencyCode("AUD");
+      } else if (timeZone.includes("Singapore")) {
+        setActiveCurrencyCode("SGD");
+      } else if (timeZone.includes("America") || timeZone.includes("US")) {
+        setActiveCurrencyCode("USD");
+      } else {
+        // Fallback: check browser language
+        const lang = navigator.language || "";
+        if (lang.includes("en-IN") || lang.includes("hi")) {
+          setActiveCurrencyCode("INR");
+        } else if (lang.includes("en-GB")) {
+          setActiveCurrencyCode("GBP");
+        } else {
+          setActiveCurrencyCode("USD");
+        }
+      }
+    } catch (_) {
+      setActiveCurrencyCode("USD");
+    }
+  }, []);
+
+  const currentPricing = MULTI_CURRENCY_PRICING[activeCurrencyCode] || MULTI_CURRENCY_PRICING.USD;
 
   const handlePayNow = async () => {
     setErrorMsg(null);
     setLoading(true);
 
     try {
-      const selected = tierConfig[selectedTier];
+      const selectedPricing = currentPricing[selectedTier];
 
-      // 1. Call Backend Order Creation
+      // 1. Call Backend Order Creation with detected currency & amount
       const orderRes = await fetch("/api/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: selected.amount,
-          currency: "INR",
-          receipt: `art_${articleSlug.slice(0, 20) || "pay"}_${Date.now()}`,
+          amount: selectedPricing.amountSubunits,
+          currency: currentPricing.currency,
+          receipt: `art_${articleSlug.slice(0, 18) || "pay"}_${Date.now()}`,
           notes: {
             articleTitle: articleTitle.slice(0, 40),
             articleSlug,
             plan: selectedTier,
+            userCurrency: currentPricing.currency,
           },
         }),
       });
@@ -80,7 +174,7 @@ export default function RazorpayArticlePaywall({
         amount: orderData.amount,
         currency: orderData.currency,
         name: "TheSmartMag Premium",
-        description: `${selected.label}: ${articleTitle.slice(0, 35)}...`,
+        description: `${selectedTier === "pass" ? "Single Article Pass" : "30-Day VIP Pass"}: ${articleTitle.slice(0, 35)}...`,
         image: "https://thesmartmag.com/icon-512.png",
         order_id: orderData.order_id,
         handler: async function (response: any) {
@@ -100,7 +194,6 @@ export default function RazorpayArticlePaywall({
             const verifyData = await verifyRes.json();
 
             if (verifyRes.ok && verifyData.success) {
-              // Store unlock locally in localStorage
               if (typeof window !== "undefined") {
                 const unlockedList = JSON.parse(
                   localStorage.getItem("unlocked_articles") || "[]"
@@ -179,9 +272,28 @@ export default function RazorpayArticlePaywall({
         <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-xl mx-auto text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-black uppercase tracking-wider">
-            <Lock className="w-3.5 h-3.5" />
-            <span>Premium Editorial Paywall</span>
+          {/* Header & Currency Switcher Pill */}
+          <div className="flex items-center justify-between gap-2 flex-wrap">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-black uppercase tracking-wider">
+              <Lock className="w-3.5 h-3.5" />
+              <span>Premium Editorial Paywall</span>
+            </div>
+
+            {/* Currency Selector */}
+            <div className="flex items-center gap-1 bg-black/40 px-2.5 py-1 rounded-full border border-white/10 text-xs">
+              <Globe className="w-3.5 h-3.5 text-slate-400" />
+              <select
+                value={activeCurrencyCode}
+                onChange={(e) => setActiveCurrencyCode(e.target.value)}
+                className="bg-transparent text-white font-bold text-xs focus:outline-none cursor-pointer"
+              >
+                {Object.keys(MULTI_CURRENCY_PRICING).map((code) => (
+                  <option key={code} value={code} className="bg-slate-900 text-white">
+                    {MULTI_CURRENCY_PRICING[code].flag} {code} ({MULTI_CURRENCY_PRICING[code].symbol})
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <h3 className="text-xl sm:text-2xl font-black font-serif tracking-tight leading-snug">
@@ -205,7 +317,9 @@ export default function RazorpayArticlePaywall({
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-200">This Article</span>
-                <span className="text-lg font-black text-amber-400 font-mono">₹19</span>
+                <span className="text-lg font-black text-amber-400 font-mono">
+                  {currentPricing.pass.display}
+                </span>
               </div>
               <p className="text-[11px] text-slate-400 mt-1">
                 Instant access to this specific article forever.
@@ -226,7 +340,9 @@ export default function RazorpayArticlePaywall({
                   <Crown className="w-3.5 h-3.5 text-emerald-400" />
                   <span className="text-xs font-bold text-emerald-300">30-Day VIP Pass</span>
                 </div>
-                <span className="text-lg font-black text-emerald-400 font-mono">₹99</span>
+                <span className="text-lg font-black text-emerald-400 font-mono">
+                  {currentPricing.all_access.display}
+                </span>
               </div>
               <p className="text-[11px] text-slate-400 mt-1">
                 Unlimited access to ALL articles, guides &amp; indicators.
@@ -256,7 +372,7 @@ export default function RazorpayArticlePaywall({
                 <>
                   <Zap className="w-4 h-4 fill-slate-950" />
                   <span>
-                    Pay {tierConfig[selectedTier].displayPrice} via Razorpay (UPI, Cards, NetBanking)
+                    Pay {currentPricing[selectedTier].display} via Razorpay (UPI, Cards, International)
                   </span>
                   <ArrowRight className="w-4 h-4" />
                 </>
@@ -264,14 +380,14 @@ export default function RazorpayArticlePaywall({
             </button>
           </div>
 
-          <div className="flex items-center justify-center gap-4 text-[11px] text-slate-400 pt-1">
+          <div className="flex items-center justify-center gap-4 text-[11px] text-slate-400 pt-1 flex-wrap">
             <span className="flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Secure 256-Bit Razorpay
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> 160+ Currencies Supported
             </span>
             <span>•</span>
-            <span>UPI / GPay / PhonePe / Cards</span>
+            <span>Auto-Converted via Razorpay</span>
             <span>•</span>
-            <span>Instant Unlock</span>
+            <span>Instant Access</span>
           </div>
         </div>
       </div>
