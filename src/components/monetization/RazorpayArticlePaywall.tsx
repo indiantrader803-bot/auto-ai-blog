@@ -72,7 +72,7 @@ export default function RazorpayArticlePaywall({
       }
 
       const keyId =
-        process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_TsxnO9B7Va26ks";
+        process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_TsyBYgUQ6RML5t";
 
       // 2. Open Razorpay Standard Checkout Modal
       const options = {
