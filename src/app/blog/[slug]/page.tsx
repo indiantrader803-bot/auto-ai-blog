@@ -1,3 +1,4 @@
+import HighIntentDealBox from "@/components/growth/HighIntentDealBox";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -516,6 +517,12 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Fact-Checked Quality Seal */}
             <FactCheckedBadge category={post.category?.name} authorName="SmartMag Editorial Board" />
+
+            {/* 🔥 High-Intent Direct Affiliate & Booking Callout */}
+            <HighIntentDealBox
+              category={post.category?.name}
+              articleTitle={post.title}
+            />
 
             {/* 🌟 Interactive Article Content Explainer (Deep Intel & Conceptual Roadmap) */}
             <ArticleContentExplainer

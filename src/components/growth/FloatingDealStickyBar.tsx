@@ -75,14 +75,15 @@ export default function FloatingDealStickyBar({ categorySlug, articleTitle }: Fl
         colorScheme: "from-cyan-600 via-teal-600 to-blue-700",
       }
     : {
-        badge: "🔥 10% OFF + 90% PROFIT SPLIT",
-        title: "Funded Trader Markets: Scale to $200k",
-        subtitle: "Zero time limits, raw institutional spreads & on-demand payouts.",
-        promoCode: "arnab",
-        buttonText: "Claim FTM Challenge",
-        url: "https://fundedtradermarkets.com/ref/arnab",
-        platform: "Funded Trader Markets",
-        colorScheme: "from-purple-600 via-indigo-600 to-indigo-800",
+: {
+        badge: "🔥 BUY 1 GET 2 FREE + 35% OFF",
+        title: "FundedSquad: Get 3 Funded Accounts from $35",
+        subtitle: "Pass fast with 0-day evaluation, 90% profit split & EA bot support.",
+        promoCode: "CHARGE",
+        buttonText: "Claim 3-For-1 Deal ($35)",
+        url: "https://fundedsquad.com/?campaign=thesmartmag&squad=3552",
+        platform: "FundedSquad",
+        colorScheme: "from-rose-600 via-amber-600 to-orange-700",
       };
 
   const handleCopyCode = (e: React.MouseEvent) => {
