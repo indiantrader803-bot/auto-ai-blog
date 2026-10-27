@@ -3,8 +3,8 @@ import Razorpay from "razorpay";
 
 export async function POST(req: NextRequest) {
   try {
-    const keyId = process.env.RAZORPAY_KEY_ID;
-    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    const keyId = process.env.RAZORPAY_KEY_ID || "rzp_test_TsxnO9B7Va26ks";
+    const keySecret = process.env.RAZORPAY_KEY_SECRET || "2cDHKxVzz5aj3Jx8LxAERQps";
 
     if (!keyId || !keySecret) {
       console.error("[RAZORPAY] Missing credentials in environment variables");
