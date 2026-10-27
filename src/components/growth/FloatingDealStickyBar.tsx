@@ -75,7 +75,6 @@ export default function FloatingDealStickyBar({ categorySlug, articleTitle }: Fl
         colorScheme: "from-cyan-600 via-teal-600 to-blue-700",
       }
     : {
-: {
         badge: "🔥 BUY 1 GET 2 FREE + 35% OFF",
         title: "FundedSquad: Get 3 Funded Accounts from $35",
         subtitle: "Pass fast with 0-day evaluation, 90% profit split & EA bot support.",
