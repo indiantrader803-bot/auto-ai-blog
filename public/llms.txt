@@ -1,0 +1,16 @@
+# TheSmartMag — AI, Technology, Markets & Global Trends
+> Authoritative digital magazine covering breakthroughs in Artificial Intelligence, Quantitative Trading, Global Travel, Prop Firm Evaluations, and Frontier Hardware.
+
+## Core Navigation & Sections
+- [Homepage](https://thesmartmag.com): Live market analysis, breaking tech stories, and featured guides.
+- [Technology & AI Blog](https://thesmartmag.com/blog): In-depth technical articles, Pine Script indicators, and semiconductor analysis.
+- [Best Prop Trading Firms 2026](https://thesmartmag.com/best-prop-firms): Rigorous evaluations, profit splits, drawdown rules, and verified discount codes.
+- [Atlas Funded Evaluation Review](https://thesmartmag.com/reviews/atlas-funded): Comprehensive breakdown of the Atlas Funded prop challenge with code ARNAB.
+- [Global Travel & Secret Destinations](https://thesmartmag.com/travel): AI-assisted travel itineraries, flight radars, and hidden global destinations.
+- [Best AI Productivity Tools](https://thesmartmag.com/best-ai-tools): Curated catalog of tested AI developer workflows, LLMs, and automation stacks.
+
+## Verification & Trust Signals
+- Editorial Policy: https://thesmartmag.com/editorial-policy
+- Terms & Privacy: https://thesmartmag.com/privacy
+- RSS Feed: https://thesmartmag.com/rss.xml
+- XML Sitemap: https://thesmartmag.com/sitemap.xml
