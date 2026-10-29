@@ -1,11 +1,11 @@
+import dynamic from "next/dynamic";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 import "@/styles/ads.css";
 import ExitIntentModal from "@/components/growth/ExitIntentModal";
 import FloatingSubscribeButton from "@/components/growth/FloatingSubscribeButton";
-import GlobalBlogAssistant from "@/components/chat/GlobalBlogAssistant";
-import SmartCompanion3D from "@/components/chat/SmartCompanion3D";
+const GlobalBlogAssistant = dynamic(() => import("@/components/chat/GlobalBlogAssistant"), { ssr: false });
 import GoogleTranslateProvider from "@/components/layout/GoogleTranslateProvider";
 import MonetagProvider from "@/components/ads/MonetagProvider";
 import BiceaAdProvider from "@/components/ads/BiceaAdProvider";
@@ -264,7 +264,7 @@ export default function RootLayout({
                 <ExitIntentModal />
                 <FloatingSubscribeButton />
                 <GlobalBlogAssistant />
-                <SmartCompanion3D />
+                
               </MonetagProvider>
             </BiceaAdProvider>
           </VipAuthProvider>
