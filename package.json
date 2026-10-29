@@ -12,7 +12,8 @@
     "prisma:push": "prisma db push",
     "prisma:seed": "node scripts/seed.mjs",
     "generate:cli": "node scripts/generate-cli.mjs",
-    "worker": "node scripts/cron-worker.mjs"
+    "worker": "node scripts/cron-worker.mjs",
+    "verify:deploy": "node scripts/verify-production-readiness.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.1127.0",
