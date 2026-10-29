@@ -19,18 +19,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const [posts, cats] = await Promise.all([
       prisma.post.findMany({
         where: { status: "PUBLISHED" },
-        select: { slug: true, updatedAt: true, publishedAt: true, content: true },
+        select: { slug: true, updatedAt: true, publishedAt: true },
+        take: 1500,
+        orderBy: { publishedAt: "desc" },
       }),
       prisma.category.findMany({
         select: { slug: true, createdAt: true },
       }),
     ]);
-    // Filter out thin articles (< 800 words) from search engine sitemap to resolve GSC 'Discovered - Not Indexed'
-    dbPosts = (posts || []).filter((p) => {
-      if (!p.content) return true;
-      const wordCount = p.content.trim().split(/\s+/).length;
-      return wordCount >= 700;
-    });
+    dbPosts = posts || [];
     dbCategories = cats || [];
   } catch (e) {
     console.warn("Sitemap DB fetch notice:", e);
