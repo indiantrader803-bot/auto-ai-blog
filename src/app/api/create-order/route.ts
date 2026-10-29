@@ -17,11 +17,11 @@ export async function POST(req: NextRequest) {
     const body = await req.json().catch(() => ({}));
     const { amount, currency = "INR", receipt = `rcpt_${Date.now()}`, notes = {} } = body;
 
-    // Minimum amount validation: 100 paise (1 INR)
+    // Minimum amount validation: At least 50 subunits (e.g. 50 cents, 50 pence, 100 paise)
     const numericAmount = Number(amount);
-    if (!numericAmount || numericAmount < 100) {
+    if (!numericAmount || numericAmount < 50) {
       return NextResponse.json(
-        { error: "Amount must be at least 100 paise (1 INR)" },
+        { error: "Amount must be at least 50 subunits" },
         { status: 400 }
       );
     }
