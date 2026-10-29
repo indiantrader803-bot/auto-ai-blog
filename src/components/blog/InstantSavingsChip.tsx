@@ -38,12 +38,12 @@ export default function InstantSavingsChip({ category = "Trading" }: InstantSavi
       <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
         {/* Atlas Funded */}
         <button
-          onClick={() => copyCode("12275")}
+          onClick={() => copyCode("ARNAB")}
           className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono font-bold text-teal-300 border border-slate-700 flex items-center gap-1.5 transition-colors cursor-pointer"
           title="Click to copy Atlas Funded 20% promo code"
         >
-          {copied === "12275" ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Tag className="w-3 h-3 text-teal-400" />}
-          <span>12275 (20% OFF)</span>
+          {copied === "ARNAB" ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Tag className="w-3 h-3 text-teal-400" />}
+          <span>ARNAB (20% OFF)</span>
         </button>
 
         {/* FTM */}

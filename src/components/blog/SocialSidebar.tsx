@@ -334,8 +334,8 @@ export default function SocialSidebar({
 
         {/* Offer: Atlas Funded */}
         <a
-          href="https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN"
-          onClick={() => trackAffiliateClick("Atlas Funded Prop Firm", "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN")}
+          href="https://app.atlasfunded.com/?afmc=ARNAB"
+          onClick={() => trackAffiliateClick("Atlas Funded Prop Firm", "https://app.atlasfunded.com/?afmc=ARNAB")}
           target="_blank"
           rel="noopener noreferrer nofollow"
           className="group block p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-500/15 to-orange-500/15 hover:from-amber-500/25 hover:to-orange-500/25 border border-amber-500/30 hover:border-amber-400 transition-all overflow-hidden"
@@ -345,7 +345,7 @@ export default function SocialSidebar({
             <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold">20% + $5 FTP</span>
           </div>
           <p className="text-[11px] text-slate-300 leading-snug mb-2">
-            Institutional liquidity, fast evaluation &amp; instant payouts. Ref ID: <strong className="text-amber-300 font-mono">12275</strong>
+            Institutional liquidity, fast evaluation &amp; instant payouts. Ref ID: <strong className="text-amber-300 font-mono">ARNAB</strong>
           </p>
           <div className="flex items-center gap-1 text-[11px] text-amber-400 group-hover:text-white font-bold">
             <span>Claim Atlas Funded Challenge</span>

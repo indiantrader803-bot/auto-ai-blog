@@ -240,7 +240,7 @@ export default function AdminDashboardPage() {
               <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white" />
             </div>
             <div className="text-xs font-bold text-white mt-2">Atlas Funded</div>
-            <div className="text-[10px] text-teal-400 font-mono font-bold">Code: 12275 (20%)</div>
+            <div className="text-[10px] text-teal-400 font-mono font-bold">Code: ARNAB (20%)</div>
           </Link>
 
           <Link

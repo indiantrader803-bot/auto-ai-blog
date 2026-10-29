@@ -57,9 +57,9 @@ export default function FloatingDealStickyBar({ categorySlug, articleTitle }: Fl
         badge: "ATLAS FUNDED 20% DISCOUNT",
         title: "Atlas Funded: Scale Up to $200,000",
         subtitle: "Rapid evaluation passing, lowest spreads & instant profit withdrawals.",
-        promoCode: "12275",
+        promoCode: "ARNAB",
         buttonText: "Claim Atlas ($200k)",
-        url: "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN",
+        url: "https://app.atlasfunded.com/?afmc=ARNAB",
         platform: "Atlas Funded",
         colorScheme: "from-amber-600 via-yellow-600 to-orange-700",
       }

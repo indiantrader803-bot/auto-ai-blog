@@ -23,7 +23,7 @@ export const TOP_PROP_FIRMS_TARGETS: PropFirmPartner[] = [
     marketType: "MULTI_ASSET",
     contactEmail: "support@atlasfunded.com",
     affiliatePortalUrl: "https://affiliates.atlasfunded.com",
-    defaultAffiliateUrl: "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN",
+    defaultAffiliateUrl: "https://app.atlasfunded.com/?afmc=ARNAB",
     proposedCommission: "20% Purchases + $5 Access FTPs",
     outreachPitchDeck: {
       subjectLine: "Partnership & High Volume Traffic: SmartMag Tech Chronicle x Atlas Funded",

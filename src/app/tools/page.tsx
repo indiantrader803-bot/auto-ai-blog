@@ -80,7 +80,7 @@ export default function PropToolsPage() {
                 className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-sm font-bold text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500"
               >
                 <option value="funded-trader-markets">Funded Trader Markets (Code: arnab)</option>
-                <option value="atlas-funded">Atlas Funded (Code: 12275 - 20% OFF)</option>
+                <option value="atlas-funded">Atlas Funded (Code: ARNAB - 20% OFF)</option>
                 <option value="aquafunded">AquaFunded (Code: 6e9 - 20% Rebate)</option>
               </select>
             </div>

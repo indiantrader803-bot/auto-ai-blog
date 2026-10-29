@@ -166,17 +166,17 @@ export const DEFAULT_AFFILIATE_RULES: AffiliateRule[] = [
   },
   {
     keyword: "Atlas Funded",
-    url: "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN",
+    url: "https://app.atlasfunded.com/?afmc=ARNAB",
     label: "Atlas Funded - Trade $200k Funded Challenge (20% Discount Auto-Applied)",
   },
   {
     keyword: "AtlasFunded",
-    url: "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN",
+    url: "https://app.atlasfunded.com/?afmc=ARNAB",
     label: "Atlas Funded Prop Trading Evaluation (Rapid Scaling & Fast Payouts)",
   },
   {
     keyword: "atlas funded",
-    url: "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN",
+    url: "https://app.atlasfunded.com/?afmc=ARNAB",
     label: "Atlas Funded Challenge Registration Portal",
   },
   {

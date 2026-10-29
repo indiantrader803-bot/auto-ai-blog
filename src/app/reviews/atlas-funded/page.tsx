@@ -6,9 +6,9 @@ import { PROPFLOW_MASTER_OFFERS } from "@/lib/propflow/offers";
 import { Star, ShieldCheck, CheckCircle2, XCircle, ArrowRight, Tag } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Atlas Funded Review 2026: 20% Discount Code '12275' + $5 Free Challenge Passes",
-  description: "Detailed 2026 review of Atlas Funded. High leverage on TradeLocker, instant scaling, 85-90% profit split, and claim 20% off with exclusive partner code '12275'.",
-  keywords: ["Atlas Funded review 2026", "Atlas Funded discount code 12275", "Atlas Funded promo", "prop firm discount 20 off"],
+  title: "Atlas Funded Review 2026: 20% Discount Code 'ARNAB' + $5 Free Challenge Passes",
+  description: "Detailed 2026 review of Atlas Funded. High leverage on TradeLocker, instant scaling, 85-90% profit split, and claim 20% off with exclusive partner code 'ARNAB'.",
+  keywords: ["Atlas Funded review 2026", "Atlas Funded discount code ARNAB", "Atlas Funded promo", "prop firm discount 20 off"],
   alternates: {
     canonical: "https://thesmartmag.com/reviews/atlas-funded",
   },
@@ -49,7 +49,7 @@ export default function AtlasFundedReviewPage() {
             </h1>
 
             <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-              Atlas Funded provides rapid scaling up to $300,000 with TradeLocker execution and transparent drawdown rules. Use our partner code <strong>12275</strong> to claim an instant 20% discount on any challenge.
+              Atlas Funded provides rapid scaling up to $300,000 with TradeLocker execution and transparent drawdown rules. Use our partner code <strong>ARNAB</strong> to claim an instant 20% discount on any challenge.
             </p>
 
             <div className="p-4 rounded-2xl bg-slate-800/90 border border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-inner">
@@ -60,7 +60,7 @@ export default function AtlasFundedReviewPage() {
                 <div>
                   <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Verified 20% Partner Code</div>
                   <div className="text-sm font-bold text-white flex items-center gap-2 font-mono">
-                    Code: <span className="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">12275</span> (20% OFF + $5 FTPs)
+                    Code: <span className="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">ARNAB</span> (20% OFF + $5 FTPs)
                   </div>
                 </div>
               </div>

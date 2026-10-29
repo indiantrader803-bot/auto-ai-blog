@@ -158,8 +158,8 @@ export default function PropFlowAdminDashboard() {
       category: "Instant Messenger VIP",
       icon: "✈️",
       audience: "High-Converting Signal Subscribers",
-      strategy: "Broadcast flash coupon alert: '10% OFF FTM (Code: arnab) + 20% OFF Atlas Funded (Code: 12275)'.",
-      directShareUrl: `https://t.me/share/url?url=${encodeURIComponent(generatedUtmUrl)}&text=${encodeURIComponent("🚀 Verified Prop Firm Discount Alert:\n• Funded Trader Markets: 10% OFF with code 'arnab'\n• Atlas Funded: 20% OFF with code '12275'\n\nCalculate your exact fees & payout savings here:")}`,
+      strategy: "Broadcast flash coupon alert: '10% OFF FTM (Code: arnab) + 20% OFF Atlas Funded (Code: ARNAB)'.",
+      directShareUrl: `https://t.me/share/url?url=${encodeURIComponent(generatedUtmUrl)}&text=${encodeURIComponent("🚀 Verified Prop Firm Discount Alert:\n• Funded Trader Markets: 10% OFF with code 'arnab'\n• Atlas Funded: 20% OFF with code 'ARNAB'\n\nCalculate your exact fees & payout savings here:")}`,
     },
     {
       name: "Quora Q&A",
@@ -216,7 +216,7 @@ export default function PropFlowAdminDashboard() {
             </span>
             <span>•</span>
             <span className="flex items-center gap-1 text-emerald-400">
-              <Tag className="w-3.5 h-3.5" /> Atlas: <strong>12275</strong> (20% OFF)
+              <Tag className="w-3.5 h-3.5" /> Atlas: <strong>ARNAB</strong> (20% OFF)
             </span>
             <span>•</span>
             <span className="flex items-center gap-1 text-cyan-400">
@@ -262,7 +262,7 @@ export default function PropFlowAdminDashboard() {
         <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
           <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Max Partner Discount</span>
           <div className="text-xl font-black text-amber-500 font-serif">20% Flat OFF</div>
-          <span className="text-[10px] text-slate-500">Atlas Funded (12275)</span>
+          <span className="text-[10px] text-slate-500">Atlas Funded (ARNAB)</span>
         </div>
         <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
           <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Live Sales Funnels</span>
@@ -413,11 +413,11 @@ export default function PropFlowAdminDashboard() {
                   <div>
                     <span className="text-[10px] font-bold text-amber-300 uppercase tracking-wider">🔥 Discount Codes</span>
                     <p className="text-[11px] text-slate-200 mt-1 line-clamp-3">
-                      "Getting funded in 2026? Stop paying full price: Atlas (12275), FTM (arnab), AquaFunded (6e9), Pocket Option (50START)..."
+                      "Getting funded in 2026? Stop paying full price: Atlas (ARNAB), FTM (arnab), AquaFunded (6e9), Pocket Option (50START)..."
                     </p>
                   </div>
                   <a
-                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Getting funded in 2026? Stop paying full price for prop evaluations:\n\n🔥 Atlas Funded: 20% OFF (Code: 12275)\n📈 FTM: 10% OFF + 0 Time Limits (Code: arnab)\n🚀 AquaFunded: 20% Rebate (Code: 6e9)\n💎 Pocket Option: 50% Match (Code: 50START)\n\nAudit & Fee Calculator:\n${baseUrl}/best-prop-firms?utm_source=twitter&utm_medium=social&utm_campaign=theindainta9go\n\n#Forex #PropFirm #Trading`)}`}
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Getting funded in 2026? Stop paying full price for prop evaluations:\n\n🔥 Atlas Funded: 20% OFF (Code: ARNAB)\n📈 FTM: 10% OFF + 0 Time Limits (Code: arnab)\n🚀 AquaFunded: 20% Rebate (Code: 6e9)\n💎 Pocket Option: 50% Match (Code: 50START)\n\nAudit & Fee Calculator:\n${baseUrl}/best-prop-firms?utm_source=twitter&utm_medium=social&utm_campaign=theindainta9go\n\n#Forex #PropFirm #Trading`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-[11px] text-center flex items-center justify-center gap-1 transition-all"
@@ -658,7 +658,7 @@ export default function PropFlowAdminDashboard() {
 
                 <div className="pt-2 flex items-center gap-2">
                   <button
-                    onClick={() => handleCopy(`📊 2026 Prop Firm Discount Codes:\n• FTM (Code: arnab) - 10% OFF\n• Atlas Funded (Code: 12275) - 20% OFF\n• AquaFunded (Code: 6e9) - 20% Rebate\n• Pocket Option (Code: 50START) - 50% Bonus\n\nLink in bio: ${baseUrl}/best-prop-firms?utm_source=instagram&utm_medium=social&utm_campaign=indiantrader8032026\n\n#forex #daytrading #indiantrader8032026`, "ig_copy")}
+                    onClick={() => handleCopy(`📊 2026 Prop Firm Discount Codes:\n• FTM (Code: arnab) - 10% OFF\n• Atlas Funded (Code: ARNAB) - 20% OFF\n• AquaFunded (Code: 6e9) - 20% Rebate\n• Pocket Option (Code: 50START) - 50% Bonus\n\nLink in bio: ${baseUrl}/best-prop-firms?utm_source=instagram&utm_medium=social&utm_campaign=indiantrader8032026\n\n#forex #daytrading #indiantrader8032026`, "ig_copy")}
                     className="flex-1 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 text-white font-bold text-xs text-center flex items-center justify-center gap-1 transition-all shadow-md"
                   >
                     <span>{copiedId === "ig_copy" ? "Copied!" : "Copy Caption"}</span>
@@ -852,7 +852,7 @@ export default function PropFlowAdminDashboard() {
                 className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500"
               >
                 <option value="arnab">arnab (FTM - 10% OFF)</option>
-                <option value="12275">12275 (Atlas Funded - 20% OFF + $5 FTPs)</option>
+                <option value="ARNAB">ARNAB (Atlas Funded - 20% OFF + $5 FTPs)</option>
                 <option value="6e9">6e9 (AquaFunded - 20% Rebate)</option>
                 <option value="50START">50START (Pocket Option - 50% Bonus)</option>
               </select>

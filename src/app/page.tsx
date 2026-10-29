@@ -265,7 +265,7 @@ export default async function HomePage() {
             <div className="p-5 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-emerald-500/50 transition-all space-y-3 flex flex-col justify-between">
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-emerald-400 font-mono">CODE: 12275</span>
+                  <span className="text-xs font-bold text-emerald-400 font-mono">CODE: ARNAB</span>
                   <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold uppercase">20% OFF</span>
                 </div>
                 <h3 className="text-base font-bold text-white font-serif">Atlas Funded</h3>
@@ -273,7 +273,7 @@ export default async function HomePage() {
               </div>
               <div className="pt-2 flex items-center justify-between gap-2 border-t border-slate-700/60">
                 <Link href="/reviews/atlas-funded" className="text-xs text-emerald-400 hover:text-emerald-300 font-bold">Read Audit →</Link>
-                <a href="https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN" target="_blank" rel="noopener noreferrer nofollow" className="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-[11px]">Claim Deal</a>
+                <a href="https://app.atlasfunded.com/?afmc=ARNAB" target="_blank" rel="noopener noreferrer nofollow" className="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-[11px]">Claim Deal</a>
               </div>
             </div>
 

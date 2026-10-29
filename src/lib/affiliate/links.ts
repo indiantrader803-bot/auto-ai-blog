@@ -23,8 +23,8 @@ export const AFFILIATE_CONFIG = {
       payoutSplit: "Up to 90%",
     },
     atlasFunded: {
-      url: "https://affiliates.atlasfunded.com/Tracking/click/?affid=12275&campaign=11320&product_id=1&t_type=Register&t_lang=EN",
-      promoCode: "12275",
+      url: "https://app.atlasfunded.com/?afmc=ARNAB",
+      promoCode: "ARNAB",
       payoutSplit: "85% - 90%",
     },
     pocketOption: {
