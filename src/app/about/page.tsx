@@ -160,7 +160,7 @@ export default function AboutPage() {
             <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex items-center gap-4">
                 <img
-                  src="/brand-logo.png"
+                  src="/icon-512.png" width={80} height={80}
                   alt="TheSmartMag Official Logo"
                   className="w-20 h-20 rounded-2xl border border-indigo-500/40 shadow-lg shadow-indigo-500/20 object-cover"
                 />
@@ -171,7 +171,7 @@ export default function AboutPage() {
               </div>
               <div className="flex flex-wrap gap-2.5 shrink-0">
                 <a
-                  href="/brand-logo.png"
+                  href="/icon-512.png"
                   download="TheSmartMag-Official-Logo.png"
                   className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs tracking-wide shadow-md shadow-indigo-600/30 transition-all flex items-center justify-center gap-2"
                 >
