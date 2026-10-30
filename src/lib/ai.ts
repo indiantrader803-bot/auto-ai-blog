@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { prisma } from "./prisma";
 
 export interface GenerateArticlePromptOptions {
   topic: string;
@@ -28,11 +29,20 @@ export async function generateArticleContent(options: GenerateArticlePromptOptio
   suggestedImageQuery: string;
   suggestedVideoQuery: string;
 }> {
-  const explabsKey = process.env.EXPLABS_API_KEY || process.env.EXPERIENTIALLABS_API_KEY || "";
+  // Fetch DB settings as runtime fallback if process.env isn't populated
+  let dbSettings: Record<string, string> = {};
+  try {
+    const rows = await prisma.setting.findMany();
+    rows.forEach((r) => {
+      dbSettings[r.key] = r.value;
+    });
+  } catch (_) {}
+
+  const explabsKey = process.env.EXPLABS_API_KEY || process.env.EXPERIENTIALLABS_API_KEY || dbSettings["EXPLABS_API_KEY"] || "";
   const explabsBaseUrl = process.env.EXPLABS_BASE_URL || "https://api.experientiallabs.ai";
-  const explabsModel = process.env.EXPLABS_MODEL || "claude-sonnet-4.5";
-  const apiKey = process.env.GEMINI_API_KEY || "";
-  const openaiKey = process.env.OPENAI_API_KEY || "";
+  const explabsModel = process.env.EXPLABS_MODEL || dbSettings["EXPLABS_MODEL"] || "claude-sonnet-4.5";
+  const apiKey = process.env.GEMINI_API_KEY || dbSettings["GEMINI_API_KEY"] || "";
+  const openaiKey = process.env.OPENAI_API_KEY || dbSettings["OPENAI_API_KEY"] || "";
   const modelName = process.env.AI_MODEL_PREFERENCE || explabsModel || "gemini-1.5-flash";
   const targetWords = options.targetWordCount || 2400;
   const tone = options.tone || "deeply authoritative, investigative, engaging, and practical";
