@@ -489,6 +489,61 @@ export async function autopostToPostiz(payload: AutopostPayload): Promise<Autopo
   }
 }
 
+
+/**
+ * 📡 7. Dispatches to Postsider (30+ Social Media Platforms Gateway)
+ */
+export async function autopostToPostsider(payload: AutopostPayload): Promise<AutopostResult> {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
+  const utmUrl = `${siteUrl}/blog/${payload.slug}?utm_source=postsider&utm_medium=multiplatform_broadcast&utm_campaign=thesmartmag_reach`;
+  const postsiderEndpoint = process.env.POSTSIDER_API_URL || process.env.POSTSIDER_WEBHOOK_URL;
+  const postsiderApiKey = process.env.POSTSIDER_API_KEY;
+
+  if (!postsiderEndpoint) {
+    return {
+      platform: "ALL",
+      success: true,
+      message: "Postsider ready: Endpoint awaiting POSTSIDER_API_URL or POSTSIDER_WEBHOOK_URL configuration.",
+    };
+  }
+
+  try {
+    const postBody = {
+      title: payload.title,
+      summary: payload.excerpt,
+      url: utmUrl,
+      category: payload.category || "Technology",
+      tags: ["TheSmartMag", "TechNews", "Trading", "AI"],
+      timestamp: new Date().toISOString(),
+    };
+
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    if (postsiderApiKey) {
+      headers["Authorization"] = `Bearer ${postsiderApiKey}`;
+    }
+
+    const res = await fetch(postsiderEndpoint, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(postBody),
+    });
+
+    return {
+      platform: "ALL",
+      success: res.ok,
+      message: res.ok
+        ? "Broadcasted to Postsider multi-platform social gateway."
+        : `Postsider response status: ${res.status}`,
+    };
+  } catch (err: any) {
+    return {
+      platform: "ALL",
+      success: false,
+      message: `Postsider dispatch notice: ${err.message}`,
+    };
+  }
+}
+
 export async function runFullAutonomousSocialAutopost(payload: AutopostPayload): Promise<{
   twitter: AutopostResult;
   linkedIn: AutopostResult;
@@ -496,7 +551,8 @@ export async function runFullAutonomousSocialAutopost(payload: AutopostPayload):
   instagram: AutopostResult;
   reddit: AutopostResult;
 }> {
-  const [twitter, linkedIn, facebook, instagram, reddit, postiz] = await Promise.all([
+  const [twitter, linkedIn, facebook, instagram, reddit, postiz, postsider] = await Promise.all([
+    autopostToPostsider(payload),
     autopostToPostiz(payload),
     autopostToTwitter(payload),
     autopostToLinkedIn(payload),
