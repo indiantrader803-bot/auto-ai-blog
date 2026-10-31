@@ -20,37 +20,17 @@ export async function register() {
       }
     }, 2000);
 
-    // ⚡ 1. Auto-run initial swarm 10 seconds after server startup
+    // ⚡ 1. Auto-run staggered light boot pulse 30 seconds after server startup (prevents memory spikes)
     setTimeout(async () => {
       try {
-        console.log("⚡ [Autonomous Boot Pulse] Launching initial 24/7 promotion, indexing, PropFlow & revenue swarm...");
-        const { runAutonomousFleetTrafficBooster, pingSearchEngines } = await import("@/lib/pipeline/agents/trafficBoosterAgent");
-        const { executeRevenueOptimizationSwarm } = await import("@/lib/pipeline/agents/revenueOptimizationSwarm");
-        const { runPropFlowMasterSwarm } = await import("@/lib/propflow/orchestrator");
-        const { getAllCatalogArticles } = await import("@/lib/content/articles");
-        const { runFullAutonomousSocialAutopost } = await import("@/lib/pipeline/agents/socialAutopostAgent");
-
-        await runAutonomousFleetTrafficBooster().catch((e) => console.warn("Traffic booster boot notice:", e.message));
+        console.log("⚡ [Autonomous Boot Pulse] Launching staggered initial indexing...");
+        const { pingSearchEngines } = await import("@/lib/pipeline/agents/trafficBoosterAgent");
         await pingSearchEngines().catch((e) => console.warn("Search engine ping boot notice:", e.message));
-        await executeRevenueOptimizationSwarm().catch((e) => console.warn("Revenue swarm boot notice:", e.message));
-        await runPropFlowMasterSwarm().catch((e) => console.warn("PropFlow boot notice:", e.message));
-
-        const catalog = getAllCatalogArticles();
-        if (catalog.length > 0) {
-          const featured = catalog[0];
-          await runFullAutonomousSocialAutopost({
-            title: featured.title,
-            slug: featured.slug,
-            excerpt: featured.excerpt,
-            category: featured.category?.name,
-          }).catch((e) => console.warn("Initial social autopost notice:", e.message));
-        }
-
-        console.log("✅ [Autonomous Boot Pulse] Initial 24/7 server-side cycle & social promotion completed.");
+        console.log("✅ [Autonomous Boot Pulse] Search engine ping completed cleanly.");
       } catch (err: any) {
         console.warn("Autonomous boot pulse note:", err.message);
       }
-    }, 10000);
+    }, 30000);
 
     // 🔄 2. Keep-Alive Heartbeat (Every 3 Minutes) - Keeps Render server active 24/7 without sleeping
     setInterval(async () => {

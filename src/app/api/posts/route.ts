@@ -131,6 +131,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json().catch(() => ({}));
     if (body.action === "DEDUPLICATE") {
       const allPosts = await prisma.post.findMany({
+        select: { id: true, title: true, slug: true },
         orderBy: { publishedAt: "desc" },
       });
 

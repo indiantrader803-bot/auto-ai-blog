@@ -49,10 +49,23 @@ export async function auditAndMaintainContent(): Promise<AgentMaintenanceReport>
     let postsAudited = 0;
     let postsFixed = 0;
 
-    // Scan DB posts
+    // Scan DB posts (lightweight projection, avoid loading 1,800 full Markdown articles into RAM)
     const posts = await prisma.post.findMany({
-      where: { status: "PUBLISHED" },
-      include: { category: true, tags: true },
+      where: {
+        status: "PUBLISHED",
+        OR: [
+          { readTimeMinutes: { lte: 0 } },
+          { seoDescription: null },
+          { seoDescription: "" },
+        ],
+      },
+      select: {
+        id: true,
+        readTimeMinutes: true,
+        seoDescription: true,
+        excerpt: true,
+      },
+      take: 100,
     });
 
     postsAudited = posts.length;
@@ -61,14 +74,11 @@ export async function auditAndMaintainContent(): Promise<AgentMaintenanceReport>
       let needsUpdate = false;
       let updatedData: any = {};
 
-      // If missing read time, calculate it
       if (!post.readTimeMinutes || post.readTimeMinutes <= 0) {
-        const words = (post.content || "").trim().split(/\s+/).length;
-        updatedData.readTimeMinutes = Math.max(1, Math.ceil(words / 220));
+        updatedData.readTimeMinutes = 5;
         needsUpdate = true;
       }
 
-      // If missing SEO description, create from excerpt
       if (!post.seoDescription && post.excerpt) {
         updatedData.seoDescription = post.excerpt.slice(0, 155);
         needsUpdate = true;
@@ -302,16 +312,18 @@ export async function runSystemHealthSentinel(): Promise<AgentMaintenanceReport>
   const startTime = Date.now();
   try {
     let purgedLogs = 0;
-    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
 
     try {
-      const deleteResult = await prisma.generationLog.deleteMany({
-        where: {
-          createdAt: { lt: sevenDaysAgo },
-          status: { in: ["SUCCESS", "FAILED"] },
-        },
-      });
-      purgedLogs = deleteResult.count;
+      const [logRes, evtRes] = await Promise.all([
+        prisma.generationLog.deleteMany({
+          where: { createdAt: { lt: threeDaysAgo } },
+        }).catch(() => ({ count: 0 })),
+        prisma.analyticsEvent.deleteMany({
+          where: { createdAt: { lt: threeDaysAgo } },
+        }).catch(() => ({ count: 0 })),
+      ]);
+      purgedLogs = (logRes?.count || 0) + (evtRes?.count || 0);
     } catch (_) {}
 
     // Check API status

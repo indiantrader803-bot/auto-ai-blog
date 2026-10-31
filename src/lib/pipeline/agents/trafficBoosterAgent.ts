@@ -220,7 +220,11 @@ export async function runAutonomousFleetTrafficBooster() {
   try {
     dbPosts = await prisma.post.findMany({
       where: { status: "PUBLISHED" },
-      include: { category: true },
+      select: {
+        id: true,
+        slug: true,
+      },
+      take: 50,
     });
   } catch (_) {}
 
