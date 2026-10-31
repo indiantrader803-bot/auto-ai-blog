@@ -436,6 +436,59 @@ export async function autopostToReddit(payload: AutopostPayload): Promise<Autopo
 /**
  * 🚀 Dispatches full 5-channel simultaneous social media campaign
  */
+
+/**
+ * 📨 6. Dispatches to Postiz (Agentic Social Media Scheduling Instance / Webhook)
+ */
+export async function autopostToPostiz(payload: AutopostPayload): Promise<AutopostResult> {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
+  const utmUrl = `${siteUrl}/blog/${payload.slug}?utm_source=postiz&utm_medium=agentic_scheduler&utm_campaign=thesmartmag_growth`;
+  const postizEndpoint = process.env.POSTIZ_API_URL || process.env.POSTIZ_WEBHOOK_URL;
+  const postizApiKey = process.env.POSTIZ_API_KEY;
+
+  if (!postizEndpoint) {
+    return {
+      platform: "ALL",
+      success: true,
+      message: "Postiz ready: Endpoint awaiting POSTIZ_API_URL or POSTIZ_WEBHOOK_URL configuration.",
+    };
+  }
+
+  try {
+    const postBody = {
+      content: `${payload.title}\n\n${payload.excerpt.slice(0, 160)}...\n\nRead complete analysis: ${utmUrl}`,
+      url: utmUrl,
+      title: payload.title,
+      scheduledAt: new Date().toISOString(),
+    };
+
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    if (postizApiKey) {
+      headers["Authorization"] = `Bearer ${postizApiKey}`;
+    }
+
+    const res = await fetch(postizEndpoint, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(postBody),
+    });
+
+    return {
+      platform: "ALL",
+      success: res.ok,
+      message: res.ok
+        ? "Successfully scheduled via Postiz agentic engine."
+        : `Postiz response status: ${res.status}`,
+    };
+  } catch (err: any) {
+    return {
+      platform: "ALL",
+      success: false,
+      message: `Postiz dispatch notice: ${err.message}`,
+    };
+  }
+}
+
 export async function runFullAutonomousSocialAutopost(payload: AutopostPayload): Promise<{
   twitter: AutopostResult;
   linkedIn: AutopostResult;
@@ -443,7 +496,8 @@ export async function runFullAutonomousSocialAutopost(payload: AutopostPayload):
   instagram: AutopostResult;
   reddit: AutopostResult;
 }> {
-  const [twitter, linkedIn, facebook, instagram, reddit] = await Promise.all([
+  const [twitter, linkedIn, facebook, instagram, reddit, postiz] = await Promise.all([
+    autopostToPostiz(payload),
     autopostToTwitter(payload),
     autopostToLinkedIn(payload),
     autopostToFacebook(payload),
