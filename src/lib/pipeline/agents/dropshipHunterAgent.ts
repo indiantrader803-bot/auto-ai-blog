@@ -107,7 +107,7 @@ export const VIRAL_DROPSHIP_CATALOG: TrendingDropshipProduct[] = [
     image: "https://images.unsplash.com/photo-1586816879360-004f5b0c51e5?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
       "https://images.unsplash.com/photo-1586816879360-004f5b0c51e5?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1609592424109-dd9892f1b177?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
       { name: "Titanium Gray", colorHex: "#475569" },
@@ -358,9 +358,9 @@ export const VIRAL_DROPSHIP_CATALOG: TrendingDropshipProduct[] = [
     stock: 110,
     rating: 4.9,
     reviewsCount: 710,
-    image: "https://images.unsplash.com/photo-1609592424109-dd9892f1b177?w=800&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
-      "https://images.unsplash.com/photo-1609592424109-dd9892f1b177?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
       { name: "Space Gray", colorHex: "#334155" },

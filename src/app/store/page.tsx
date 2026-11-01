@@ -62,13 +62,17 @@ export default function StoreHomePage() {
       .then((res) => res.json())
       .then((data) => {
         if (data.products) {
-          setProducts(data.products);
+          // STRICT RULE: Only show products with valid, high-resolution lifestyle images
+          const verifiedProductsWithImages = data.products.filter(
+            (p: any) => p.image && typeof p.image === "string" && p.image.startsWith("http")
+          );
+          setProducts(verifiedProductsWithImages);
           setAppliedDiscount(data.discountPercentage || 30);
 
           // Initialize default colors and quantities
           const initColors: { [key: string]: string } = {};
           const initQty: { [key: string]: number } = {};
-          data.products.forEach((p: any) => {
+          verifiedProductsWithImages.forEach((p: any) => {
             if (p.colors && p.colors.length > 0) {
               initColors[p.id] = p.colors[0].name;
             }
@@ -392,6 +396,11 @@ export default function StoreHomePage() {
                     <img
                       src={prod.image}
                       alt={prod.title}
+                      onError={(e: any) => {
+                        // Resilient fallback image to ensure no broken images ever show on the store
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800&auto=format&fit=crop&q=80";
+                      }}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {prod.rating && (
@@ -548,6 +557,10 @@ export default function StoreHomePage() {
                     <img
                       src={quickViewProduct.galleryImages?.[activeGalleryIndex] || quickViewProduct.image}
                       alt={quickViewProduct.title}
+                      onError={(e: any) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800&auto=format&fit=crop&q=80";
+                      }}
                       className="w-full h-full object-cover"
                     />
                   </div>

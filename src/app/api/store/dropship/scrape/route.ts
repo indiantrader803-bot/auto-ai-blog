@@ -45,7 +45,7 @@ export async function POST(req: Request) {
         reviewsCount: 1420,
         ordersCount: 5200,
         supplier: "AliExpress Pro Verified",
-        image: "https://images.unsplash.com/photo-1609592424109-dd9892f1b177?w=600&auto=format&fit=crop&q=80",
+        image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800&auto=format&fit=crop&q=80",
         features: [
           "Strong N52 neodymium magnetic ring auto-aligns with MagSafe",
           "Charges iPhone 15/16 Pro up to 2.2 times on a single charge",

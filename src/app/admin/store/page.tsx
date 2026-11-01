@@ -754,6 +754,46 @@ export default function ShopifyStyleStoreAdmin() {
                   </div>
                 </div>
               </div>
+
+              {/* Omnichannel Autonomous AI Ad Campaigns (Nalarin, Adport & OpenAds AI Integration) */}
+              <div className="bg-white dark:bg-[#1a1c20] p-6 rounded-xl border border-[#d2d5d8] dark:border-[#2a2d34] shadow-xs space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-purple-500" /> Omnichannel AI Ads Studio (Autonomous 24/7)
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                      Integrated across store.thesmartmag.com, thesmartmag.com, and travel.thesmartmag.com.
+                    </p>
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold text-xs flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> AI Agent Monitoring Active
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 text-xs">
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#15171a] border border-slate-200 dark:border-slate-800 space-y-1.5">
+                    <div className="font-bold text-indigo-600 dark:text-indigo-400">store.thesmartmag.com</div>
+                    <div className="text-slate-900 dark:text-white font-semibold">MagSafe Travel & Macro Dial Campaigns</div>
+                    <div className="text-[11px] text-slate-500">Target: USA, UK, India, Australia, Germany</div>
+                    <div className="text-[11px] font-bold text-emerald-600">ROAS: 4.15x (Positive)</div>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#15171a] border border-slate-200 dark:border-slate-800 space-y-1.5">
+                    <div className="font-bold text-purple-600 dark:text-purple-400">thesmartmag.com</div>
+                    <div className="text-slate-900 dark:text-white font-semibold">AI Frontier Intelligence & Prop Firm Hub</div>
+                    <div className="text-[11px] text-slate-500">Target: USA, UK, Australia, Singapore, India</div>
+                    <div className="text-[11px] font-bold text-emerald-600">ROAS: 5.40x (Positive)</div>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#15171a] border border-slate-200 dark:border-slate-800 space-y-1.5">
+                    <div className="font-bold text-emerald-600 dark:text-emerald-400">travel.thesmartmag.com</div>
+                    <div className="text-slate-900 dark:text-white font-semibold">Luxury Itineraries & 65W GaN Travel Adapters</div>
+                    <div className="text-[11px] text-slate-500">Target: USA, UK, Canada, UAE, Australia</div>
+                    <div className="text-[11px] font-bold text-emerald-600">ROAS: 4.45x (Positive)</div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 

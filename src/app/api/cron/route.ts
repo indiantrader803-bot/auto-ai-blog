@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { runBlogPipeline, getLastAutopublishAt } from "@/lib/pipeline/orchestrator";
 import { runFullAutonomousMaintenanceSwarm } from "@/lib/pipeline/maintenance/adminSwarm";
 import { runAutonomousDropshippingHunter } from "@/lib/pipeline/agents/dropshipHunterAgent";
+import { runAutonomousAdStudioOptimization } from "@/lib/pipeline/agents/adStudioAgent";
 
 export const dynamic = "force-dynamic";
 // Keep the function alive long enough for a full scout→write→publish cycle on serverless hosts
@@ -89,6 +90,16 @@ async function handleCron(req: NextRequest) {
       dropshipReport = { success: false, error: dropshipErr.message };
     }
 
+    // 4. 24/7 Autonomous Ads Studio Optimization (store, main publication, and travel)
+    let adStudioReport: any = null;
+    try {
+      adStudioReport = await runAutonomousAdStudioOptimization();
+      console.log(`[CRON] 24/7 Ad Studio Optimization: ${adStudioReport.totalCampaignsActive} campaigns monitored with ROAS ${adStudioReport.avgROAS}`);
+    } catch (adErr: any) {
+      console.warn("Ad Studio notice:", adErr.message);
+      adStudioReport = { success: false, error: adErr.message };
+    }
+
     // Dispatch Daily VIP & Reader Viral Headline Digest
     let digestReport = null;
     try {
@@ -145,6 +156,7 @@ async function handleCron(req: NextRequest) {
       durationSeconds: swarmResult?.durationSeconds,
       digestReport,
       dropshipReport,
+      adStudioReport,
       reports: swarmResult?.fleetReports,
     });
   } catch (error: any) {
