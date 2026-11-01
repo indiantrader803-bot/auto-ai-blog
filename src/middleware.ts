@@ -26,6 +26,35 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(targetUrl, 301);
   }
 
+  // Subdomain Routing for store.thesmartmag.com
+  if (host.startsWith("store.")) {
+    if (pathname.startsWith("/admin")) {
+      return NextResponse.next();
+    }
+
+    if (pathname === "/store") {
+      return NextResponse.redirect(new URL(`/${search}`, req.url), 301);
+    }
+
+    if (pathname === "/") {
+      return NextResponse.rewrite(new URL(`/store${search}`, req.url));
+    }
+
+    if (
+      pathname.startsWith("/api") ||
+      pathname.startsWith("/_next") ||
+      pathname.includes(".") ||
+      pathname.startsWith("/store") ||
+      pathname.startsWith("/checkout") ||
+      pathname.startsWith("/login") ||
+      pathname.startsWith("/register")
+    ) {
+      return NextResponse.next();
+    }
+
+    return NextResponse.rewrite(new URL(`/store${pathname}${search}`, req.url));
+  }
+
   // 3. Subdomain Routing for trade.thesmartmag.com (if accessed directly via subdomain)
   if (host.startsWith("trade.")) {
     // Direct access to secure Admin Portal
