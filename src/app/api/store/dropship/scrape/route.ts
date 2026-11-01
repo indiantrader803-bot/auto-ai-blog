@@ -18,7 +18,7 @@ export interface ScrapedProduct {
   features: string[];
 }
 
-export const DROPSHIP_SUPPLIERS = [
+const DROPSHIP_SUPPLIERS = [
   { name: "AliExpress Pro Verified", fulfillmentDays: "7-12 days", tracking: "AliExpress Standard Global" },
   { name: "CJ Dropshipping Global", fulfillmentDays: "5-9 days", tracking: "DHL / CJPacket" },
   { name: "Printify Custom Merch", fulfillmentDays: "3-7 days", tracking: "FedEx / BlueDart" },
