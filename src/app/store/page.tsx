@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import StoreHeader from "@/components/store/StoreHeader";
+import StoreHeader, { STORE_ACCENT_COLORS } from "@/components/store/StoreHeader";
 import CartDrawer from "@/components/store/CartDrawer";
 import Footer from "@/components/layout/Footer";
 import { useCart } from "@/context/CartContext";
@@ -37,6 +37,8 @@ import {
   ExternalLink,
   Layers,
   User,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { detectUserCurrency } from "@/lib/utils";
 
@@ -65,6 +67,7 @@ export default function StoreHomePage() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [addedItem, setAddedItem] = useState<string | null>(null);
+  const [colorTheme, setColorTheme] = useState<string>("purple");
 
   // Quick View Modal
   const [quickViewProduct, setQuickViewProduct] = useState<any | null>(null);
@@ -78,6 +81,12 @@ export default function StoreHomePage() {
   useEffect(() => {
     // Detect currency default
     setCurrency(detectUserCurrency());
+
+    // Restore saved accent color theme
+    const savedTheme = localStorage.getItem("store_color_theme");
+    if (savedTheme) {
+      setColorTheme(savedTheme);
+    }
 
     // Fetch catalog products
     fetch("/api/store/products")
@@ -153,6 +162,8 @@ export default function StoreHomePage() {
     }
   };
 
+  const activeAccent = STORE_ACCENT_COLORS.find((t) => t.id === colorTheme) || STORE_ACCENT_COLORS[0];
+
   // Filtered lists
   const flashDeals = products.filter((p) => p.isFlashDeal || p.category === "Gaming" || p.category === "Mobile & Accessories").slice(0, 4);
   const trendingProducts = products.filter((p) => {
@@ -169,8 +180,8 @@ export default function StoreHomePage() {
   });
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#f8fafc] dark:bg-[#070b14] text-slate-900 dark:text-slate-100 font-sans selection:bg-indigo-500 selection:text-white transition-colors duration-200">
-      {/* 1. MOCKUP TOP HEADER & NAVIGATION */}
+    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 font-sans selection:bg-indigo-500 selection:text-white transition-colors duration-200">
+      {/* 1. MOCKUP TOP HEADER & NAVIGATION WITH LIGHT/DARK & MULTI-COLOR ACCENTS */}
       <StoreHeader
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -178,18 +189,23 @@ export default function StoreHomePage() {
         setActiveCategory={setActiveCategory}
         currency={currency}
         setCurrency={setCurrency}
+        currentColorTheme={colorTheme}
+        onColorThemeChange={(id) => setColorTheme(id)}
       />
 
       <CartDrawer currency={currency} />
 
       <main className="flex-1 pb-24 md:pb-16">
-        {/* 2. HERO SECTION (Identical to Desktop Mockup) */}
+        {/* 2. HERO SECTION (Desktop & Mobile Adaptive) */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
             {/* Left Large Dark Neon Banner */}
-            <div className="lg:col-span-8 rounded-3xl bg-gradient-to-br from-[#0b0c16] via-[#101426] to-[#1e1b4b] border border-indigo-500/20 p-8 sm:p-12 relative overflow-hidden flex flex-col justify-between shadow-2xl min-h-[380px] sm:min-h-[440px]">
+            <div className="lg:col-span-8 rounded-3xl bg-gradient-to-br from-[#0b0c16] via-[#101426] to-[#1e1b4b] border border-white/10 dark:border-indigo-500/20 p-8 sm:p-12 relative overflow-hidden flex flex-col justify-between shadow-2xl min-h-[380px] sm:min-h-[440px]">
               {/* Background ambient lighting */}
-              <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div
+                className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl pointer-events-none opacity-20"
+                style={{ backgroundColor: activeAccent.hex }}
+              />
               <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
               {/* Foreground Hero Image Overlay on the Right side */}
@@ -203,13 +219,18 @@ export default function StoreHomePage() {
 
               {/* Hero Content */}
               <div className="relative z-10 max-w-lg space-y-4">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-bold tracking-wide">
-                  <Sparkles className="w-3.5 h-3.5 text-indigo-400" /> New Arrivals 2026
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold tracking-wide">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" /> New Arrivals 2026
                 </span>
 
                 <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-[1.15]">
                   Next-Gen Tech & <br />
-                  <span className="bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
+                  <span
+                    className="bg-gradient-to-r bg-clip-text text-transparent"
+                    style={{
+                      backgroundImage: `linear-gradient(to right, #ffffff, ${activeAccent.hex}, #f472b6)`,
+                    }}
+                  >
                     AI Essentials
                   </span>
                 </h1>
@@ -224,7 +245,8 @@ export default function StoreHomePage() {
                       const el = document.getElementById("trending-section");
                       el?.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-sm flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all cursor-pointer transform hover:-translate-y-0.5"
+                    style={{ backgroundColor: activeAccent.hex }}
+                    className="px-6 py-3 rounded-full text-white font-bold text-sm flex items-center gap-2 shadow-lg transition-all cursor-pointer transform hover:-translate-y-0.5 hover:opacity-95"
                   >
                     <span>Shop Now</span>
                     <ArrowRight className="w-4 h-4" />
@@ -241,13 +263,13 @@ export default function StoreHomePage() {
 
               {/* Dots Slider Indicator */}
               <div className="relative z-10 flex items-center gap-2 pt-6">
-                <span className="w-6 h-2 rounded-full bg-indigo-400" />
+                <span className="w-6 h-2 rounded-full" style={{ backgroundColor: activeAccent.hex }} />
                 <span className="w-2 h-2 rounded-full bg-white/30" />
                 <span className="w-2 h-2 rounded-full bg-white/30" />
               </div>
             </div>
 
-            {/* Right Featured Items List (From Desktop Mockup) */}
+            {/* Right Featured Items List */}
             <div className="lg:col-span-4 flex flex-col gap-3 justify-between">
               {[
                 {
@@ -284,7 +306,7 @@ export default function StoreHomePage() {
                   <button
                     key={idx}
                     onClick={() => setActiveCategory(item.cat)}
-                    className="flex-1 flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-[#0f172a] border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:border-indigo-500 dark:hover:border-indigo-500 hover:shadow-md transition-all group text-left cursor-pointer"
+                    className="flex-1 flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-[#0f172a] border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:border-slate-400 dark:hover:border-slate-600 hover:shadow-md transition-all group text-left cursor-pointer"
                   >
                     <div className="flex items-center gap-4">
                       <div
@@ -293,13 +315,13 @@ export default function StoreHomePage() {
                         <IconComp className="w-6 h-6" />
                       </div>
                       <div>
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-white transition-colors group-hover:underline">
                           {item.title}
                         </h4>
                         <p className="text-xs text-slate-500 dark:text-slate-400">{item.subtitle}</p>
                       </div>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-500 group-hover:translate-x-1 transition-all" />
+                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-all" />
                   </button>
                 );
               })}
@@ -307,7 +329,7 @@ export default function StoreHomePage() {
           </div>
         </section>
 
-        {/* 3. CIRCULAR CATEGORY CAROUSEL (Identical to Mockup) */}
+        {/* 3. CIRCULAR CATEGORY CAROUSEL */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-none">
             {CATEGORIES.map((cat) => {
@@ -320,17 +342,19 @@ export default function StoreHomePage() {
                   className="flex flex-col items-center gap-2 shrink-0 group cursor-pointer focus:outline-hidden"
                 >
                   <div
+                    style={isActive ? { backgroundColor: activeAccent.hex, borderColor: activeAccent.hex } : {}}
                     className={`w-16 h-16 sm:w-18 sm:h-18 rounded-2xl sm:rounded-3xl flex items-center justify-center transition-all duration-200 border ${
                       isActive
-                        ? "bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-600/30 scale-105"
-                        : "bg-white dark:bg-[#0f172a] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 hover:shadow-sm"
+                        ? "text-white shadow-lg scale-105"
+                        : "bg-white dark:bg-[#0f172a] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 hover:shadow-sm"
                     }`}
                   >
-                    <IconComp className={`w-7 h-7 sm:w-8 sm:h-8 ${isActive ? "text-white" : "group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"}`} />
+                    <IconComp className={`w-7 h-7 sm:w-8 sm:h-8 ${isActive ? "text-white" : "group-hover:scale-105 transition-transform"}`} />
                   </div>
                   <span
+                    style={isActive ? { color: activeAccent.hex } : {}}
                     className={`text-xs font-semibold whitespace-nowrap ${
-                      isActive ? "text-indigo-600 dark:text-indigo-400 font-bold" : "text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white"
+                      isActive ? "font-bold" : "text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white"
                     }`}
                   >
                     {cat.label}
@@ -341,48 +365,54 @@ export default function StoreHomePage() {
           </div>
         </section>
 
-        {/* 4. FLASH DEALS SECTION (From Desktop & Mobile Mockup) */}
+        {/* 4. FLASH DEALS SECTION */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-            {/* Left Flash Deals Purple Box */}
-            <div className="lg:col-span-3 rounded-3xl bg-gradient-to-br from-[#4f46e5] to-[#7c3aed] p-6 text-white flex flex-col justify-between shadow-xl min-h-[280px]">
+            {/* Left Flash Deals Box with Accent Dynamic Colors */}
+            <div
+              style={{
+                background: `linear-gradient(135deg, ${activeAccent.hex}, #4338ca)`,
+              }}
+              className="lg:col-span-3 rounded-3xl p-6 text-white flex flex-col justify-between shadow-xl min-h-[280px]"
+            >
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <Zap className="w-5 h-5 text-amber-300 fill-amber-300" />
                   <h3 className="text-xl font-black tracking-tight text-white">Flash Deals</h3>
                 </div>
-                <p className="text-xs text-indigo-100 font-medium">Limited Time Offer</p>
+                <p className="text-xs text-white/90 font-medium">Limited Time Offer</p>
               </div>
 
               {/* Countdown timer numbers */}
               <div className="my-6">
                 <div className="flex items-center justify-between text-center gap-1.5">
-                  <div className="flex-1 bg-black/20 backdrop-blur-sm rounded-xl py-2 px-1 border border-white/10">
+                  <div className="flex-1 bg-black/25 backdrop-blur-sm rounded-xl py-2 px-1 border border-white/10">
                     <span className="block text-xl font-black font-mono">
                       {String(timeLeft.hours).padStart(2, "0")}
                     </span>
-                    <span className="text-[10px] text-indigo-200 font-medium uppercase">Hours</span>
+                    <span className="text-[10px] text-white/80 font-medium uppercase">Hours</span>
                   </div>
                   <span className="text-lg font-black text-white/50">:</span>
-                  <div className="flex-1 bg-black/20 backdrop-blur-sm rounded-xl py-2 px-1 border border-white/10">
+                  <div className="flex-1 bg-black/25 backdrop-blur-sm rounded-xl py-2 px-1 border border-white/10">
                     <span className="block text-xl font-black font-mono">
                       {String(timeLeft.minutes).padStart(2, "0")}
                     </span>
-                    <span className="text-[10px] text-indigo-200 font-medium uppercase">Mins</span>
+                    <span className="text-[10px] text-white/80 font-medium uppercase">Mins</span>
                   </div>
                   <span className="text-lg font-black text-white/50">:</span>
-                  <div className="flex-1 bg-black/20 backdrop-blur-sm rounded-xl py-2 px-1 border border-white/10">
+                  <div className="flex-1 bg-black/25 backdrop-blur-sm rounded-xl py-2 px-1 border border-white/10">
                     <span className="block text-xl font-black font-mono">
                       {String(timeLeft.seconds).padStart(2, "0")}
                     </span>
-                    <span className="text-[10px] text-indigo-200 font-medium uppercase">Secs</span>
+                    <span className="text-[10px] text-white/80 font-medium uppercase">Secs</span>
                   </div>
                 </div>
               </div>
 
               <button
                 onClick={() => setActiveCategory("Deals")}
-                className="w-full py-2.5 px-4 rounded-xl bg-white text-indigo-700 hover:bg-indigo-50 font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md cursor-pointer"
+                style={{ color: activeAccent.hex }}
+                className="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-50 font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md cursor-pointer"
               >
                 <span>View All Deals</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -395,7 +425,7 @@ export default function StoreHomePage() {
                 <div
                   key={prod.id}
                   onClick={() => openQuickView(prod)}
-                  className="group rounded-2xl bg-white dark:bg-[#0f172a] border border-slate-200/90 dark:border-slate-800/90 p-3.5 flex flex-col justify-between shadow-xs hover:shadow-xl hover:border-indigo-400 dark:hover:border-indigo-500 transition-all cursor-pointer relative"
+                  className="group rounded-2xl bg-white dark:bg-[#0f172a] border border-slate-200/90 dark:border-slate-800/90 p-3.5 flex flex-col justify-between shadow-xs hover:shadow-xl transition-all cursor-pointer relative"
                 >
                   {/* Discount tag badge */}
                   <span className="absolute top-3 left-3 z-10 px-2 py-0.5 rounded-md bg-rose-500 text-white text-[11px] font-black tracking-tight shadow-sm">
@@ -459,7 +489,7 @@ export default function StoreHomePage() {
           </div>
         </section>
 
-        {/* 5. TRENDING NOW SECTION (From Mockup with Filter Pills & 4-Col Grid) */}
+        {/* 5. TRENDING NOW SECTION */}
         <section id="trending-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
@@ -484,10 +514,11 @@ export default function StoreHomePage() {
                   <button
                     key={catName}
                     onClick={() => setActiveCategory(matchCat)}
+                    style={active ? { backgroundColor: activeAccent.hex, color: "#ffffff" } : {}}
                     className={`px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                       active
-                        ? "bg-indigo-600 text-white shadow-xs"
-                        : "bg-white dark:bg-[#0f172a] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-indigo-400"
+                        ? "shadow-xs"
+                        : "bg-white dark:bg-[#0f172a] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-slate-400"
                     }`}
                   >
                     {catName === "ALL" ? "All" : catName}
@@ -503,7 +534,7 @@ export default function StoreHomePage() {
               <div
                 key={prod.id}
                 onClick={() => openQuickView(prod)}
-                className="group rounded-3xl bg-white dark:bg-[#0f172a] border border-slate-200/90 dark:border-slate-800/90 p-4 flex flex-col justify-between shadow-xs hover:shadow-xl hover:border-indigo-400 dark:hover:border-indigo-500 transition-all cursor-pointer relative"
+                className="group rounded-3xl bg-white dark:bg-[#0f172a] border border-slate-200/90 dark:border-slate-800/90 p-4 flex flex-col justify-between shadow-xs hover:shadow-xl transition-all cursor-pointer relative"
               >
                 {/* Wishlist Button */}
                 <button
@@ -564,7 +595,8 @@ export default function StoreHomePage() {
                     {/* Add to Cart Button */}
                     <button
                       onClick={(e) => handleAddToCart(prod, 1, e)}
-                      className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-indigo-600/25 transition-all cursor-pointer"
+                      style={{ backgroundColor: activeAccent.hex }}
+                      className="w-full py-2.5 px-4 rounded-xl text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer hover:opacity-90"
                     >
                       <ShoppingBag className="w-3.5 h-3.5" />
                       <span>{addedItem === prod.id ? "Added to Cart! ✓" : "Add to Cart 🛒"}</span>
@@ -576,11 +608,11 @@ export default function StoreHomePage() {
           </div>
         </section>
 
-        {/* 6. DUAL PROMO BANNERS (From Mockup) */}
+        {/* 6. DUAL PROMO BANNERS */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Banner 1: AI Productivity Tools */}
-            <div className="rounded-3xl bg-gradient-to-br from-[#0c0f24] via-[#15193b] to-[#1e1b4b] border border-indigo-500/20 p-8 flex flex-col justify-between shadow-xl relative overflow-hidden min-h-[220px]">
+            <div className="rounded-3xl bg-gradient-to-br from-[#0c0f24] via-[#15193b] to-[#1e1b4b] border border-white/10 dark:border-indigo-500/20 p-8 flex flex-col justify-between shadow-xl relative overflow-hidden min-h-[220px]">
               <div className="space-y-3 relative z-10 max-w-sm">
                 <h3 className="text-2xl font-black text-white tracking-tight">
                   AI Productivity Tools
@@ -591,7 +623,8 @@ export default function StoreHomePage() {
                 <div className="pt-2">
                   <button
                     onClick={() => setActiveCategory("AI Tools")}
-                    className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-md"
+                    style={{ backgroundColor: activeAccent.hex }}
+                    className="px-5 py-2.5 rounded-xl text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-md hover:opacity-90"
                   >
                     <span>Explore AI Tools</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -599,7 +632,7 @@ export default function StoreHomePage() {
                 </div>
               </div>
 
-              {/* Glowing AI Chip Graphic on right */}
+              {/* Glowing AI Chip Graphic */}
               <div className="absolute right-6 bottom-4 w-36 h-36 bg-gradient-to-tr from-purple-500/30 to-indigo-500/30 rounded-2xl flex items-center justify-center border border-indigo-400/40 shadow-inner">
                 <Cpu className="w-16 h-16 text-indigo-300 animate-pulse" />
               </div>
@@ -631,7 +664,7 @@ export default function StoreHomePage() {
           </div>
         </section>
 
-        {/* 7. VALUE PROPOSITION FOOTER TRUST BADGES (From Mockup) */}
+        {/* 7. VALUE PROPOSITION FOOTER TRUST BADGES */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-t border-slate-200/80 dark:border-slate-800/80">
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-6 text-center sm:text-left">
             {[
@@ -644,7 +677,10 @@ export default function StoreHomePage() {
               const IconComp = trust.icon;
               return (
                 <div key={idx} className="flex flex-col sm:flex-row items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                  <div
+                    style={{ color: activeAccent.hex }}
+                    className="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center shrink-0 shadow-xs"
+                  >
                     <IconComp className="w-5 h-5" />
                   </div>
                   <div>
@@ -661,7 +697,7 @@ export default function StoreHomePage() {
           </div>
         </section>
 
-        {/* 8. QUICK VIEW MODAL (As shown in Mobile & Desktop Mockup) */}
+        {/* 8. QUICK VIEW MODAL */}
         {quickViewProduct && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
             <div className="w-full max-w-2xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto space-y-6">
@@ -693,9 +729,10 @@ export default function StoreHomePage() {
                         <button
                           key={i}
                           onClick={() => setActiveGalleryIndex(i)}
+                          style={activeGalleryIndex === i ? { borderColor: activeAccent.hex } : {}}
                           className={`w-14 h-14 rounded-xl border-2 overflow-hidden shrink-0 cursor-pointer ${
                             activeGalleryIndex === i
-                              ? "border-indigo-600 dark:border-indigo-500"
+                              ? ""
                               : "border-slate-200 dark:border-slate-800"
                           }`}
                         >
@@ -709,7 +746,10 @@ export default function StoreHomePage() {
                 {/* Product Details & Purchase Form */}
                 <div className="space-y-4 flex flex-col justify-between">
                   <div>
-                    <span className="px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 text-[10px] font-black uppercase tracking-wider">
+                    <span
+                      style={{ color: activeAccent.hex }}
+                      className="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-black uppercase tracking-wider"
+                    >
                       {quickViewProduct.badge || "Bestseller"}
                     </span>
                     <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-1.5 leading-snug">
@@ -797,7 +837,8 @@ export default function StoreHomePage() {
                           handleAddToCart(quickViewProduct, quickViewQty);
                           setQuickViewProduct(null);
                         }}
-                        className="py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/25 transition-all cursor-pointer"
+                        style={{ backgroundColor: activeAccent.hex }}
+                        className="py-3 px-4 rounded-xl text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer hover:opacity-90"
                       >
                         <ShoppingBag className="w-4 h-4" />
                         <span>Add to Cart</span>
@@ -822,15 +863,16 @@ export default function StoreHomePage() {
         )}
       </main>
 
-      {/* 9. MOBILE BOTTOM NAVIGATION BAR (From Mobile Mockup) */}
+      {/* 9. MOBILE BOTTOM NAVIGATION BAR */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0b0c16]/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800/80 py-2 px-6 flex items-center justify-between text-center">
         <button
           onClick={() => {
             setActiveCategory("ALL");
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
+          style={activeCategory === "ALL" ? { color: activeAccent.hex } : {}}
           className={`flex flex-col items-center gap-1 text-[11px] font-semibold cursor-pointer ${
-            activeCategory === "ALL" ? "text-indigo-600 dark:text-indigo-400" : "text-slate-500 dark:text-slate-400"
+            activeCategory === "ALL" ? "font-bold" : "text-slate-500 dark:text-slate-400"
           }`}
         >
           <Home className="w-5 h-5" />
@@ -850,8 +892,9 @@ export default function StoreHomePage() {
 
         <button
           onClick={() => setActiveCategory("Deals")}
+          style={activeCategory === "Deals" ? { color: activeAccent.hex } : {}}
           className={`flex flex-col items-center gap-1 text-[11px] font-semibold cursor-pointer ${
-            activeCategory === "Deals" ? "text-indigo-600 dark:text-indigo-400" : "text-slate-500 dark:text-slate-400"
+            activeCategory === "Deals" ? "font-bold" : "text-slate-500 dark:text-slate-400"
           }`}
         >
           <Tag className="w-5 h-5" />
