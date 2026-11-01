@@ -31,11 +31,13 @@ import {
   LogOut,
   KeyRound,
   Smartphone,
+  ShoppingBag,
 } from "lucide-react";
 import SearchModal from "./SearchModal";
 import LanguageSelector from "./LanguageSelector";
 import PushNotificationBanner from "../common/PushNotificationBanner";
 import { useVip } from "@/context/VipAuthContext";
+import { useCart } from "@/context/CartContext";
 
 export interface NavCategory {
   id?: string;
@@ -69,6 +71,7 @@ const DEFAULT_CATEGORIES: NavCategory[] = [
 
 export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps) {
   const { isVip, user, refreshVipStatus } = useVip();
+  const { totalItems, setIsCartOpen } = useCart();
   const [isDark, setIsDark] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -297,6 +300,20 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
 
           {/* Right Actions Bar */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                        {/* Store & Cart Icon Button */}
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="relative p-2 sm:p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all shrink-0 cursor-pointer flex items-center gap-1.5"
+              aria-label="View shopping cart"
+            >
+              <ShoppingBag className="w-4 h-4 text-indigo-500" />
+              {totalItems > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-[10px] font-black flex items-center justify-center shadow-md animate-pulse">
+                  {totalItems}
+                </span>
+              )}
+            </button>
+
             {/* Search Trigger */}
             <button
               onClick={() => setIsSearchOpen(true)}

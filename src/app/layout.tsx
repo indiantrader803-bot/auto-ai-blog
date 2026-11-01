@@ -12,6 +12,7 @@ import BiceaAdProvider from "@/components/ads/BiceaAdProvider";
 import { TravelCurrencyProvider } from "@/context/TravelCurrencyContext";
 import { VipAuthProvider } from "@/context/VipAuthContext";
 import { CartProvider } from "@/context/CartContext";
+import CartDrawer from "@/components/store/CartDrawer";
 
 export const revalidate = 60;
 
@@ -266,6 +267,7 @@ export default function RootLayout({
                 <ExitIntentModal />
                 <FloatingSubscribeButton />
                 <GlobalBlogAssistant />
+                <CartDrawer />
                 
               </MonetagProvider>
             </BiceaAdProvider>
