@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import StoreHeader, { STORE_ACCENT_COLORS } from "@/components/store/StoreHeader";
 import CartDrawer from "@/components/store/CartDrawer";
+import StoreLivePurchasePopups from "@/components/store/StoreLivePurchasePopups";
 import Footer from "@/components/layout/Footer";
 import { useCart } from "@/context/CartContext";
 import { useVip } from "@/context/VipAuthContext";
@@ -194,6 +195,7 @@ export default function StoreHomePage() {
       />
 
       <CartDrawer currency={currency} />
+      <StoreLivePurchasePopups />
 
       <main className="flex-1 pb-24 md:pb-16">
         {/* 2. HERO SECTION (Desktop & Mobile Adaptive) */}

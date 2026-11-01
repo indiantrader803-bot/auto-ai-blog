@@ -113,7 +113,8 @@ export default function GlobalBlogAssistant() {
 
   const isAdminPage = pathname?.startsWith("/admin") || false;
   const isTravelPage = isTravelHost || pathname?.startsWith("/travel") || false;
-  const activeMode: "BLOG" | "TRAVEL" = isTravelPage ? "TRAVEL" : "BLOG";
+  const isStorePage = pathname?.startsWith("/store") || (typeof window !== "undefined" && window.location.hostname.startsWith("store.")) || false;
+  const activeMode: "BLOG" | "TRAVEL" | "STORE" = isStorePage ? "STORE" : isTravelPage ? "TRAVEL" : "BLOG";
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -126,7 +127,25 @@ export default function GlobalBlogAssistant() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [activeVideoModal, setActiveVideoModal] = useState<string | null>(null);
 
-  const getWelcomeMessage = (mode: "BLOG" | "TRAVEL"): Message => {
+  const getWelcomeMessage = (mode: "BLOG" | "TRAVEL" | "STORE"): Message => {
+    if (mode === "STORE") {
+      return {
+        id: "welcome_store",
+        role: "assistant",
+        content: `🛍️ **Welcome to TheSmartMag Store AI Voice Shopping Concierge!**
+
+I am your 24/7 autonomous shopping assistant for factory-verified dropshipping and digital AI essentials:
+• 🎧 **Hardware Audio & Gadgets**: Wireless ANC Headphones, 4K Drones, RGB Keyboards, AMOLED Smartwatches.
+• ⚡ **Power & Travel Solutions**: 600W Portable Power Stations, 65W GaN Universal Adapters.
+• 🚚 **Tracked Worldwide Doorstep Delivery**: Free delivery on orders over ₹8,000 / $99 with DHL, Blue Dart & FedEx.
+• 🛡️ **Guaranteed Checkout**: Razorpay verified payments & 30-Day Money-Back Guarantee.
+
+🎙️ *Click the **Microphone** to speak what product or specs you're looking for!*`,
+        timestamp: "Just now",
+        source: "TheSmartMag Store AI Assistant",
+        speechText: "Welcome to TheSmartMag Store voice concierge. I can help you choose products, check specs, compare discounts, or track delivery. What can I help you find today?",
+      };
+    }
     if (mode === "TRAVEL") {
       return {
         id: "welcome_travel",
@@ -167,11 +186,11 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
     };
   };
 
-  const [messages, setMessages] = useState<Message[]>([getWelcomeMessage(isTravelPage ? "TRAVEL" : "BLOG")]);
+  const [messages, setMessages] = useState<Message[]>([getWelcomeMessage(isStorePage ? "STORE" : isTravelPage ? "TRAVEL" : "BLOG")]);
 
   // Re-sync welcome messages when route changes
   useEffect(() => {
-    setMessages([getWelcomeMessage(isTravelPage ? "TRAVEL" : "BLOG")]);
+    setMessages([getWelcomeMessage(isStorePage ? "STORE" : isTravelPage ? "TRAVEL" : "BLOG")]);
   }, [isTravelPage]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -446,11 +465,11 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
 
             <div className="flex items-center gap-2 font-black text-xs uppercase tracking-wider">
               <Mic className="w-4 h-4 text-amber-300 animate-bounce" />
-              <span>{activeMode === "TRAVEL" ? "✈️ Travel AI Concierge" : "🎙️ Blog AI Voice"}</span>
+              <span>{activeMode === "STORE" ? "🛍️ Store AI Concierge" : activeMode === "TRAVEL" ? "✈️ Travel AI Concierge" : "🎙️ Blog AI Voice"}</span>
             </div>
 
             <span className={`px-2 py-0.5 rounded-full font-black text-[9px] uppercase shadow-xs ${
-              activeMode === "TRAVEL" ? "bg-emerald-400 text-slate-950" : "bg-amber-400 text-slate-950"
+              activeMode === "STORE" ? "bg-indigo-400 text-slate-950" : activeMode === "TRAVEL" ? "bg-emerald-400 text-slate-950" : "bg-amber-400 text-slate-950"
             }`}>
               LIVE
             </span>
@@ -490,7 +509,7 @@ I am your autonomous research agent for frontier Artificial Intelligence, softwa
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="text-sm font-black text-white tracking-tight">
-                      {activeMode === "TRAVEL" ? "SmartTravel AI Voice Concierge" : "Editorial & AI Voice Assistant"}
+                      {activeMode === "STORE" ? "🛍️ TheSmartMag Store AI Concierge" : activeMode === "TRAVEL" ? "SmartTravel AI Voice Concierge" : "Editorial & AI Voice Assistant"}
                     </h3>
                     <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[9px] font-bold border border-emerald-500/30">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
