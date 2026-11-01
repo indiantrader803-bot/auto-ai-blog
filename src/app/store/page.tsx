@@ -121,6 +121,14 @@ export default function StoreHomePage() {
     .filter((p) => {
       if (activeCategory === "DROPSHIP" && !p.isPhysical) return false;
       if (activeCategory === "DIGITAL" && p.isPhysical) return false;
+      if (
+        activeCategory !== "ALL" &&
+        activeCategory !== "DROPSHIP" &&
+        activeCategory !== "DIGITAL" &&
+        p.category !== activeCategory
+      ) {
+        return false;
+      }
 
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
@@ -252,7 +260,7 @@ export default function StoreHomePage() {
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
             <button
               onClick={() => setActiveCategory("ALL")}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 activeCategory === "ALL"
                   ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
                   : "bg-slate-100 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
@@ -261,24 +269,64 @@ export default function StoreHomePage() {
               All Products ({products.length})
             </button>
             <button
-              onClick={() => setActiveCategory("DROPSHIP")}
-              className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
-                activeCategory === "DROPSHIP"
+              onClick={() => setActiveCategory("Desk Setup")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                activeCategory === "Desk Setup"
                   ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
                   : "bg-slate-100 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               }`}
             >
-              <Truck className="w-3.5 h-3.5 text-amber-500" /> Physical Dropshipping
+              Desk Setup
             </button>
             <button
-              onClick={() => setActiveCategory("DIGITAL")}
-              className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
-                activeCategory === "DIGITAL"
+              onClick={() => setActiveCategory("Mobile Accessories")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                activeCategory === "Mobile Accessories"
                   ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
                   : "bg-slate-100 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               }`}
             >
-              <Download className="w-3.5 h-3.5 text-emerald-500" /> Quant Toolkits
+              Mobile & MagSafe
+            </button>
+            <button
+              onClick={() => setActiveCategory("Wearables & Audio")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                activeCategory === "Wearables & Audio"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                  : "bg-slate-100 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+              }`}
+            >
+              AI Wearables
+            </button>
+            <button
+              onClick={() => setActiveCategory("Travel & Lifestyle")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                activeCategory === "Travel & Lifestyle"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                  : "bg-slate-100 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+              }`}
+            >
+              Travel Chargers
+            </button>
+            <button
+              onClick={() => setActiveCategory("Hardware & Security")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                activeCategory === "Hardware & Security"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                  : "bg-slate-100 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+              }`}
+            >
+              Cold Storage Security
+            </button>
+            <button
+              onClick={() => setActiveCategory("AI & Quant Toolkits")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all ${
+                activeCategory === "AI & Quant Toolkits"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                  : "bg-slate-100 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+              }`}
+            >
+              <Download className="w-3 h-3 text-emerald-400" /> Quant Toolkits
             </button>
           </div>
 
@@ -409,6 +457,14 @@ export default function StoreHomePage() {
                         <span>Shipping:</span>
                         <span className="text-emerald-600 dark:text-emerald-400 font-bold">{prod.shippingDetails.shippingCost}</span>
                       </div>
+                      {prod.shippingDetails.supportedCountries && (
+                        <div className="flex items-center justify-between pt-1 border-t border-slate-200/60 dark:border-slate-800/60 text-[10px]">
+                          <span className="text-slate-500">Ships to:</span>
+                          <span className="text-indigo-600 dark:text-indigo-400 font-medium">
+                            {prod.shippingDetails.supportedCountries.slice(0, 4).join(", ")} +more
+                          </span>
+                        </div>
+                      )}
                     </div>
                   )}
 

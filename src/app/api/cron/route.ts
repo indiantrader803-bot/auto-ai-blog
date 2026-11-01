@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { runBlogPipeline, getLastAutopublishAt } from "@/lib/pipeline/orchestrator";
 import { runFullAutonomousMaintenanceSwarm } from "@/lib/pipeline/maintenance/adminSwarm";
+import { runAutonomousDropshippingHunter } from "@/lib/pipeline/agents/dropshipHunterAgent";
 
 export const dynamic = "force-dynamic";
 // Keep the function alive long enough for a full scout→write→publish cycle on serverless hosts
@@ -78,6 +79,16 @@ async function handleCron(req: NextRequest) {
       swarmResult = { success: false, error: swarmErr.message, fleetReports: [] };
     }
 
+    // 3. 24/7 Autonomous Dropshipping Scout & Product Ingestion (AliExpress & CJ Dropshipping)
+    let dropshipReport: any = null;
+    try {
+      dropshipReport = await runAutonomousDropshippingHunter();
+      console.log(`[CRON] 24/7 Dropship Hunter executed: ${dropshipReport.importedCount} trending items in active catalog.`);
+    } catch (dropshipErr: any) {
+      console.warn("Dropship hunter notice:", dropshipErr.message);
+      dropshipReport = { success: false, error: dropshipErr.message };
+    }
+
     // Dispatch Daily VIP & Reader Viral Headline Digest
     let digestReport = null;
     try {
@@ -133,6 +144,7 @@ async function handleCron(req: NextRequest) {
       dailyPublish: newPostResult,
       durationSeconds: swarmResult?.durationSeconds,
       digestReport,
+      dropshipReport,
       reports: swarmResult?.fleetReports,
     });
   } catch (error: any) {
@@ -140,4 +152,3 @@ async function handleCron(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-

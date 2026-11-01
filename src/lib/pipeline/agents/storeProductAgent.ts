@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { VIRAL_DROPSHIP_CATALOG } from "./dropshipHunterAgent";
 
 export interface StoreProductVariant {
   name: string; // e.g. "Space Gray", "Matte Black", "Silver", "65W GaN"
@@ -28,8 +29,13 @@ export interface StoreProductItem {
     estimatedDelivery: string;
     shippingCost: string;
     carrier: string;
+    supportedCountries?: string[];
   };
   features: string[];
+  supplier?: string;
+  supplierOrigin?: string;
+  trendVelocity?: string;
+  monthlySearchVolume?: string;
   activeCoupon?: {
     code: string;
     discountPercent: number;
@@ -40,233 +46,9 @@ export interface StoreProductItem {
 }
 
 export const BASE_PRODUCTS: StoreProductItem[] = [
-  // 1. Physical Hardware Dropshipping
-  {
-    id: "mechanical-trading-macropad",
-    title: "Mechanical Macro RGB 9-Key Trading & Coding Numpad",
-    tagline: "Hot-swappable Custom Linear Switches & Dual CNC Rotary Dial for Instant Order Execution",
-    priceINR: 1999,
-    originalPriceINR: 3999,
-    priceUSD: 24.99,
-    originalPriceUSD: 49.99,
-    badge: "HOT DROPSHIP",
-    category: "Trader Gear",
-    isPhysical: true,
-    stock: 48,
-    rating: 4.9,
-    reviewsCount: 312,
-    image: "https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&auto=format&fit=crop&q=80",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=800&auto=format&fit=crop&q=80",
-    ],
-    colors: [
-      { name: "Stealth Black", colorHex: "#1e293b" },
-      { name: "Cyber White", colorHex: "#f8fafc" },
-      { name: "Neon Purple", colorHex: "#7e22ce" },
-    ],
-    shippingDetails: {
-      origin: "Verified Shenzhen Logistics Hub",
-      estimatedDelivery: "5 - 9 Business Days",
-      shippingCost: "FREE Air Express",
-      carrier: "DHL Express / BlueDart",
-    },
-    features: [
-      "Smooth metal CNC rotary dial for precision timeline and zoom scrolling",
-      "9 fully programmable mechanical Gateron yellow linear switches",
-      "Per-key RGB backlight with on-board memory profiles (no drivers needed)",
-      "Detachable Type-C braided cable compatible with Mac & Windows",
-      "Direct dropship door-to-door courier delivery with live tracking",
-    ],
-  },
-  {
-    id: "magsafe-travel-charger",
-    title: "3-in-1 Foldable MagSafe Fast Travel Wireless Charging Stand",
-    tagline: "Charge iPhone, Apple Watch & AirPods Simultaneously with 15W Qi2 Support",
-    priceINR: 2199,
-    originalPriceINR: 4299,
-    priceUSD: 28.99,
-    originalPriceUSD: 59.99,
-    badge: "BESTSELLER TECH",
-    category: "Apple Accessories",
-    isPhysical: true,
-    stock: 65,
-    rating: 4.8,
-    reviewsCount: 540,
-    image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1609592424109-dd9892f1b177?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&auto=format&fit=crop&q=80",
-    ],
-    colors: [
-      { name: "Titanium Gray", colorHex: "#475569" },
-      { name: "Polar White", colorHex: "#f1f5f9" },
-    ],
-    shippingDetails: {
-      origin: "Global Fulfillment Hub",
-      estimatedDelivery: "6 - 10 Business Days",
-      shippingCost: "FREE Global Express",
-      carrier: "FedEx International / Delhivery",
-    },
-    features: [
-      "Foldable pocket-size aircraft-grade aluminum hinges for digital nomads",
-      "Official 15W MagSafe ultra-fast wireless charging certification",
-      "Intelligent temperature control chip & foreign object detection",
-      "Includes 20W GaN PD wall adapter + braided USB-C cable in the box",
-      "Global door-to-door express dropship delivery with tracking number",
-    ],
-  },
-  {
-    id: "algo-trading-desk-pad",
-    title: "Pro Trader & Quant Extended Desk Mat (900x400mm)",
-    tagline: "Ultra-Smooth High-Precision Rubber Surface with Financial & Forex Keybinds",
-    priceINR: 1299,
-    originalPriceINR: 2499,
-    priceUSD: 19.99,
-    originalPriceUSD: 39.99,
-    badge: "PHYSICAL DROPSHIP",
-    category: "Trader Gear",
-    isPhysical: true,
-    stock: 120,
-    rating: 4.9,
-    reviewsCount: 428,
-    image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&auto=format&fit=crop&q=80",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=800&auto=format&fit=crop&q=80",
-    ],
-    colors: [
-      { name: "Deep Charcoal Black", colorHex: "#0f172a" },
-      { name: "Quant Matrix Navy", colorHex: "#1e1b4b" },
-    ],
-    shippingDetails: {
-      origin: "Central Warehouse Dispatch",
-      estimatedDelivery: "4 - 7 Business Days",
-      shippingCost: "FREE Tracked Delivery",
-      carrier: "BlueDart / IndiaPost Express",
-    },
-    features: [
-      "High-density anti-fray stitched edges & natural non-slip rubber base",
-      "Printed candlestick chart patterns & algorithmic cheat-sheet overlay",
-      "Waterproof coating for long 12-hour high-focus trading sessions",
-      "Worldwide express courier delivery with live tracking",
-      "30-day money-back guarantee & zero-risk quality assurance",
-    ],
-  },
-  {
-    id: "digital-nomad-esim-adapter",
-    title: "Global Travel Smart 65W GaN Worldwide Universal Travel Adapter",
-    tagline: "Works in 180+ Countries: USA, UK, EU, AUS & Asia with Dual USB-C PD Ports",
-    priceINR: 1799,
-    originalPriceINR: 3499,
-    priceUSD: 24.99,
-    originalPriceUSD: 49.99,
-    badge: "TRAVEL ESSENTIAL",
-    category: "Travel Gear",
-    isPhysical: true,
-    stock: 84,
-    rating: 4.9,
-    reviewsCount: 389,
-    image: "https://images.unsplash.com/photo-1622445262464-84b1456045b6?w=800&auto=format&fit=crop&q=80",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1622445262464-84b1456045b6?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&auto=format&fit=crop&q=80",
-    ],
-    colors: [
-      { name: "Midnight Black", colorHex: "#09090b" },
-      { name: "Arctic White", colorHex: "#ffffff" },
-    ],
-    shippingDetails: {
-      origin: "Travel Tech Center",
-      estimatedDelivery: "5 - 8 Business Days",
-      shippingCost: "FREE Priority Post",
-      carrier: "DHL / Express Mail",
-    },
-    features: [
-      "65W high-speed GaN fast-charge for MacBook Pro, iPad & iPhone",
-      "Patented slider locking mechanism compatible across all global wall plugs",
-      "Dual USB-C Power Delivery + Dual USB-A QC 3.0 ports",
-      "Built-in 10A auto-resetting ceramic safety fuse for surge protection",
-      "Express dropshipping fulfillment direct to your doorstep",
-    ],
-  },
-  {
-    id: "curved-screen-monitor-lightbar",
-    title: "Smart RGB Ambient Monitor Screen Light Bar with Wireless Puck",
-    tagline: "Zero Screen Glare & Asymmetric Optical Design for Late-Night Desks",
-    priceINR: 2799,
-    originalPriceINR: 5499,
-    priceUSD: 36.99,
-    originalPriceUSD: 72.99,
-    badge: "DESK UPGRADE",
-    category: "Hardware",
-    isPhysical: true,
-    stock: 35,
-    rating: 4.9,
-    reviewsCount: 198,
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&auto=format&fit=crop&q=80",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=800&auto=format&fit=crop&q=80",
-    ],
-    colors: [
-      { name: "Matte Black Aluminum", colorHex: "#18181b" },
-      { name: "Space Silver", colorHex: "#94a3b8" },
-    ],
-    shippingDetails: {
-      origin: "Electronics Dropship Hub",
-      estimatedDelivery: "6 - 10 Business Days",
-      shippingCost: "FREE Insured Freight",
-      carrier: "FedEx Express / BlueDart",
-    },
-    features: [
-      "Asymmetric optical projection illuminates desk surface without screen reflection",
-      "Wireless 2.4GHz desktop controller puck for stepless brightness & color temp",
-      "Backlight dynamic RGB ambient lighting with music sync modes",
-      "Weighted clamp securely fits curved and flat gaming monitors (10-32 inches)",
-      "Premium dropship express packaging direct to your home",
-    ],
-  },
-  {
-    id: "crypto-hardware-seed-backup",
-    title: "Fireproof & Waterproof Titanium Crypto Recovery Seed Plate",
-    tagline: "Indestructible Grade-5 Titanium Storage for 12/24 BIP39 Seed Phrases",
-    priceINR: 2499,
-    originalPriceINR: 4999,
-    priceUSD: 34.99,
-    originalPriceUSD: 69.99,
-    badge: "MAX SECURITY",
-    category: "Crypto Security",
-    isPhysical: true,
-    stock: 75,
-    rating: 5.0,
-    reviewsCount: 260,
-    image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800&auto=format&fit=crop&q=80",
-    galleryImages: [
-      "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800&auto=format&fit=crop&q=80",
-    ],
-    colors: [
-      { name: "Brushed Titanium", colorHex: "#64748b" },
-      { name: "Obsidian Black Coating", colorHex: "#020617" },
-    ],
-    shippingDetails: {
-      origin: "Discreet Packaging Depot",
-      estimatedDelivery: "5 - 8 Business Days",
-      shippingCost: "FREE Discreet Shipping",
-      carrier: "Private Courier Express",
-    },
-    features: [
-      "Melting point above 1,660°C (3,000°F) — survives structural house fires",
-      "Laser-engraved grid compatible with Trezor, Ledger, Tangem & Metamask",
-      "Includes tungsten carbide engraving pen & tamper-evident security seals",
-      "Zero digital footprint — 100% offline cold-storage redundancy",
-      "Discreet dropship worldwide packaging for ultimate privacy",
-    ],
-  },
+  ...VIRAL_DROPSHIP_CATALOG,
 
-  // 2. High-Margin Digital Quant Systems
+  // High-Margin Digital Quant Systems & Developer Toolkits
   {
     id: "ai-prompt-pack",
     title: "500+ Ultimate AI Prompt PowerPack 2026",
@@ -276,7 +58,7 @@ export const BASE_PRODUCTS: StoreProductItem[] = [
     priceUSD: 4.99,
     originalPriceUSD: 24.99,
     badge: "BESTSELLER",
-    category: "Prompt Engineering",
+    category: "AI & Quant Toolkits",
     isPhysical: false,
     stock: 9999,
     rating: 4.9,
@@ -291,6 +73,7 @@ export const BASE_PRODUCTS: StoreProductItem[] = [
       estimatedDelivery: "Instant (0 Seconds)",
       shippingCost: "FREE Instant Download",
       carrier: "Secure Cloud API",
+      supportedCountries: ["Worldwide (All Countries)"],
     },
     features: [
       "500+ battle-tested system prompts for Claude 4.5, GPT-4o & Gemini 2",
@@ -299,6 +82,8 @@ export const BASE_PRODUCTS: StoreProductItem[] = [
       "Code refactoring & unit-test automation prompts",
       "Lifetime free updates + instant PDF/Markdown delivery",
     ],
+    supplier: "TheSmartMag Enterprise Digital",
+    monthlySearchVolume: "520,000+ searches/mo",
   },
   {
     id: "ai-business-toolkit",
@@ -309,7 +94,7 @@ export const BASE_PRODUCTS: StoreProductItem[] = [
     priceUSD: 14.99,
     originalPriceUSD: 69.99,
     badge: "ENTERPRISE COMPLETE",
-    category: "Business Suite",
+    category: "AI & Quant Toolkits",
     isPhysical: false,
     stock: 9999,
     rating: 5.0,
@@ -324,6 +109,7 @@ export const BASE_PRODUCTS: StoreProductItem[] = [
       estimatedDelivery: "Instant (0 Seconds)",
       shippingCost: "FREE Instant Download",
       carrier: "Secure Cloud API",
+      supportedCountries: ["Worldwide (All Countries)"],
     },
     features: [
       "Full client proposal decks, contracts & SOW agreements",
@@ -332,6 +118,8 @@ export const BASE_PRODUCTS: StoreProductItem[] = [
       "Private Discord Mastermind VIP invite",
       "Immediate cloud access dispatched to customer email",
     ],
+    supplier: "TheSmartMag Enterprise Digital",
+    monthlySearchVolume: "380,000+ searches/mo",
   },
 ];
 
@@ -351,7 +139,7 @@ export function getAutonomousStoreCatalog(): StoreDiscountState {
   
   let promoCode = "GLOBAL30";
   let discount = 30;
-  let banner = "🔥 Grand Launch: Use code GLOBAL30 for 30% OFF ($ / ₹) storewide!";
+  let banner = "🔥 Grand Launch: Use code GLOBAL30 for 30% OFF ($ / ₹) storewide + Free Tracked Global Express Shipping!";
 
   if (hour % 3 === 0) {
     promoCode = "VIP50";
