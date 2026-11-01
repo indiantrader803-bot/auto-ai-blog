@@ -11,6 +11,7 @@ import MonetagProvider from "@/components/ads/MonetagProvider";
 import BiceaAdProvider from "@/components/ads/BiceaAdProvider";
 import { TravelCurrencyProvider } from "@/context/TravelCurrencyContext";
 import { VipAuthProvider } from "@/context/VipAuthContext";
+import { CartProvider } from "@/context/CartContext";
 
 export const revalidate = 60;
 
@@ -258,6 +259,7 @@ export default function RootLayout({
         <GoogleTranslateProvider />
         <TravelCurrencyProvider>
           <VipAuthProvider>
+            <CartProvider>
             <BiceaAdProvider>
               <MonetagProvider>
                 {children}
@@ -267,6 +269,7 @@ export default function RootLayout({
                 
               </MonetagProvider>
             </BiceaAdProvider>
+          </CartProvider>
           </VipAuthProvider>
         </TravelCurrencyProvider>
       </body>
