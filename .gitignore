@@ -37,7 +37,7 @@ next-env.d.ts
 
 # Cellia and sub-repos
 cellia-repo/
-store/
+/store/
 n8n/
 vendor_repos/
 .freebuff/
