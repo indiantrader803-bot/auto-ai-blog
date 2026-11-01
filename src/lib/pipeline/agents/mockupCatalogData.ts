@@ -35,6 +35,10 @@ export interface StoreProductItem {
   features: string[];
   specs?: { label: string; value: string }[];
   faqs?: { q: string; a: string }[];
+  supplier?: string;
+  supplierOrigin?: string;
+  availability?: string;
+  complianceVerified?: boolean;
 }
 
 export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
@@ -81,6 +85,10 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "Custom 40mm titanium diaphragm drivers delivering thunderous deep bass",
       "Ultra-soft memory protein ear cushions with aerospace-grade swivel hinges",
     ],
+    supplier: "CJ Dropshipping Global",
+    supplierOrigin: "Shenzhen Air Logistics Center",
+    availability: "IN_STOCK_DROPSHIP",
+    complianceVerified: true,
     specs: [
       { label: "Bluetooth Version", value: "v5.3 Low-Latency" },
       { label: "Battery Life", value: "60 Hours (ANC Off) / 45 Hours (ANC On)" },
@@ -133,6 +141,10 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "18 pre-programmed RGB lighting effects with reactive typing modes",
       "Double-shot PBT keycaps resist shine and fading over millions of keypresses",
     ],
+    supplier: "AliExpress Pro Verified",
+    supplierOrigin: "Express Depot Shenzhen",
+    availability: "IN_STOCK_DROPSHIP",
+    complianceVerified: true,
   },
 
   // 3. Flash Deal: Pro Wireless Gaming Mouse
@@ -175,6 +187,10 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "Tri-mode: 2.4G 1000Hz polling rate, Bluetooth 5.2, and braided USB-C",
       "100% Virgin PTFE skates for silky smooth effortless gliding across pads",
     ],
+    supplier: "CJ Dropshipping Global",
+    supplierOrigin: "Direct Express Depot",
+    availability: "IN_STOCK_DROPSHIP",
+    complianceVerified: true,
   },
 
   // 4. Flash Deal: Smart Watch Pro (Health & Fitness)
@@ -217,6 +233,10 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "Bluetooth calling with noise-canceling dual HD microphone",
       "IP68 waterproof certified for swimming and heavy workouts",
     ],
+    supplier: "AliExpress Pro Verified",
+    supplierOrigin: "Shenzhen Fast Hub",
+    availability: "IN_STOCK_DROPSHIP",
+    complianceVerified: true,
   },
 
   // 5. Trending: 4K Camera Drone with GPS & Auto Return
@@ -238,9 +258,10 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
     reviewsCount: 865,
     isFlashDeal: false,
     isTrending: true,
-    image: "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?w=800&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1521405924368-64c5b84bec60?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
-      "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1521405924368-64c5b84bec60?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1495594430525-e63434930a44?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [{ name: "Carbon Gray", colorHex: "#374151" }],
     shippingDetails: {
@@ -255,6 +276,10 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "GPS/GLONASS satellite positioning with one-key auto return on low battery",
       "Dual intelligent flight batteries providing up to 62 minutes total flight time",
     ],
+    supplier: "CJ Dropshipping Global",
+    supplierOrigin: "Air Freight Hub",
+    availability: "IN_STOCK_DROPSHIP",
+    complianceVerified: true,
   },
 
   // 6. Trending: Portable Power Station 600W (Fast Charging)
@@ -276,9 +301,10 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
     reviewsCount: 423,
     isFlashDeal: false,
     isTrending: true,
-    image: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1681263576084-e054b2d89903?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
-      "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1681263576084-e054b2d89903?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1679274649021-067d0003d9bf?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [{ name: "Industrial Gray", colorHex: "#4b5563" }],
     shippingDetails: {
@@ -293,6 +319,10 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "Charges from 0% to 80% in just 50 minutes via wall outlet",
       "Powers mini-fridges, laptops, CPAP machines, and camping gear effortlessly",
     ],
+    supplier: "AliExpress Pro Verified",
+    supplierOrigin: "Special Heavy Cargo Hub",
+    availability: "IN_STOCK_DROPSHIP",
+    complianceVerified: true,
   },
 
   // 7. Trending: Universal Travel Adapter (150+ Countries)
@@ -317,6 +347,7 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
     image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
       "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
       { name: "Jet Black", colorHex: "#0a0a0a" },
@@ -334,6 +365,10 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "65W GaN power delivery charges laptops, phones, and tablets at full speed",
       "Auto-resetting 8A ceramic fuse guards against over-voltage spikes",
     ],
+    supplier: "AliExpress Pro Verified",
+    supplierOrigin: "Hong Kong / Shenzhen Air Depot",
+    availability: "IN_STOCK_DROPSHIP",
+    complianceVerified: true,
   },
 
   // 8. Trending: 27" 4K UHD Monitor (IPS, USB-C, HDR)
@@ -372,6 +407,10 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "Single USB-C cable transmits 4K display, high-speed data, and charges laptop at 65W",
       "TÜV Rheinland certified low blue light and flicker-free eye care filter",
     ],
+    supplier: "CJ Dropshipping Global",
+    supplierOrigin: "National Display Warehouse",
+    availability: "IN_STOCK_DROPSHIP",
+    complianceVerified: true,
   },
 
   // 9. Trending: True Wireless Earbuds (ANC, 40H Battery)
@@ -413,6 +452,10 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "Total 40 hours playtime with pocket-sized Qi wireless charging case",
       "4-mic beamforming array with AI environmental noise reduction for crystal clear calls",
     ],
+    supplier: "AliExpress Pro Verified",
+    supplierOrigin: "Express Audio Depot",
+    availability: "IN_STOCK_DROPSHIP",
+    complianceVerified: true,
   },
 
   // 10. AI Software / Toolkits

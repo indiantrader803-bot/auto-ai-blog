@@ -803,6 +803,14 @@ export default function StoreHomePage() {
                           {quickViewProduct.shippingDetails.origin}
                         </span>
                       </div>
+                      {quickViewProduct.supplier && (
+                        <div className="pt-1 mt-1 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px]">
+                          <span className="text-slate-500">Dropship Verified:</span>
+                          <span className="font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1">
+                            ✓ {quickViewProduct.supplier}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   )}
 
