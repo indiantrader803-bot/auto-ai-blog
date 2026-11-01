@@ -14,6 +14,16 @@ export function middleware(req: NextRequest) {
     });
   }
 
+  // Instant 200 OK BingSiteAuth.xml delivery for Bing Webmaster Tools verification
+  if (pathname === "/BingSiteAuth.xml") {
+    return new NextResponse('<?xml version="1.0"?>\n<users>\n\t<user>79328ACF010CF94BBE0BA125939AA19B</user>\n</users>\n', {
+      headers: {
+        "Content-Type": "application/xml; charset=utf-8",
+        "Cache-Control": "public, max-age=86400, s-maxage=86400",
+      },
+    });
+  }
+
   // 1. Permanent 301 Canonical Redirect for www.thesmartmag.com -> https://thesmartmag.com (Fixes GSC duplicate/redirect issues)
   if (host.startsWith("www.thesmartmag.com")) {
     const targetUrl = new URL(`https://thesmartmag.com${pathname}${search}`);
