@@ -13,6 +13,7 @@ import { TravelCurrencyProvider } from "@/context/TravelCurrencyContext";
 import { VipAuthProvider } from "@/context/VipAuthContext";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/store/CartDrawer";
+import MicrosoftClarity from "@/components/analytics/MicrosoftClarity";
 
 export const revalidate = 60;
 
@@ -257,6 +258,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-slate-50 dark:bg-[#070b14] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white font-sans">
+        <MicrosoftClarity />
         <GoogleTranslateProvider />
         <TravelCurrencyProvider>
           <VipAuthProvider>
