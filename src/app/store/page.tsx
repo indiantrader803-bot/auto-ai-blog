@@ -23,9 +23,13 @@ import {
   Filter,
   ArrowRight,
   User,
-  SlidersHorizontal,
   PackageCheck,
-  RefreshCw,
+  Check,
+  RotateCcw,
+  Plus,
+  Minus,
+  Eye,
+  SlidersHorizontal,
 } from "lucide-react";
 import { detectUserCurrency } from "@/lib/utils";
 
@@ -39,7 +43,15 @@ export default function StoreHomePage() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "rating">("featured");
   const [appliedDiscount, setAppliedDiscount] = useState<number>(30);
+
+  // Selected variant/color & quantity per product (keyed by product ID)
+  const [selectedColors, setSelectedColors] = useState<{ [productId: string]: string }>({});
+  const [quantities, setQuantities] = useState<{ [productId: string]: number }>({});
   const [addedItem, setAddedItem] = useState<string | null>(null);
+
+  // Quick View Product Modal
+  const [quickViewProduct, setQuickViewProduct] = useState<any | null>(null);
+  const [activeGalleryIndex, setActiveGalleryIndex] = useState<number>(0);
 
   useEffect(() => {
     setCurrency(detectUserCurrency());
@@ -50,30 +62,43 @@ export default function StoreHomePage() {
         if (data.products) {
           setProducts(data.products);
           setAppliedDiscount(data.discountPercentage || 30);
+
+          // Initialize default colors
+          const initColors: { [key: string]: string } = {};
+          const initQty: { [key: string]: number } = {};
+          data.products.forEach((p: any) => {
+            if (p.colors && p.colors.length > 0) {
+              initColors[p.id] = p.colors[0].name;
+            }
+            initQty[p.id] = 1;
+          });
+          setSelectedColors(initColors);
+          setQuantities(initQty);
         }
       })
       .catch(() => {});
   }, []);
 
   const handleAddToCart = (product: any) => {
-    const isPhysical =
-      product.isPhysical ||
-      product.badge?.includes("DROPSHIP") ||
-      product.badge?.includes("TECH") ||
-      product.badge?.includes("TRAVEL") ||
-      product.badge?.includes("SECURITY");
+    const qty = quantities[product.id] || 1;
+    const selectedColor = selectedColors[product.id] || (product.colors?.[0]?.name ?? "Standard");
 
-    addToCart({
-      ...product,
-      isPhysical,
-    });
+    addToCart(
+      {
+        ...product,
+        title: `${product.title} (${selectedColor})`,
+        image: product.image,
+        isPhysical: product.isPhysical,
+      },
+      qty
+    );
 
     setAddedItem(product.id);
     setTimeout(() => setAddedItem(null), 2500);
   };
 
   const calculateFinalPrice = (product: any) => {
-    const base = currency === "USD" ? product.priceUSD || 9.99 : product.priceINR || 799;
+    const base = currency === "USD" ? product.priceUSD || 19.99 : product.priceINR || 1499;
     if (appliedDiscount > 0) {
       return currency === "USD"
         ? parseFloat((base * (1 - appliedDiscount / 100)).toFixed(2))
@@ -82,17 +107,18 @@ export default function StoreHomePage() {
     return base;
   };
 
+  const handleQtyChange = (productId: string, delta: number) => {
+    setQuantities((prev) => {
+      const current = prev[productId] || 1;
+      const next = Math.max(1, Math.min(10, current + delta));
+      return { ...prev, [productId]: next };
+    });
+  };
+
   const filteredProducts = products
     .filter((p) => {
-      const isPhysical =
-        p.isPhysical ||
-        p.badge?.includes("DROPSHIP") ||
-        p.badge?.includes("TECH") ||
-        p.badge?.includes("TRAVEL") ||
-        p.badge?.includes("SECURITY");
-
-      if (activeCategory === "DROPSHIP" && !isPhysical) return false;
-      if (activeCategory === "DIGITAL" && isPhysical) return false;
+      if (activeCategory === "DROPSHIP" && !p.isPhysical) return false;
+      if (activeCategory === "DIGITAL" && p.isPhysical) return false;
 
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
@@ -118,38 +144,45 @@ export default function StoreHomePage() {
       <Navbar />
       <CartDrawer currency={currency} />
 
-      {/* Top E-Commerce Hero Header */}
-      <section className="relative overflow-hidden border-b border-slate-800/80 bg-gradient-to-b from-slate-900/80 via-[#070b14] to-[#070b14] py-12 sm:py-16">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-indigo-500/10 via-transparent to-transparent pointer-events-none" />
+      {/* Top Banner Ticker */}
+      <div className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-950 py-2.5 px-4 border-b border-indigo-500/20 text-center text-xs font-semibold text-indigo-200 flex items-center justify-center gap-2">
+        <Flame className="w-4 h-4 text-amber-400 animate-pulse" />
+        <span>Grand Opening: Free Tracked Worldwide Doorstep Express Shipping + 30% OFF using code </span>
+        <span className="font-mono font-black text-white bg-white/10 px-2 py-0.5 rounded border border-white/20">
+          GLOBAL30
+        </span>
+      </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* E-Commerce Hero Section */}
+      <section className="relative overflow-hidden border-b border-slate-800 bg-gradient-to-b from-slate-900/60 to-[#070b14] py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="space-y-4 max-w-2xl text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5" /> Direct Global Dropshipping & Quant Store
-              </div>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider">
+                <Truck className="w-3.5 h-3.5" /> Official Verified E-Commerce Store
+              </span>
               <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-                Curated Tech, Hardware & <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Quant Trading Tools</span>
+                Verified Dropshipping Hardware & <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Quant Systems</span>
               </h1>
               <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
-                Premium dropshipped hardware dispatched worldwide with live tracking, plus production-grade quantitative codebases and trading systems.
+                Direct-from-manufacturer hardware dropshipped to your doorstep with courier tracking, plus instant quantitative trading toolkits.
               </p>
 
-              {/* Trust Badges */}
+              {/* Trust Indicators */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2 text-xs text-slate-300">
-                <span className="flex items-center gap-1.5 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800">
+                <span className="flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" /> Razorpay Verified Merchant
                 </span>
-                <span className="flex items-center gap-1.5 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800">
-                  <Truck className="w-4 h-4 text-indigo-400" /> Free Global Doorstep Shipping
+                <span className="flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
+                  <Truck className="w-4 h-4 text-indigo-400" /> Free Door-to-Door Delivery
                 </span>
-                <span className="flex items-center gap-1.5 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800">
-                  <PackageCheck className="w-4 h-4 text-purple-400" /> Verified Quality Guarantee
+                <span className="flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
+                  <RotateCcw className="w-4 h-4 text-purple-400" /> 30-Day Money-Back Guarantee
                 </span>
               </div>
             </div>
 
-            {/* Quick Action Box: Currency & Account / Cart */}
+            {/* Quick Currency & Cart Summary Card */}
             <div className="w-full lg:w-auto bg-slate-900/90 border border-slate-800 p-5 rounded-3xl shadow-2xl backdrop-blur-xl flex flex-col sm:flex-row lg:flex-col gap-4">
               <div className="flex items-center justify-between gap-4">
                 <span className="text-xs font-semibold text-slate-400">Currency</span>
@@ -204,21 +237,16 @@ export default function StoreHomePage() {
                   <span>Cart ({totalItems})</span>
                 </button>
               </div>
-
-              <div className="pt-2 border-t border-slate-800/80 text-[11px] text-emerald-400 flex items-center justify-between">
-                <span>🔥 Code GLOBAL30 Active</span>
-                <span className="font-bold">30% OFF</span>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Main E-Commerce Catalog Section */}
+      {/* Main E-Commerce Catalog */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-8 flex-1">
-        {/* Filter and Search Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur">
-          {/* Categories */}
+        {/* Filter, Search & Sort Bar */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur">
+          {/* Category Tabs */}
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
             <button
               onClick={() => setActiveCategory("ALL")}
@@ -248,17 +276,17 @@ export default function StoreHomePage() {
                   : "bg-slate-800/70 text-slate-400 hover:text-white"
               }`}
             >
-              <Download className="w-3.5 h-3.5 text-emerald-400" /> Quant & Digital
+              <Download className="w-3.5 h-3.5 text-emerald-400" /> Quant Toolkits
             </button>
           </div>
 
-          {/* Search & Sort */}
+          {/* Search & Sort Controls */}
           <div className="flex items-center gap-3 w-full md:w-auto">
             <div className="relative flex-1 md:w-64">
               <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search catalog..."
+                placeholder="Search products & specs..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
@@ -278,19 +306,14 @@ export default function StoreHomePage() {
           </div>
         </div>
 
-        {/* Product Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* E-Commerce Product Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredProducts.map((prod) => {
             const finalPrice = calculateFinalPrice(prod);
             const originalPrice = currency === "USD" ? prod.originalPriceUSD : prod.originalPriceINR;
-            const standardPrice = currency === "USD" ? prod.priceUSD : prod.priceINR;
             const symbol = currency === "USD" ? "$" : "₹";
-            const isPhysical =
-              prod.isPhysical ||
-              prod.badge?.includes("DROPSHIP") ||
-              prod.badge?.includes("TECH") ||
-              prod.badge?.includes("TRAVEL") ||
-              prod.badge?.includes("SECURITY");
+            const qty = quantities[prod.id] || 1;
+            const currentColor = selectedColors[prod.id] || prod.colors?.[0]?.name;
 
             return (
               <div
@@ -298,14 +321,14 @@ export default function StoreHomePage() {
                 className="flex flex-col justify-between rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-indigo-500/50 p-5 transition-all duration-300 shadow-xl group hover:-translate-y-1 relative"
               >
                 <div>
-                  {/* Badge & Category */}
+                  {/* Badge & Shipping Type */}
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black tracking-wider uppercase">
-                      {prod.badge || "PRO"}
+                    <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase">
+                      {prod.badge || "FEATURED"}
                     </span>
-                    {isPhysical ? (
+                    {prod.isPhysical ? (
                       <span className="flex items-center gap-1 text-[10px] font-semibold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
-                        <Truck className="w-2.5 h-2.5" /> Dropshipping
+                        <Truck className="w-2.5 h-2.5" /> Doorstep Delivery
                       </span>
                     ) : (
                       <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
@@ -314,25 +337,78 @@ export default function StoreHomePage() {
                     )}
                   </div>
 
-                  {/* Image */}
-                  <div className="w-full h-44 rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden mb-4 relative group-hover:border-indigo-500/30 transition-colors">
+                  {/* Product Image with Quick View Trigger */}
+                  <div className="w-full h-48 rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden mb-4 relative group-hover:border-indigo-500/30 transition-colors">
                     <img
-                      src={prod.image || "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=600&auto=format&fit=crop&q=80"}
+                      src={prod.image}
                       alt={prod.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {prod.rating && (
                       <div className="absolute top-2 right-2 px-2 py-0.5 rounded-lg bg-black/70 backdrop-blur-md text-[10px] font-bold text-amber-400 flex items-center gap-1">
                         <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                        {prod.rating}
+                        {prod.rating} ({prod.reviewsCount})
                       </div>
                     )}
+                    <button
+                      onClick={() => {
+                        setQuickViewProduct(prod);
+                        setActiveGalleryIndex(0);
+                      }}
+                      className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-xs font-bold text-white backdrop-blur-xs"
+                    >
+                      <Eye className="w-4 h-4" /> Quick View
+                    </button>
                   </div>
 
+                  {/* Title & Tagline */}
                   <h3 className="font-bold text-white text-base leading-snug line-clamp-2 mb-1 group-hover:text-indigo-400 transition-colors">
                     {prod.title}
                   </h3>
-                  <p className="text-xs text-slate-400 line-clamp-2 mb-4 leading-relaxed">{prod.tagline}</p>
+                  <p className="text-xs text-slate-400 line-clamp-2 mb-3 leading-relaxed">{prod.tagline}</p>
+
+                  {/* Color / Variant Swatches */}
+                  {prod.colors && prod.colors.length > 0 && (
+                    <div className="mb-3 space-y-1.5">
+                      <div className="flex items-center justify-between text-[11px]">
+                        <span className="text-slate-400">Variant:</span>
+                        <span className="text-white font-semibold">{currentColor}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {prod.colors.map((c: any) => (
+                          <button
+                            key={c.name}
+                            onClick={() => setSelectedColors((prev) => ({ ...prev, [prod.id]: c.name }))}
+                            className={`w-6 h-6 rounded-full border-2 transition-all flex items-center justify-center ${
+                              currentColor === c.name
+                                ? "border-indigo-500 ring-2 ring-indigo-500/30 scale-110"
+                                : "border-slate-700 hover:border-slate-500"
+                            }`}
+                            style={{ backgroundColor: c.colorHex || "#334155" }}
+                            title={c.name}
+                          >
+                            {currentColor === c.name && <Check className="w-3 h-3 text-white drop-shadow" />}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Shipping & Delivery Estimates */}
+                  {prod.shippingDetails && (
+                    <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-[11px] space-y-1 mb-4 text-slate-400">
+                      <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-1">
+                          <Truck className="w-3 h-3 text-indigo-400" /> Delivery:
+                        </span>
+                        <span className="text-white font-medium">{prod.shippingDetails.estimatedDelivery}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Shipping:</span>
+                        <span className="text-emerald-400 font-bold">{prod.shippingDetails.shippingCost}</span>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Pricing Box */}
                   <div className="p-3 rounded-2xl bg-slate-950/70 border border-slate-800/80 mb-4 flex items-baseline justify-between">
@@ -350,26 +426,36 @@ export default function StoreHomePage() {
                       SAVE 30%
                     </span>
                   </div>
-
-                  {/* Bullet points */}
-                  <ul className="space-y-1.5 text-xs text-slate-300 mb-6">
-                    {(prod.features || []).slice(0, 3).map((feat: string, i: number) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                        <span className="line-clamp-1">{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
 
-                {/* Add to Cart / Buy Now Action */}
-                <div className="space-y-2 pt-2 border-t border-slate-800/60">
+                {/* E-Commerce Actions: Quantity + Add to Cart + Instant Checkout */}
+                <div className="space-y-2.5 pt-3 border-t border-slate-800">
+                  {/* Quantity Selector */}
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-400 font-medium">Quantity:</span>
+                    <div className="flex items-center border border-slate-700 rounded-lg bg-slate-950">
+                      <button
+                        onClick={() => handleQtyChange(prod.id, -1)}
+                        className="p-1 px-2 text-slate-400 hover:text-white transition-colors"
+                      >
+                        <Minus className="w-3 h-3" />
+                      </button>
+                      <span className="px-2 text-xs font-bold text-white">{qty}</span>
+                      <button
+                        onClick={() => handleQtyChange(prod.id, 1)}
+                        className="p-1 px-2 text-slate-400 hover:text-white transition-colors"
+                      >
+                        <Plus className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+
                   <button
                     onClick={() => handleAddToCart(prod)}
                     className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/25 transition-all"
                   >
                     <ShoppingBag className="w-3.5 h-3.5" />
-                    <span>{addedItem === prod.id ? "Added to Cart! ✓" : "Add to Cart"}</span>
+                    <span>{addedItem === prod.id ? "Added to Cart! ✓" : `Add to Cart (${qty})`}</span>
                   </button>
 
                   <Link
@@ -386,19 +472,81 @@ export default function StoreHomePage() {
           })}
         </div>
 
-        {/* Global Footer Banner for Store Admin */}
-        <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800 text-center space-y-3">
-          <h4 className="text-sm font-bold text-white">Store Administration & Dropshipping Control</h4>
-          <p className="text-xs text-slate-400 max-w-lg mx-auto">
-            Manage inventory, view live Razorpay orders, scrape new AliExpress products, and configure dropship suppliers.
-          </p>
-          <Link
-            href="/admin/store"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold border border-slate-700 transition-colors"
-          >
-            Open Glass Store Admin <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
+        {/* Quick View Modal */}
+        {quickViewProduct && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <div className="w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto space-y-6">
+              <button
+                onClick={() => setQuickViewProduct(null)}
+                className="absolute right-5 top-5 p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-xs"
+              >
+                ✕
+              </button>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Gallery */}
+                <div className="space-y-3">
+                  <div className="w-full h-64 rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden">
+                    <img
+                      src={quickViewProduct.galleryImages?.[activeGalleryIndex] || quickViewProduct.image}
+                      alt={quickViewProduct.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  {quickViewProduct.galleryImages && quickViewProduct.galleryImages.length > 1 && (
+                    <div className="flex gap-2">
+                      {quickViewProduct.galleryImages.map((img: string, i: number) => (
+                        <button
+                          key={i}
+                          onClick={() => setActiveGalleryIndex(i)}
+                          className={`w-14 h-14 rounded-xl border-2 overflow-hidden ${
+                            activeGalleryIndex === i ? "border-indigo-500" : "border-slate-800"
+                          }`}
+                        >
+                          <img src={img} alt="thumbnail" className="w-full h-full object-cover" />
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Specs */}
+                <div className="space-y-4">
+                  <div>
+                    <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase">
+                      {quickViewProduct.badge}
+                    </span>
+                    <h2 className="text-xl font-bold text-white mt-1">{quickViewProduct.title}</h2>
+                    <p className="text-xs text-slate-400 mt-1">{quickViewProduct.tagline}</p>
+                  </div>
+
+                  <div className="text-xl font-black text-white font-mono">
+                    {currency === "USD" ? "$" : "₹"}
+                    {calculateFinalPrice(quickViewProduct)}
+                  </div>
+
+                  {quickViewProduct.shippingDetails && (
+                    <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-1 text-slate-400">
+                      <div>Carrier: <span className="text-white">{quickViewProduct.shippingDetails.carrier}</span></div>
+                      <div>Estimated Arrival: <span className="text-emerald-400">{quickViewProduct.shippingDetails.estimatedDelivery}</span></div>
+                      <div>Dispatch: <span className="text-slate-300">{quickViewProduct.shippingDetails.origin}</span></div>
+                    </div>
+                  )}
+
+                  <button
+                    onClick={() => {
+                      handleAddToCart(quickViewProduct);
+                      setQuickViewProduct(null);
+                    }}
+                    className="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg"
+                  >
+                    <ShoppingBag className="w-4 h-4" /> Add to Cart & Continue
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />
