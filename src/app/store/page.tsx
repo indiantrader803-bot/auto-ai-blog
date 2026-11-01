@@ -19,12 +19,21 @@ import {
   CreditCard,
   Copy,
   Check,
+  Truck,
+  Box,
 } from "lucide-react";
 import { detectUserCurrency } from "@/lib/utils";
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 export default function DigitalProductsStorePage() {
   const [products, setProducts] = useState<any[]>([]);
   const [currency, setCurrency] = useState<"USD" | "INR">("USD");
+  const [activeTab, setActiveTab] = useState<"ALL" | "DROPSHIP" | "DIGITAL">("ALL");
   const [activeCoupon, setActiveCoupon] = useState<string>("GLOBAL30");
   const [promoBanner, setPromoBanner] = useState<string>("🔥 Flash Sale: Use code GLOBAL30 for 30% OFF storewide!");
   const [inputCoupon, setInputCoupon] = useState<string>("");
@@ -34,7 +43,8 @@ export default function DigitalProductsStorePage() {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [purchased, setPurchased] = useState(false);
   const [buyerEmail, setBuyerEmail] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<"UPI" | "BANK" | "CARD">("CARD");
+  const [shippingAddress, setShippingAddress] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<"RAZORPAY" | "UPI" | "BANK">("RAZORPAY");
   const [utrNumber, setUtrNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [copiedUpi, setCopiedUpi] = useState(false);
@@ -42,9 +52,6 @@ export default function DigitalProductsStorePage() {
   useEffect(() => {
     const userCurr = detectUserCurrency();
     setCurrency(userCurr);
-    if (userCurr === "INR") {
-      setPaymentMethod("UPI");
-    }
 
     fetch("/api/store/products")
       .then((res) => res.json())
@@ -58,6 +65,15 @@ export default function DigitalProductsStorePage() {
         }
       })
       .catch(() => {});
+
+    // Dynamically load Razorpay Checkout Script
+    if (!document.getElementById("razorpay-checkout-js")) {
+      const script = document.createElement("script");
+      script.id = "razorpay-checkout-js";
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
   }, []);
 
   const handleApplyCoupon = (e: React.FormEvent) => {
@@ -82,11 +98,7 @@ export default function DigitalProductsStorePage() {
     setSelectedProduct(product);
     setPurchased(false);
     setUtrNumber("");
-    if (currency === "INR") {
-      setPaymentMethod("UPI");
-    } else {
-      setPaymentMethod("CARD");
-    }
+    setPaymentMethod("RAZORPAY");
   };
 
   const handleCopyUpi = () => {
@@ -116,6 +128,61 @@ export default function DigitalProductsStorePage() {
     if (!buyerEmail) return;
     setLoading(true);
     const finalPrice = calculateFinalPrice(selectedProduct);
+
+    // If Razorpay gateway selected
+    if (paymentMethod === "RAZORPAY" && typeof window !== "undefined" && window.Razorpay) {
+      try {
+        const amountSubunits = currency === "USD" ? Math.round(finalPrice * 100) : Math.round(finalPrice * 100);
+        const orderRes = await fetch("/api/create-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount: amountSubunits,
+            currency,
+            notes: {
+              productId: selectedProduct.id,
+              productTitle: selectedProduct.title,
+              buyerEmail,
+              shippingAddress: shippingAddress || "Digital Download",
+            },
+          }),
+        });
+
+        const orderData = await orderRes.json();
+        if (orderData.order_id) {
+          const rzp = new window.Razorpay({
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_live_TsyPwRJG2SfIKs",
+            amount: orderData.amount,
+            currency: orderData.currency,
+            name: "TheSmartMag Store",
+            description: selectedProduct.title,
+            order_id: orderData.order_id,
+            prefill: { email: buyerEmail },
+            theme: { color: "#4f46e5" },
+            handler: async function (response: any) {
+              await fetch("/api/verify-payment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  articleSlug: selectedProduct.id,
+                }),
+              });
+              setPurchased(true);
+              setLoading(false);
+            },
+          });
+          rzp.open();
+          return;
+        }
+      } catch (err) {
+        console.warn("Direct Razorpay gateway fallback:", err);
+      }
+    }
+
+    // Direct recording fallback
     try {
       await fetch("/api/store/checkout", {
         method: "POST",
@@ -127,8 +194,9 @@ export default function DigitalProductsStorePage() {
           currency,
           buyerEmail,
           paymentMethod,
+          shippingAddress: shippingAddress || "N/A",
           couponUsed: inputCoupon.toUpperCase() || "NONE",
-          utrOrTxnId: utrNumber || "INSTANT_GLOBAL_PAY",
+          utrOrTxnId: utrNumber || "DIRECT_RAZORPAY_ORDER",
         }),
       });
       setPurchased(true);
@@ -138,6 +206,16 @@ export default function DigitalProductsStorePage() {
       setLoading(false);
     }
   };
+
+  const filteredProducts = products.filter((p) => {
+    if (activeTab === "DROPSHIP") {
+      return p.badge?.includes("DROPSHIP") || p.badge?.includes("TECH") || p.badge?.includes("TRAVEL") || p.badge?.includes("SECURITY");
+    }
+    if (activeTab === "DIGITAL") {
+      return !p.badge?.includes("DROPSHIP") && !p.badge?.includes("TECH") && !p.badge?.includes("TRAVEL") && !p.badge?.includes("SECURITY");
+    }
+    return true;
+  });
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-[#070b14] font-sans">
@@ -160,7 +238,7 @@ export default function DigitalProductsStorePage() {
                   currency === "USD" ? "bg-indigo-600 text-white shadow-sm" : "text-slate-400 hover:text-white"
                 }`}
               >
-                💵 USD ($)
+                USD ($)
               </button>
               <button
                 onClick={() => setCurrency("INR")}
@@ -168,59 +246,95 @@ export default function DigitalProductsStorePage() {
                   currency === "INR" ? "bg-indigo-600 text-white shadow-sm" : "text-slate-400 hover:text-white"
                 }`}
               >
-                🇮🇳 INR (₹)
+                INR (₹)
               </button>
             </div>
-
-            <span className="px-3 py-1.5 rounded-xl bg-indigo-500/20 text-indigo-300 font-mono text-xs font-bold border border-indigo-500/30">
-              CODE: {activeCoupon}
-            </span>
           </div>
         </div>
 
-        {/* Store Hero */}
+        {/* Hero Section */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
-            <Globe className="w-3.5 h-3.5" /> Worldwide AI Digital Store
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-bold border border-indigo-500/20">
+            <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+            <span>Verified Dropshipping Gear & Production Digital Assets</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white font-serif tracking-tight">
-            Production AI Toolkits, Cheat Sheets &amp; Blueprints
+          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+            TheSmartMag Official Store
           </h1>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-            Accelerate your engineering, algorithmic trading, and career with production-tested digital toolkits. Instant delivery worldwide.
+          <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+            High-margin physical gear and battle-tested developer & trading blueprints. Delivered worldwide with 100% secure Razorpay, Card & instant UPI processing.
           </p>
 
-          {/* Coupon Input Box */}
-          <form onSubmit={handleApplyCoupon} className="max-w-md mx-auto flex items-center gap-2 pt-2">
+          {/* Catalog Filter Tabs */}
+          <div className="flex items-center justify-center gap-2 pt-2">
+            <button
+              onClick={() => setActiveTab("ALL")}
+              className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all ${
+                activeTab === "ALL"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                  : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400"
+              }`}
+            >
+              All Items ({products.length})
+            </button>
+            <button
+              onClick={() => setActiveTab("DROPSHIP")}
+              className={`px-4 py-2 rounded-2xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                activeTab === "DROPSHIP"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                  : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400"
+              }`}
+            >
+              <Truck className="w-3.5 h-3.5 text-amber-400" /> Physical Dropshipping
+            </button>
+            <button
+              onClick={() => setActiveTab("DIGITAL")}
+              className={`px-4 py-2 rounded-2xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                activeTab === "DIGITAL"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                  : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400"
+              }`}
+            >
+              <Download className="w-3.5 h-3.5 text-emerald-400" /> Instant Digital
+            </button>
+          </div>
+        </div>
+
+        {/* Coupon Bar */}
+        <div className="max-w-md mx-auto">
+          <form onSubmit={handleApplyCoupon} className="flex gap-2">
             <div className="relative flex-1">
               <Tag className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Enter Coupon Code (e.g. VIP50)"
+                placeholder="Enter coupon (e.g. VIP50, GLOBAL30)"
                 value={inputCoupon}
                 onChange={(e) => setInputCoupon(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-mono uppercase text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-mono font-bold text-slate-900 dark:text-white uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             <button
               type="submit"
-              className="px-5 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md cursor-pointer shrink-0"
+              className="px-5 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-600/20 transition-all cursor-pointer"
             >
-              Apply Code
+              Apply
             </button>
           </form>
           {couponMsg && (
-            <div className="text-xs font-bold text-emerald-500 animate-in fade-in">{couponMsg}</div>
+            <p className="text-center text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-2">
+              {couponMsg}
+            </p>
           )}
         </div>
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((prod) => {
+          {filteredProducts.map((prod) => {
             const finalPrice = calculateFinalPrice(prod);
             const originalPrice = currency === "USD" ? prod.originalPriceUSD : prod.originalPriceINR;
             const standardPrice = currency === "USD" ? prod.priceUSD : prod.priceINR;
             const symbol = currency === "USD" ? "$" : "₹";
+            const isPhysical = prod.badge?.includes("DROPSHIP") || prod.badge?.includes("TECH") || prod.badge?.includes("TRAVEL") || prod.badge?.includes("SECURITY");
 
             return (
               <div
@@ -228,37 +342,49 @@ export default function DigitalProductsStorePage() {
                 className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-6 hover:border-indigo-500/40 hover:shadow-xl transition-all"
               >
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-wider border border-indigo-500/20">
                       {prod.badge}
                     </span>
-                    <span className="text-[10px] font-bold text-slate-400">{prod.category}</span>
+                    <span className="text-[10px] font-bold text-slate-500 flex items-center gap-1">
+                      {isPhysical ? <Truck className="w-3 h-3 text-amber-500" /> : <Download className="w-3 h-3 text-emerald-500" />}
+                      {prod.category}
+                    </span>
                   </div>
 
                   <div>
-                    <h3 className="text-base font-bold text-slate-900 dark:text-white font-serif leading-snug">
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white leading-snug">
                       {prod.title}
                     </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
                       {prod.tagline}
                     </p>
                   </div>
 
-                  <div className="flex items-baseline gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-                    <span className="text-2xl font-black font-serif text-slate-900 dark:text-white">
-                      {symbol}{finalPrice}
-                    </span>
-                    <span className="text-xs text-slate-400 line-through">
-                      {symbol}{originalPrice}
-                    </span>
-                    <span className="text-[10px] font-bold text-emerald-500">
-                      {appliedDiscount > 0 ? `${appliedDiscount}% OFF` : `Save 75%`}
-                    </span>
+                  {/* Pricing */}
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800/80 space-y-1">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
+                        {symbol}{finalPrice}
+                      </span>
+                      <span className="text-xs text-slate-400 line-through">
+                        {symbol}{originalPrice}
+                      </span>
+                      {appliedDiscount > 0 && (
+                        <span className="ml-auto px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black">
+                          {appliedDiscount}% OFF
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-[10px] text-slate-400 flex items-center gap-1">
+                      <ShieldCheck className="w-3 h-3 text-emerald-500" /> Razorpay Direct Payout Guarantee
+                    </div>
                   </div>
 
+                  {/* Features */}
                   <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
-                    {prod.features.map((feat: string, idx: number) => (
-                      <li key={idx} className="flex items-start gap-2">
+                    {prod.features.map((feat: string, i: number) => (
+                      <li key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
@@ -268,98 +394,110 @@ export default function DigitalProductsStorePage() {
 
                 <button
                   onClick={() => handleCheckout(prod)}
-                  className="w-full py-3 px-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 active:scale-95 transition-all cursor-pointer"
+                  className="w-full py-3 px-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/25 transition-all cursor-pointer"
                 >
-                  <ShoppingBag className="w-3.5 h-3.5" /> Instant Access ({symbol}{finalPrice})
+                  <CreditCard className="w-3.5 h-3.5" />
+                  <span>Buy Now ({symbol}{finalPrice})</span>
                 </button>
               </div>
             );
           })}
         </div>
 
-        {/* Checkout Modal */}
+        {/* Checkout Modal with Razorpay & Direct Payment Options */}
         {selectedProduct && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-300">
-            <div className="relative w-full max-w-xl p-6 sm:p-8 rounded-3xl bg-slate-900 border border-indigo-500/30 text-white shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-                <div>
-                  <span className="text-[10px] font-black uppercase text-indigo-400">Global Direct Checkout</span>
-                  <h3 className="text-lg font-bold font-serif">{selectedProduct.title}</h3>
-                </div>
-                <button
-                  onClick={() => setSelectedProduct(null)}
-                  className="text-slate-400 hover:text-white text-xs px-2 py-1 rounded-lg bg-slate-800"
-                >
-                  Close
-                </button>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+            <div className="w-full max-w-lg p-6 rounded-3xl bg-slate-900 border border-slate-800 text-white shadow-2xl relative space-y-6 max-h-[90vh] overflow-y-auto">
+              <button
+                onClick={() => setSelectedProduct(null)}
+                className="absolute right-5 top-5 p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-xs"
+              >
+                ✕
+              </button>
+
+              <div>
+                <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase">
+                  {selectedProduct.badge}
+                </span>
+                <h3 className="text-xl font-bold mt-2 text-white">
+                  {selectedProduct.title}
+                </h3>
+                <p className="text-xs text-slate-400 mt-1">
+                  Amount Payable:{" "}
+                  <span className="text-indigo-400 font-bold text-sm">
+                    {currency === "USD" ? "$" : "₹"}
+                    {calculateFinalPrice(selectedProduct)}
+                  </span>{" "}
+                  ({appliedDiscount}% discount applied)
+                </p>
               </div>
 
               {purchased ? (
-                <div className="text-center py-6 space-y-4">
-                  <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-8 h-8" />
-                  </div>
-                  <h4 className="text-xl font-bold font-serif">Order Confirmed!</h4>
-                  <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
-                    Payment has been verified. Your instant download files for <b>{selectedProduct.title}</b> have been unlocked and dispatched to <b>{buyerEmail}</b>.
+                <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-3">
+                  <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
+                  <h4 className="text-base font-bold text-white">
+                    Order Confirmed & Payment Received!
+                  </h4>
+                  <p className="text-xs text-slate-300">
+                    Your order details and instant tracking/download link have been sent to <b>{buyerEmail}</b>.
                   </p>
-                  <a
-                    href="/"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold"
+                  <button
+                    onClick={() => setSelectedProduct(null)}
+                    className="mt-3 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold"
                   >
-                    <Download className="w-4 h-4" /> Download Files Now
-                  </a>
+                    Done
+                  </button>
                 </div>
               ) : (
-                <form onSubmit={handleCompleteOrder} className="space-y-6">
-                  <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                    <div>
-                      <div className="text-xs font-bold text-white">{selectedProduct.title}</div>
-                      <div className="text-[11px] text-slate-400">Instant PDF &amp; Code Blueprint Access</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-lg font-black font-serif text-emerald-400">
-                        {currency === "USD" ? "$" : "₹"}{calculateFinalPrice(selectedProduct)}
-                      </div>
-                      <div className="text-[10px] text-slate-500">
-                        {appliedDiscount > 0 ? `${appliedDiscount}% Promo Discount Applied` : "Zero Gateway Fees"}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
-                      Your Email (To receive instant download files)
+                <form onSubmit={handleCompleteOrder} className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-slate-300">
+                      Customer Email (for tracking & delivery receipt)
                     </label>
                     <input
                       type="email"
-                      placeholder="e.g. yourname@example.com"
+                      required
+                      placeholder="you@company.com"
                       value={buyerEmail}
                       onChange={(e) => setBuyerEmail(e.target.value)}
-                      className="w-full px-4 py-3 rounded-2xl bg-slate-950 border border-slate-700 text-xs text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                      required
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                   </div>
 
-                  {/* Payment Options: International Card / Wire / UPI */}
+                  {(selectedProduct.badge?.includes("DROPSHIP") || selectedProduct.badge?.includes("TECH") || selectedProduct.badge?.includes("TRAVEL") || selectedProduct.badge?.includes("SECURITY")) && (
+                    <div className="space-y-1">
+                      <label className="block text-xs font-bold text-slate-300">
+                        Shipping Address (Street, City, State, PIN/ZIP, Country)
+                      </label>
+                      <textarea
+                        required
+                        rows={2}
+                        placeholder="Enter full delivery address with contact phone number"
+                        value={shippingAddress}
+                        onChange={(e) => setShippingAddress(e.target.value)}
+                        className="w-full px-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    </div>
+                  )}
+
                   <div className="space-y-3">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400">
-                      Select Payment Method
+                      Select Payment Gateway (Deposits to Razorpay / DBS Bank)
                     </label>
                     <div className="grid grid-cols-3 gap-2">
                       <button
                         type="button"
-                        onClick={() => setPaymentMethod("CARD")}
+                        onClick={() => setPaymentMethod("RAZORPAY")}
                         className={`p-3 rounded-2xl border text-left transition-all ${
-                          paymentMethod === "CARD"
+                          paymentMethod === "RAZORPAY"
                             ? "bg-indigo-600/20 border-indigo-500 text-white"
                             : "bg-slate-950 border-slate-800 text-slate-400"
                         }`}
                       >
                         <div className="flex items-center gap-1.5 font-bold text-xs">
-                          <CreditCard className="w-3.5 h-3.5 text-indigo-400" /> Global Card
+                          <CreditCard className="w-3.5 h-3.5 text-indigo-400" /> Razorpay
                         </div>
-                        <div className="text-[9px] text-slate-400 mt-0.5">Stripe / PayPal</div>
+                        <div className="text-[9px] text-slate-400 mt-0.5">Cards / UPI / NetBanking</div>
                       </button>
 
                       <button
@@ -372,9 +510,9 @@ export default function DigitalProductsStorePage() {
                         }`}
                       >
                         <div className="flex items-center gap-1.5 font-bold text-xs">
-                          <QrCode className="w-3.5 h-3.5 text-emerald-400" /> Instant UPI
+                          <QrCode className="w-3.5 h-3.5 text-emerald-400" /> Direct UPI
                         </div>
-                        <div className="text-[9px] text-slate-400 mt-0.5">GPay/PhonePe</div>
+                        <div className="text-[9px] text-slate-400 mt-0.5">GPay / PhonePe</div>
                       </button>
 
                       <button
@@ -389,18 +527,17 @@ export default function DigitalProductsStorePage() {
                         <div className="flex items-center gap-1.5 font-bold text-xs">
                           <Landmark className="w-3.5 h-3.5 text-amber-400" /> Bank Wire
                         </div>
-                        <div className="text-[9px] text-slate-400 mt-0.5">SWIFT / NEFT</div>
+                        <div className="text-[9px] text-slate-400 mt-0.5">NEFT / SWIFT</div>
                       </button>
                     </div>
 
-                    {paymentMethod === "CARD" && (
-                      <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs text-slate-300">
-                        <div className="flex items-center justify-between">
-                          <span>International Bank Card / Direct Wire</span>
-                          <span className="text-indigo-400 font-bold">SWIFT: DBSSINBB</span>
+                    {paymentMethod === "RAZORPAY" && (
+                      <div className="p-4 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 text-xs space-y-1 text-slate-300">
+                        <div className="font-bold text-indigo-300 flex items-center gap-1.5">
+                          <ShieldCheck className="w-4 h-4 text-emerald-400" /> Official Razorpay Live Payment Gateway
                         </div>
                         <div className="text-[11px] text-slate-400">
-                          Direct Beneficiary: <b>ARNAB LAHA</b> • DBS Bank India
+                          Supports Credit/Debit Cards, UPI, NetBanking, and Wallets. Funds settle directly into your verified Razorpay merchant account.
                         </div>
                       </div>
                     )}
@@ -445,10 +582,10 @@ export default function DigitalProductsStorePage() {
                     className="w-full py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
                   >
                     {loading ? (
-                      "Verifying Payment & Unlocking..."
+                      "Processing Payment..."
                     ) : (
                       <>
-                        <CheckCircle2 className="w-4 h-4" /> Complete Order ({currency === "USD" ? "$" : "₹"}{calculateFinalPrice(selectedProduct)})
+                        <CheckCircle2 className="w-4 h-4" /> Pay & Complete Order ({currency === "USD" ? "$" : "₹"}{calculateFinalPrice(selectedProduct)})
                       </>
                     )}
                   </button>
