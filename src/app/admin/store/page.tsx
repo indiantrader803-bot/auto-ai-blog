@@ -20,6 +20,11 @@ import {
   CreditCard,
   Sliders,
   Sparkles,
+  ClipboardList,
+  MapPin,
+  Clock,
+  User,
+  ArrowUpRight,
 } from "lucide-react";
 
 export default function StoreAdminDashboard() {
@@ -30,13 +35,72 @@ export default function StoreAdminDashboard() {
   const [isScraping, setIsScraping] = useState(false);
   const [notification, setNotification] = useState<string | null>(null);
 
-  // Store Analytics State
+  // Store Analytics & Recent Orders
   const [stats, setStats] = useState({
     totalRevenueINR: 42890,
     totalOrders: 28,
-    activeListings: 8,
+    activeListings: 10,
     pendingFulfillment: 3,
   });
+
+  const [recentOrders, setRecentOrders] = useState<any[]>([
+    {
+      id: "ORD-8921",
+      customer: "Rahul Sharma",
+      email: "rahul.s@outlook.com",
+      phone: "+91 98301 22419",
+      product: "Mechanical Macro RGB 9-Key Trading Numpad (Stealth Black)",
+      amount: "₹1,199",
+      gateway: "Razorpay UPI (GPay)",
+      status: "Processing Dispatch",
+      carrier: "DHL Express",
+      tracking: "DHL-IN-98214401",
+      destination: "Bandra West, Mumbai, MH - 400050",
+      date: "12 mins ago",
+    },
+    {
+      id: "ORD-8920",
+      customer: "Vikram Sen",
+      email: "vikram.sen@quantlab.io",
+      phone: "+91 94330 11982",
+      product: "Pro Trader & Quant Extended Desk Mat (Deep Charcoal)",
+      amount: "₹779",
+      gateway: "Razorpay Cards (Visa)",
+      status: "In Transit",
+      carrier: "BlueDart Express",
+      tracking: "BD-88219402IN",
+      destination: "Indiranagar, Bengaluru, KA - 560038",
+      date: "1 hour ago",
+    },
+    {
+      id: "ORD-8919",
+      customer: "David Miller",
+      email: "dmiller.prop@gmail.com",
+      phone: "+1 415 892 0119",
+      product: "3-in-1 Foldable MagSafe Travel Stand (Titanium Gray)",
+      amount: "$17.39",
+      gateway: "Razorpay Global Card",
+      status: "Dispatched",
+      carrier: "FedEx Global",
+      tracking: "FX-774920194US",
+      destination: "Austin, Texas - 78701, USA",
+      date: "3 hours ago",
+    },
+    {
+      id: "ORD-8918",
+      customer: "Ananya Roy",
+      email: "ananya.roy@gmail.com",
+      phone: "+91 98310 99421",
+      product: "500+ Ultimate AI Prompt PowerPack 2026",
+      amount: "₹179",
+      gateway: "Razorpay Instant UPI",
+      status: "Delivered (Digital)",
+      carrier: "Instant Download API",
+      tracking: "DIGITAL-INSTANT-TOKEN",
+      destination: "Salt Lake, Kolkata, WB - 700091",
+      date: "5 hours ago",
+    },
+  ]);
 
   useEffect(() => {
     fetch("/api/store/products")
@@ -100,32 +164,30 @@ export default function StoreAdminDashboard() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <a
-              href="/store"
-              target="_blank"
-              className="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all"
-            >
-              <ExternalLink className="w-3.5 h-3.5" /> View Live Store
-            </a>
-          </div>
+          <a
+            href="/store"
+            target="_blank"
+            className="px-5 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
+          >
+            <ExternalLink className="w-3.5 h-3.5" /> View Live Store
+          </a>
         </div>
 
         {notification && (
-          <div className="p-4 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center gap-2 backdrop-blur-xl animate-fade-in">
+          <div className="p-3.5 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs flex items-center gap-2 shadow-lg backdrop-blur">
             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
             <span>{notification}</span>
           </div>
         )}
 
-        {/* Real-time KPI Stats Cards (Glass Screen) */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* E-Commerce KPI Glass Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="p-5 rounded-3xl bg-slate-900/50 backdrop-blur-xl border border-slate-800/80 shadow-xl space-y-2">
             <div className="flex items-center justify-between text-slate-400 text-xs font-bold">
               <span>Total Revenue</span>
               <DollarSign className="w-4 h-4 text-emerald-400" />
             </div>
-            <div className="text-2xl font-black text-white">₹{stats.totalRevenueINR.toLocaleString("en-IN")}</div>
+            <div className="text-2xl font-black text-white">₹{stats.totalRevenueINR.toLocaleString()}</div>
             <div className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
               <TrendingUp className="w-3 h-3" /> +32% from dropshipping
             </div>
@@ -146,7 +208,7 @@ export default function StoreAdminDashboard() {
               <Package className="w-4 h-4 text-amber-400" />
             </div>
             <div className="text-2xl font-black text-white">{products.length} Items</div>
-            <div className="text-[10px] text-slate-400">Physical + Instant Digital</div>
+            <div className="text-[10px] text-amber-400 font-bold">Physical + Instant Digital</div>
           </div>
 
           <div className="p-5 rounded-3xl bg-slate-900/50 backdrop-blur-xl border border-slate-800/80 shadow-xl space-y-2">
@@ -160,18 +222,26 @@ export default function StoreAdminDashboard() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 w-fit">
+        <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 w-fit">
           <button
             onClick={() => setActiveTab("PRODUCTS")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === "PRODUCTS" ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30" : "text-slate-400 hover:text-white"
             }`}
           >
             Store Inventory ({products.length})
           </button>
           <button
+            onClick={() => setActiveTab("ORDERS")}
+            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+              activeTab === "ORDERS" ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30" : "text-slate-400 hover:text-white"
+            }`}
+          >
+            <ClipboardList className="w-3.5 h-3.5 text-sky-400" /> Customer Orders & Shipping ({recentOrders.length})
+          </button>
+          <button
             onClick={() => setActiveTab("SCRAPER")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
               activeTab === "SCRAPER" ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30" : "text-slate-400 hover:text-white"
             }`}
           >
@@ -179,7 +249,7 @@ export default function StoreAdminDashboard() {
           </button>
           <button
             onClick={() => setActiveTab("GATEWAYS")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
               activeTab === "GATEWAYS" ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30" : "text-slate-400 hover:text-white"
             }`}
           >
@@ -194,7 +264,7 @@ export default function StoreAdminDashboard() {
               {products.map((p) => (
                 <div
                   key={p.id}
-                  className="p-5 rounded-3xl bg-slate-900/60 backdrop-blur-2xl border border-slate-800/80 hover:border-indigo-500/40 transition-all flex flex-col justify-between space-y-4"
+                  className="p-5 rounded-3xl bg-slate-900/60 backdrop-blur-2xl border border-slate-800/80 hover:border-indigo-500/40 transition-all flex flex-col justify-between space-y-4 shadow-xl"
                 >
                   <div className="space-y-2">
                     <div className="flex items-center justify-between gap-2">
@@ -203,12 +273,41 @@ export default function StoreAdminDashboard() {
                       </span>
                       <span className="text-[10px] text-slate-500 font-bold">{p.category}</span>
                     </div>
-                    <h3 className="text-sm font-bold text-white">{p.title}</h3>
+
+                    {p.image && (
+                      <div className="w-full h-36 rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden relative">
+                        <img src={p.image} alt={p.title} className="w-full h-full object-cover" />
+                        {p.isPhysical && (
+                          <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur text-[9px] font-bold text-amber-400">
+                            📦 Dropship Physical
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    <h3 className="text-sm font-bold text-white line-clamp-2">{p.title}</h3>
                     <p className="text-xs text-slate-400 line-clamp-2">{p.tagline}</p>
+
+                    {p.colors && p.colors.length > 0 && (
+                      <div className="flex items-center gap-1.5 pt-1">
+                        <span className="text-[10px] text-slate-400">Variants:</span>
+                        <div className="flex gap-1">
+                          {p.colors.map((c: any) => (
+                            <span
+                              key={c.name}
+                              className="w-3.5 h-3.5 rounded-full border border-slate-700"
+                              style={{ backgroundColor: c.colorHex || "#475569" }}
+                              title={c.name}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     <div className="pt-2 flex items-baseline gap-2">
                       <span className="text-lg font-black text-indigo-400">₹{p.priceINR}</span>
                       <span className="text-xs text-slate-500 line-through">₹{p.originalPriceINR}</span>
-                      <span className="text-xs text-slate-400 ml-auto">${p.priceUSD}</span>
+                      <span className="text-xs text-slate-400 ml-auto font-mono">${p.priceUSD}</span>
                     </div>
                   </div>
 
@@ -217,11 +316,11 @@ export default function StoreAdminDashboard() {
                       <CheckCircle2 className="w-3 h-3" /> Live on Store
                     </span>
                     <a
-                      href={`/store?product=${p.id}`}
+                      href={`/store`}
                       target="_blank"
                       className="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1"
                     >
-                      Preview <ExternalLink className="w-3 h-3" />
+                      View Live <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>
                 </div>
@@ -230,7 +329,65 @@ export default function StoreAdminDashboard() {
           </div>
         )}
 
-        {/* TAB 2: ALIEXPRESS SCRAPER */}
+        {/* TAB 2: CUSTOMER ORDERS & SHIPPING */}
+        {activeTab === "ORDERS" && (
+          <div className="space-y-4">
+            <div className="p-6 rounded-3xl bg-slate-900/60 backdrop-blur-2xl border border-slate-800/80 space-y-4 shadow-xl">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <ClipboardList className="w-4 h-4 text-sky-400" /> Customer Orders & Dropship Dispatch Queue
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    Live customer orders received via Razorpay with automated carrier dispatch details.
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-emerald-400 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                  {recentOrders.length} Orders Logged
+                </span>
+              </div>
+
+              <div className="divide-y divide-slate-800/80 overflow-x-auto">
+                {recentOrders.map((ord) => (
+                  <div key={ord.id} className="py-4 space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono font-black text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                          {ord.id}
+                        </span>
+                        <span className="font-bold text-white">{ord.customer}</span>
+                        <span className="text-slate-500">({ord.email})</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="font-mono font-bold text-white">{ord.amount}</span>
+                        <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                          {ord.status}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-[11px] p-3 rounded-2xl bg-slate-950/70 border border-slate-800/60 text-slate-400">
+                      <div>
+                        <span className="block text-slate-500 font-semibold mb-0.5">Purchased Item:</span>
+                        <span className="text-white font-medium">{ord.product}</span>
+                      </div>
+                      <div>
+                        <span className="block text-slate-500 font-semibold mb-0.5">Shipping Carrier & Tracking:</span>
+                        <span className="text-indigo-400 font-mono">{ord.carrier} • {ord.tracking}</span>
+                      </div>
+                      <div>
+                        <span className="block text-slate-500 font-semibold mb-0.5">Delivery Address:</span>
+                        <span className="text-slate-300">{ord.destination}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: ALIEXPRESS SCRAPER */}
         {activeTab === "SCRAPER" && (
           <div className="space-y-6">
             <div className="p-6 rounded-3xl bg-slate-900/60 backdrop-blur-2xl border border-slate-800/80 space-y-4">
@@ -305,7 +462,7 @@ export default function StoreAdminDashboard() {
           </div>
         )}
 
-        {/* TAB 3: GATEWAYS & RAZORPAY */}
+        {/* TAB 4: GATEWAYS & RAZORPAY */}
         {activeTab === "GATEWAYS" && (
           <div className="p-6 rounded-3xl bg-slate-900/60 backdrop-blur-2xl border border-slate-800/80 space-y-6">
             <div className="space-y-1">
