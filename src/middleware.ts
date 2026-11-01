@@ -26,12 +26,18 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(targetUrl, 301);
   }
 
-  // Subdomain Routing for store.thesmartmag.com
+  // Subdomain Routing for store.thesmartmag.com (100% Dedicated E-Commerce Engine)
   if (host.startsWith("store.")) {
+    // 1. Rewrite root domain /admin on store.thesmartmag.com directly to dedicated Shopify store admin!
+    if (pathname === "/admin" || pathname === "/admin/") {
+      return NextResponse.rewrite(new URL(`/admin/store${search}`, req.url));
+    }
+
     if (pathname.startsWith("/admin")) {
       return NextResponse.next();
     }
 
+    // 2. Direct clean routes on store.thesmartmag.com
     if (pathname === "/store") {
       return NextResponse.redirect(new URL(`/${search}`, req.url), 301);
     }
@@ -40,14 +46,23 @@ export function middleware(req: NextRequest) {
       return NextResponse.rewrite(new URL(`/store${search}`, req.url));
     }
 
+    if (pathname === "/checkout") {
+      return NextResponse.rewrite(new URL(`/store/checkout${search}`, req.url));
+    }
+
+    if (pathname === "/login") {
+      return NextResponse.rewrite(new URL(`/store/login${search}`, req.url));
+    }
+
+    if (pathname === "/register") {
+      return NextResponse.rewrite(new URL(`/store/register${search}`, req.url));
+    }
+
     if (
       pathname.startsWith("/api") ||
       pathname.startsWith("/_next") ||
       pathname.includes(".") ||
-      pathname.startsWith("/store") ||
-      pathname.startsWith("/checkout") ||
-      pathname.startsWith("/login") ||
-      pathname.startsWith("/register")
+      pathname.startsWith("/store")
     ) {
       return NextResponse.next();
     }

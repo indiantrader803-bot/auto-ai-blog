@@ -38,7 +38,7 @@ import {
 
 export default function ShopifyStyleStoreAdmin() {
   const [activeSection, setActiveSection] = useState<
-    "HOME" | "ORDERS" | "PRODUCTS" | "CUSTOMERS" | "ANALYTICS" | "DISCOUNTS" | "DROPSHIP" | "SETTINGS"
+    "HOME" | "ORDERS" | "PRODUCTS" | "CUSTOMERS" | "ANALYTICS" | "DISCOUNTS" | "MARKETING" | "DROPSHIP" | "SETTINGS"
   >("HOME");
 
   const [products, setProducts] = useState<any[]>([]);
@@ -274,6 +274,23 @@ export default function ShopifyStyleStoreAdmin() {
             >
               <Tag className="w-4 h-4" />
               <span>Discounts</span>
+            </button>
+
+            <button
+              onClick={() => setActiveSection("MARKETING")}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors cursor-pointer ${
+                activeSection === "MARKETING"
+                  ? "bg-white dark:bg-[#252830] text-[#008060] dark:text-[#30bd84] shadow-xs font-bold"
+                  : "text-slate-700 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-800/60"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Sparkles className="w-4 h-4 text-purple-500" />
+                <span>Promote Store</span>
+              </div>
+              <span className="px-1.5 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 text-[10px] font-bold">
+                Viral
+              </span>
             </button>
 
             {/* Sales Channels Divider */}
@@ -655,6 +672,88 @@ export default function ShopifyStyleStoreAdmin() {
                   ))}
                 </div>
               )}
+            </div>
+          )}
+
+          {/* SECTION: MARKETING & STORE PROMOTION */}
+          {activeSection === "MARKETING" && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <Sparkles className="w-6 h-6 text-purple-500" /> Store Marketing & Promotion Center
+                  </h1>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Boost store conversions, drive social traffic, and manage promotional campaigns for store.thesmartmag.com.
+                  </p>
+                </div>
+              </div>
+
+              {/* Promo Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white dark:bg-[#1a1c20] p-5 rounded-xl border border-[#d2d5d8] dark:border-[#2a2d34] shadow-xs space-y-3">
+                  <div className="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center font-bold">
+                    <Tag className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white">Active Promo Coupon</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      Sitewide 30% OFF grand opening coupon auto-applies on checkout.
+                    </p>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 font-mono text-center text-sm font-bold text-emerald-600">
+                    GLOBAL30 (30% OFF)
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-[#1a1c20] p-5 rounded-xl border border-[#d2d5d8] dark:border-[#2a2d34] shadow-xs space-y-3">
+                  <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 flex items-center justify-center font-bold">
+                    <ExternalLink className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white">Storefront Subdomain Link</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      Direct marketing URL for social media bios (Instagram, TikTok, X, YouTube).
+                    </p>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-mono text-xs text-center text-indigo-600 dark:text-indigo-400 truncate">
+                    https://store.thesmartmag.com
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-[#1a1c20] p-5 rounded-xl border border-[#d2d5d8] dark:border-[#2a2d34] shadow-xs space-y-3">
+                  <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-950/60 text-purple-600 flex items-center justify-center font-bold">
+                    <TrendingUp className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white">Direct Checkout Boost</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      Direct 1-click Razorpay payment gateway enabled across all product pages.
+                    </p>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold text-xs text-center">
+                    ✓ 100% Instant Bank Settlements
+                  </div>
+                </div>
+              </div>
+
+              {/* Ready-to-Post Social Media Templates */}
+              <div className="bg-white dark:bg-[#1a1c20] p-6 rounded-xl border border-[#d2d5d8] dark:border-[#2a2d34] shadow-xs space-y-4">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Social Media Promotion Templates</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Copy and paste these pre-optimized captions to promote your products on X, Threads, Instagram & LinkedIn.
+                </p>
+                <div className="space-y-3">
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#15171a] border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300">
+                    <span className="font-bold text-slate-900 dark:text-white block mb-1">🚀 Macro RGB Coding & Trading Numpad Promo:</span>
+                    "Upgrade your desk setup! 💻 The Macro RGB 9-Key Hot-Swappable Dial is now live on our store. Free tracked worldwide express shipping + 30% OFF with code GLOBAL30 👉 https://store.thesmartmag.com"
+                  </div>
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#15171a] border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300">
+                    <span className="font-bold text-slate-900 dark:text-white block mb-1">⚡ 3-in-1 MagSafe Travel Charger Promo:</span>
+                    "Never carry tangled cables again. Charge your iPhone, Apple Watch & AirPods with one sleek foldable stand. Shop now at https://store.thesmartmag.com (Doorstep delivery guaranteed)"
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
