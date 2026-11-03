@@ -11,10 +11,10 @@
   }
 
   .dark {
-    --background: #090d16;
+    --background: #07090e;
     --foreground: #f8fafc;
-    --card: #0f172a;
-    --border: #1e293b;
+    --card: #0d111a;
+    --border: rgba(255, 255, 255, 0.08);
   }
 }
 

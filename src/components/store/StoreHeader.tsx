@@ -57,7 +57,7 @@ export default function StoreHeader({
   setActiveCategory,
   currency,
   setCurrency,
-  currentColorTheme = "purple",
+  currentColorTheme = "higgs",
   onColorThemeChange,
 }: StoreHeaderProps) {
   const { totalItems, setIsCartOpen } = useCart();

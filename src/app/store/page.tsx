@@ -68,7 +68,7 @@ export default function StoreHomePage() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [addedItem, setAddedItem] = useState<string | null>(null);
-  const [colorTheme, setColorTheme] = useState<string>("purple");
+  const [colorTheme, setColorTheme] = useState<string>("higgs");
 
   // Quick View Modal
   const [quickViewProduct, setQuickViewProduct] = useState<any | null>(null);

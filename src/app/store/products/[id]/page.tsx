@@ -51,6 +51,9 @@ export default function ProductDetailPage() {
       setActiveImage(found.image);
       if (found.colors && found.colors.length > 0) {
         setSelectedColor(found.colors[0].name);
+        if (found.colors[0].image) {
+          setActiveImage(found.colors[0].image);
+        }
       }
     }
   }, [productId]);
@@ -179,7 +182,7 @@ export default function ProductDetailPage() {
                 className="w-full h-full object-cover transition-all duration-300 hover:scale-105"
               />
               {product.badge && (
-                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-violet-600/90 text-white font-black text-[10px] uppercase tracking-wider backdrop-blur-md">
+                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#d1fe17] text-[#07090e] font-black text-[10px] uppercase tracking-wider shadow-lg shadow-[#d1fe17]/20 border border-[#d1fe17]/40">
                   {product.badge}
                 </div>
               )}
@@ -193,7 +196,7 @@ export default function ProductDetailPage() {
                     key={idx}
                     onClick={() => setActiveImage(img)}
                     className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
-                      activeImage === img ? "border-violet-500 scale-95" : "border-slate-800 hover:border-slate-700 opacity-70 hover:opacity-100"
+                      activeImage === img ? "border-[#d1fe17] scale-95 shadow-[0_0_12px_rgba(209,254,23,0.3)]" : "border-slate-800 hover:border-slate-700 opacity-70 hover:opacity-100"
                     }`}
                   >
                     <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
@@ -245,20 +248,25 @@ export default function ProductDetailPage() {
             {product.colors && product.colors.length > 0 && (
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-300">
-                  Select Finish: <span className="text-violet-400">{selectedColor}</span>
+                  Select Finish: <span className="text-[#d1fe17] font-mono">{selectedColor}</span>
                 </label>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-wrap">
                   {product.colors.map((c: any) => (
                     <button
                       key={c.name}
-                      onClick={() => setSelectedColor(c.name)}
+                      onClick={() => {
+                        setSelectedColor(c.name);
+                        if (c.image) {
+                          setActiveImage(c.image);
+                        }
+                      }}
                       className={`px-3 py-1.5 rounded-lg border text-xs font-medium flex items-center gap-2 transition-all cursor-pointer ${
                         selectedColor === c.name
-                          ? "border-violet-500 bg-violet-500/20 text-white font-bold"
-                          : "border-slate-800 bg-slate-900 text-slate-400 hover:border-slate-700"
+                          ? "border-[#d1fe17] bg-[#d1fe17]/15 text-[#d1fe17] font-bold shadow-[0_0_12px_rgba(209,254,23,0.25)]"
+                          : "border-slate-800 bg-[#0c1019] text-slate-400 hover:border-slate-700 hover:text-white"
                       }`}
                     >
-                      <span className="w-3 h-3 rounded-full border border-white/20" style={{ backgroundColor: c.colorHex }} />
+                      <span className="w-3 h-3 rounded-full border border-white/20 shadow-xs" style={{ backgroundColor: c.colorHex }} />
                       {c.name}
                     </button>
                   ))}
@@ -291,15 +299,15 @@ export default function ProductDetailPage() {
               <button
                 onClick={handleDirectBuy}
                 disabled={isProcessingPayment}
-                className="w-full py-4 rounded-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-600 hover:opacity-95 text-white font-bold text-sm shadow-xl shadow-violet-600/25 flex items-center justify-center gap-2 uppercase tracking-wider transition-all cursor-pointer"
+                className="w-full py-4 rounded-xl bg-[#d1fe17] hover:bg-[#bce810] text-[#07090e] font-extrabold text-sm shadow-xl shadow-[#d1fe17]/25 border border-[#d1fe17] flex items-center justify-center gap-2 uppercase tracking-wider transition-all cursor-pointer transform hover:-translate-y-0.5"
               >
                 {isProcessingPayment ? (
                   <>
-                    <RefreshCw className="w-4 h-4 animate-spin" /> Initializing Live Payment...
+                    <RefreshCw className="w-4 h-4 animate-spin text-[#07090e]" /> Initializing Live Payment...
                   </>
                 ) : (
                   <>
-                    <CreditCard className="w-4 h-4" /> Instant Buy Now (Razorpay Secure)
+                    <CreditCard className="w-4 h-4 text-[#07090e]" /> Instant Buy Now (Razorpay Secure)
                   </>
                 )}
               </button>

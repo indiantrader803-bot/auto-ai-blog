@@ -68,9 +68,9 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
-      { name: "Matte Black", colorHex: "#111827" },
-      { name: "Midnight Blue", colorHex: "#1e3a8a" },
-      { name: "Silver Ash", colorHex: "#94a3b8" },
+      { name: "Matte Black", colorHex: "#111827", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80" },
+      { name: "Midnight Blue", colorHex: "#1e3a8a", image: "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&auto=format&fit=crop&q=80" },
+      { name: "Silver Ash", colorHex: "#94a3b8", image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800&auto=format&fit=crop&q=80" },
     ],
     shippingDetails: {
       origin: "Shenzhen Air Logistics Center",
@@ -126,8 +126,8 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
-      { name: "RGB Black", colorHex: "#0f172a" },
-      { name: "Retro White", colorHex: "#f8fafc" },
+      { name: "RGB Black", colorHex: "#0f172a", image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&auto=format&fit=crop&q=80" },
+      { name: "Retro White", colorHex: "#f8fafc", image: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=800&auto=format&fit=crop&q=80" },
     ],
     shippingDetails: {
       origin: "Express Depot",
@@ -172,8 +172,8 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
-      { name: "Matte Black", colorHex: "#000000" },
-      { name: "Ghost White", colorHex: "#ffffff" },
+      { name: "Matte Black", colorHex: "#000000", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80" },
+      { name: "Ghost White", colorHex: "#ffffff", image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&auto=format&fit=crop&q=80" },
     ],
     shippingDetails: {
       origin: "Direct Express",
@@ -218,8 +218,8 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
-      { name: "Space Black", colorHex: "#18181b" },
-      { name: "Rose Gold", colorHex: "#fb7185" },
+      { name: "Space Black", colorHex: "#18181b", image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=800&auto=format&fit=crop&q=80" },
+      { name: "Rose Gold", colorHex: "#fb7185", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80" },
     ],
     shippingDetails: {
       origin: "Shenzhen Fast Hub",
@@ -350,8 +350,8 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
-      { name: "Jet Black", colorHex: "#0a0a0a" },
-      { name: "Arctic White", colorHex: "#ffffff" },
+      { name: "Jet Black", colorHex: "#0a0a0a", image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&auto=format&fit=crop&q=80" },
+      { name: "Arctic White", colorHex: "#ffffff", image: "https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=800&auto=format&fit=crop&q=80" },
     ],
     shippingDetails: {
       origin: "Express Depot",
@@ -437,8 +437,8 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
-      { name: "Obsidian Black", colorHex: "#09090b" },
-      { name: "Pearl White", colorHex: "#f4f4f5" },
+      { name: "Obsidian Black", colorHex: "#09090b", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80" },
+      { name: "Pearl White", colorHex: "#f4f4f5", image: "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=800&auto=format&fit=crop&q=80" },
     ],
     shippingDetails: {
       origin: "Express Depot",
@@ -521,9 +521,9 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
-      { name: "Matte Black Titanium", colorHex: "#18181b" },
-      { name: "Silver Chrome", colorHex: "#e2e8f0" },
-      { name: "Rose Gold", colorHex: "#fb7185" },
+      { name: "Matte Black Titanium", colorHex: "#18181b", image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&auto=format&fit=crop&q=80" },
+      { name: "Silver Chrome", colorHex: "#e2e8f0", image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=800&auto=format&fit=crop&q=80" },
+      { name: "Rose Gold", colorHex: "#fb7185", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80" },
     ],
     shippingDetails: {
       origin: "CJ Dropshipping Global Hub",
@@ -568,8 +568,8 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
-      { name: "Glacier White", colorHex: "#ffffff" },
-      { name: "Midnight Black", colorHex: "#09090b" },
+      { name: "Glacier White", colorHex: "#ffffff", image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&auto=format&fit=crop&q=80" },
+      { name: "Midnight Black", colorHex: "#09090b", image: "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?w=800&auto=format&fit=crop&q=80" },
     ],
     shippingDetails: {
       origin: "AliExpress Pro Air Cargo",
@@ -614,8 +614,8 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
-      { name: "Wayfarer Onyx", colorHex: "#000000" },
-      { name: "Amber Tortoise", colorHex: "#78350f" },
+      { name: "Wayfarer Onyx", colorHex: "#000000", image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&auto=format&fit=crop&q=80" },
+      { name: "Amber Tortoise", colorHex: "#78350f", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&auto=format&fit=crop&q=80" },
     ],
     shippingDetails: {
       origin: "CJ Dropshipping Global Logistics",
@@ -659,8 +659,8 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
-      { name: "Matte Carbon Black", colorHex: "#18181b" },
-      { name: "Gunmetal Gray", colorHex: "#475569" },
+      { name: "Matte Carbon Black", colorHex: "#18181b", image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800&auto=format&fit=crop&q=80" },
+      { name: "Gunmetal Gray", colorHex: "#475569", image: "https://images.unsplash.com/photo-1584824486509-112e4181ff6b?w=800&auto=format&fit=crop&q=80" },
     ],
     shippingDetails: {
       origin: "Zendrop US & Asia Hub",
@@ -745,7 +745,7 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
     galleryImages: [
       "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&auto=format&fit=crop&q=80",
     ],
-    colors: [{ name: "Arctic White", colorHex: "#ffffff" }],
+    colors: [{ name: "Arctic White", colorHex: "#ffffff", image: "https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=800&auto=format&fit=crop&q=80" }],
     shippingDetails: {
       origin: "AutoDS Global Supplier Network",
       estimatedDelivery: "3 - 6 Business Days",
@@ -956,8 +956,8 @@ export const STORE_MOCKUP_PRODUCTS: StoreProductItem[] = [
       "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&auto=format&fit=crop&q=80",
     ],
     colors: [
-      { name: "Obsidian Black", colorHex: "#111827" },
-      { name: "Space Silver", colorHex: "#94a3b8" },
+      { name: "Obsidian Black", colorHex: "#111827", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80" },
+      { name: "Space Silver", colorHex: "#94a3b8", image: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=800&auto=format&fit=crop&q=80" },
     ],
     shippingDetails: {
       origin: "SaleHoo Vetted Supplier Depot",
