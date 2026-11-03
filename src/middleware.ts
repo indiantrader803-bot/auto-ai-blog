@@ -24,7 +24,7 @@ export function middleware(req: NextRequest) {
     });
   }
 
-  // 1. Permanent 301 Canonical Redirect for www.thesmartmag.com -> https://thesmartmag.com (Fixes GSC duplicate/redirect issues)
+  // 1. Permanent 301 Canonical Redirect for www.thesmartmag.com -> https://thesmartmag.com
   if (host.startsWith("www.thesmartmag.com")) {
     const targetUrl = new URL(`https://thesmartmag.com${pathname}${search}`);
     return NextResponse.redirect(targetUrl, 301);
@@ -36,124 +36,32 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(targetUrl, 301);
   }
 
-  // Subdomain Routing for store.thesmartmag.com (100% Dedicated E-Commerce Engine)
-  if (host.startsWith("store.")) {
-    // 1. Rewrite root domain /admin on store.thesmartmag.com directly to dedicated Shopify store admin!
-    if (pathname === "/admin" || pathname === "/admin/") {
-      return NextResponse.rewrite(new URL(`/admin/store${search}`, req.url));
-    }
-
-    if (pathname.startsWith("/admin")) {
-      return NextResponse.next();
-    }
-
-    // 2. Direct clean routes on store.thesmartmag.com
-    if (pathname === "/store") {
-      return NextResponse.redirect(new URL(`/${search}`, req.url), 301);
-    }
-
-    if (pathname === "/") {
-      return NextResponse.rewrite(new URL(`/store${search}`, req.url));
-    }
-
-    if (pathname === "/checkout") {
-      return NextResponse.rewrite(new URL(`/store/checkout${search}`, req.url));
-    }
-
-    if (pathname === "/login") {
-      return NextResponse.rewrite(new URL(`/store/login${search}`, req.url));
-    }
-
-    if (pathname === "/register") {
-      return NextResponse.rewrite(new URL(`/store/register${search}`, req.url));
-    }
-
-    if (
-      pathname.startsWith("/api") ||
-      pathname.startsWith("/_next") ||
-      pathname.includes(".") ||
-      pathname.startsWith("/store")
-    ) {
-      return NextResponse.next();
-    }
-
-    return NextResponse.rewrite(new URL(`/store${pathname}${search}`, req.url));
-  }
-
-  // 3. Subdomain Routing for trade.thesmartmag.com (if accessed directly via subdomain)
-  if (host.startsWith("trade.")) {
-    // Direct access to secure Admin Portal
-    if (pathname.startsWith("/admin")) {
-      return NextResponse.next();
-    }
-
-    if (pathname === "/trade") {
-      return NextResponse.redirect(new URL(`/${search}`, req.url), 301);
-    }
-
-    if (pathname === "/" || pathname === "/best-prop-firms") {
-      return NextResponse.rewrite(new URL(`/trade${search}`, req.url));
-    }
-
-    return NextResponse.next();
-  }
-
-  // 4. Subdomain Routing for travel.thesmartmag.com (if accessed directly via subdomain)
+  // 3. Consolidated Authority: Permanent 301 Redirect for travel.thesmartmag.com -> thesmartmag.com/travel/*
   if (host.startsWith("travel.")) {
-    if (pathname.startsWith("/admin")) {
-      return NextResponse.next();
-    }
-
-    if (pathname === "/travel") {
-      return NextResponse.redirect(new URL(`/${search}`, req.url), 301);
-    }
-
-    if (pathname.startsWith("/travel/")) {
-      const cleanPath = pathname.replace(/^\/travel/, "");
-      return NextResponse.redirect(new URL(`${cleanPath}${search}`, req.url), 301);
-    }
-
-    if (pathname === "/") {
-      return NextResponse.rewrite(new URL(`/travel${search}`, req.url));
-    }
-
-    if (
-      pathname.startsWith("/api") ||
-      pathname.startsWith("/_next") ||
-      pathname.includes(".") ||
-      pathname.startsWith("/best-prop-firms") ||
-      pathname.startsWith("/trade") ||
-      pathname.startsWith("/compare") ||
-      pathname.startsWith("/reviews") ||
-      pathname.startsWith("/blog") ||
-      pathname.startsWith("/category") ||
-      pathname.startsWith("/tools") ||
-      pathname.startsWith("/store") ||
-      pathname.startsWith("/about") ||
-      pathname.startsWith("/contact") ||
-      pathname.startsWith("/privacy")
-    ) {
-      return NextResponse.next();
-    }
-
-    return NextResponse.rewrite(new URL(`/travel${pathname}${search}`, req.url));
+    const targetPath = pathname === "/" ? "/travel" : `/travel${pathname.replace(/^\/travel/, "")}`;
+    const targetUrl = new URL(`https://thesmartmag.com${targetPath}${search}`);
+    return NextResponse.redirect(targetUrl, 301);
   }
 
-  // 5. On the primary domain (thesmartmag.com):
-  // NEVER 301-redirect /trade, /travel, or /apple to subdomains!
-  // Serving them directly on https://thesmartmag.com returns HTTP 200 OK directly to Googlebot and eliminates all GSC "Page with redirect" errors!
+  // 4. Consolidated Authority: Permanent 301 Redirect for store.thesmartmag.com -> thesmartmag.com/store/*
+  if (host.startsWith("store.")) {
+    const targetPath = pathname === "/" ? "/store" : `/store${pathname.replace(/^\/store/, "")}`;
+    const targetUrl = new URL(`https://thesmartmag.com${targetPath}${search}`);
+    return NextResponse.redirect(targetUrl, 301);
+  }
+
+  // 5. Consolidated Authority: Permanent 301 Redirect for trade.thesmartmag.com -> thesmartmag.com/trade/*
+  if (host.startsWith("trade.")) {
+    const targetPath = pathname === "/" ? "/trade" : `/trade${pathname.replace(/^\/trade/, "")}`;
+    const targetUrl = new URL(`https://thesmartmag.com${targetPath}${search}`);
+    return NextResponse.redirect(targetUrl, 301);
+  }
 
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for:
-     * - _next/static (static assets)
-     * - _next/image (image optimization)
-     * - favicon.ico (favicon)
-     */
     "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };
