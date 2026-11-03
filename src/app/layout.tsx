@@ -194,7 +194,7 @@ export default function RootLayout({
         {/* ======================================================== */}
         {/* 🚀 Monetag Official Publisher Verification Meta */}
         {/* ======================================================== */}
-        <meta name="monetag" content="11802121,285853,11880194,11880195" />
+        
 
         {/* JSON-LD Schema.org SEO Structured Data */}
         <script
