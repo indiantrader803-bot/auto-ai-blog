@@ -23,6 +23,7 @@ import {
   MoreHorizontal,
   Bot,
   Users,
+  Radio,
 } from "lucide-react";
 
 export default function AdminSidebar() {
@@ -85,7 +86,16 @@ export default function AdminSidebar() {
       iconBg: "bg-amber-500/15 text-amber-400",
     },
     {
-      href: "/admin/monetization",
+      href: "/admin/campaigns",
+      label: "24/7 Ad Campaigns",
+      shortLabel: "Campaigns",
+      icon: Radio,
+      color: "text-emerald-400",
+      activeBg: "bg-gradient-to-r from-emerald-600 to-teal-600",
+      iconBg: "bg-emerald-500/15 text-emerald-400",
+    },
+    {
+      href: "/admin/monetization", 
       label: "Monetization & Ads",
       shortLabel: "Revenue",
       icon: DollarSign,
