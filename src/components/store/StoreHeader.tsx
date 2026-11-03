@@ -326,13 +326,31 @@ export default function StoreHeader({
             {isDark ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-slate-700" />}
           </button>
 
-          <Link
-            href="/vip/profile"
-            className="p-2 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-            title="My Account"
-          >
-            <User className="w-5 h-5" />
-          </Link>
+          {user ? (
+            <Link
+              href="/vip/profile"
+              className="p-2 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              title="My Account & Orders"
+            >
+              <User className="w-5 h-5 text-indigo-500" />
+            </Link>
+          ) : (
+            <div className="flex items-center gap-1.5">
+              <Link
+                href="/store/login"
+                className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-2 py-1 transition-colors"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/store/register"
+                style={{ backgroundColor: currentAccent.hex }}
+                className="text-xs font-bold text-white px-3 py-1.5 rounded-full shadow-xs hover:opacity-95 transition-all"
+              >
+                Register
+              </Link>
+            </div>
+          )}
 
           <button
             onClick={() => setActiveCategory("ALL")}
