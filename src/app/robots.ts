@@ -6,8 +6,77 @@ export default function robots(): MetadataRoute.Robots {
     "https://thesmartmag.com"
   ).replace(/\/$/, "");
 
+  const privatePaths = [
+    "/app",
+    "/terminal",
+    "/admin",
+    "/api/",
+    "/vip/",
+    "/login",
+    "/register",
+  ];
+
   return {
     rules: [
+      // Default rule for all bots
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: privatePaths,
+      },
+      // Search engine primary crawlers
+      {
+        userAgent: "Googlebot",
+        allow: "/",
+        disallow: ["/app", "/admin", "/api/"],
+      },
+      {
+        userAgent: "Bingbot",
+        allow: "/",
+        disallow: ["/app", "/admin", "/api/"],
+      },
+      // AI Search & Answer bots (explicitly allow for Generative Engine citations)
+      {
+        userAgent: "OAI-SearchBot",
+        allow: "/",
+        disallow: ["/app", "/admin", "/api/"],
+      },
+      {
+        userAgent: "ChatGPT-User",
+        allow: "/",
+        disallow: ["/app", "/admin", "/api/"],
+      },
+      {
+        userAgent: "PerplexityBot",
+        allow: "/",
+        disallow: ["/app", "/admin", "/api/"],
+      },
+      {
+        userAgent: "Claude-SearchBot",
+        allow: "/",
+        disallow: ["/app", "/admin", "/api/"],
+      },
+      {
+        userAgent: "Claude-User",
+        allow: "/",
+        disallow: ["/app", "/admin", "/api/"],
+      },
+      // AI Training bots
+      {
+        userAgent: "GPTBot",
+        allow: "/",
+        disallow: ["/app", "/admin", "/api/"],
+      },
+      {
+        userAgent: "ClaudeBot",
+        allow: "/",
+        disallow: ["/app", "/admin", "/api/"],
+      },
+      {
+        userAgent: "Google-Extended",
+        allow: "/",
+      },
+      // Advertising & Feed verification
       {
         userAgent: "Mediapartners-Google",
         allow: "/",
@@ -17,100 +86,6 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "Google-Display-Ads-Bot",
         allow: "/",
         disallow: ["/admin/", "/api/"],
-      },
-      {
-        userAgent: "*",
-        allow: "/",
-        disallow: ["/admin/", "/api/"],
-      },
-      {
-        userAgent: "Googlebot",
-        allow: "/",
-        disallow: ["/admin/", "/api/"],
-      },
-      {
-        userAgent: "Googlebot-Image",
-        allow: "/",
-        disallow: ["/admin/", "/api/"],
-      },
-      {
-        userAgent: "Bingbot",
-        allow: "/",
-        disallow: ["/admin/", "/api/"],
-      },
-      {
-        userAgent: "YandexBot",
-        allow: "/",
-        disallow: ["/admin/", "/api/"],
-      },
-      {
-        userAgent: "Baiduspider",
-        allow: "/",
-        disallow: ["/admin/", "/api/"],
-      },
-      {
-        userAgent: "DuckDuckBot",
-        allow: "/",
-        disallow: ["/admin/", "/api/"],
-      },
-      {
-        userAgent: "Applebot",
-        allow: "/",
-        disallow: ["/admin/", "/api/"],
-      },
-      {
-        userAgent: "GPTBot",
-        allow: "/",
-        disallow: ["/admin/"],
-      },
-      {
-        userAgent: "ClaudeBot",
-        allow: "/",
-        disallow: ["/admin/"],
-      },
-      {
-        userAgent: "PerplexityBot",
-        allow: "/",
-        disallow: ["/admin/"],
-      },
-      {
-        userAgent: "Google-Extended",
-        allow: "/",
-        disallow: ["/admin/"],
-      },
-      {
-        userAgent: "Bytespider",
-        allow: "/",
-        disallow: ["/admin/"],
-      },
-      {
-        userAgent: "CCBot",
-        allow: "/",
-        disallow: ["/admin/"],
-      },
-      {
-        userAgent: "Twitterbot",
-        allow: "/",
-      },
-      {
-        userAgent: "facebookexternalhit",
-        allow: "/",
-      },
-      {
-        userAgent: "LinkedInBot",
-        allow: "/",
-      },
-      {
-        userAgent: "Pinterestbot",
-        allow: "/",
-      },
-      {
-        userAgent: "TelegramBot",
-        allow: "/",
-      },
-      {
-        userAgent: "WhatsApp",
-        allow: "/",
       },
     ],
     sitemap: [
