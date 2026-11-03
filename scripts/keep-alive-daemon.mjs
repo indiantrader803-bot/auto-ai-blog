@@ -3,10 +3,11 @@ import https from "https";
 import http from "http";
 
 const TARGET_URLS = [
+  "https://thesmartmag.com/api/health",
+  "https://thesmartmag.com/",
+  "https://store.thesmartmag.com",
+  "https://travel.thesmartmag.com",
   "https://auto-ai-blog-web.onrender.com/api/health",
-  "https://auto-ai-blog-web.onrender.com/",
-  "https://auto-ai-blog-web.onrender.com/community",
-  "https://auto-ai-blog-web.onrender.com/store"
 ];
 
 let pingCount = 0;
@@ -47,11 +48,11 @@ async function heartbeatPulse() {
 // Initial ping
 heartbeatPulse();
 
-// Continuous pulse every 4 minutes (Render sleeps after 15 minutes of inactivity)
-const INTERVAL_MS = 4 * 60 * 1000;
+// Continuous pulse every 3 minutes (Render free tier sleeps after 15 minutes of inactivity)
+const INTERVAL_MS = 3 * 60 * 1000;
 setInterval(heartbeatPulse, INTERVAL_MS);
 
 console.log("=================================================");
 console.log("🚀 24/7 Render Keep-Alive Daemon Activated!");
-console.log(`⏱️ Interval: Every 4 minutes (prevents sleep completely)`);
+console.log(`⏱️ Interval: Every 3 minutes (prevents sleep completely across all 3 domains)`);
 console.log("=================================================");

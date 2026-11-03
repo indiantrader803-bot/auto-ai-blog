@@ -865,6 +865,15 @@ export default function StoreHomePage() {
                         Buy Now
                       </Link>
                     </div>
+
+                    <div className="pt-2 text-center">
+                      <Link
+                        href={`/store/products/${quickViewProduct.id}`}
+                        className="text-xs font-bold text-violet-600 dark:text-violet-400 hover:underline inline-flex items-center gap-1"
+                      >
+                        View Full Product Page &amp; Technical Specs &rarr;
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
