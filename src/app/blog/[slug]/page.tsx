@@ -147,7 +147,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       googleBot: {
         index: !exists ? false : true,
         follow: !exists ? false : true,
-        "max-video-preview": -1,
+        "max-video-preview": 0,
         "max-image-preview": "large",
         "max-snippet": -1,
       },
