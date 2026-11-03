@@ -31,6 +31,7 @@ export interface AccentTheme {
 }
 
 export const STORE_ACCENT_COLORS: AccentTheme[] = [
+  { id: "higgs", name: "Higgsfield Volt", primaryClass: "text-[#d1fe17]", bgGradient: "from-[#d1fe17] to-emerald-400", hex: "#d1fe17" },
   { id: "purple", name: "Cyber Purple", primaryClass: "indigo-600", bgGradient: "from-indigo-600 to-purple-600", hex: "#6366f1" },
   { id: "emerald", name: "Emerald Tech", primaryClass: "emerald-600", bgGradient: "from-emerald-500 to-teal-600", hex: "#10b981" },
   { id: "ocean", name: "Electric Blue", primaryClass: "sky-500", bgGradient: "from-blue-600 to-cyan-500", hex: "#0ea5e9" },

@@ -9,6 +9,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        higgs: {
+          bg: '#07090e',
+          surface: '#0d111a',
+          card: '#121723',
+          cardHover: '#171e2e',
+          border: 'rgba(255, 255, 255, 0.08)',
+          borderHover: 'rgba(209, 254, 23, 0.35)',
+          volt: '#d1fe17',
+          voltHover: '#bce810',
+          cyan: '#00f0ff',
+          violet: '#8b5cf6',
+          muted: '#8e9aa8',
+          text: '#f1f5f9',
+        },
+
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: {

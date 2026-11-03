@@ -157,3 +157,43 @@ body {
   animation-play-state: paused;
 }
 
+
+
+/* Higgsfield Design System Utilities */
+.higgs-glass {
+  background: rgba(13, 17, 26, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.higgs-card {
+  background: #0e131d;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.higgs-card:hover {
+  border-color: rgba(209, 254, 23, 0.35);
+  box-shadow: 0 0 25px -5px rgba(209, 254, 23, 0.12);
+  transform: translateY(-2px);
+}
+
+.higgs-badge {
+  background: rgba(209, 254, 23, 0.1);
+  color: #d1fe17;
+  border: 1px solid rgba(209, 254, 23, 0.25);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.higgs-btn-primary {
+  background: #d1fe17;
+  color: #07090e;
+  font-weight: 600;
+  transition: all 0.18s ease;
+}
+
+.higgs-btn-primary:hover {
+  background: #bce810;
+  box-shadow: 0 0 20px rgba(209, 254, 23, 0.4);
+}

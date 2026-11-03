@@ -65,10 +65,10 @@ export default function TravelNavbar() {
   return (
     <>
       {/* 🌟 Slim Top Travel Deals Announcement Bar */}
-      <div className="bg-gradient-to-r from-sky-600 via-indigo-600 to-emerald-600 text-white text-[11px] font-semibold py-1.5 px-4 shadow-sm relative z-50">
+      <div className="bg-[#090d15] border-b border-white/10 text-slate-300 text-[11px] font-mono py-1.5 px-4 relative z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 overflow-hidden">
-            <span className="px-2 py-0.5 rounded-full bg-white/20 text-white font-black uppercase text-[9px] tracking-wider flex items-center gap-1 shrink-0">
+            <span className="px-2 py-0.5 rounded-full bg-[#d1fe17]/15 text-[#d1fe17] border border-[#d1fe17]/30 font-bold uppercase text-[9px] tracking-wider flex items-center gap-1 shrink-0">
               <Flame className="w-3 h-3 text-amber-300" /> PROMO
             </span>
             <span className="truncate">
@@ -90,7 +90,7 @@ export default function TravelNavbar() {
       <header
         className={`sticky top-0 z-40 w-full transition-all duration-300 border-b font-sans ${
           scrolled
-            ? "bg-white/95 dark:bg-slate-950/95 backdrop-blur-md shadow-md border-slate-200 dark:border-slate-800"
+            ? "bg-white/95 dark:bg-[#07090e]/90 backdrop-blur-xl shadow-2xl border-slate-200 dark:border-white/10"
             : "bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800"
         }`}
       >
