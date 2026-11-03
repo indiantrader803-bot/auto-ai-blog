@@ -65,6 +65,10 @@ export default function ShopifyStyleStoreAdmin() {
   const [orders, setOrders] = useState<any[]>([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(true);
 
+  // Live Multi-Domain Ad Campaigns Telemetry
+  const [campaignData, setCampaignData] = useState<any>(null);
+  const [isLoadingCampaigns, setIsLoadingCampaigns] = useState(false);
+
   useEffect(() => {
     // 1. Fetch live products
     fetch("/api/store/products")
@@ -83,6 +87,16 @@ export default function ShopifyStyleStoreAdmin() {
       })
       .catch(() => {})
       .finally(() => setIsLoadingOrders(false));
+
+    // 3. Fetch live active ad campaigns across Store, Blog and Travel
+    setIsLoadingCampaigns(true);
+    fetch("/api/store/campaigns")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) setCampaignData(data);
+      })
+      .catch(() => {})
+      .finally(() => setIsLoadingCampaigns(false));
   }, []);
 
   const handleRunScraper = async (e: React.FormEvent) => {
@@ -725,6 +739,83 @@ export default function ShopifyStyleStoreAdmin() {
                   <div className="p-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold text-xs text-center">
                     ✓ 100% Instant Bank Settlements
                   </div>
+                </div>
+              </div>
+
+              {/* LIVE ACTIVE MULTI-DOMAIN CAMPAIGNS MONITORING */}
+              <div className="bg-white dark:bg-[#1a1c20] p-6 rounded-xl border border-[#d2d5d8] dark:border-[#2a2d34] shadow-xs space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#d2d5d8] dark:border-[#2a2d34] pb-4">
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      <Radio className="w-4 h-4 text-emerald-500 animate-pulse" /> 24/7 Autonomous AI Campaigns (Store, Blog &amp; Travel)
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      Autonomous Ad Studio Swarm (Nalarin + Adport + OpenAds AI) running across India, USA, UK, Canada, Australia &amp; Dubai.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-300 text-xs font-bold">
+                      {campaignData?.summary?.activeCampaigns || 6} Live Campaigns Active
+                    </span>
+                  </div>
+                </div>
+
+                {/* Campaign Table */}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="border-b border-[#d2d5d8] dark:border-[#2a2d34] text-slate-500">
+                        <th className="pb-2.5 font-bold">Campaign Name &amp; Channel</th>
+                        <th className="pb-2.5 font-bold">Target Domain</th>
+                        <th className="pb-2.5 font-bold">Target Countries</th>
+                        <th className="pb-2.5 font-bold">Impressions</th>
+                        <th className="pb-2.5 font-bold">Clicks (CTR)</th>
+                        <th className="pb-2.5 font-bold">ROAS</th>
+                        <th className="pb-2.5 font-bold">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#d2d5d8] dark:divide-[#2a2d34]">
+                      {campaignData?.campaigns ? (
+                        campaignData.campaigns.map((camp: any) => (
+                          <tr key={camp.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
+                            <td className="py-3">
+                              <span className="font-bold text-slate-900 dark:text-white block">{camp.campaignName}</span>
+                              <span className="text-[10px] text-slate-500 uppercase">{camp.channel.replace(/_/g, " ")}</span>
+                            </td>
+                            <td className="py-3">
+                              <span className="px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-300 font-mono text-[11px] font-bold">
+                                {camp.domain}
+                              </span>
+                            </td>
+                            <td className="py-3 text-[11px] text-slate-600 dark:text-slate-400 max-w-xs">
+                              {camp.targetCountries.join(", ")}
+                            </td>
+                            <td className="py-3 font-mono font-bold text-slate-900 dark:text-white">
+                              {camp.metrics.impressions.toLocaleString()}
+                            </td>
+                            <td className="py-3">
+                              <span className="font-mono font-bold text-slate-900 dark:text-white">{camp.metrics.clicks.toLocaleString()}</span>
+                              <span className="text-[10px] text-emerald-600 block">({camp.metrics.ctr})</span>
+                            </td>
+                            <td className="py-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">
+                              {camp.metrics.roas}
+                            </td>
+                            <td className="py-3">
+                              <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
+                                {camp.status}
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={7} className="py-4 text-center text-slate-500">
+                            Loading live campaigns from AI Ad Studio...
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
