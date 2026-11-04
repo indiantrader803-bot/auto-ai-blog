@@ -32,44 +32,27 @@ export async function register() {
       }
     }, 30000);
 
-    // 🔄 2. Keep-Alive Heartbeat (Every 3 Minutes) - Keeps Render server active 24/7 without sleeping
+    // 🔄 2. Keep-Alive Heartbeat (Every 3 Minutes) - Keeps server active without overloading
     setInterval(async () => {
       try {
-        // Internal localhost ping
-        await fetch(`http://127.0.0.1:${port}/api/health`, { method: "GET" }).catch(() => {});
-        // Public domain ping
-        await fetch(`${siteUrl}/api/health`, { method: "GET" }).catch(() => {});
+        await fetch(`http://127.0.0.1:${port}/api/health`, {
+          method: "GET",
+          signal: AbortSignal.timeout(4000),
+        }).catch(() => {});
       } catch (_) {}
     }, 3 * 60 * 1000);
 
-    // 🚀 3. Continuous Traffic Booster, SEO IndexNow & Search Engine Pings (Every 15 Minutes)
+    // 🚀 3. Continuous Traffic Booster, SEO IndexNow & Search Engine Pings (Every 60 Minutes, Staggered)
+    // Run infrequently and safely in the background to prevent DB connection pool exhaustion
     setInterval(async () => {
       try {
-        console.log("⏱️ [24/7 Autonomous Swarm Pulse] Executing fleet-wide promotion, link distribution & indexing...");
-        const { runAutonomousFleetTrafficBooster, pingSearchEngines, auditAndRescueLowTrafficArticles } = await import("@/lib/pipeline/agents/trafficBoosterAgent");
-        const { executeRevenueOptimizationSwarm } = await import("@/lib/pipeline/agents/revenueOptimizationSwarm");
-        const { runTrendHunterAgent } = await import("@/lib/pipeline/agents/trendHunterAgent");
-
-        // 1. Boost views, shares and affiliate clicks across all articles
-        await runAutonomousFleetTrafficBooster().catch((e) => console.warn("Traffic booster pulse notice:", e.message));
-
-        // 2. Ping Google, Bing & IndexNow
+        console.log("⏱️ [Autonomous Swarm Pulse] Executing lightweight sitemap & SEO notification...");
+        const { pingSearchEngines } = await import("@/lib/pipeline/agents/trafficBoosterAgent");
         await pingSearchEngines().catch((e) => console.warn("Search engine ping pulse notice:", e.message));
-
-        // 3. Rescue low-traffic articles
-        await auditAndRescueLowTrafficArticles().catch((e) => console.warn("Rescue articles pulse notice:", e.message));
-
-        // 4. Optimize conversion rate & affiliate placement
-        await executeRevenueOptimizationSwarm().catch((e) => console.warn("Revenue optimization pulse notice:", e.message));
-
-        // 5. Scout fresh viral breaking trends
-        await runTrendHunterAgent().catch((e) => console.warn("Trend hunter pulse notice:", e.message));
-
-        console.log("🔥 [24/7 Autonomous Swarm Pulse] All articles & affiliate links promoted successfully.");
       } catch (err: any) {
-        console.warn("24/7 Autonomous swarm pulse note:", err.message);
+        console.warn("Autonomous swarm pulse note:", err.message);
       }
-    }, 15 * 60 * 1000);
+    }, 60 * 60 * 1000);
 
     // 📲 4. Autonomous 5-Channel Social Media Autopost & Distribution (Every 30 Minutes)
     setInterval(async () => {

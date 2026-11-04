@@ -13,11 +13,15 @@ function getOptimizedDatabaseUrl(): string | undefined {
   let updated = url;
   const sep = updated.includes("?") ? "&" : "?";
   if (!updated.includes("connection_limit=")) {
-    updated += `${sep}connection_limit=10`;
+    updated += `${sep}connection_limit=5`;
   }
   const nextSep = updated.includes("?") ? "&" : "?";
   if (!updated.includes("pool_timeout=")) {
-    updated += `${nextSep}pool_timeout=25`;
+    updated += `${nextSep}pool_timeout=10`;
+  }
+  const connectSep = updated.includes("?") ? "&" : "?";
+  if (!updated.includes("connect_timeout=")) {
+    updated += `${connectSep}connect_timeout=5`;
   }
   return updated;
 }
