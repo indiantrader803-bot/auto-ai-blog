@@ -59,15 +59,6 @@ export default function AdminSidebar() {
       iconBg: "bg-indigo-500/15 text-indigo-400",
     },
     {
-      href: "/admin/propflow",
-      label: "PropFlow-AI Sales Engine",
-      shortLabel: "PropFlow",
-      icon: Bot,
-      color: "text-cyan-400",
-      activeBg: "bg-gradient-to-r from-cyan-600 to-teal-600",
-      iconBg: "bg-cyan-500/15 text-cyan-400",
-    },
-    {
       href: "/admin/swarm",
       label: "Autonomous Swarm",
       shortLabel: "Swarm",
@@ -406,7 +397,7 @@ export default function AdminSidebar() {
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-2 py-1.5 flex items-center justify-around shadow-2xl safe-area-bottom">
         {[
           { href: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
-          { href: "/admin/propflow", label: "PropFlow", icon: Bot },
+          { href: "/admin/campaigns", label: "Campaigns", icon: Radio },
           { href: "/admin/swarm", label: "Swarm", icon: Cpu },
           { href: "/admin/generator", label: "Studio", icon: Wand2 },
           { href: "/admin/monetization", label: "Revenue", icon: DollarSign },

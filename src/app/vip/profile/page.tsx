@@ -232,7 +232,7 @@ export default async function VipProfilePage() {
                 {[
                   { label: "VIP Lounge", href: "/vip", icon: Crown },
                   { label: "Latest Articles", href: "/blog", icon: Sparkles },
-                  { label: "Trade Hub", href: "/trade", icon: TrendingUp },
+                  { label: "AI Digital Store", href: "/store", icon: Sparkles },
                   { label: "Travel Deals", href: "/travel", icon: Plane },
                   { label: "Download Scripts", href: "/downloads/smartmag-orderflow-reversal.pine", icon: Download },
                   { label: "AI Tools", href: "/best-ai-tools", icon: Settings },

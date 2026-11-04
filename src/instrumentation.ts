@@ -104,17 +104,7 @@ export async function register() {
       }
     }, 30 * 60 * 1000);
 
-    // 💰 5. PropFlow-AI 15-Agent Sales & Conversion Swarm (Every 1 Hour)
-    setInterval(async () => {
-      try {
-        console.log("💼 [PropFlow-AI 24/7 Server Daemon] Running hourly 15-agent sales & affiliate cycle...");
-        const { runPropFlowMasterSwarm } = await import("@/lib/propflow/orchestrator");
-        await runPropFlowMasterSwarm().catch((e) => console.warn("PropFlow hourly notice:", e.message));
-        console.log("✅ [PropFlow-AI 24/7 Server Daemon] Hourly sales swarm cycle completed.");
-      } catch (err: any) {
-        console.warn("PropFlow daemon note:", err.message);
-      }
-    }, 60 * 60 * 1000);
+    
 
     // ✍️ 6. Autonomous Viral Topic Scout & Article Generation Cycle (Every 4 Hours)
     // Server-side fail-safe: automatically produces and publishes articles without needing GitHub Actions

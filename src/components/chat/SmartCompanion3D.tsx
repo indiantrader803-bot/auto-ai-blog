@@ -37,8 +37,8 @@ export default function SmartCompanion3D({ onOpenAssistant }: SmartCompanionProp
       setBubbleText("Need key takeaways or code breakdown? Tap me anytime! 💡");
     } else if (pathname?.startsWith("/apple")) {
       setBubbleText("Looking for the latest Apple M5 specs & best prices? Ask me! 🍎");
-    } else if (pathname?.startsWith("/trade") || pathname?.startsWith("/best-prop-firms")) {
-      setBubbleText("Need coupon codes for FTM or Atlas Funded? I have them! 💰");
+    } else if (pathname?.startsWith("/store")) {
+      setBubbleText("Looking for trending tech hardware or digital tools? Ask me! 🛍️");
     } else if (pathname?.startsWith("/travel")) {
       setBubbleText("Need an instant trip itinerary or cheap flight radar? Let's plan! ✈️");
     } else {

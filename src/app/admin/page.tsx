@@ -26,6 +26,7 @@ import {
   Flame,
   Bot,
   Calculator,
+  Radio,
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
@@ -115,10 +116,10 @@ export default function AdminDashboardPage() {
           </button>
 
           <Link
-            href="/admin/propflow"
+            href="/admin/campaigns"
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-md shadow-indigo-600/20"
           >
-            <Bot className="w-4 h-4" /> PropFlow-AI Hub
+            <Radio className="w-4 h-4" /> 24/7 Ad Campaigns
           </Link>
 
           <Link
@@ -140,120 +141,6 @@ export default function AdminDashboardPage() {
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 transition-all border border-slate-200 dark:border-slate-700"
           >
             <Share2 className="w-4 h-4" /> Viral Promoter
-          </Link>
-        </div>
-      </div>
-
-      {/* 🚀 PropFlow-AI Conversion & Sales Funnel Suite (Quick Access) */}
-      <div className="p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/30 shadow-2xl space-y-4 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-teal-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-0.5 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 text-indigo-300 font-black text-[10px] uppercase tracking-wider border border-indigo-500/30">
-                PropFlow-AI Sales Automation Suite
-              </span>
-              <span className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-mono font-bold bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> Autonomous Swarm Engine Active
-              </span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black font-serif">
-              Live Sales Funnels &amp; Conversion Tools
-            </h2>
-            <p className="text-xs text-slate-300 max-w-2xl">
-              Equipped with high-converting review pages, comparison engines, and interactive calculators with verified partner coupon codes.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            <Link
-              href="/admin/propflow"
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg transition-all flex items-center gap-2 active:scale-95"
-            >
-              <Bot className="w-4 h-4" />
-              <span>PropFlow Mission Control</span>
-            </Link>
-          </div>
-        </div>
-
-        {/* Quick Launch Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pt-2 relative z-10">
-          <Link
-            href="/best-prop-firms"
-            target="_blank"
-            className="p-3 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/50 transition-all text-left group hover:scale-[1.02]"
-          >
-            <div className="flex items-center justify-between">
-              <Award className="w-4 h-4 text-amber-400" />
-              <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white" />
-            </div>
-            <div className="text-xs font-bold text-white mt-2">Leaderboard</div>
-            <div className="text-[10px] text-amber-400/80">/best-prop-firms</div>
-          </Link>
-
-          <Link
-            href="/tools"
-            target="_blank"
-            className="p-3 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 transition-all text-left group hover:scale-[1.02]"
-          >
-            <div className="flex items-center justify-between">
-              <Calculator className="w-4 h-4 text-emerald-400" />
-              <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white" />
-            </div>
-            <div className="text-xs font-bold text-white mt-2">Fee Calculator</div>
-            <div className="text-[10px] text-emerald-400/80">/tools</div>
-          </Link>
-
-          <Link
-            href="/compare/ftmo-vs-ftm"
-            target="_blank"
-            className="p-3 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-indigo-500/50 transition-all text-left group hover:scale-[1.02]"
-          >
-            <div className="flex items-center justify-between">
-              <Zap className="w-4 h-4 text-indigo-400" />
-              <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white" />
-            </div>
-            <div className="text-xs font-bold text-white mt-2">FTMO vs FTM</div>
-            <div className="text-[10px] text-indigo-400/80">/compare/ftmo-vs-ftm</div>
-          </Link>
-
-          <Link
-            href="/reviews/funded-trader-markets"
-            target="_blank"
-            className="p-3 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/50 transition-all text-left group hover:scale-[1.02]"
-          >
-            <div className="flex items-center justify-between">
-              <ShieldCheck className="w-4 h-4 text-amber-400" />
-              <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white" />
-            </div>
-            <div className="text-xs font-bold text-white mt-2">FTM Review</div>
-            <div className="text-[10px] text-amber-400 font-mono font-bold">Code: arnab (10%)</div>
-          </Link>
-
-          <Link
-            href="/reviews/atlas-funded"
-            target="_blank"
-            className="p-3 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-teal-500/50 transition-all text-left group hover:scale-[1.02]"
-          >
-            <div className="flex items-center justify-between">
-              <ShieldCheck className="w-4 h-4 text-teal-400" />
-              <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white" />
-            </div>
-            <div className="text-xs font-bold text-white mt-2">Atlas Funded</div>
-            <div className="text-[10px] text-teal-400 font-mono font-bold">Code: ARNAB (20%)</div>
-          </Link>
-
-          <Link
-            href="/reviews/aquafunded"
-            target="_blank"
-            className="p-3 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-cyan-500/50 transition-all text-left group hover:scale-[1.02]"
-          >
-            <div className="flex items-center justify-between">
-              <ShieldCheck className="w-4 h-4 text-cyan-400" />
-              <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-white" />
-            </div>
-            <div className="text-xs font-bold text-white mt-2">AquaFunded</div>
-            <div className="text-[10px] text-cyan-400 font-mono font-bold">Code: 6e9 (Rebate)</div>
           </Link>
         </div>
       </div>

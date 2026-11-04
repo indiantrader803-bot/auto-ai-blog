@@ -50,10 +50,9 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(targetUrl, 301);
   }
 
-  // 5. Consolidated Authority: Permanent 301 Redirect for trade.thesmartmag.com -> thesmartmag.com/trade/*
+  // 5. Consolidated Authority: Permanent 301 Redirect for trade.thesmartmag.com -> thesmartmag.com/
   if (host.startsWith("trade.")) {
-    const targetPath = pathname === "/" ? "/trade" : `/trade${pathname.replace(/^\/trade/, "")}`;
-    const targetUrl = new URL(`https://thesmartmag.com${targetPath}${search}`);
+    const targetUrl = new URL(`https://thesmartmag.com/`);
     return NextResponse.redirect(targetUrl, 301);
   }
 

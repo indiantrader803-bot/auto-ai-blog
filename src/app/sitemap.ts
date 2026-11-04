@@ -175,72 +175,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.95,
       })
     ),
-    {
-      url: `${baseUrl}/trade`,
-      lastModified: new Date(),
-      changeFrequency: "always",
-      priority: 1.0,
-    },
+    
     {
       url: `${baseUrl}/travel`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.95,
     },
-    {
-      url: `${baseUrl}/best-prop-firms`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
+    
     {
       url: `${baseUrl}/best-ai-tools`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.95,
     },
-    {
-      url: `${baseUrl}/compare/ftmo-vs-ftm`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/reviews/fundedsquad`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/reviews/equity-edge`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/reviews/blue-guardian`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/reviews/funded-trader-markets`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/reviews/atlas-funded`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/reviews/aquafunded`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.85,
-    },
+    
+    
+    
+    
+    
+    
+    
     {
       url: `${baseUrl}/vip`,
       lastModified: new Date(),

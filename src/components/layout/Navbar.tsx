@@ -507,15 +507,6 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
                     </span>
                   </Link>
 
-                  {/* Trade Hub */}
-                  <Link
-                    href="/trade"
-                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-500 text-emerald-700 dark:text-emerald-400 hover:text-white transition-all border border-emerald-500/20 group text-[11px] font-bold shrink-0"
-                  >
-                    <TrendingUp className="w-3.5 h-3.5 group-hover:scale-110 transition-transform text-emerald-600 dark:text-emerald-400 group-hover:text-white" />
-                    <span>Trade Hub</span>
-                    <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-black">90%</span>
-                  </Link>
 
                   {/* AI Tools */}
                   <Link
@@ -695,20 +686,6 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
                 </div>
               </Link>
 
-              <Link
-                href="/trade"
-                onClick={() => setIsMenuOpen(false)}
-                className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-slate-900/20 border border-emerald-500/30 hover:border-emerald-500 flex flex-col gap-1.5 transition-all"
-              >
-                <div className="flex items-center justify-between">
-                  <TrendingUp className="w-4 h-4 text-emerald-500" />
-                  <span className="px-1.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[9px] font-black">90% SPLIT</span>
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-white">SmartMag Trade</div>
-                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Prop Firms &amp; Codes</div>
-                </div>
-              </Link>
             </div>
 
             {/* Category Navigation Links */}
