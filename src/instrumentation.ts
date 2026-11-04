@@ -2,7 +2,7 @@ export async function register() {
   if (process.env.NEXT_RUNTIME === "nodejs") {
     console.log("🚀 [Auto AI Blog] Server boot: Initializing Autonomous 24/7 Server-Side Swarm & Worker Engine...");
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://auto-ai-blog-web.onrender.com";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
     const port = process.env.PORT || 10000;
 
     // 🛠️ 0. Auto-sync database columns if schema was upgraded
