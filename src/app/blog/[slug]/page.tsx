@@ -189,27 +189,37 @@ export default async function BlogPostPage({ params }: Props) {
   let nextPost: any = null;
 
   try {
-    post = await prisma.post.findUnique({
-      where: { slug: cleanSlug },
-      include: {
-        category: true,
-        tags: { include: { tag: true } },
-      },
-    });
-
-    if (!post) {
-      post = await prisma.post.findFirst({
-        where: {
-          OR: [
-            { slug: { equals: cleanSlug, mode: "insensitive" } },
-            { slug: { contains: cleanSlug.replace(/-\d+$/, ""), mode: "insensitive" } },
-          ],
-        },
+    post = await Promise.race([
+      prisma.post.findUnique({
+        where: { slug: cleanSlug },
         include: {
           category: true,
           tags: { include: { tag: true } },
         },
-      });
+      }),
+      new Promise<null>((_, reject) =>
+        setTimeout(() => reject(new Error("Blog single post DB query timeout")), 3000)
+      ),
+    ]);
+
+    if (!post) {
+      post = await Promise.race([
+        prisma.post.findFirst({
+          where: {
+            OR: [
+              { slug: { equals: cleanSlug, mode: "insensitive" } },
+              { slug: { contains: cleanSlug.replace(/-\d+$/, ""), mode: "insensitive" } },
+            ],
+          },
+          include: {
+            category: true,
+            tags: { include: { tag: true } },
+          },
+        }),
+        new Promise<null>((_, reject) =>
+          setTimeout(() => reject(new Error("Blog single post fallback DB timeout")), 2000)
+        ),
+      ]);
     }
 
     if (post) {
@@ -237,26 +247,31 @@ export default async function BlogPostPage({ params }: Props) {
         },
       };
 
-      const [related, prev, next] = await Promise.all([
-        prisma.post.findMany({
-          where: {
-            status: "PUBLISHED",
-            categoryId: post.categoryId,
-            id: { not: post.id },
-          },
-          take: 3,
-          select: postProjection,
-        }),
-        prisma.post.findFirst({
-          where: { status: "PUBLISHED", id: { not: post.id } },
-          orderBy: { publishedAt: "desc" },
-          select: postProjection,
-        }),
-        prisma.post.findFirst({
-          where: { status: "PUBLISHED", id: { not: post.id } },
-          orderBy: { publishedAt: "asc" },
-          select: postProjection,
-        }),
+      const [related, prev, next] = await Promise.race([
+        Promise.all([
+          prisma.post.findMany({
+            where: {
+              status: "PUBLISHED",
+              categoryId: post.categoryId,
+              id: { not: post.id },
+            },
+            take: 3,
+            select: postProjection,
+          }),
+          prisma.post.findFirst({
+            where: { status: "PUBLISHED", id: { not: post.id } },
+            orderBy: { publishedAt: "desc" },
+            select: postProjection,
+          }),
+          prisma.post.findFirst({
+            where: { status: "PUBLISHED", id: { not: post.id } },
+            orderBy: { publishedAt: "asc" },
+            select: postProjection,
+          }),
+        ]),
+        new Promise<any[]>((_, reject) =>
+          setTimeout(() => reject(new Error("Related posts query timeout")), 2500)
+        ),
       ]);
 
       relatedPosts = related || [];

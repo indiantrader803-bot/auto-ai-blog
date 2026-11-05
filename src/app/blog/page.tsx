@@ -8,6 +8,7 @@ import Footer from "@/components/layout/Footer";
 import { Calendar, Clock, ChevronRight, Newspaper, Flame } from "lucide-react";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesmartmag.com";
 
@@ -36,24 +37,29 @@ export default async function BlogIndexPage() {
   let posts: PostCard[] = [];
 
   try {
-    const dbPosts = await prisma.post.findMany({
-      where: { status: "PUBLISHED" },
-      orderBy: { publishedAt: "desc" },
-      take: 48,
-      select: {
-        slug: true,
-        title: true,
-        excerpt: true,
-        featuredImage: true,
-        publishedAt: true,
-        readTimeMinutes: true,
-        views: true,
-        category: { select: { name: true, slug: true } },
-      },
-    });
-    posts = dbPosts;
+    const dbPosts = await Promise.race([
+      prisma.post.findMany({
+        where: { status: "PUBLISHED" },
+        orderBy: { publishedAt: "desc" },
+        take: 48,
+        select: {
+          slug: true,
+          title: true,
+          excerpt: true,
+          featuredImage: true,
+          publishedAt: true,
+          readTimeMinutes: true,
+          views: true,
+          category: { select: { name: true, slug: true } },
+        },
+      }),
+      new Promise<any[]>((_, reject) =>
+        setTimeout(() => reject(new Error("Blog list DB query timeout")), 3000)
+      ),
+    ]);
+    posts = dbPosts || [];
   } catch (e) {
-    console.warn("Blog index DB fetch notice:", e);
+    console.warn("Blog index DB fetch notice (using instant fallback):", e);
   }
 
   const allCatalog = getAllCatalogArticles();

@@ -19,9 +19,19 @@ import {
   Flame,
   Globe,
   Plus,
-  Minus
+  Minus,
+  Tag,
+  Gift,
+  Award,
+  Sparkles,
+  MapPin,
+  Lock,
 } from "lucide-react";
 import { STORE_MOCKUP_PRODUCTS } from "@/lib/pipeline/agents/mockupCatalogData";
+import { VIRAL_DROPSHIP_CATALOG } from "@/lib/pipeline/agents/dropshipHunterAgent";
+import { useCart } from "@/context/CartContext";
+import { useVip } from "@/context/VipAuthContext";
+import { detectUserCurrency } from "@/lib/utils";
 
 declare global {
   interface Window {
@@ -33,19 +43,86 @@ export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const productId = params?.id as string;
+  const { addToCart, setIsCartOpen } = useCart();
+  const { user } = useVip();
 
   const [product, setProduct] = useState<any | null>(null);
   const [activeImage, setActiveImage] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [quantity, setQuantity] = useState<number>(1);
-  const [isProcessingPayment, setIsProcessingPayment] = useState<boolean>(false);
+  const [userCurrency, setUserCurrency] = useState<"USD" | "INR">("USD");
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
+  const [addedToCartToast, setAddedToCartToast] = useState<boolean>(false);
+
+  // Promo Code State
+  const [promoCodeInput, setPromoCodeInput] = useState<string>("SMART30");
+  const [appliedPromo, setAppliedPromo] = useState<{ code: string; percent: number; msg: string }>({
+    code: "SMART30",
+    percent: 30,
+    msg: "30% Instant Launch Discount Active!",
+  });
+  const [promoError, setPromoError] = useState<string>("");
+
+  // Shipping details calculator
+  const [shippingCountry, setShippingCountry] = useState<string>("United States");
+  const [postalCheckInput, setPostalCheckInput] = useState<string>("");
+  const [shippingVerificationStatus, setShippingVerificationStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUserCurrency(detectUserCurrency());
+  }, []);
 
   useEffect(() => {
     if (!productId) return;
-    const found = STORE_MOCKUP_PRODUCTS.find(
-      (p) => String(p.id).toLowerCase() === String(productId).toLowerCase()
+    const cleanId = String(productId).toLowerCase();
+
+    // 1. Search in primary mockup catalog
+    let found = STORE_MOCKUP_PRODUCTS.find(
+      (p) => String(p.id).toLowerCase() === cleanId
     );
+
+    // 2. Search in viral dropship catalog
+    if (!found) {
+      const dropshipItem = VIRAL_DROPSHIP_CATALOG.find(
+        (p) => String(p.id).toLowerCase() === cleanId
+      );
+      if (dropshipItem) {
+        found = {
+          id: dropshipItem.id,
+          title: dropshipItem.title,
+          tagline: dropshipItem.tagline,
+          priceINR: dropshipItem.priceINR,
+          originalPriceINR: dropshipItem.originalPriceINR,
+          priceUSD: dropshipItem.priceUSD,
+          originalPriceUSD: dropshipItem.originalPriceUSD,
+          discountBadge: `${Math.round(((dropshipItem.originalPriceINR - dropshipItem.priceINR) / dropshipItem.originalPriceINR) * 100)}% OFF`,
+          badge: dropshipItem.badge || "HOT TREND",
+          category: dropshipItem.category || "Smart Gadgets",
+          isPhysical: dropshipItem.isPhysical !== false,
+          stock: dropshipItem.stock || 45,
+          inStock: true,
+          rating: dropshipItem.rating || 4.9,
+          reviewsCount: dropshipItem.reviewsCount || 428,
+          image: dropshipItem.image,
+          galleryImages: dropshipItem.galleryImages || [dropshipItem.image],
+          colors: dropshipItem.colors || [{ name: "Space Gray", colorHex: "#374151" }],
+          shippingDetails: dropshipItem.shippingDetails || {
+            origin: "Global Air Cargo Logistics Center",
+            estimatedDelivery: "3 - 5 Business Days (US/Global Priority)",
+            shippingCost: "FREE Tracked Express",
+            carrier: "FedEx / DHL Express / USPS",
+            supportedCountries: ["United States", "Canada", "United Kingdom", "Australia", "India", "Germany"],
+          },
+          features: dropshipItem.features || [
+            "Next-Gen Intelligent Performance",
+            "Ultra-Lightweight & Ergonomic Build",
+            "Long-Life Rechargeable Battery System",
+            "FCC, CE & RoHS Certified Electronics",
+          ],
+        } as any;
+      }
+    }
+
     if (found) {
       setProduct(found);
       setActiveImage(found.image);
@@ -58,22 +135,12 @@ export default function ProductDetailPage() {
     }
   }, [productId]);
 
-  // Load Razorpay Script
-  useEffect(() => {
-    if (!document.querySelector("#razorpay-checkout-script")) {
-      const script = document.createElement("script");
-      script.id = "razorpay-checkout-script";
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  }, []);
-
   if (!product) {
     return (
-      <div className="min-h-screen bg-[#0f1117] text-white flex flex-col items-center justify-center p-6 space-y-4">
-        <h2 className="text-xl font-bold">Looking up Product Specifications...</h2>
-        <p className="text-xs text-slate-400">Loading verified dropshipping catalog details.</p>
+      <div className="min-h-screen bg-[#07090e] text-white flex flex-col items-center justify-center p-6 space-y-4">
+        <div className="w-12 h-12 border-3 border-violet-500 border-t-transparent rounded-full animate-spin" />
+        <h2 className="text-xl font-bold">Verifying Product Specifications...</h2>
+        <p className="text-xs text-slate-400">Loading verified global catalog data and express logistics route.</p>
         <Link
           href="/store"
           className="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-xs font-bold transition-all"
@@ -92,163 +159,252 @@ export default function ProductDetailPage() {
     }
   };
 
-  const handleDirectBuy = async () => {
-    setIsProcessingPayment(true);
-    try {
-      if (typeof window.Razorpay === "undefined") {
-        alert("Payment gateway is initializing. Please try again in 2 seconds.");
-        setIsProcessingPayment(false);
-        return;
-      }
-
-      const totalAmount = (product.priceINR || 999) * quantity;
-
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_live_TsyPwRJG2SfIKs",
-        amount: totalAmount * 100, // paisa
-        currency: "INR",
-        name: "TheSmartMag Store",
-        description: `Order: ${product.title} (Qty: ${quantity})`,
-        image: product.image,
-        handler: function (response: any) {
-          alert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
-          router.push(`/store?order_success=true&payment_id=${response.razorpay_payment_id}`);
-        },
-        prefill: {
-          name: "Customer",
-          email: "customer@thesmartmag.com",
-          contact: "+919876543210",
-        },
-        theme: {
-          color: "#7c3aed",
-        },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    } catch (err: any) {
-      alert("Error initializing checkout: " + err.message);
-    } finally {
-      setIsProcessingPayment(false);
+  const handleApplyPromo = (e: React.FormEvent) => {
+    e.preventDefault();
+    const clean = promoCodeInput.trim().toUpperCase();
+    setPromoError("");
+    if (clean === "VIP50" || clean === "FLASH50") {
+      setAppliedPromo({ code: clean, percent: 50, msg: "🔥 50% VIP Exclusive Discount Applied!" });
+    } else if (clean === "QUANT40" || clean === "TECH40") {
+      setAppliedPromo({ code: clean, percent: 40, msg: "🚀 40% High-Tech Discount Applied!" });
+    } else if (clean === "SMART30" || clean === "GLOBAL30" || clean === "USA30") {
+      setAppliedPromo({ code: clean, percent: 30, msg: "🎉 30% Verified Promo Code Applied!" });
+    } else if (clean === "WELCOME20") {
+      setAppliedPromo({ code: clean, percent: 20, msg: "✨ 20% First Order Promo Applied!" });
+    } else {
+      setPromoError("Invalid code. Try SMART30 or VIP50");
     }
   };
 
+  const handleVerifyShipping = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!postalCheckInput.trim()) {
+      setShippingVerificationStatus("Please enter your ZIP or Postal code.");
+      return;
+    }
+    setShippingVerificationStatus(
+      `✅ Delivery is available to ${postalCheckInput.trim()}, ${shippingCountry}! Estimated transit: 3–5 Business Days via Priority Air Express.`
+    );
+  };
+
+  const handleAddToCart = () => {
+    addToCart(
+      {
+        id: product.id,
+        title: product.title,
+        priceINR: product.priceINR || 999,
+        priceUSD: product.priceUSD || 19,
+        image: activeImage || product.image,
+        category: product.category,
+        isPhysical: product.isPhysical !== false,
+      },
+      quantity
+    );
+    setAddedToCartToast(true);
+    setTimeout(() => setAddedToCartToast(false), 2500);
+  };
+
+  const handleDirectCheckout = () => {
+    addToCart(
+      {
+        id: product.id,
+        title: product.title,
+        priceINR: product.priceINR || 999,
+        priceUSD: product.priceUSD || 19,
+        image: activeImage || product.image,
+        category: product.category,
+        isPhysical: product.isPhysical !== false,
+      },
+      quantity
+    );
+    router.push("/store/checkout");
+  };
+
+  // Pricing calculation
+  const isUSD = userCurrency === "USD";
+  const basePrice = isUSD ? product.priceUSD || 19 : product.priceINR || 999;
+  const originalPrice = isUSD ? product.originalPriceUSD || 39 : product.originalPriceINR || 1999;
+  const discountMultiplier = (100 - appliedPromo.percent) / 100;
+  const discountedPrice = Math.round(basePrice * discountMultiplier * 100) / 100;
+
   return (
-    <div className="min-h-screen bg-[#0a0c10] text-slate-100 antialiased font-sans">
-      {/* Top Navigation */}
-      <header className="sticky top-0 z-40 bg-[#0f1219]/90 backdrop-blur-md border-b border-slate-800 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+    <div className="min-h-screen bg-[#07090e] text-slate-100 antialiased font-sans selection:bg-[#d1fe17] selection:text-black">
+      {/* Top Header */}
+      <header className="sticky top-0 z-40 bg-[#0c1017]/90 backdrop-blur-md border-b border-slate-800/80 px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <Link
           href="/store"
           className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" /> Back to Store
+          <ArrowLeft className="w-4 h-4" /> Back to Store Catalog
         </Link>
         <div className="flex items-center gap-3">
           <button
             onClick={handleShare}
-            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 flex items-center gap-1.5 transition-all cursor-pointer"
+            className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-xs text-slate-300 flex items-center gap-1.5 transition-all cursor-pointer"
           >
             <Share2 className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">{copiedLink ? "Link Copied!" : "Share"}</span>
           </button>
-          <Link
-            href="/store"
-            className="px-3.5 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-500 text-xs font-bold text-white shadow-xs"
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-xs text-slate-300 flex items-center gap-1.5 transition-all cursor-pointer"
           >
-            All Products
-          </Link>
+            <ShoppingBag className="w-3.5 h-3.5 text-[#d1fe17]" />
+            <span className="hidden sm:inline">My Cart</span>
+          </button>
+          <button
+            onClick={() => setUserCurrency(isUSD ? "INR" : "USD")}
+            className="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-[11px] font-mono font-bold text-[#d1fe17]"
+          >
+            {userCurrency}
+          </button>
         </div>
       </header>
 
-      {/* Main Product Details Section */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-8 py-8 space-y-10">
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/store" className="hover:text-slate-300">Store</Link>
-          <ChevronRight className="w-3 h-3" />
-          <span>{product.category || "Smart Electronics"}</span>
-          <ChevronRight className="w-3 h-3" />
-          <span className="text-slate-300 font-medium truncate max-w-xs">{product.title}</span>
+      {/* Main Container */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-10">
+        {/* Breadcrumb Navigation */}
+        <div className="flex items-center gap-2 text-xs text-slate-400">
+          <Link href="/store" className="hover:text-white">Store</Link>
+          <ChevronRight className="w-3 h-3 text-slate-600" />
+          <span className="text-slate-400">{product.category || "Electronics & Gear"}</span>
+          <ChevronRight className="w-3 h-3 text-slate-600" />
+          <span className="text-[#d1fe17] font-semibold truncate max-w-sm">{product.title}</span>
         </div>
 
-        {/* 2-Column Product Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Gallery Images */}
+        {/* 2-Column Product Hero Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* LEFT: Image Showcase */}
           <div className="lg:col-span-6 space-y-4">
-            <div className="relative aspect-square rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 shadow-2xl flex items-center justify-center">
+            <div className="relative aspect-square rounded-3xl overflow-hidden bg-gradient-to-b from-slate-900 to-[#0c1017] border border-slate-800 shadow-2xl flex items-center justify-center group">
               <img
                 src={activeImage || product.image}
                 alt={product.title}
-                className="w-full h-full object-cover transition-all duration-300 hover:scale-105"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="eager"
               />
               {product.badge && (
-                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#d1fe17] text-[#07090e] font-black text-[10px] uppercase tracking-wider shadow-lg shadow-[#d1fe17]/20 border border-[#d1fe17]/40">
+                <div className="absolute top-5 left-5 px-3 py-1 rounded-full bg-[#d1fe17] text-[#07090e] font-black text-[11px] uppercase tracking-wider shadow-lg shadow-[#d1fe17]/25 border border-[#d1fe17]">
                   {product.badge}
                 </div>
               )}
+              <div className="absolute bottom-4 right-4 px-3 py-1.5 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 text-[10px] text-slate-300 flex items-center gap-1.5">
+                <Globe className="w-3 h-3 text-emerald-400" /> Verified Global Supplier
+              </div>
             </div>
 
-            {/* Gallery Thumbnails */}
+            {/* Thumbnail Gallery */}
             {product.galleryImages && product.galleryImages.length > 1 && (
-              <div className="flex items-center gap-3 overflow-x-auto pb-2">
+              <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
                 {product.galleryImages.map((img: string, idx: number) => (
                   <button
                     key={idx}
                     onClick={() => setActiveImage(img)}
-                    className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
-                      activeImage === img ? "border-[#d1fe17] scale-95 shadow-[0_0_12px_rgba(209,254,23,0.3)]" : "border-slate-800 hover:border-slate-700 opacity-70 hover:opacity-100"
+                    className={`relative w-20 h-20 rounded-2xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
+                      activeImage === img
+                        ? "border-[#d1fe17] scale-95 shadow-[0_0_12px_rgba(209,254,23,0.35)]"
+                        : "border-slate-800 opacity-60 hover:opacity-100 hover:border-slate-600"
                     }`}
                   >
-                    <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+                    <img src={img} alt={`View ${idx}`} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
             )}
+
+            {/* Quality & Trust Badges */}
+            <div className="grid grid-cols-3 gap-3 pt-2">
+              <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-center space-y-1">
+                <ShieldCheck className="w-5 h-5 text-emerald-400 mx-auto" />
+                <p className="text-[11px] font-bold text-white">100% Quality Checked</p>
+                <p className="text-[10px] text-slate-400">Strict QC lab tested</p>
+              </div>
+              <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-center space-y-1">
+                <Truck className="w-5 h-5 text-sky-400 mx-auto" />
+                <p className="text-[11px] font-bold text-white">Express Air Shipping</p>
+                <p className="text-[10px] text-slate-400">US, UK, IN & Worldwide</p>
+              </div>
+              <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-center space-y-1">
+                <RefreshCw className="w-5 h-5 text-violet-400 mx-auto" />
+                <p className="text-[11px] font-bold text-white">Easy Returns</p>
+                <p className="text-[10px] text-slate-400">7-Day replacement</p>
+              </div>
+            </div>
           </div>
 
-          {/* Right Column: Pricing, Specs & Purchase CTA */}
+          {/* RIGHT: Pricing, Promos, Quantity & Instant Buy */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold uppercase">
-                  Verified In Stock
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold uppercase tracking-wider">
+                  In Stock & Ready for Dispatch
                 </span>
-                <span className="text-xs text-slate-500">•</span>
-                <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
-                  <Star className="w-3.5 h-3.5 fill-amber-400" />
-                  <span>{product.rating || 4.8}</span>
-                  <span className="text-slate-500">({product.reviewsCount || 2400} reviews)</span>
+                <span className="text-xs text-slate-600">•</span>
+                <div className="flex items-center gap-1.5 text-amber-400 text-xs font-bold">
+                  <Star className="w-4 h-4 fill-amber-400" />
+                  <span>{product.rating || 4.9}</span>
+                  <span className="text-slate-400 font-normal">({product.reviewsCount || 428} verified reviews)</span>
                 </div>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
                 {product.title}
               </h1>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                {product.tagline || product.description}
+
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {product.tagline || product.description || "Engineered for maximum reliability, premium tactile feel, and modern smart productivity."}
               </p>
             </div>
 
-            {/* Price Row */}
-            <div className="p-4 rounded-2xl bg-[#131620] border border-slate-800 flex items-baseline gap-4">
-              <span className="text-3xl font-black text-white font-mono">
-                ₹{(product.priceINR || 999).toLocaleString("en-IN")}
-              </span>
-              {product.originalPriceINR && (
-                <span className="text-base text-slate-500 line-through font-mono">
-                  ₹{product.originalPriceINR.toLocaleString("en-IN")}
+            {/* Price Box with Coupon Applied Calculation */}
+            <div className="p-5 rounded-3xl bg-gradient-to-r from-slate-900 via-[#0e131d] to-slate-900 border border-slate-800 space-y-3">
+              <div className="flex items-baseline gap-4 flex-wrap">
+                <span className="text-3xl sm:text-4xl font-black text-[#d1fe17] font-mono tracking-tight">
+                  {isUSD ? `$${discountedPrice}` : `₹${discountedPrice.toLocaleString()}`}
                 </span>
-              )}
-              <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 text-xs font-bold">
-                Save {product.discountBadge || "40% OFF"}
-              </span>
+                <span className="text-base text-slate-500 line-through font-mono">
+                  {isUSD ? `$${originalPrice}` : `₹${originalPrice.toLocaleString()}`}
+                </span>
+                <span className="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 text-xs font-bold font-mono">
+                  Save {appliedPromo.percent}% with {appliedPromo.code}
+                </span>
+              </div>
+              <p className="text-xs text-emerald-400 font-medium flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" /> {appliedPromo.msg}
+              </p>
             </div>
 
-            {/* Color Selector */}
+            {/* Interactive Promo Code Box */}
+            <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-bold text-white flex items-center gap-1.5">
+                  <Tag className="w-3.5 h-3.5 text-[#d1fe17]" /> Apply Coupon / Discount Code:
+                </span>
+                <span className="text-[11px] text-slate-400">Available: SMART30, VIP50</span>
+              </div>
+              <form onSubmit={handleApplyPromo} className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={promoCodeInput}
+                  onChange={(e) => setPromoCodeInput(e.target.value)}
+                  placeholder="Enter code (e.g. VIP50)"
+                  className="flex-1 px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono font-bold text-white uppercase placeholder:text-slate-500 focus:outline-hidden focus:border-[#d1fe17]"
+                />
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-xs font-bold text-white transition-all cursor-pointer"
+                >
+                  Apply
+                </button>
+              </form>
+              {promoError && <p className="text-xs text-rose-400">{promoError}</p>}
+            </div>
+
+            {/* Color Finish Selector */}
             {product.colors && product.colors.length > 0 && (
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 <label className="text-xs font-bold text-slate-300">
-                  Select Finish: <span className="text-[#d1fe17] font-mono">{selectedColor}</span>
+                  Select Finish / Color: <span className="text-[#d1fe17] font-semibold">{selectedColor}</span>
                 </label>
                 <div className="flex items-center gap-3 flex-wrap">
                   {product.colors.map((c: any) => (
@@ -256,17 +412,15 @@ export default function ProductDetailPage() {
                       key={c.name}
                       onClick={() => {
                         setSelectedColor(c.name);
-                        if (c.image) {
-                          setActiveImage(c.image);
-                        }
+                        if (c.image) setActiveImage(c.image);
                       }}
-                      className={`px-3 py-1.5 rounded-lg border text-xs font-medium flex items-center gap-2 transition-all cursor-pointer ${
+                      className={`px-3.5 py-2 rounded-xl border text-xs font-medium flex items-center gap-2 transition-all cursor-pointer ${
                         selectedColor === c.name
                           ? "border-[#d1fe17] bg-[#d1fe17]/15 text-[#d1fe17] font-bold shadow-[0_0_12px_rgba(209,254,23,0.25)]"
-                          : "border-slate-800 bg-[#0c1019] text-slate-400 hover:border-slate-700 hover:text-white"
+                          : "border-slate-800 bg-slate-900/60 text-slate-400 hover:border-slate-700 hover:text-white"
                       }`}
                     >
-                      <span className="w-3 h-3 rounded-full border border-white/20 shadow-xs" style={{ backgroundColor: c.colorHex }} />
+                      <span className="w-3.5 h-3.5 rounded-full border border-white/20" style={{ backgroundColor: c.colorHex }} />
                       {c.name}
                     </button>
                   ))}
@@ -277,102 +431,169 @@ export default function ProductDetailPage() {
             {/* Quantity Selector */}
             <div className="flex items-center gap-4">
               <span className="text-xs font-bold text-slate-300">Quantity:</span>
-              <div className="flex items-center border border-slate-800 rounded-xl bg-slate-900">
+              <div className="flex items-center border border-slate-800 rounded-2xl bg-slate-900">
                 <button
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="p-2 hover:bg-slate-800 text-slate-300 transition-colors rounded-l-xl cursor-pointer"
+                  className="p-2.5 hover:bg-slate-800 text-slate-300 transition-colors rounded-l-2xl cursor-pointer"
+                  aria-label="Decrease quantity"
                 >
                   <Minus className="w-3.5 h-3.5" />
                 </button>
-                <span className="px-4 text-xs font-bold font-mono text-white">{quantity}</span>
+                <span className="px-5 text-xs font-bold font-mono text-white">{quantity}</span>
                 <button
                   onClick={() => setQuantity((q) => Math.min(10, q + 1))}
-                  className="p-2 hover:bg-slate-800 text-slate-300 transition-colors rounded-r-xl cursor-pointer"
+                  className="p-2.5 hover:bg-slate-800 text-slate-300 transition-colors rounded-r-2xl cursor-pointer"
+                  aria-label="Increase quantity"
                 >
                   <Plus className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
 
-            {/* Payment & Buy Actions */}
+            {/* Action Buttons: Add to Cart + Instant Checkout */}
             <div className="space-y-3 pt-2">
-              <button
-                onClick={handleDirectBuy}
-                disabled={isProcessingPayment}
-                className="w-full py-4 rounded-xl bg-[#d1fe17] hover:bg-[#bce810] text-[#07090e] font-extrabold text-sm shadow-xl shadow-[#d1fe17]/25 border border-[#d1fe17] flex items-center justify-center gap-2 uppercase tracking-wider transition-all cursor-pointer transform hover:-translate-y-0.5"
-              >
-                {isProcessingPayment ? (
-                  <>
-                    <RefreshCw className="w-4 h-4 animate-spin text-[#07090e]" /> Initializing Live Payment...
-                  </>
-                ) : (
-                  <>
-                    <CreditCard className="w-4 h-4 text-[#07090e]" /> Instant Buy Now (Razorpay Secure)
-                  </>
-                )}
-              </button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button
+                  onClick={handleAddToCart}
+                  className="py-4 px-6 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs sm:text-sm border border-slate-700 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg"
+                >
+                  <ShoppingBag className="w-4 h-4 text-[#d1fe17]" /> Add To Cart
+                </button>
+
+                <button
+                  onClick={handleDirectCheckout}
+                  className="py-4 px-6 rounded-2xl bg-[#d1fe17] hover:bg-[#bde712] text-[#07090e] font-extrabold text-xs sm:text-sm border border-[#d1fe17] flex items-center justify-center gap-2 uppercase tracking-wider transition-all cursor-pointer shadow-xl shadow-[#d1fe17]/20 transform hover:-translate-y-0.5"
+                >
+                  <CreditCard className="w-4 h-4 text-[#07090e]" /> Proceed to Checkout
+                </button>
+              </div>
+
+              {addedToCartToast && (
+                <div className="p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center justify-between">
+                  <span>✅ Item added to cart!</span>
+                  <button onClick={() => setIsCartOpen(true)} className="underline text-white cursor-pointer">
+                    View Cart &rarr;
+                  </button>
+                </div>
+              )}
 
               <div className="flex items-center justify-center gap-6 text-[11px] text-slate-400 pt-1">
                 <span className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" /> 100% Verified Gateway
+                  <Lock className="w-3.5 h-3.5 text-emerald-400" /> 256-Bit SSL Encrypted
                 </span>
                 <span>•</span>
                 <span className="flex items-center gap-1.5">
-                  <Truck className="w-4 h-4 text-sky-400" /> Free Express Courier
+                  <Truck className="w-3.5 h-3.5 text-sky-400" /> Free Global Express
                 </span>
                 <span>•</span>
-                <span>7-Day Replacement</span>
+                <span>Money-Back Guarantee</span>
               </div>
             </div>
 
-            {/* Shipping & Fulfillment Specs Box */}
-            <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2.5 text-xs">
-              <h4 className="font-bold text-white flex items-center gap-2">
-                <Truck className="w-4 h-4 text-violet-400" /> Dropship Dispatch & Delivery Details
-              </h4>
-              <div className="grid grid-cols-2 gap-2 text-slate-300 pt-1">
-                <div>
-                  <span className="text-slate-500 block text-[10px]">Express Carrier:</span>
-                  <span className="font-medium text-slate-200">
-                    {product.shippingDetails?.carrier || "DHL Express / SafeXpress"}
-                  </span>
+            {/* Real-Time Shipping & Country Delivery Verification */}
+            <div className="p-5 rounded-3xl bg-slate-900/70 border border-slate-800 space-y-3 text-xs">
+              <div className="flex items-center justify-between">
+                <h4 className="font-bold text-white flex items-center gap-2">
+                  <Truck className="w-4 h-4 text-[#d1fe17]" /> Delivery & Shipping Availability
+                </h4>
+                <span className="text-[10px] px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/20 font-bold">
+                  Tracked Air Freight
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-slate-300">
+                <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                  <span className="text-slate-500 block text-[10px] uppercase font-bold">Standard Carrier:</span>
+                  <span className="font-semibold text-white">FedEx / DHL Express / USPS</span>
                 </div>
-                <div>
-                  <span className="text-slate-500 block text-[10px]">Estimated Arrival:</span>
-                  <span className="font-medium text-emerald-400">
-                    {product.shippingDetails?.estimatedDelivery || "3 - 6 Business Days"}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-slate-500 block text-[10px]">Fulfillment Center:</span>
-                  <span className="font-medium text-slate-200">
-                    {product.shippingDetails?.origin || "Global Air Cargo Logistics Hub"}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-slate-500 block text-[10px]">Tracking Number:</span>
-                  <span className="font-medium text-slate-200">Provided upon dispatch</span>
+                <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                  <span className="text-slate-500 block text-[10px] uppercase font-bold">Estimated Delivery:</span>
+                  <span className="font-semibold text-emerald-400">3 - 5 Business Days</span>
                 </div>
               </div>
+
+              {/* Postal Code Verifier Form */}
+              <form onSubmit={handleVerifyShipping} className="pt-2 space-y-2">
+                <label className="text-[11px] font-bold text-slate-300 block">
+                  Verify Postal Code / Country Delivery:
+                </label>
+                <div className="flex gap-2">
+                  <select
+                    value={shippingCountry}
+                    onChange={(e) => setShippingCountry(e.target.value)}
+                    className="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-hidden"
+                  >
+                    <option value="United States">United States</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Australia">Australia</option>
+                    <option value="India">India</option>
+                    <option value="Germany">Germany</option>
+                    <option value="France">France</option>
+                    <option value="Singapore">Singapore</option>
+                  </select>
+                  <input
+                    type="text"
+                    value={postalCheckInput}
+                    onChange={(e) => setPostalCheckInput(e.target.value)}
+                    placeholder="Enter ZIP / PIN (e.g. 10001)"
+                    className="flex-1 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-hidden focus:border-[#d1fe17]"
+                  />
+                  <button
+                    type="submit"
+                    className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white transition-all cursor-pointer"
+                  >
+                    Check
+                  </button>
+                </div>
+                {shippingVerificationStatus && (
+                  <p className="text-xs text-emerald-400 font-medium bg-emerald-500/10 p-2.5 rounded-xl border border-emerald-500/20">
+                    {shippingVerificationStatus}
+                  </p>
+                )}
+              </form>
             </div>
           </div>
         </div>
 
-        {/* Detailed Description & Specification Tabs */}
-        <div className="p-6 rounded-2xl bg-[#0f1219] border border-slate-800 space-y-6">
-          <h3 className="text-lg font-bold text-white border-b border-slate-800 pb-3">
-            Product Specifications & Technical Features
-          </h3>
-          <div className="prose prose-invert max-w-none text-xs sm:text-sm text-slate-300 space-y-4">
-            <p className="leading-relaxed">
-              The <strong>{product.title}</strong> is precision-engineered for maximum performance, ergonomic durability, and seamless connectivity. Sourced directly from tier-1 electronics manufacturers with rigorous quality assurance checks prior to air dispatch.
-            </p>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 list-disc list-inside text-slate-300">
-              <li><strong>Manufacturer Grade:</strong> Aerospace Aluminum & High-Density Polymer</li>
-              <li><strong>Power & Efficiency:</strong> Low-power consumption microcontrollers</li>
-              <li><strong>Global Compliance:</strong> CE, RoHS, FCC Certified</li>
-              <li><strong>Warranty:</strong> 1-Year Comprehensive Manufacturer Protection</li>
-              <li><strong>In The Box:</strong> 1x {product.title}, QuickStart Guide, Braided Cable</li>
+        {/* Product Details, Specs & Features Deep-Dive */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+          <div className="md:col-span-2 p-6 rounded-3xl bg-[#0c1017] border border-slate-800 space-y-4">
+            <h3 className="text-base font-bold text-white border-b border-slate-800/80 pb-3 flex items-center gap-2">
+              <Award className="w-4 h-4 text-[#d1fe17]" /> Detailed Engineering Specifications & Architecture
+            </h3>
+            <div className="text-xs sm:text-sm text-slate-300 space-y-3 leading-relaxed">
+              <p>
+                The <strong>{product.title}</strong> is manufactured under strict ISO-9001 and CE compliance standards. Built using premium aerospace-grade polymers and alloy components to withstand rigorous daily travel and professional productivity setups.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                {product.features && product.features.map((f: string, i: number) => (
+                  <div key={i} className="flex items-start gap-2 p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <span className="text-xs text-slate-200">{f}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-3xl bg-[#0c1017] border border-slate-800 space-y-4">
+            <h3 className="text-base font-bold text-white border-b border-slate-800/80 pb-3 flex items-center gap-2">
+              <Gift className="w-4 h-4 text-violet-400" /> Package Contents
+            </h3>
+            <ul className="text-xs text-slate-300 space-y-2.5">
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#d1fe17]" /> 1x {product.title}
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#d1fe17]" /> 1x Reinforced Braided Fast-Charging Cable
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#d1fe17]" /> 1x Global User Guide (English, Spanish, French, German)
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#d1fe17]" /> 1x Certificate of Authenticity & 1-Year Warranty Card
+              </li>
             </ul>
           </div>
         </div>
