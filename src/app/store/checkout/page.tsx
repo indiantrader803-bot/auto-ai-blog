@@ -17,6 +17,14 @@ import {
   Tag,
   ShoppingBag,
   Sparkles,
+  UserCheck,
+  MapPin,
+  Phone,
+  Mail,
+  User,
+  Building,
+  LogIn,
+  AlertCircle,
 } from "lucide-react";
 import { detectUserCurrency } from "@/lib/utils";
 
@@ -29,13 +37,22 @@ declare global {
 export default function CheckoutPage() {
   const router = useRouter();
   const { cart, clearCart, totalItems, totalINR, totalUSD } = useCart();
-  const { user } = useVip();
+  const { user, loading: authLoading } = useVip();
 
   const [currency, setCurrency] = useState<"USD" | "INR">("USD");
-  const [shippingAddress, setShippingAddress] = useState("");
+  
+  // Customer & Detailed Shipping Information
   const [buyerName, setBuyerName] = useState(user?.name || "");
   const [buyerEmail, setBuyerEmail] = useState(user?.email || "");
   const [buyerPhone, setBuyerPhone] = useState("");
+  const [addressLine1, setAddressLine1] = useState("");
+  const [addressLine2, setAddressLine2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [country, setCountry] = useState("India");
+  const [deliveryNotes, setDeliveryNotes] = useState("");
+
   const [couponCode, setCouponCode] = useState("GLOBAL30");
   const [discountPercent, setDiscountPercent] = useState(30);
   const [couponMsg, setCouponMsg] = useState("🎉 30% Grand Opening Discount Applied!");
@@ -87,16 +104,45 @@ export default function CheckoutPage() {
   };
 
   const handleRazorpayPayment = async () => {
-    if (!buyerEmail) {
-      alert("Please provide your email address to receive order confirmation.");
-      return;
-    }
-    if (hasPhysical && !shippingAddress.trim()) {
-      alert("Please provide your delivery shipping address for physical goods.");
+    if (!user) {
+      alert("Please sign in or register an account before placing your order.");
+      router.push(`/store/login?redirect=${encodeURIComponent("/store/checkout")}`);
       return;
     }
 
+    if (!buyerName.trim()) {
+      alert("Please enter customer recipient full name.");
+      return;
+    }
+    if (!buyerEmail.trim()) {
+      alert("Please enter customer email address for delivery updates and invoice.");
+      return;
+    }
+    if (!buyerPhone.trim()) {
+      alert("Please enter customer contact phone number for courier updates.");
+      return;
+    }
+
+    if (hasPhysical) {
+      if (!addressLine1.trim() || !city.trim() || !state.trim() || !postalCode.trim()) {
+        alert("Please complete full delivery shipping address: Street Address, City, State, and Postal PIN Code.");
+        return;
+      }
+    }
+
     setLoading(true);
+
+    const fullShippingAddress = [
+      addressLine1.trim(),
+      addressLine2.trim(),
+      city.trim(),
+      state.trim(),
+      postalCode.trim(),
+      country.trim(),
+      deliveryNotes.trim() ? `(Note: ${deliveryNotes.trim()})` : "",
+    ]
+      .filter(Boolean)
+      .join(", ");
 
     try {
       // 1. Create order on server
@@ -107,8 +153,10 @@ export default function CheckoutPage() {
           productId: cart.map((c) => c.id).join(","),
           productTitle: cart.map((c) => `${c.quantity}x ${c.title}`).join(" | "),
           buyerEmail,
+          buyerName,
+          buyerPhone,
           currency,
-          shippingAddress,
+          shippingAddress: fullShippingAddress,
           isPhysical: hasPhysical,
           paymentMethod: "RAZORPAY",
         }),
@@ -139,6 +187,8 @@ export default function CheckoutPage() {
                 paymentId: response.razorpay_payment_id,
                 signature: response.razorpay_signature,
                 status: "PAID",
+                buyerEmail,
+                shippingAddress: fullShippingAddress,
               }),
             });
             setOrderId(response.razorpay_payment_id || `ORD-${Date.now()}`);
@@ -152,9 +202,9 @@ export default function CheckoutPage() {
           }
         },
         prefill: {
-          name: buyerName || "Valued Customer",
-          email: buyerEmail,
-          contact: buyerPhone || "9999999999",
+          name: buyerName || user?.name || "Customer",
+          email: buyerEmail || user?.email || "",
+          contact: buyerPhone || "",
         },
         theme: {
           color: "#4f46e5",
@@ -193,7 +243,7 @@ export default function CheckoutPage() {
                 Your order <span className="font-mono text-emerald-600 dark:text-emerald-400">{orderId}</span> has been confirmed.
               </p>
               <p className="text-xs text-slate-600 dark:text-slate-400">
-                A receipt and tracking details have been sent to <span className="text-slate-900 dark:text-white font-semibold">{buyerEmail}</span>.
+                A tax invoice & courier tracking link have been dispatched to <span className="text-slate-900 dark:text-white font-semibold">{buyerEmail}</span>.
               </p>
             </div>
             <Link
@@ -238,112 +288,280 @@ export default function CheckoutPage() {
       <main className="max-w-6xl mx-auto px-4 py-12 flex-1 w-full">
         <Link
           href="/store"
-          className="inline-flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white mb-6 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Store
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left Form: Customer & Shipping Details */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4 shadow-sm">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-indigo-600 dark:text-indigo-400" /> Customer Information
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Full Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={buyerName}
-                    onChange={(e) => setBuyerName(e.target.value)}
-                    placeholder="Arnab Laha"
-                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Email Address</label>
-                  <input
-                    type="email"
-                    required
-                    value={buyerEmail}
-                    onChange={(e) => setBuyerEmail(e.target.value)}
-                    placeholder="you@domain.com"
-                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
-                  />
-                </div>
+        {/* 🔒 Mandatory Customer Authentication Banner */}
+        {!authLoading && !user && (
+          <div className="mb-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-amber-500/10 via-indigo-500/10 to-purple-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-lg">
+            <div className="flex items-start gap-3">
+              <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-500 shrink-0 mt-0.5">
+                <AlertCircle className="w-5 h-5" />
               </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Phone Number (For Delivery Updates)</label>
-                <input
-                  type="tel"
-                  value={buyerPhone}
-                  onChange={(e) => setBuyerPhone(e.target.value)}
-                  placeholder="+91 98765 43210"
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
-                />
+              <div className="space-y-1">
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                  Customer Registration &amp; Login Required
+                </h4>
+                <p className="text-xs text-slate-600 dark:text-slate-400 max-w-xl">
+                  Like all major ecommerce platforms, you must sign in or create an account to place an order, view order status, and receive automated door-to-door tracking.
+                </p>
               </div>
             </div>
 
-            {hasPhysical && (
-              <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4 shadow-sm">
-                <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                  <Truck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> Dropship Delivery Shipping Address
-                </h2>
+            <div className="flex items-center gap-2.5 w-full sm:w-auto shrink-0">
+              <Link
+                href={`/store/login?redirect=${encodeURIComponent("/store/checkout")}`}
+                className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/30"
+              >
+                <LogIn className="w-3.5 h-3.5" />
+                <span>Customer Login</span>
+              </Link>
+              <Link
+                href={`/store/register?redirect=${encodeURIComponent("/store/checkout")}`}
+                className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center"
+              >
+                Register
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {user && (
+          <div className="mb-6 px-4 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between text-xs">
+            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold">
+              <UserCheck className="w-4 h-4" />
+              <span>Signed in as <strong>{user.name || user.email}</strong> ({user.email})</span>
+            </div>
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Verified Account</span>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Left Form: Detailed Customer & Shipping Information */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* 1. Customer Information */}
+            <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4 shadow-sm">
+              <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <User className="w-4 h-4 text-indigo-600 dark:text-indigo-400" /> 1. Customer Contact Details
+              </h2>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                    Street, Apt, City, State, Postal PIN Code & Country
+                    Full Name <span className="text-rose-500">*</span>
                   </label>
-                  <textarea
-                    rows={3}
-                    required
-                    value={shippingAddress}
-                    onChange={(e) => setShippingAddress(e.target.value)}
-                    placeholder="Flat 4B, Greenwood Heights, Sector 5, Kolkata, West Bengal - 700091, India"
-                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
-                  />
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                    Direct door-to-door fulfillment with live tracking link dispatched upon order processing.
-                  </p>
+                  <div className="relative">
+                    <User className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      required
+                      value={buyerName}
+                      onChange={(e) => setBuyerName(e.target.value)}
+                      placeholder="e.g. Arnab Laha"
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl pl-9 pr-3.5 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Email Address <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="email"
+                      required
+                      value={buyerEmail}
+                      onChange={(e) => setBuyerEmail(e.target.value)}
+                      placeholder="you@domain.com"
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl pl-9 pr-3.5 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                    />
+                  </div>
                 </div>
               </div>
-            )}
 
-            {/* Payment Method Selector */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  Mobile Phone Number (With Country Code) <span className="text-rose-500">*</span>
+                </label>
+                <div className="relative">
+                  <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="tel"
+                    required
+                    value={buyerPhone}
+                    onChange={(e) => setBuyerPhone(e.target.value)}
+                    placeholder="+91 98765 43210"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl pl-9 pr-3.5 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                  />
+                </div>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1">
+                  Used by Blue Dart / DHL courier for real-time delivery OTP and doorstep notification.
+                </p>
+              </div>
+            </div>
+
+            {/* 2. Detailed Shipping Address (Standard Ecommerce Fields) */}
             <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4 shadow-sm">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-purple-600 dark:text-purple-400" /> Payment Gateway
+              <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Truck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> 2. Shipping &amp; Delivery Destination
+              </h2>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  Flat, House no., Building, Company, Apartment <span className="text-rose-500">*</span>
+                </label>
+                <div className="relative">
+                  <Building className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    required
+                    value={addressLine1}
+                    onChange={(e) => setAddressLine1(e.target.value)}
+                    placeholder="e.g. Flat 4B, Greenwood Heights"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl pl-9 pr-3.5 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  Area, Street, Sector, Village (Optional Landmark)
+                </label>
+                <div className="relative">
+                  <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={addressLine2}
+                    onChange={(e) => setAddressLine2(e.target.value)}
+                    placeholder="e.g. Near City Center 2, Main Bypass Road"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl pl-9 pr-3.5 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Town / City <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    placeholder="e.g. Kolkata"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    State / Province <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    placeholder="e.g. West Bengal"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    PIN / Postal Code <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}
+                    placeholder="e.g. 700091"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Country / Region <span className="text-rose-500">*</span>
+                  </label>
+                  <select
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                  >
+                    <option value="India">India (Blue Dart / Delhivery Express)</option>
+                    <option value="United States">United States (DHL / FedEx Express)</option>
+                    <option value="United Kingdom">United Kingdom (Royal Mail / DHL)</option>
+                    <option value="Canada">Canada (Canada Post / FedEx)</option>
+                    <option value="Australia">Australia (Australia Post / DHL)</option>
+                    <option value="Germany">Germany (Deutsche Post / DHL)</option>
+                    <option value="Singapore">Singapore (SingPost / DHL)</option>
+                    <option value="United Arab Emirates">United Arab Emirates (Aramex / DHL)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Delivery Instructions (Optional)
+                  </label>
+                  <input
+                    type="text"
+                    value={deliveryNotes}
+                    onChange={(e) => setDeliveryNotes(e.target.value)}
+                    placeholder="e.g. Leave with security / Ring bell twice"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 3. Payment Method Selector */}
+            <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4 shadow-sm">
+              <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <CreditCard className="w-4 h-4 text-purple-600 dark:text-purple-400" /> 3. Secure Payment Gateway
               </h2>
               <div className="p-4 rounded-xl border border-indigo-200 dark:border-indigo-500/40 bg-indigo-50/50 dark:bg-indigo-500/10 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 rounded-full bg-indigo-600 dark:bg-indigo-500 ring-4 ring-indigo-500/20" />
                   <div>
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">Razorpay Live Gateway</h4>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">Cards, UPI (GPay, PhonePe, Paytm), NetBanking & Wallets</p>
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-white">Razorpay Secure PCI-DSS Level 1 Gateway</h4>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400">Cards, UPI (Google Pay, PhonePe, Paytm), NetBanking &amp; EMI</p>
                   </div>
                 </div>
-                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20">
+                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 px-2.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20">
                   Instant
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Right Summary: Items & Total */}
+          {/* Right Summary: Items, Coupons & Place Order Action */}
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4 sticky top-24 shadow-sm">
-              <h3 className="text-base font-bold text-slate-900 dark:text-white">Order Summary ({totalItems} items)</h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Order Summary</h3>
+                <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 font-semibold text-slate-600 dark:text-slate-400">
+                  {totalItems} {totalItems === 1 ? "item" : "items"}
+                </span>
+              </div>
 
-              <div className="divide-y divide-slate-100 dark:divide-slate-800/80 max-h-60 overflow-y-auto pr-1">
+              <div className="divide-y divide-slate-100 dark:divide-slate-800/80 max-h-56 overflow-y-auto pr-1">
                 {cart.map((item) => (
-                  <div key={item.id} className="py-3 flex items-center gap-3">
+                  <div key={item.id} className="py-2.5 flex items-center gap-3">
                     {item.image && (
                       <img src={item.image} alt={item.title} className="w-12 h-12 object-cover rounded-lg shrink-0 border border-slate-200 dark:border-slate-800" />
                     )}
                     <div className="flex-1 min-w-0 text-xs">
                       <p className="text-slate-900 dark:text-white font-semibold truncate">{item.title}</p>
-                      <p className="text-slate-500 dark:text-slate-400">Qty: {item.quantity}</p>
+                      <p className="text-slate-500 dark:text-slate-400 text-[11px]">Qty: {item.quantity}</p>
                     </div>
                     <span className="text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400">
                       {currency === "INR"
@@ -360,8 +578,8 @@ export default function CheckoutPage() {
                   type="text"
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
-                  placeholder="Coupon Code"
-                  className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-white uppercase focus:outline-none focus:border-indigo-500 transition-colors"
+                  placeholder="Promo / Coupon Code"
+                  className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-white uppercase font-mono focus:outline-none focus:border-indigo-500 transition-colors"
                 />
                 <button
                   type="submit"
@@ -370,43 +588,66 @@ export default function CheckoutPage() {
                   Apply
                 </button>
               </form>
-              {couponMsg && <p className="text-[11px] text-emerald-600 dark:text-emerald-400">{couponMsg}</p>}
+              {couponMsg && <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">{couponMsg}</p>}
 
               <div className="space-y-2 pt-3 border-t border-slate-200 dark:border-slate-800 text-xs">
                 <div className="flex justify-between text-slate-600 dark:text-slate-400">
-                  <span>Subtotal</span>
+                  <span>Cart Subtotal</span>
                   <span className="font-mono">
                     {currency === "INR" ? `₹${totalINR.toLocaleString()}` : `$${totalUSD.toFixed(2)}`}
                   </span>
                 </div>
                 <div className="flex justify-between text-emerald-600 dark:text-emerald-400">
-                  <span>Discount ({discountPercent}%)</span>
+                  <span>Special Promo ({discountPercent}%)</span>
                   <span className="font-mono">
                     -{currency === "INR" ? `₹${Math.round(discountAmount).toLocaleString()}` : `$${discountAmount.toFixed(2)}`}
                   </span>
                 </div>
                 <div className="flex justify-between text-slate-600 dark:text-slate-400">
-                  <span>Shipping</span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">FREE</span>
+                  <span>Insured Express Shipping</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider text-[11px]">FREE</span>
                 </div>
                 <div className="flex justify-between text-base font-bold text-slate-900 dark:text-white pt-2 border-t border-slate-200 dark:border-slate-800">
-                  <span>Total Amount</span>
+                  <span>Total Payable</span>
                   <span className="text-indigo-600 dark:text-indigo-400 font-mono">{formattedFinalTotal}</span>
                 </div>
               </div>
 
-              <button
-                onClick={handleRazorpayPayment}
-                disabled={loading}
-                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm shadow-xl shadow-indigo-600/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
-              >
-                <Lock className="w-4 h-4" />
-                {loading ? "Processing..." : `Pay ${formattedFinalTotal} with Razorpay`}
-              </button>
+              {/* Checkout / Place Order Button */}
+              {user ? (
+                <button
+                  onClick={handleRazorpayPayment}
+                  disabled={loading}
+                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs uppercase tracking-wider shadow-xl shadow-indigo-600/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                >
+                  <Lock className="w-4 h-4" />
+                  {loading ? "Processing Order..." : `Place Order & Pay ${formattedFinalTotal}`}
+                </button>
+              ) : (
+                <div className="space-y-2">
+                  <Link
+                    href={`/store/login?redirect=${encodeURIComponent("/store/checkout")}`}
+                    className="w-full py-3.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-indigo-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer text-center"
+                  >
+                    <LogIn className="w-4 h-4" />
+                    <span>Sign In to Place Order</span>
+                  </Link>
+                  <p className="text-center text-[10px] text-slate-500">
+                    Registration or Login is required to place orders.
+                  </p>
+                </div>
+              )}
 
-              <p className="text-center text-[10px] text-slate-500 flex items-center justify-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> 256-Bit SSL Encrypted & Verified Direct Payment
-              </p>
+              <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 space-y-1.5 text-[10px] text-slate-500 dark:text-slate-400">
+                <p className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                  <span>256-Bit SSL Encrypted Razorpay Gateway</span>
+                </p>
+                <p className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-indigo-500" />
+                  <span>Doorstep Blue Dart / DHL Tracking Dispatched Instantly</span>
+                </p>
+              </div>
             </div>
           </div>
         </div>
