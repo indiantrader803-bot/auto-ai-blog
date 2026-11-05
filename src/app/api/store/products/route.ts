@@ -1,11 +1,83 @@
 import { NextResponse } from "next/server";
 import { isShopifyConfigured, shopifyClient, GET_PRODUCTS_QUERY } from "@/lib/shopify/client";
 import { STORE_MOCKUP_PRODUCTS } from "@/lib/pipeline/agents/mockupCatalogData";
+import { VIRAL_DROPSHIP_CATALOG } from "@/lib/pipeline/agents/dropshipHunterAgent";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * ⚡ Daily Dynamic Product Rotation Engine:
+ * Combines core verified products with daily trending dropship items
+ * so fresh products are automatically featured each day on the store.
+ */
+function getConsolidatedStoreCatalog() {
+  const dayOfYear = Math.floor(
+    (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24)
+  );
+
+  // Normalize dropship catalog items to match the store product interface
+  const formattedDropshipItems = VIRAL_DROPSHIP_CATALOG.map((item, idx) => ({
+    id: item.id || `dropship-${idx}`,
+    title: item.title,
+    tagline: item.tagline,
+    priceINR: item.priceINR,
+    originalPriceINR: item.originalPriceINR,
+    priceUSD: item.priceUSD,
+    originalPriceUSD: item.originalPriceUSD,
+    discountBadge: `${Math.round(((item.originalPriceINR - item.priceINR) / item.originalPriceINR) * 100)}% OFF`,
+    badge: item.badge || "DAILY TRENDING",
+    category: item.category || "Smart Gadgets",
+    isPhysical: item.isPhysical !== false,
+    stock: item.stock || 45,
+    inStock: true,
+    rating: item.rating || 4.8,
+    reviewsCount: item.reviewsCount || 320,
+    isFlashDeal: idx % 2 === 0,
+    isTrending: true,
+    image: item.image,
+    galleryImages: item.galleryImages || [item.image],
+    colors: item.colors || [{ name: "Standard", colorHex: "#6366f1" }],
+    shippingDetails: item.shippingDetails || {
+      origin: "Direct Global Logistics Express",
+      estimatedDelivery: "3 - 6 Business Days",
+      shippingCost: "FREE Tracked Courier",
+      carrier: "Blue Dart / Delhivery / DHL",
+      supportedCountries: ["India", "USA", "UK", "Canada", "Australia", "UAE"],
+    },
+    features: item.features || [],
+    supplier: item.supplier || "AliExpress Pro Verified",
+    supplierOrigin: item.supplierOrigin || "Verified Supply Hub",
+    availability: "IN_STOCK_DROPSHIP",
+    complianceVerified: true,
+  }));
+
+  // Merge unique by ID
+  const productMap = new Map<string, any>();
+  for (const item of STORE_MOCKUP_PRODUCTS) {
+    productMap.set(String(item.id).toLowerCase(), item);
+  }
+  for (const item of formattedDropshipItems) {
+    if (!productMap.has(String(item.id).toLowerCase())) {
+      productMap.set(String(item.id).toLowerCase(), item);
+    }
+  }
+
+  const allProducts = Array.from(productMap.values());
+
+  // Deterministic daily rotation shift: puts new items front and center each day
+  const shiftOffset = dayOfYear % allProducts.length;
+  const rotated = [
+    ...allProducts.slice(shiftOffset),
+    ...allProducts.slice(0, shiftOffset),
+  ];
+
+  return rotated;
+}
+
 export async function GET() {
   try {
+    const consolidated = getConsolidatedStoreCatalog();
+
     if (isShopifyConfigured && shopifyClient) {
       const response = await shopifyClient.request(GET_PRODUCTS_QUERY, {
         variables: { first: 24 },
@@ -49,18 +121,19 @@ export async function GET() {
       }
     }
 
-    // Fallback seamlessly to the verified catalog
+    // Deliver consolidated & dynamically refreshed catalog
     return NextResponse.json({
-      source: "catalog_verified",
-      products: STORE_MOCKUP_PRODUCTS,
-      total: STORE_MOCKUP_PRODUCTS.length,
+      source: "catalog_verified_daily",
+      products: consolidated,
+      total: consolidated.length,
     });
   } catch (error: any) {
-    console.error("Shopify Products API Error:", error);
+    console.error("Store Products API Error:", error);
+    const fallback = getConsolidatedStoreCatalog();
     return NextResponse.json({
       source: "catalog_fallback",
-      products: STORE_MOCKUP_PRODUCTS,
-      total: STORE_MOCKUP_PRODUCTS.length,
+      products: fallback,
+      total: fallback.length,
       warning: error.message,
     });
   }

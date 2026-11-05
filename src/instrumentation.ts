@@ -103,5 +103,27 @@ export async function register() {
         console.warn("Auto content engine daemon note:", err.message);
       }
     }, 4 * 60 * 60 * 1000);
+
+    // 🛍️ 7. Autonomous Daily Dropship & Viral Product Hunter (Every 24 Hours)
+    // Runs in background to scout trending consumer electronics, travel gear & lifestyle products
+    setTimeout(async () => {
+      try {
+        console.log("🛍️ [Autonomous Store Hunter] Initial scout of trending dropship items...");
+        const { runAutonomousDropshippingHunter } = await import("@/lib/pipeline/agents/dropshipHunterAgent");
+        await runAutonomousDropshippingHunter().catch((e) => console.warn("Dropship hunter initial scout note:", e.message));
+      } catch (err: any) {
+        console.warn("Dropship hunter boot note:", err.message);
+      }
+    }, 45000);
+
+    setInterval(async () => {
+      try {
+        console.log("🛍️ [Autonomous Store Hunter] Running daily 24h viral product scouting pulse...");
+        const { runAutonomousDropshippingHunter } = await import("@/lib/pipeline/agents/dropshipHunterAgent");
+        await runAutonomousDropshippingHunter().catch((e) => console.warn("Dropship hunter routine note:", e.message));
+      } catch (err: any) {
+        console.warn("Dropship hunter daemon note:", err.message);
+      }
+    }, 24 * 60 * 60 * 1000);
   }
 }
