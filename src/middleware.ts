@@ -56,6 +56,11 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(targetUrl, 301);
   }
 
+  // 6. Clean 301 Redirects for Legacy / Removed Routes to prevent 404s
+  if (pathname === "/best-prop-firms" || pathname.startsWith("/reviews/") || pathname === "/tools") {
+    return NextResponse.redirect(new URL(`https://thesmartmag.com/best-ai-tools`, req.url), 301);
+  }
+
   return NextResponse.next();
 }
 

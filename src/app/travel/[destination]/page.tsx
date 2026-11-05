@@ -18,12 +18,12 @@ export async function generateMetadata({
 
   if (!guide) {
     return {
-      title: 'Travel Destination Guide | TheSmartMag',
+      title: 'Travel Destination Guide',
     };
   }
 
   return {
-    title: `${guide.name}: Complete 2026 AI Travel Guide & Itinerary | TheSmartMag`,
+    title: `${guide.name}: 2026 AI Travel Guide & Itinerary`,
     description: `Plan your dream ${guide.name} trip with AI: Verified day-by-day itineraries, flight comparison, best hotels, airport transfers, eSIM, and skip-the-line attraction passes.`,
     alternates: {
       canonical: `https://thesmartmag.com/travel/${guide.slug}`,

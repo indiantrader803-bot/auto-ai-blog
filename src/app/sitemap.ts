@@ -209,7 +209,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.85,
     },
     {
-      url: `${baseUrl}/tools`,
+      url: `${baseUrl}/best-ai-tools`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,

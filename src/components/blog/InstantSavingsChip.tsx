@@ -57,7 +57,7 @@ export default function InstantSavingsChip({ category = "Trading" }: InstantSavi
         </button>
 
         <a
-          href="/best-prop-firms"
+          href="/best-ai-tools"
           className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition-all flex items-center gap-1 shrink-0"
         >
           <span>All Deals</span>

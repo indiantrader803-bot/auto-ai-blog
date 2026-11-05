@@ -55,32 +55,63 @@ export default async function CategoryPage({ params }: Props) {
   let trendingPosts: any[] = [];
 
   try {
-    const [catData, catsData, trendingData] = await Promise.all([
-      prisma.category.findUnique({
-        where: { slug: cleanSlug },
-        include: {
-          posts: {
-            where: { status: "PUBLISHED" },
-            orderBy: { publishedAt: "desc" },
-            include: { category: true },
-          },
+    const postProjection = {
+      id: true,
+      title: true,
+      slug: true,
+      excerpt: true,
+      featuredImage: true,
+      imageAlt: true,
+      readTimeMinutes: true,
+      views: true,
+      publishedAt: true,
+      category: {
+        select: {
+          name: true,
+          slug: true,
+          color: true,
         },
-      }),
-      prisma.category.findMany({
-        include: { _count: { select: { posts: true } } },
-      }),
-      prisma.post.findMany({
-        where: { status: "PUBLISHED" },
-        orderBy: { views: "desc" },
-        take: 5,
-        include: { category: true },
-      }),
+      },
+    };
+
+    const [catData, catsData, trendingData] = await Promise.race([
+      Promise.all([
+        prisma.category.findUnique({
+          where: { slug: cleanSlug },
+          include: {
+            posts: {
+              where: { status: "PUBLISHED" },
+              orderBy: { publishedAt: "desc" },
+              take: 20,
+              select: postProjection,
+            },
+          },
+        }),
+        prisma.category.findMany({
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            color: true,
+            _count: { select: { posts: true } },
+          },
+        }),
+        prisma.post.findMany({
+          where: { status: "PUBLISHED" },
+          orderBy: { views: "desc" },
+          take: 5,
+          select: postProjection,
+        }),
+      ]),
+      new Promise<[null, any[], any[]]>((_, reject) =>
+        setTimeout(() => reject(new Error("Category query timeout")), 3000)
+      ),
     ]);
     category = catData;
     allCategories = catsData || [];
     trendingPosts = trendingData || [];
   } catch (err) {
-    console.warn("Category fetch error:", err);
+    console.warn("Category fetch notice:", err);
   }
 
   const allCatalog = getAllCatalogArticles();

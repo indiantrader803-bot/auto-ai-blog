@@ -103,6 +103,13 @@ export default function StoreHomePage() {
       })
       .catch((err) => console.error("Error loading products:", err));
 
+    // Set unique SEO Title and Meta Description for Google indexing
+    document.title = "SmartMag Store: Mechanical Keyboards, Gadgets and Tech Accessories | TheSmartMag";
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', 'Shop high-performance mechanical keyboards, MagSafe accessories, wireless charging docks, and tech essentials with free express shipping.');
+    }
+
     // Flash timer interval
     const timer = setInterval(() => {
       setTimeLeft((prev) => {

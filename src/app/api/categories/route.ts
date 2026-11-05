@@ -110,8 +110,8 @@ export async function GET() {
       success: true,
       categories: processedCategories,
       topTrendingPost: latestPost || {
-        title: "Astra for Coding: Why Are We Doing This Again?",
-        slug: "astra-for-coding-why-are-we-doing-this-again",
+        title: "2026 Global Geopolitics & AI Chip Wars: Semiconductor Supremacy",
+        slug: "2026-global-geopolitics-ai-chip-wars-semiconductor-supremacy",
       },
     };
 

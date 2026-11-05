@@ -33,12 +33,10 @@ export async function pingSearchEngines(articleUrls?: string[]): Promise<Indexin
     const catalog = getAllCatalogArticles();
     urls = catalog.map((a) => `${siteUrl}/blog/${a.slug}`);
     urls.push(`${siteUrl}`);
-    urls.push(`${siteUrl}/trade`);
     urls.push(`${siteUrl}/travel`);
     urls.push(`${siteUrl}/best-ai-tools`);
-    urls.push(`${siteUrl}/best-prop-firms`);
+    urls.push(`${siteUrl}/store`);
     urls.push(`${siteUrl}/community`);
-    urls.push(`${siteUrl}/tools`);
     urls.push(`${siteUrl}/about`);
     urls.push(`${siteUrl}/contact`);
     urls.push(`${siteUrl}/privacy`);

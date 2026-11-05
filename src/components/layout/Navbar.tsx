@@ -80,8 +80,8 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
   const [categories, setCategories] = useState<NavCategory[]>(trendingCategories || DEFAULT_CATEGORIES);
   const [tickerPost, setTickerPost] = useState<{ title: string; slug: string }>(
     hotTopicPost || {
-      title: "Astra for Coding: Why Are We Doing This Again?",
-      slug: "astra-for-coding-why-are-we-doing-this-again",
+      title: "2026 Global Geopolitics & AI Chip Wars: Semiconductor Supremacy",
+      slug: "2026-global-geopolitics-ai-chip-wars-semiconductor-supremacy",
     }
   );
 
@@ -657,7 +657,7 @@ export default function Navbar({ hotTopicPost, trendingCategories }: NavbarProps
               </Link>
 
               <Link
-                href="/tools"
+                href="/best-ai-tools"
                 onClick={() => setIsMenuOpen(false)}
                 className="p-3 rounded-2xl bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-slate-900/20 border border-indigo-500/30 hover:border-indigo-500 flex flex-col gap-1.5 transition-all"
               >

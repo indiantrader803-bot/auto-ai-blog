@@ -135,7 +135,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${title} | TheSmartMag`,
+    title: title.replace(/\s*\|\s*TheSmartMag\s*$/i, ""),
     description,
     keywords: tags.join(", "),
     alternates: {
