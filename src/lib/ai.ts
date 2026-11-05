@@ -411,23 +411,43 @@ Having explored this destination on the ground—navigating local transit, speak
     };
   }
 
-  // Default: Tech / Engineering / AI Deep Dive
-  const OFFLINE_TITLES = [
-    `Behind the Hype: What Deploying ${topic} in Production Actually Taught Us`,
-    `We Rebuilt Our Core Engine with ${topic}: The Raw Benchmarks & Gotchas`,
-    `Why Senior Engineers Are Replacing Legacy Stacks with ${topic}`,
-    `The Truth About ${topic}: Architecture, Memory Spikes, and Real Latency`,
+  // Clean raw RSS headline: strip boilerplate prefixes or truncated tags
+  const cleanTitle = topic
+    .replace(/^(\d{4}\s*-\s*|breaking:\s*|exclusive:\s*|watch:\s*)/i, "")
+    .replace(/\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol|Ars Technica|WIRED)$/i, "")
+    .trim();
+
+  // If topic looks like an already full, natural headline (e.g. from BBC, TechCrunch, The Verge), use it directly!
+  const words = cleanTitle.split(/\s+/);
+  const isCompleteHeadline = words.length >= 5 && words.length <= 16 && !cleanTitle.toLowerCase().startsWith("why senior engineers");
+
+  let articleTitle = cleanTitle;
+  if (!isCompleteHeadline) {
+    const DIVERSE_TECH_TITLES = [
+      `${cleanTitle}: Architectural Teardown & Real-World Engineering Analysis`,
+      `Inside ${cleanTitle}: Frontier Benchmarks, Performance Metrics & Trade-offs`,
+      `How ${cleanTitle} Is Reshaping High-Performance Computing & Software Systems`,
+      `Understanding ${cleanTitle}: The Technical Deep-Dive & Systems Perspective`,
+      `The Engineering Reality Behind ${cleanTitle}: Beyond the Industry Hype`,
+    ];
+    articleTitle = DIVERSE_TECH_TITLES[Math.floor(Math.random() * DIVERSE_TECH_TITLES.length)];
+  }
+
+  const excerptVariations = [
+    `An investigative engineering breakdown of ${cleanTitle}: real-world performance benchmarks, architectural trade-offs, and production deployment considerations.`,
+    `A comprehensive analysis of ${cleanTitle}. We cut through marketing rhetoric to examine low-level systems impacts, architectural moats, and strategic implications.`,
+    `Key technical takeaways from ${cleanTitle}: exploring the underlying framework, scaling bottlenecks, and what developers need to prepare for in 2026.`,
   ];
-  const offlineTitle = OFFLINE_TITLES[Math.floor(Math.random() * OFFLINE_TITLES.length)];
+  const articleExcerpt = excerptVariations[Math.floor(Math.random() * excerptVariations.length)];
 
   return {
-    title: offlineTitle,
-    excerpt: `Here is what investors, developers, and industry practitioners need to know about ${topic}: unvarnished benchmarks, architectural trade-offs, and strategic reality.`,
-    content: `## Why Everyone Is Talking About ${topic} (And What They Get Wrong)
+    title: articleTitle,
+    excerpt: articleExcerpt,
+    content: `## Executive Technical Brief: ${cleanTitle}
 
-Most discussions around **${topic}** stop at high-level marketing slides. But when you examine actual production workloads and real-world deployment patterns, the reality is far more nuanced.
+In-depth technical coverage of **${cleanTitle}** reveals key developments across systems architecture, market dynamics, and technological infrastructure.
 
-Here is what investors, developers, and industry practitioners need to know about ${topic}. We examine the core architecture, systemic trade-offs, and strategic realities to answer one fundamental question: *Does it deliver tangible advantages, or is it just another layer of operational debt?*
+Rather than looking at surface-level announcements, this analysis breaks down the real implications, core performance metrics, and tactical trade-offs for engineers, strategists, and technology leaders.
 
 Here is our honest breakdown.
 
