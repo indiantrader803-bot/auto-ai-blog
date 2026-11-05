@@ -26,6 +26,8 @@ import {
   Sparkles,
   MapPin,
   Lock,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { STORE_MOCKUP_PRODUCTS } from "@/lib/pipeline/agents/mockupCatalogData";
 import { VIRAL_DROPSHIP_CATALOG } from "@/lib/pipeline/agents/dropshipHunterAgent";
@@ -51,6 +53,7 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [quantity, setQuantity] = useState<number>(1);
   const [userCurrency, setUserCurrency] = useState<"USD" | "INR">("USD");
+  const [isDark, setIsDark] = useState<boolean>(true);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
   const [addedToCartToast, setAddedToCartToast] = useState<boolean>(false);
 
@@ -70,7 +73,27 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     setUserCurrency(detectUserCurrency());
+    if (typeof window !== "undefined") {
+      const isDarkMode =
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      setIsDark(isDarkMode);
+    }
   }, []);
+
+  const toggleDarkMode = () => {
+    if (isDark) {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+      localStorage.theme = "light";
+      setIsDark(false);
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+      localStorage.theme = "dark";
+      setIsDark(true);
+    }
+  };
 
   useEffect(() => {
     if (!productId) return;
@@ -137,13 +160,13 @@ export default function ProductDetailPage() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-[#07090e] text-white flex flex-col items-center justify-center p-6 space-y-4">
-        <div className="w-12 h-12 border-3 border-violet-500 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-slate-50 dark:bg-[#07090e] text-slate-900 dark:text-white flex flex-col items-center justify-center p-6 space-y-4 transition-colors">
+        <div className="w-12 h-12 border-3 border-indigo-600 border-t-transparent rounded-full animate-spin" />
         <h2 className="text-xl font-bold">Verifying Product Specifications...</h2>
-        <p className="text-xs text-slate-400">Loading verified global catalog data and express logistics route.</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400">Loading verified global catalog data and express logistics route.</p>
         <Link
           href="/store"
-          className="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-xs font-bold transition-all"
+          className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white transition-all"
         >
           &larr; Back to Storefront
         </Link>
@@ -228,33 +251,47 @@ export default function ProductDetailPage() {
   const discountedPrice = Math.round(basePrice * discountMultiplier * 100) / 100;
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-slate-100 antialiased font-sans selection:bg-[#d1fe17] selection:text-black">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#07090e] text-slate-900 dark:text-slate-100 antialiased font-sans selection:bg-[#d1fe17] selection:text-black transition-colors duration-200">
       {/* Top Header */}
-      <header className="sticky top-0 z-40 bg-[#0c1017]/90 backdrop-blur-md border-b border-slate-800/80 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#0c1017]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 px-4 sm:px-8 py-3.5 flex items-center justify-between transition-colors">
         <Link
           href="/store"
-          className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Store Catalog
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
+          {/* Light / Dark Mode Toggle */}
+          <button
+            onClick={toggleDarkMode}
+            aria-label="Toggle Dark and Light Mode"
+            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-all cursor-pointer"
+          >
+            {isDark ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-indigo-600" />}
+          </button>
+
           <button
             onClick={handleShare}
-            className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-xs text-slate-300 flex items-center gap-1.5 transition-all cursor-pointer"
+            aria-label="Share product link"
+            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs text-slate-700 dark:text-slate-300 flex items-center gap-1.5 transition-all cursor-pointer"
           >
             <Share2 className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">{copiedLink ? "Link Copied!" : "Share"}</span>
           </button>
+
           <button
             onClick={() => setIsCartOpen(true)}
-            className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-xs text-slate-300 flex items-center gap-1.5 transition-all cursor-pointer"
+            aria-label="Open shopping cart"
+            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs text-slate-700 dark:text-slate-300 flex items-center gap-1.5 transition-all cursor-pointer"
           >
-            <ShoppingBag className="w-3.5 h-3.5 text-[#d1fe17]" />
+            <ShoppingBag className="w-3.5 h-3.5 text-indigo-600 dark:text-[#d1fe17]" />
             <span className="hidden sm:inline">My Cart</span>
           </button>
+
           <button
             onClick={() => setUserCurrency(isUSD ? "INR" : "USD")}
-            className="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-[11px] font-mono font-bold text-[#d1fe17]"
+            aria-label="Switch Currency"
+            className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-[11px] font-mono font-bold text-indigo-600 dark:text-[#d1fe17] cursor-pointer"
           >
             {userCurrency}
           </button>
@@ -264,19 +301,19 @@ export default function ProductDetailPage() {
       {/* Main Container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-10">
         {/* Breadcrumb Navigation */}
-        <div className="flex items-center gap-2 text-xs text-slate-400">
-          <Link href="/store" className="hover:text-white">Store</Link>
-          <ChevronRight className="w-3 h-3 text-slate-600" />
-          <span className="text-slate-400">{product.category || "Electronics & Gear"}</span>
-          <ChevronRight className="w-3 h-3 text-slate-600" />
-          <span className="text-[#d1fe17] font-semibold truncate max-w-sm">{product.title}</span>
-        </div>
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+          <Link href="/store" className="hover:text-slate-900 dark:hover:text-white">Store</Link>
+          <ChevronRight className="w-3 h-3 text-slate-400 dark:text-slate-600" />
+          <span>{product.category || "Electronics & Gear"}</span>
+          <ChevronRight className="w-3 h-3 text-slate-400 dark:text-slate-600" />
+          <span className="text-indigo-600 dark:text-[#d1fe17] font-semibold truncate max-w-sm">{product.title}</span>
+        </nav>
 
         {/* 2-Column Product Hero Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* LEFT: Image Showcase */}
           <div className="lg:col-span-6 space-y-4">
-            <div className="relative aspect-square rounded-3xl overflow-hidden bg-gradient-to-b from-slate-900 to-[#0c1017] border border-slate-800 shadow-2xl flex items-center justify-center group">
+            <div className="relative aspect-square rounded-3xl overflow-hidden bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-900 dark:to-[#0c1017] border border-slate-200 dark:border-slate-800 shadow-xl flex items-center justify-center group">
               <img
                 src={activeImage || product.image}
                 alt={product.title}
@@ -288,8 +325,8 @@ export default function ProductDetailPage() {
                   {product.badge}
                 </div>
               )}
-              <div className="absolute bottom-4 right-4 px-3 py-1.5 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 text-[10px] text-slate-300 flex items-center gap-1.5">
-                <Globe className="w-3 h-3 text-emerald-400" /> Verified Global Supplier
+              <div className="absolute bottom-4 right-4 px-3 py-1.5 rounded-xl bg-white/80 dark:bg-black/60 backdrop-blur-md border border-slate-300 dark:border-white/10 text-[10px] text-slate-800 dark:text-slate-300 flex items-center gap-1.5 shadow-sm">
+                <Globe className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Verified Global Supplier
               </div>
             </div>
 
@@ -300,10 +337,11 @@ export default function ProductDetailPage() {
                   <button
                     key={idx}
                     onClick={() => setActiveImage(img)}
+                    aria-label={`View image thumbnail ${idx + 1}`}
                     className={`relative w-20 h-20 rounded-2xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
                       activeImage === img
-                        ? "border-[#d1fe17] scale-95 shadow-[0_0_12px_rgba(209,254,23,0.35)]"
-                        : "border-slate-800 opacity-60 hover:opacity-100 hover:border-slate-600"
+                        ? "border-indigo-600 dark:border-[#d1fe17] scale-95 shadow-[0_0_12px_rgba(99,102,241,0.35)] dark:shadow-[0_0_12px_rgba(209,254,23,0.35)]"
+                        : "border-slate-200 dark:border-slate-800 opacity-60 hover:opacity-100 hover:border-slate-400 dark:hover:border-slate-600"
                     }`}
                   >
                     <img src={img} alt={`View ${idx}`} className="w-full h-full object-cover" />
@@ -314,20 +352,20 @@ export default function ProductDetailPage() {
 
             {/* Quality & Trust Badges */}
             <div className="grid grid-cols-3 gap-3 pt-2">
-              <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-center space-y-1">
-                <ShieldCheck className="w-5 h-5 text-emerald-400 mx-auto" />
-                <p className="text-[11px] font-bold text-white">100% Quality Checked</p>
-                <p className="text-[10px] text-slate-400">Strict QC lab tested</p>
+              <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 text-center space-y-1 shadow-sm">
+                <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mx-auto" />
+                <p className="text-[11px] font-bold text-slate-900 dark:text-white">100% Quality Checked</p>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400">Strict QC lab tested</p>
               </div>
-              <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-center space-y-1">
-                <Truck className="w-5 h-5 text-sky-400 mx-auto" />
-                <p className="text-[11px] font-bold text-white">Express Air Shipping</p>
-                <p className="text-[10px] text-slate-400">US, UK, IN & Worldwide</p>
+              <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 text-center space-y-1 shadow-sm">
+                <Truck className="w-5 h-5 text-sky-600 dark:text-sky-400 mx-auto" />
+                <p className="text-[11px] font-bold text-slate-900 dark:text-white">Express Air Shipping</p>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400">US, UK, IN & Worldwide</p>
               </div>
-              <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-center space-y-1">
-                <RefreshCw className="w-5 h-5 text-violet-400 mx-auto" />
-                <p className="text-[11px] font-bold text-white">Easy Returns</p>
-                <p className="text-[10px] text-slate-400">7-Day replacement</p>
+              <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 text-center space-y-1 shadow-sm">
+                <RefreshCw className="w-5 h-5 text-indigo-600 dark:text-violet-400 mx-auto" />
+                <p className="text-[11px] font-bold text-slate-900 dark:text-white">Easy Returns</p>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400">7-Day replacement</p>
               </div>
             </div>
           </div>
@@ -336,51 +374,51 @@ export default function ProductDetailPage() {
           <div className="lg:col-span-6 space-y-6">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold uppercase tracking-wider">
+                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[10px] font-bold uppercase tracking-wider">
                   In Stock & Ready for Dispatch
                 </span>
-                <span className="text-xs text-slate-600">•</span>
-                <div className="flex items-center gap-1.5 text-amber-400 text-xs font-bold">
+                <span className="text-xs text-slate-400 dark:text-slate-600">•</span>
+                <div className="flex items-center gap-1.5 text-amber-500 dark:text-amber-400 text-xs font-bold">
                   <Star className="w-4 h-4 fill-amber-400" />
                   <span>{product.rating || 4.9}</span>
-                  <span className="text-slate-400 font-normal">({product.reviewsCount || 428} verified reviews)</span>
+                  <span className="text-slate-500 dark:text-slate-400 font-normal">({product.reviewsCount || 428} verified reviews)</span>
                 </div>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
                 {product.title}
               </h1>
 
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                 {product.tagline || product.description || "Engineered for maximum reliability, premium tactile feel, and modern smart productivity."}
               </p>
             </div>
 
             {/* Price Box with Coupon Applied Calculation */}
-            <div className="p-5 rounded-3xl bg-gradient-to-r from-slate-900 via-[#0e131d] to-slate-900 border border-slate-800 space-y-3">
+            <div className="p-5 rounded-3xl bg-white dark:bg-gradient-to-r dark:from-slate-900 dark:via-[#0e131d] dark:to-slate-900 border border-slate-200 dark:border-slate-800 space-y-3 shadow-md">
               <div className="flex items-baseline gap-4 flex-wrap">
-                <span className="text-3xl sm:text-4xl font-black text-[#d1fe17] font-mono tracking-tight">
+                <span className="text-3xl sm:text-4xl font-black text-indigo-600 dark:text-[#d1fe17] font-mono tracking-tight">
                   {isUSD ? `$${discountedPrice}` : `₹${discountedPrice.toLocaleString()}`}
                 </span>
-                <span className="text-base text-slate-500 line-through font-mono">
+                <span className="text-base text-slate-400 line-through font-mono">
                   {isUSD ? `$${originalPrice}` : `₹${originalPrice.toLocaleString()}`}
                 </span>
-                <span className="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 text-xs font-bold font-mono">
+                <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold font-mono">
                   Save {appliedPromo.percent}% with {appliedPromo.code}
                 </span>
               </div>
-              <p className="text-xs text-emerald-400 font-medium flex items-center gap-1.5">
+              <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" /> {appliedPromo.msg}
               </p>
             </div>
 
             {/* Interactive Promo Code Box */}
-            <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 space-y-2">
+            <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 space-y-2 shadow-sm">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-white flex items-center gap-1.5">
-                  <Tag className="w-3.5 h-3.5 text-[#d1fe17]" /> Apply Coupon / Discount Code:
+                <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <Tag className="w-3.5 h-3.5 text-indigo-600 dark:text-[#d1fe17]" /> Apply Coupon / Discount Code:
                 </span>
-                <span className="text-[11px] text-slate-400">Available: SMART30, VIP50</span>
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">Available: SMART30, VIP50</span>
               </div>
               <form onSubmit={handleApplyPromo} className="flex items-center gap-2">
                 <input
@@ -388,23 +426,24 @@ export default function ProductDetailPage() {
                   value={promoCodeInput}
                   onChange={(e) => setPromoCodeInput(e.target.value)}
                   placeholder="Enter code (e.g. VIP50)"
-                  className="flex-1 px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono font-bold text-white uppercase placeholder:text-slate-500 focus:outline-hidden focus:border-[#d1fe17]"
+                  aria-label="Coupon or discount code"
+                  className="flex-1 px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold text-slate-900 dark:text-white uppercase placeholder:text-slate-400 focus:outline-hidden focus:border-indigo-500 dark:focus:border-[#d1fe17]"
                 />
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-xs font-bold text-white transition-all cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white transition-all cursor-pointer shadow-sm"
                 >
                   Apply
                 </button>
               </form>
-              {promoError && <p className="text-xs text-rose-400">{promoError}</p>}
+              {promoError && <p className="text-xs text-rose-500 dark:text-rose-400">{promoError}</p>}
             </div>
 
             {/* Color Finish Selector */}
             {product.colors && product.colors.length > 0 && (
               <div className="space-y-2.5">
-                <label className="text-xs font-bold text-slate-300">
-                  Select Finish / Color: <span className="text-[#d1fe17] font-semibold">{selectedColor}</span>
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                  Select Finish / Color: <span className="text-indigo-600 dark:text-[#d1fe17] font-semibold">{selectedColor}</span>
                 </label>
                 <div className="flex items-center gap-3 flex-wrap">
                   {product.colors.map((c: any) => (
@@ -414,13 +453,14 @@ export default function ProductDetailPage() {
                         setSelectedColor(c.name);
                         if (c.image) setActiveImage(c.image);
                       }}
+                      aria-label={`Select color ${c.name}`}
                       className={`px-3.5 py-2 rounded-xl border text-xs font-medium flex items-center gap-2 transition-all cursor-pointer ${
                         selectedColor === c.name
-                          ? "border-[#d1fe17] bg-[#d1fe17]/15 text-[#d1fe17] font-bold shadow-[0_0_12px_rgba(209,254,23,0.25)]"
-                          : "border-slate-800 bg-slate-900/60 text-slate-400 hover:border-slate-700 hover:text-white"
+                          ? "border-indigo-600 dark:border-[#d1fe17] bg-indigo-50 dark:bg-[#d1fe17]/15 text-indigo-700 dark:text-[#d1fe17] font-bold shadow-sm"
+                          : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 hover:border-slate-400 dark:hover:border-slate-700 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
-                      <span className="w-3.5 h-3.5 rounded-full border border-white/20" style={{ backgroundColor: c.colorHex }} />
+                      <span className="w-3.5 h-3.5 rounded-full border border-black/10 dark:border-white/20" style={{ backgroundColor: c.colorHex }} />
                       {c.name}
                     </button>
                   ))}
@@ -430,19 +470,19 @@ export default function ProductDetailPage() {
 
             {/* Quantity Selector */}
             <div className="flex items-center gap-4">
-              <span className="text-xs font-bold text-slate-300">Quantity:</span>
-              <div className="flex items-center border border-slate-800 rounded-2xl bg-slate-900">
+              <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Quantity:</span>
+              <div className="flex items-center border border-slate-300 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 shadow-sm">
                 <button
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="p-2.5 hover:bg-slate-800 text-slate-300 transition-colors rounded-l-2xl cursor-pointer"
+                  className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors rounded-l-2xl cursor-pointer"
                   aria-label="Decrease quantity"
                 >
                   <Minus className="w-3.5 h-3.5" />
                 </button>
-                <span className="px-5 text-xs font-bold font-mono text-white">{quantity}</span>
+                <span className="px-5 text-xs font-bold font-mono text-slate-900 dark:text-white">{quantity}</span>
                 <button
                   onClick={() => setQuantity((q) => Math.min(10, q + 1))}
-                  className="p-2.5 hover:bg-slate-800 text-slate-300 transition-colors rounded-r-2xl cursor-pointer"
+                  className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors rounded-r-2xl cursor-pointer"
                   aria-label="Increase quantity"
                 >
                   <Plus className="w-3.5 h-3.5" />
@@ -455,35 +495,35 @@ export default function ProductDetailPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button
                   onClick={handleAddToCart}
-                  className="py-4 px-6 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs sm:text-sm border border-slate-700 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg"
+                  className="py-4 px-6 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs sm:text-sm border border-slate-300 dark:border-slate-700 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
                 >
-                  <ShoppingBag className="w-4 h-4 text-[#d1fe17]" /> Add To Cart
+                  <ShoppingBag className="w-4 h-4 text-indigo-600 dark:text-[#d1fe17]" /> Add To Cart
                 </button>
 
                 <button
                   onClick={handleDirectCheckout}
-                  className="py-4 px-6 rounded-2xl bg-[#d1fe17] hover:bg-[#bde712] text-[#07090e] font-extrabold text-xs sm:text-sm border border-[#d1fe17] flex items-center justify-center gap-2 uppercase tracking-wider transition-all cursor-pointer shadow-xl shadow-[#d1fe17]/20 transform hover:-translate-y-0.5"
+                  className="py-4 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-500 dark:bg-[#d1fe17] dark:hover:bg-[#bde712] text-white dark:text-[#07090e] font-extrabold text-xs sm:text-sm border border-indigo-600 dark:border-[#d1fe17] flex items-center justify-center gap-2 uppercase tracking-wider transition-all cursor-pointer shadow-xl shadow-indigo-600/20 dark:shadow-[#d1fe17]/20 transform hover:-translate-y-0.5"
                 >
-                  <CreditCard className="w-4 h-4 text-[#07090e]" /> Proceed to Checkout
+                  <CreditCard className="w-4 h-4 text-white dark:text-[#07090e]" /> Proceed to Checkout
                 </button>
               </div>
 
               {addedToCartToast && (
-                <div className="p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center justify-between">
+                <div className="p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center justify-between">
                   <span>✅ Item added to cart!</span>
-                  <button onClick={() => setIsCartOpen(true)} className="underline text-white cursor-pointer">
+                  <button onClick={() => setIsCartOpen(true)} className="underline text-indigo-600 dark:text-white cursor-pointer">
                     View Cart &rarr;
                   </button>
                 </div>
               )}
 
-              <div className="flex items-center justify-center gap-6 text-[11px] text-slate-400 pt-1">
+              <div className="flex items-center justify-center gap-6 text-[11px] text-slate-500 dark:text-slate-400 pt-1">
                 <span className="flex items-center gap-1.5">
-                  <Lock className="w-3.5 h-3.5 text-emerald-400" /> 256-Bit SSL Encrypted
+                  <Lock className="w-3.5 h-3.5 text-emerald-500" /> 256-Bit SSL Encrypted
                 </span>
                 <span>•</span>
                 <span className="flex items-center gap-1.5">
-                  <Truck className="w-3.5 h-3.5 text-sky-400" /> Free Global Express
+                  <Truck className="w-3.5 h-3.5 text-sky-500" /> Free Global Express
                 </span>
                 <span>•</span>
                 <span>Money-Back Guarantee</span>
@@ -491,37 +531,38 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Real-Time Shipping & Country Delivery Verification */}
-            <div className="p-5 rounded-3xl bg-slate-900/70 border border-slate-800 space-y-3 text-xs">
+            <div className="p-5 rounded-3xl bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 space-y-3 text-xs shadow-md">
               <div className="flex items-center justify-between">
-                <h4 className="font-bold text-white flex items-center gap-2">
-                  <Truck className="w-4 h-4 text-[#d1fe17]" /> Delivery & Shipping Availability
+                <h4 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Truck className="w-4 h-4 text-indigo-600 dark:text-[#d1fe17]" /> Delivery & Shipping Availability
                 </h4>
-                <span className="text-[10px] px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/20 font-bold">
+                <span className="text-[10px] px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 font-bold">
                   Tracked Air Freight
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 text-slate-300">
-                <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
+              <div className="grid grid-cols-2 gap-3 text-slate-700 dark:text-slate-300">
+                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80">
                   <span className="text-slate-500 block text-[10px] uppercase font-bold">Standard Carrier:</span>
-                  <span className="font-semibold text-white">FedEx / DHL Express / USPS</span>
+                  <span className="font-semibold text-slate-900 dark:text-white">FedEx / DHL Express / USPS</span>
                 </div>
-                <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80">
                   <span className="text-slate-500 block text-[10px] uppercase font-bold">Estimated Delivery:</span>
-                  <span className="font-semibold text-emerald-400">3 - 5 Business Days</span>
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">3 - 5 Business Days</span>
                 </div>
               </div>
 
               {/* Postal Code Verifier Form */}
               <form onSubmit={handleVerifyShipping} className="pt-2 space-y-2">
-                <label className="text-[11px] font-bold text-slate-300 block">
+                <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block">
                   Verify Postal Code / Country Delivery:
                 </label>
                 <div className="flex gap-2">
                   <select
                     value={shippingCountry}
                     onChange={(e) => setShippingCountry(e.target.value)}
-                    className="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-hidden"
+                    aria-label="Select shipping country"
+                    className="px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-hidden"
                   >
                     <option value="United States">United States</option>
                     <option value="United Kingdom">United Kingdom</option>
@@ -537,17 +578,18 @@ export default function ProductDetailPage() {
                     value={postalCheckInput}
                     onChange={(e) => setPostalCheckInput(e.target.value)}
                     placeholder="Enter ZIP / PIN (e.g. 10001)"
-                    className="flex-1 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder:text-slate-500 focus:outline-hidden focus:border-[#d1fe17]"
+                    aria-label="ZIP or Postal Code"
+                    className="flex-1 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:border-indigo-500 dark:focus:border-[#d1fe17]"
                   />
                   <button
                     type="submit"
-                    className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white transition-all cursor-pointer"
+                    className="px-3.5 py-2 rounded-xl bg-slate-800 dark:bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white transition-all cursor-pointer shadow-sm"
                   >
                     Check
                   </button>
                 </div>
                 {shippingVerificationStatus && (
-                  <p className="text-xs text-emerald-400 font-medium bg-emerald-500/10 p-2.5 rounded-xl border border-emerald-500/20">
+                  <p className="text-xs text-emerald-700 dark:text-emerald-400 font-medium bg-emerald-500/10 p-2.5 rounded-xl border border-emerald-500/20">
                     {shippingVerificationStatus}
                   </p>
                 )}
@@ -558,41 +600,41 @@ export default function ProductDetailPage() {
 
         {/* Product Details, Specs & Features Deep-Dive */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
-          <div className="md:col-span-2 p-6 rounded-3xl bg-[#0c1017] border border-slate-800 space-y-4">
-            <h3 className="text-base font-bold text-white border-b border-slate-800/80 pb-3 flex items-center gap-2">
-              <Award className="w-4 h-4 text-[#d1fe17]" /> Detailed Engineering Specifications & Architecture
+          <div className="md:col-span-2 p-6 rounded-3xl bg-white dark:bg-[#0c1017] border border-slate-200 dark:border-slate-800 space-y-4 shadow-md">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800/80 pb-3 flex items-center gap-2">
+              <Award className="w-4 h-4 text-indigo-600 dark:text-[#d1fe17]" /> Detailed Engineering Specifications & Architecture
             </h3>
-            <div className="text-xs sm:text-sm text-slate-300 space-y-3 leading-relaxed">
+            <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-3 leading-relaxed">
               <p>
                 The <strong>{product.title}</strong> is manufactured under strict ISO-9001 and CE compliance standards. Built using premium aerospace-grade polymers and alloy components to withstand rigorous daily travel and professional productivity setups.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                 {product.features && product.features.map((f: string, i: number) => (
-                  <div key={i} className="flex items-start gap-2 p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span className="text-xs text-slate-200">{f}</span>
+                  <div key={i} className="flex items-start gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                    <span className="text-xs text-slate-800 dark:text-slate-200">{f}</span>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          <div className="p-6 rounded-3xl bg-[#0c1017] border border-slate-800 space-y-4">
-            <h3 className="text-base font-bold text-white border-b border-slate-800/80 pb-3 flex items-center gap-2">
-              <Gift className="w-4 h-4 text-violet-400" /> Package Contents
+          <div className="p-6 rounded-3xl bg-white dark:bg-[#0c1017] border border-slate-200 dark:border-slate-800 space-y-4 shadow-md">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800/80 pb-3 flex items-center gap-2">
+              <Gift className="w-4 h-4 text-indigo-600 dark:text-violet-400" /> Package Contents
             </h3>
-            <ul className="text-xs text-slate-300 space-y-2.5">
+            <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-2.5">
               <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#d1fe17]" /> 1x {product.title}
+                <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600 dark:text-[#d1fe17]" /> 1x {product.title}
               </li>
               <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#d1fe17]" /> 1x Reinforced Braided Fast-Charging Cable
+                <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600 dark:text-[#d1fe17]" /> 1x Reinforced Braided Fast-Charging Cable
               </li>
               <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#d1fe17]" /> 1x Global User Guide (English, Spanish, French, German)
+                <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600 dark:text-[#d1fe17]" /> 1x Global User Guide (English, Spanish, French, German)
               </li>
               <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#d1fe17]" /> 1x Certificate of Authenticity & 1-Year Warranty Card
+                <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600 dark:text-[#d1fe17]" /> 1x Certificate of Authenticity & 1-Year Warranty Card
               </li>
             </ul>
           </div>
