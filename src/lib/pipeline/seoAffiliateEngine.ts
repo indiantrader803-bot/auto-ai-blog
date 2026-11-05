@@ -486,43 +486,102 @@ export function generateStructuredSchema(
   siteUrl: string = "https://thesmartmag.com",
   video?: { youtubeVideoId?: string; youtubeVideoTitle?: string }
 ) {
+  const publishedDate = new Date(publishedAt).toISOString();
+
+  // 1. Authoritative NewsArticle / TechArticle Schema (Google Top Stories & E-E-A-T)
   const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": "NewsArticle",
+    "@id": `${siteUrl}/blog/${slug}#article`,
+    isPartOf: {
+      "@type": "WebPage",
+      "@id": `${siteUrl}/blog/${slug}`,
+      url: `${siteUrl}/blog/${slug}`,
+      name: title,
+    },
     headline: title,
     description: excerpt,
-    image: featuredImage || `${siteUrl}/default-og.jpg`,
-    datePublished: new Date(publishedAt).toISOString(),
-    dateModified: new Date(publishedAt).toISOString(),
+    image: [
+      featuredImage || `${siteUrl}/default-og.jpg`
+    ],
+    datePublished: publishedDate,
+    dateModified: publishedDate,
+    mainEntityOfPage: `${siteUrl}/blog/${slug}`,
+    inLanguage: "en-US",
     author: {
       "@type": "Person",
       name: "TheSmartMag Editorial Board",
+      jobTitle: "Technology & Market Research Analysts",
+      url: `${siteUrl}/about`,
+      worksFor: {
+        "@type": "Organization",
+        name: "TheSmartMag",
+        url: siteUrl,
+      },
     },
     publisher: {
       "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
       name: "TheSmartMag",
+      url: siteUrl,
       logo: {
         "@type": "ImageObject",
-        url: `${siteUrl}/logo.png`,
+        url: `${siteUrl}/icon-512.png`,
+        width: 512,
+        height: 512,
       },
     },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `${siteUrl}/blog/${slug}`,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", "article p:first-of-type", "article h2"],
     },
   };
 
-  const schemaGraph: Record<string, unknown>[] = [articleSchema];
+  // 2. BreadcrumbList Schema (Produces rich breadcrumb URLs in Google SERPs)
+  const breadcrumbSchema = {
+    "@type": "BreadcrumbList",
+    "@id": `${siteUrl}/blog/${slug}#breadcrumb`,
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: `${siteUrl}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: title,
+        item: `${siteUrl}/blog/${slug}`,
+      },
+    ],
+  };
 
-  // VideoObject schema removed per Google Search Console guidelines (embedded YouTube videos are not primary video watch pages)
-  if (!faq || faq.length === 0) {
-    return JSON.stringify(schemaGraph.length === 1 ? schemaGraph[0] : schemaGraph);
-  }
+  const schemaGraph: Record<string, unknown>[] = [articleSchema, breadcrumbSchema];
+
+  // 3. Fallback Auto-FAQ: If the article has no explicit FAQ, auto-synthesize top 2 Q&As to capture Google AI Overviews & People Also Ask
+  const finalFaq = (faq && faq.length > 0)
+    ? faq
+    : [
+        {
+          question: `What are the key insights in ${title}?`,
+          answer: excerpt || `This comprehensive analysis explores emerging developments, key implications, and strategic takeaways from TheSmartMag research desk.`,
+        },
+        {
+          question: `Where can I find further coverage and updates on this topic?`,
+          answer: `Stay tuned to TheSmartMag (thesmartmag.com) for real-time editorial coverage, technological breakdowns, and market research.`,
+        },
+      ];
 
   const faqSchema = {
-    "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faq.map((item) => ({
+    "@id": `${siteUrl}/blog/${slug}#faq`,
+    mainEntity: finalFaq.map((item) => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: {
@@ -534,5 +593,8 @@ export function generateStructuredSchema(
 
   schemaGraph.push(faqSchema);
 
-  return JSON.stringify(schemaGraph);
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": schemaGraph,
+  });
 }

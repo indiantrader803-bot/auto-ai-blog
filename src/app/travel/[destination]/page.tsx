@@ -73,27 +73,78 @@ export default async function DestinationPage({
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-sky-500 selection:text-white flex flex-col justify-between">
-      {/* 🌐 JSON-LD Schema for Google TouristDestination Indexing */}
+      {/* 🌐 JSON-LD Schema for Google TouristDestination & FAQPage Indexing */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "TouristDestination",
-            name: guide.name,
-            description: guide.tagline,
-            url: `https://travel.thesmartmag.com/${guide.slug}`,
-            image: guide.heroImage,
-            containedInPlace: {
-              "@type": "Country",
-              name: guide.country,
-            },
-            touristType: ["Adventure", "Luxury", "Budget", "Family"],
-            includesAttraction: guide.topAttractions.map((att) => ({
-              "@type": "TouristAttraction",
-              name: att.title,
-              description: att.description,
-            })),
+            "@graph": [
+              {
+                "@type": "TouristDestination",
+                "@id": `https://thesmartmag.com/travel/${guide.slug}#destination`,
+                name: guide.name,
+                description: guide.tagline,
+                url: `https://thesmartmag.com/travel/${guide.slug}`,
+                image: guide.heroImage,
+                containedInPlace: {
+                  "@type": "Country",
+                  name: guide.country,
+                },
+                touristType: ["Adventure", "Luxury", "Budget", "Family"],
+                includesAttraction: guide.topAttractions.map((att) => ({
+                  "@type": "TouristAttraction",
+                  name: att.title,
+                  description: att.description,
+                })),
+              },
+              {
+                "@type": "FAQPage",
+                "@id": `https://thesmartmag.com/travel/${guide.slug}#faq`,
+                mainEntity: [
+                  {
+                    "@type": "Question",
+                    name: `What is the best time to visit ${guide.name}?`,
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: `The best time to visit ${guide.name} is ${guide.bestTimeToVisit}, offering optimal weather conditions and travel experiences.`,
+                    },
+                  },
+                  {
+                    "@type": "Question",
+                    name: `How many days are needed for a trip to ${guide.name}?`,
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: `The recommended trip duration for ${guide.name} is ${guide.idealDays} to thoroughly explore top attractions, cultural sights, and local highlights.`,
+                    },
+                  },
+                ],
+              },
+              {
+                "@type": "BreadcrumbList",
+                "@id": `https://thesmartmag.com/travel/${guide.slug}#breadcrumb`,
+                itemListElement: [
+                  {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Home",
+                    item: "https://thesmartmag.com",
+                  },
+                  {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "Travel",
+                    item: "https://thesmartmag.com/travel",
+                  },
+                  {
+                    "@type": "ListItem",
+                    position: 3,
+                    name: guide.name,
+                    item: `https://thesmartmag.com/travel/${guide.slug}`,
+                  },
+                ],
+              },
+            ],
           }),
         }}
       />

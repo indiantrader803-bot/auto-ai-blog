@@ -86,6 +86,32 @@ const SEMANTIC_KEYWORD_MAP: Record<string, string[]> = {
     "Japan travel itinerary",
     "travel destinations",
   ],
+  "2026-global-geopolitics-ai-chip-wars-semiconductor-supremacy": [
+    "semiconductor supremacy",
+    "AI chip wars",
+    "TSMC",
+    "Nvidia GPUs",
+    "lithography",
+    "silicon independence",
+  ],
+  "telecom-tariffs-arpu-surge-sovereign-ai-compute-clusters": [
+    "sovereign AI compute",
+    "telecom tariffs",
+    "ARPU surge",
+    "data center infrastructure",
+  ],
+  "ai-influencers-synthetic-media-creator-economy-2026": [
+    "synthetic media",
+    "AI influencers",
+    "creator economy",
+    "virtual avatars",
+  ],
+  "airtel-payments-bank-rural-fintech-digital-lending-breakthrough": [
+    "rural fintech",
+    "digital lending",
+    "Airtel Payments Bank",
+    "financial inclusion",
+  ],
 };
 
 export async function applySmartInternalLinks(
