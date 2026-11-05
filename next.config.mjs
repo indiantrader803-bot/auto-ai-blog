@@ -3,6 +3,7 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
+  staticPageGenerationTimeout: 180,
   experimental: {
     instrumentationHook: true,
   },

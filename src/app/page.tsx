@@ -34,38 +34,43 @@ export default async function HomePage() {
   let categories: any[] = [];
 
   try {
-    const [postsData, catsData] = await Promise.all([
-      prisma.post.findMany({
-        where: { status: "PUBLISHED" },
-        orderBy: { publishedAt: "desc" },
-        take: 24,
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-          excerpt: true,
-          featuredImage: true,
-          imageAlt: true,
-          readTimeMinutes: true,
-          views: true,
-          publishedAt: true,
-          category: {
-            select: {
-              name: true,
-              slug: true,
-              color: true,
+    const [postsData, catsData] = await Promise.race([
+      Promise.all([
+        prisma.post.findMany({
+          where: { status: "PUBLISHED" },
+          orderBy: { publishedAt: "desc" },
+          take: 24,
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            excerpt: true,
+            featuredImage: true,
+            imageAlt: true,
+            readTimeMinutes: true,
+            views: true,
+            publishedAt: true,
+            category: {
+              select: {
+                name: true,
+                slug: true,
+                color: true,
+              },
             },
           },
-        },
-      }),
-      prisma.category.findMany({
-        include: {
-          _count: {
-            select: { posts: true },
+        }),
+        prisma.category.findMany({
+          include: {
+            _count: {
+              select: { posts: true },
+            },
           },
-        },
-        take: 8,
-      }),
+          take: 8,
+        }),
+      ]),
+      new Promise<[null, null]>((_, reject) =>
+        setTimeout(() => reject(new Error("Build homepage DB fetch timeout (2.5s)")), 2500)
+      ),
     ]);
     dbPosts = postsData || [];
     categories = catsData || [];
