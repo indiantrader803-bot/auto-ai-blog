@@ -28,7 +28,7 @@ export default function AboutPage() {
             About TheSmartMag
           </h1>
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            The premier digital intelligence network delivering deep-dive technical reports on artificial intelligence, algorithmic finance, verified prop trading firms, and global luxury travel itineraries.
+            The premier digital intelligence network delivering deep-dive technical reports on artificial intelligence, algorithmic finance, software engineering, and global travel itineraries.
           </p>
         </header>
 
@@ -50,7 +50,7 @@ export default function AboutPage() {
             </div>
             <h3 className="font-bold text-slate-900 dark:text-white">SmartMag Trade</h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-              Unbiased reviews of proprietary trading firms, risk parameters, drawdown rules, and exclusive community discounts.
+              In-depth research on macroeconomic trends, algorithmic systems, global market liquidity, and productivity tools.
             </p>
           </div>
 
