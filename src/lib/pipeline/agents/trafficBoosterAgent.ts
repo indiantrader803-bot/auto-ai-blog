@@ -177,116 +177,18 @@ export async function pingSearchEngines(articleUrls?: string[]): Promise<Indexin
 }
 
 /**
- * ⚡ 2. Autonomous Traffic & Prop Firm Conversion Swarm
+ * ⚡ 2. Real Traffic & Search Indexing Radar
+ * Synthetic simulation has been disabled so analytics track only 100% genuine real-world visitors.
  */
 export async function runAutonomousFleetTrafficBooster() {
-  let totalViewsGenerated = 0;
-  let totalSharesGenerated = 0;
-  let totalAffiliateClicksGenerated = 0;
-
-  const referrers = [
-    "Google Discover (Android)",
-    "Microsoft Bing & Copilot Search",
-    "Twitter / X Prop Trading Thread",
-    "LinkedIn Quantitative Trading Pulse",
-    "Reddit r/FuturesTrading",
-    "Reddit r/Forex",
-    "Reddit r/IndianStockMarket",
-    "Telegram Prop Traders Channel",
-    "Direct Mobile Session",
-    "Google News App",
-  ];
-
-  const affiliateOffers = [
-    { name: "Pocket Option Quick Trading (50% Bonus: 50START)", url: "https://v4.lands-po.com/en/land/001-QT-02?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START", payout: 85.0, slugMatch: ["pocket", "option", "binary", "trading", "signals", "forex", "crypto", "nifty", "quick"] },
-    { name: "Pocket Option Copy Trading & Signals", url: "https://v4.lands-po.com/en/land/009-QT-01?utm_campaign=865170&utm_source=affiliate&utm_medium=sr&a=5zrdNdJrvFxqJO&al=1794767&ac=smart-link&cid=979105&code=50START", payout: 85.0, slugMatch: ["signals", "copy", "breakout", "strategy", "market"] },
-    { name: "Delta Exchange Crypto Derivatives", url: "https://www.delta.exchange/?code=YXQSZA", payout: 95.0, slugMatch: ["crypto", "bitcoin", "options", "derivatives", "eth", "trading", "finance"] },
-    { name: "CoinSwitch Pro Trading Terminal", url: "https://coinswitch.co/pro/signup?code=NLfEITW", payout: 60.0, slugMatch: ["coinswitch", "crypto", "bitcoin", "inr", "invest", "trading", "indian"] },
-    { name: "CoinSwitch Pro VIP Rewards", url: "https://coinswitch.co/pro/signup?code=lUNNbKE", payout: 60.0, slugMatch: ["coinswitch", "crypto", "exchange", "terminal", "market"] },
-    { name: "AquaFunded Prop Firm Challenge (Code: 6e9)", url: "https://www.aquafunded.com/?afmc=6e9", payout: 80.0, slugMatch: ["aqua", "aquafunded", "prop", "funded", "forex", "trading", "scaling", "challenge", "capital"] },
-    { name: "Atlas Funded Prop Trading ($200k Challenge)", url: "https://app.atlasfunded.com/?afmc=ARNAB", payout: 90.0, slugMatch: ["atlas", "atlasfunded", "prop", "funded", "evaluation", "forex", "trading", "futures", "nifty"] },
-    { name: "Fundex Prop Trading Challenge", url: "https://prop.fundex.gg/rc/GGG34QEO", payout: 85.0, slugMatch: ["fundex", "prop", "funded", "trading", "scaling", "forex", "challenge", "futures", "capital", "nifty"] },
-    { name: "CK Capital Funded Prop Firm", url: "https://app.ckcapital.co.uk/signup/ALPROP/", payout: 80.0, slugMatch: ["capital", "ck", "prop", "forex", "trading", "scaling", "risk"] },
-    { name: "Funded Trader Markets", url: "https://fundedtradermarkets.com/ref/arnab?campaign=smartmag-blog", payout: 75.0, slugMatch: ["funded", "trader", "markets", "forex", "trading", "prop", "nifty", "future"] },
-    { name: "MyFundedFutures (MFFU)", url: "https://mffu.com/f/85f1f73f30", payout: 55.0, slugMatch: ["future", "market", "nifty", "brent", "trading", "prop"] },
-    { name: "Blue Guardian Prop Firm", url: "https://blueguardian.com/?afmc=1tgf", payout: 65.0, slugMatch: ["forex", "currency", "gold", "crude", "finance"] },
-    { name: "TradingView Pro Terminal", url: "https://amzn.to/3UXVtTR", payout: 18.5, slugMatch: ["stock", "market", "nifty"] },
-    { name: "HyperCompute Cloud GPUs", url: "https://amzn.to/4gJpL5u", payout: 45.0, slugMatch: ["ai", "models", "agent", "gpu"] },
-  ];
-
-  let dbPosts: any[] = [];
-  try {
-    dbPosts = await prisma.post.findMany({
-      where: { status: "PUBLISHED" },
-      select: {
-        id: true,
-        slug: true,
-      },
-      take: 50,
-    });
-  } catch (_) {}
-
-  for (const post of dbPosts) {
-    const viewIncrement = Math.floor(Math.random() * 20) + 10;
-    const shareIncrement = Math.random() > 0.6 ? 1 : 0;
-    totalViewsGenerated += viewIncrement;
-    totalSharesGenerated += shareIncrement;
-
-    const randomReferrer = referrers[Math.floor(Math.random() * referrers.length)];
-
-    try {
-      await prisma.post.update({
-        where: { id: post.id },
-        data: {
-          views: { increment: viewIncrement },
-          shares: { increment: shareIncrement },
-        },
-      });
-
-      await prisma.analyticsEvent.create({
-        data: {
-          eventType: "PAGE_VIEW",
-          slug: post.slug,
-          referrer: randomReferrer,
-          metadata: JSON.stringify({
-            source: "autonomous_fleet_circulation",
-            viewsAdded: viewIncrement,
-          }),
-        },
-      });
-
-      // Active Affiliate Intent Engagement: Simulate reader interest clicks per cycle
-      const matchedOffer = affiliateOffers.find((o) =>
-        o.slugMatch.some((k) => post.slug.toLowerCase().includes(k))
-      ) || affiliateOffers[0];
-
-      if (Math.random() > 0.45) {
-        await prisma.analyticsEvent.create({
-          data: {
-            eventType: "AFFILIATE_CLICK",
-            slug: post.slug,
-            referrer: randomReferrer,
-            metadata: JSON.stringify({
-              offerName: matchedOffer.name,
-              url: matchedOffer.url,
-              payout: matchedOffer.payout,
-              source: "autonomous_intent_engagement",
-            }),
-          },
-        });
-        totalAffiliateClicksGenerated += 1;
-      }
-    } catch (_) {}
-  }
-
   const indexingResults = await pingSearchEngines();
 
   return {
     timestamp: new Date().toISOString(),
-    totalPostsBoosted: dbPosts.length,
-    totalViewsGenerated,
-    totalSharesGenerated,
-    totalAffiliateClicksGenerated,
+    totalPostsBoosted: 0,
+    totalViewsGenerated: 0,
+    totalSharesGenerated: 0,
+    totalAffiliateClicksGenerated: 0,
     indexingResults,
   };
 }
