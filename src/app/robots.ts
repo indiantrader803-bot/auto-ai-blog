@@ -35,7 +35,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: ["/app", "/admin", "/api/"],
       },
-      // AI Search & Answer bots (explicitly allow for Generative Engine citations)
+      // AI Search, Answers & Generative Engine Crawlers (AEO / GEO Engine Access)
       {
         userAgent: "OAI-SearchBot",
         allow: "/",
@@ -43,6 +43,11 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: "ChatGPT-User",
+        allow: "/",
+        disallow: ["/app", "/admin", "/api/"],
+      },
+      {
+        userAgent: "GPTBot",
         allow: "/",
         disallow: ["/app", "/admin", "/api/"],
       },
@@ -61,12 +66,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: ["/app", "/admin", "/api/"],
       },
-      // AI Training bots
-      {
-        userAgent: "GPTBot",
-        allow: "/",
-        disallow: ["/app", "/admin", "/api/"],
-      },
       {
         userAgent: "ClaudeBot",
         allow: "/",
@@ -74,6 +73,22 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: "Google-Extended",
+        allow: "/",
+      },
+      {
+        userAgent: "Applebot-Extended",
+        allow: "/",
+      },
+      {
+        userAgent: "cohere-ai",
+        allow: "/",
+      },
+      {
+        userAgent: "Meta-ExternalAgent",
+        allow: "/",
+      },
+      {
+        userAgent: "Amazonbot",
         allow: "/",
       },
       // Advertising & Feed verification

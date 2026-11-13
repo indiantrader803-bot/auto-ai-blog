@@ -5,6 +5,7 @@ import Link from "next/link";
 import StoreHeader, { STORE_ACCENT_COLORS } from "@/components/store/StoreHeader";
 import CartDrawer from "@/components/store/CartDrawer";
 import StoreLivePurchasePopups from "@/components/store/StoreLivePurchasePopups";
+import BuyerFaqSection from "@/components/store/BuyerFaqSection";
 import Footer from "@/components/layout/Footer";
 import { useCart } from "@/context/CartContext";
 import { useVip } from "@/context/VipAuthContext";
@@ -887,6 +888,8 @@ export default function StoreHomePage() {
             </div>
           </div>
         )}
+        {/* 8.5 BUYER TRANSPARENCY & 30 BUYER QUESTIONS ACCORDION */}
+        <BuyerFaqSection />
       </main>
 
       {/* 9. MOBILE BOTTOM NAVIGATION BAR */}
