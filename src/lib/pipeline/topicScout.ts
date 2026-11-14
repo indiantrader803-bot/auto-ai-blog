@@ -123,31 +123,63 @@ export interface ScoutedTopic {
   rejected?: string;
 }
 
-/** Strip site suffixes & HN prefixes from feed titles. */
+/** Strip site suffixes, HN prefixes, and split compound/malformed headlines to isolate one single clear entity. */
 function cleanRssTitle(raw: string): string {
   let title = raw.replace(
-    /\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol|Ars Technica|WIRED)$/i,
+    /\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol|Ars Technica|WIRED|BBC News|CNN|CNBC|Bloomberg)$/i,
     ""
   );
   title = title.replace(/^(Show HN|Ask HN|Tell HN):\s*/i, "");
+
+  // Detect and split compound headlines joined by semicolons, vertical bars, or slashes
+  // Example: "PlayStation 5 Pro; Take-Two Interactive" -> "PlayStation 5 Pro"
+  if (title.includes(";")) {
+    const parts = title.split(";").map((p) => p.trim()).filter((p) => p.length >= 10);
+    if (parts.length > 0) title = parts[0];
+  }
+
+  if (title.includes(" | ")) {
+    const parts = title.split(" | ").map((p) => p.trim()).filter((p) => p.length >= 10);
+    if (parts.length > 0) title = parts[0];
+  }
+
+  // If title has a trailing or leading dash separator ("Story 1 - Story 2"), take the primary headline
+  if (/\s+-\s+/.test(title)) {
+    const parts = title.split(/\s+-\s+/).map((p) => p.trim()).filter((p) => p.length >= 10);
+    if (parts.length > 0) title = parts[0];
+  }
+
   return title.trim();
 }
 
 /**
  * Editorial quality gate: is this phrase a durable topic a small publication
- * can realistically rank for? News-feed titles pass; raw one-day search
- * queries ("PNOE's new face mask wants to...") are rejected or reshaped.
+ * can realistically rank for? Rejects compound headlines and disjoint concepts.
  */
 export function passesTopicQualityGate(phrase: string): boolean {
-  if (!phrase || phrase.trim().length < 18 || phrase.length > 140) return false;
+  if (!phrase || phrase.trim().length < 18 || phrase.length > 120) return false;
+
+  // Reject compound or multi-topic strings
+  if (phrase.includes(";") || phrase.includes(" | ") || phrase.includes(" + ")) return false;
+
+  // Reject titles that combine disjoint topics (e.g. gaming with forex, or celebrity with semiconductors)
+  const lower = phrase.toLowerCase();
+  const hasGaming = /playstation|xbox|nintendo|steam|gaming|take-two|gta/i.test(lower);
+  const hasFinance = /forex|nifty|sensex|usd\/inr|yield|treasury|prop firm|drawdown/i.test(lower);
+  const hasCelebrity = /actor|actress|bollywood|hollywood|dating|spotted|wedding/i.test(lower);
+  const hasSemiconductor = /tsmc|nvidia|gpu|lithography|high-na|chip|semiconductor/i.test(lower);
+
+  // Cross-domain compound rejection
+  if ((hasGaming && hasFinance) || (hasCelebrity && hasSemiconductor) || (hasGaming && hasSemiconductor)) {
+    return false;
+  }
 
   // Must look like a story: contain a verb-ish noun phrase, not all-caps shouting.
   const words = phrase.split(/\s+/);
-  if (words.length < 4 || words.length > 22) return false;
+  if (words.length < 4 || words.length > 18) return false;
 
   if (EPHEMERAL_PATTERNS.some((re) => re.test(phrase))) return false;
 
-  const lower = phrase.toLowerCase();
   const hasSubstance = SUBSTANTIVE_WORDS.some((w) => lower.includes(w));
   const looksLikeStory = /\b(how|why|what|new|next|first|inside|the)\b/i.test(phrase);
   return hasSubstance || looksLikeStory;

@@ -28,9 +28,10 @@ async function safeDb<T>(label: string, fn: () => Promise<T>): Promise<T | null>
   }
 }
 
-// Multi-editor cadence guard: allows multiple articles to publish throughout the day (every ~3-4 hours) across different topics
-export const AUTO_PUBLISH_COOLDOWN_HOURS = 3;
+// Multi-editor cadence guard: Restrict automatic publishing to maximum 1-2 authoritative articles per day (16-hour cooldown)
+export const AUTO_PUBLISH_COOLDOWN_HOURS = 16;
 const AUTO_PUBLISH_COOLDOWN_MS = AUTO_PUBLISH_COOLDOWN_HOURS * 60 * 60 * 1000;
+export const MIN_CRITIC_APPROVAL_SCORE = 88;
 
 export async function getLastAutopublishAt(): Promise<Date | null> {
   try {
@@ -312,10 +313,19 @@ export async function runBlogPipeline(
     const categoryName = rawCatName.length > 50 ? rawCatName.slice(0, 50) : rawCatName;
     const categorySlug = generateSlug(categoryName) || "technology";
 
-    const shouldPublish =
+    const passedQualityScore = (critique?.critiqueScore ?? 90) >= MIN_CRITIC_APPROVAL_SCORE;
+    const requestedPublish =
       options.autoPublish !== undefined
         ? options.autoPublish
         : process.env.AUTO_PUBLISH_DEFAULT !== "false";
+
+    // Strictly gate publishing: Must pass critic threshold (>=88/100) or it gets quarantined as DRAFT
+    const shouldPublish = requestedPublish && passedQualityScore;
+    if (requestedPublish && !passedQualityScore) {
+      console.warn(
+        `[PIPELINE] Article quality score (${critique?.critiqueScore ?? 0}/100) is below approval threshold (${MIN_CRITIC_APPROVAL_SCORE}). Quarantined as DRAFT.`
+      );
+    }
 
     // Attempt to safely resolve or create Category
     let dbCategory: any = null;

@@ -17,18 +17,39 @@ export function generateCatchyViralHeadline(rawTopic: string, category: string =
   excerpt: string;
   angle: string;
 } {
-  // 1. Sanitize raw input - strip RSS prefixes, "The Future of", etc.
+  // 1. Sanitize raw input - strip RSS prefixes, "The Future of", and split compound strings
   let cleanTopic = rawTopic
     .replace(/^The Future of\s+/i, "")
     .replace(/:\s*Key Trends.*$/i, "")
     .replace(/:\s*Innovations & What's Next.*$/i, "")
     .replace(/^(Show HN|Ask HN|Tell HN):\s*/i, "")
-    .replace(/\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol|Ars Technica|WIRED)$/i, "")
+    .replace(/\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol|Ars Technica|WIRED|BBC News|CNN|CNBC)$/i, "")
     .replace(/[\[\(].*?[\]\)]/g, "")
     .trim();
 
+  // If topic contains a compound separator (semicolon, pipe, slash), take only the first entity
+  if (cleanTopic.includes(";")) {
+    cleanTopic = cleanTopic.split(";")[0].trim();
+  }
+  if (cleanTopic.includes(" | ")) {
+    cleanTopic = cleanTopic.split(" | ")[0].trim();
+  }
+  if (/\s+-\s+/.test(cleanTopic)) {
+    cleanTopic = cleanTopic.split(/\s+-\s+/)[0].trim();
+  }
+
   // If topic has trailing punctuation, clean it
   cleanTopic = cleanTopic.replace(/[:;,\.\-]+$/, "").trim();
+
+  // If topic is already a well-formed complete editorial title (6 to 14 words), keep it natural
+  const wordCount = cleanTopic.split(/\s+/).length;
+  if (wordCount >= 6 && wordCount <= 14 && !/^the 2026/i.test(cleanTopic) && !/^mastering/i.test(cleanTopic)) {
+    return {
+      title: cleanTopic,
+      excerpt: `An in-depth investigation into ${cleanTopic}: technical teardown, live benchmarks, and strategic takeaways.`,
+      angle: `Comprehensive analysis focused solely on ${cleanTopic} with primary source verification and reproducible benchmarks.`,
+    };
+  }
 
   const cat = category.toLowerCase();
   const isFinance = cat.includes("market") || cat.includes("trading") || cat.includes("finance") || cat.includes("commodity") || cat.includes("forex");
