@@ -21,16 +21,16 @@ export function generateCatchyViralHeadline(
   angle: string;
 } {
   const cleanTopic = rawTopic
-    .replace(/^(Show HN|Ask HN|Tell HN):\\s*/i, "")
+    .replace(/^(Show HN|Ask HN|Tell HN):\s*/i, "")
     .replace(
-      /\\s*-\\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol|Ars Technica|WIRED|BBC News|CNN|CNBC|Bloomberg)$/i,
+      /\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol|Ars Technica|WIRED|BBC News|CNN|CNBC|Bloomberg)$/i,
       ""
     )
     .trim()
     // Defensive fallback for manual callers. TopicScout rejects these inputs.
-    .split(/\\s*(?:;|\\||\\/|\\+)\\s*/)[0]
-    .split(/\\s+-\\s+/)[0]
-    .replace(/[\\s:;,.-]+$/, "")
+    .split(/\s*(?:;|\||\/|\+)\s*/)[0]
+    .split(/\s+-\s+/)[0]
+    .replace(/[\s:;,.-]+$/, "")
     .trim();
 
   const title = cleanTopic || "Editorial topic requires review";
