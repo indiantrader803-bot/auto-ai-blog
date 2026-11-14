@@ -123,33 +123,24 @@ export interface ScoutedTopic {
   rejected?: string;
 }
 
-/** Strip site suffixes, HN prefixes, and split compound/malformed headlines to isolate one single clear entity. */
+/**
+ * Remove publisher labels and reject joined stories. Silently truncating a
+ * compound headline can create a misleading or context-free topic.
+ */
 function cleanRssTitle(raw: string): string {
-  let title = raw.replace(
-    /\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol|Ars Technica|WIRED|BBC News|CNN|CNBC|Bloomberg)$/i,
-    ""
-  );
-  title = title.replace(/^(Show HN|Ask HN|Tell HN):\s*/i, "");
+  const title = raw
+    .replace(
+      /\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol|Ars Technica|WIRED|BBC News|CNN|CNBC|Bloomberg)$/i,
+      ""
+    )
+    .replace(/^(Show HN|Ask HN|Tell HN):\s*/i, "")
+    .trim();
 
-  // Detect and split compound headlines joined by semicolons, vertical bars, or slashes
-  // Example: "PlayStation 5 Pro; Take-Two Interactive" -> "PlayStation 5 Pro"
-  if (title.includes(";")) {
-    const parts = title.split(";").map((p) => p.trim()).filter((p) => p.length >= 10);
-    if (parts.length > 0) title = parts[0];
+  if (!title) return "";
+  if (/[;|/]/.test(title) || /\s+-\s+/.test(title) || /\s+\+\s+/.test(title)) {
+    return "";
   }
-
-  if (title.includes(" | ")) {
-    const parts = title.split(" | ").map((p) => p.trim()).filter((p) => p.length >= 10);
-    if (parts.length > 0) title = parts[0];
-  }
-
-  // If title has a trailing or leading dash separator ("Story 1 - Story 2"), take the primary headline
-  if (/\s+-\s+/.test(title)) {
-    const parts = title.split(/\s+-\s+/).map((p) => p.trim()).filter((p) => p.length >= 10);
-    if (parts.length > 0) title = parts[0];
-  }
-
-  return title.trim();
+  return title;
 }
 
 /**
@@ -159,8 +150,8 @@ function cleanRssTitle(raw: string): string {
 export function passesTopicQualityGate(phrase: string): boolean {
   if (!phrase || phrase.trim().length < 18 || phrase.length > 120) return false;
 
-  // Reject compound or multi-topic strings
-  if (phrase.includes(";") || phrase.includes(" | ") || phrase.includes(" + ")) return false;
+  // Reject joined stories; ordinary hyphens within product and technical names remain valid.
+  if (/[;|/]/.test(phrase) || /\s+-\s+/.test(phrase) || /\s+\+\s+/.test(phrase)) return false;
 
   // Reject titles that combine disjoint topics (e.g. gaming with forex, or celebrity with semiconductors)
   const lower = phrase.toLowerCase();
@@ -345,16 +336,16 @@ export async function scoutTrendingTopic(customNiche?: string): Promise<ScoutedT
         const raw = cleanRssTitle(item.title || "");
         if (!raw) continue;
 
-        let topic: string;
-        if (isRawTrends && !passesTopicQualityGate(raw)) {
-          const reshaped = reshapeEphemeralTrend(raw);
-          if (!reshaped) {
+        let topic = raw;
+        if (!passesTopicQualityGate(raw)) {
+          // Trends may be reshaped around one recognized product/entity.
+          // Ordinary RSS headlines that fail the gate are rejected outright.
+          const reshaped = isRawTrends ? reshapeEphemeralTrend(raw) : null;
+          if (!reshaped || !passesTopicQualityGate(reshaped)) {
             rejected.push(raw);
             continue;
           }
           topic = reshaped;
-        } else {
-          topic = raw;
         }
 
         if (isDuplicateTopic(topic, recentSignatures)) {

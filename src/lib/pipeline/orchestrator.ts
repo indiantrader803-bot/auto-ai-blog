@@ -172,18 +172,13 @@ export async function runBlogPipeline(
       percent: 45,
     });
 
-    const critique = options.fastMode
-      ? {
-          finalTitle: aiResult.title,
-          finalContent: aiResult.content,
-          critiqueScore: 92,
-          critiqueNotes: "Fast mode: critic rewrite loop skipped to fit cron time budget.",
-        }
-      : await runCriticAndSelfImprovement(
-          targetTopic,
-          aiResult.title,
-          aiResult.content
-        );
+    // Fast mode may shorten other pipeline work, but it must never fabricate
+    // a passing critic score. Every auto-publish candidate gets real review.
+    const critique = await runCriticAndSelfImprovement(
+      targetTopic,
+      aiResult.title,
+      aiResult.content
+    );
 
     let refinedTitle = critique.finalTitle || aiResult.title;
     let refinedContent = critique.finalContent || aiResult.content;
@@ -313,7 +308,7 @@ export async function runBlogPipeline(
     const categoryName = rawCatName.length > 50 ? rawCatName.slice(0, 50) : rawCatName;
     const categorySlug = generateSlug(categoryName) || "technology";
 
-    const passedQualityScore = (critique?.critiqueScore ?? 90) >= MIN_CRITIC_APPROVAL_SCORE;
+    const passedQualityScore = Number.isFinite(critique?.critiqueScore) && critique.critiqueScore >= MIN_CRITIC_APPROVAL_SCORE;
     const requestedPublish =
       options.autoPublish !== undefined
         ? options.autoPublish
