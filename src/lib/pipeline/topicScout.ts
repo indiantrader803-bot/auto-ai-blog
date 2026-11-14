@@ -130,14 +130,14 @@ export interface ScoutedTopic {
 function cleanRssTitle(raw: string): string {
   const title = raw
     .replace(
-      /\\s*-\\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol|Ars Technica|WIRED|BBC News|CNN|CNBC|Bloomberg)$/i,
+      /\s*-\s*(TechCrunch|The Verge|Google Trends|Hacker News|Reuters|Economic Times|Moneycontrol|Ars Technica|WIRED|BBC News|CNN|CNBC|Bloomberg)$/i,
       ""
     )
-    .replace(/^(Show HN|Ask HN|Tell HN):\\s*/i, "")
+    .replace(/^(Show HN|Ask HN|Tell HN):\s*/i, "")
     .trim();
 
   if (!title) return "";
-  if (/[;|]/.test(title) || /\\s+\\/\\s+/.test(title) || /\\s+-\\s+/.test(title) || /\\s+\\+\\s+/.test(title)) {
+  if (/[;|]/.test(title) || /\s+\/\s+/.test(title) || /\s+-\s+/.test(title) || /\s+\+\s+/.test(title)) {
     return "";
   }
   return title;
@@ -151,7 +151,7 @@ export function passesTopicQualityGate(phrase: string): boolean {
   if (!phrase || phrase.trim().length < 18 || phrase.length > 120) return false;
 
   // Reject joined stories; ordinary hyphens within product and technical names remain valid.
-  if (/[;|]/.test(phrase) || /\\s+\\/\\s+/.test(phrase) || /\\s+-\\s+/.test(phrase) || /\\s+\\+\\s+/.test(phrase)) return false;
+  if (/[;|]/.test(phrase) || /\s+\/\s+/.test(phrase) || /\s+-\s+/.test(phrase) || /\s+\+\s+/.test(phrase)) return false;
 
   // Reject titles that combine disjoint topics (e.g. gaming with forex, or celebrity with semiconductors)
   const lower = phrase.toLowerCase();
