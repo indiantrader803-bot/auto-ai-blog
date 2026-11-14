@@ -6,6 +6,7 @@ import StoreHeader, { STORE_ACCENT_COLORS } from "@/components/store/StoreHeader
 import CartDrawer from "@/components/store/CartDrawer";
 import StoreLivePurchasePopups from "@/components/store/StoreLivePurchasePopups";
 import BuyerFaqSection from "@/components/store/BuyerFaqSection";
+import AmazonAffiliateShowcase from "@/components/monetization/AmazonAffiliateShowcase";
 import Footer from "@/components/layout/Footer";
 import { useCart } from "@/context/CartContext";
 import { useVip } from "@/context/VipAuthContext";
@@ -673,6 +674,11 @@ export default function StoreHomePage() {
             </div>
           </div>
         </section>
+
+        {/* 6.5. OFFICIAL AMAZON ASSOCIATES HARDWARE & DEVELOPER SHOWCASE */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <AmazonAffiliateShowcase />
+        </div>
 
         {/* 7. VALUE PROPOSITION FOOTER TRUST BADGES */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-t border-slate-200/80 dark:border-slate-800/80">
