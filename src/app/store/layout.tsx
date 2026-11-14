@@ -4,6 +4,9 @@ import Script from "next/script";
 export const metadata: Metadata = {
   title: "TheSmartMag Store | Trending AI Tools, Tech & Premium Gear",
   description: "Explore the official TheSmartMag Store for trending tech, AI gadgets, developer gear, and smart lifestyle products.",
+  alternates: {
+    canonical: "https://thesmartmag.com/store",
+  },
 };
 
 export default function StoreLayout({

@@ -104,12 +104,7 @@ export default function CheckoutPage() {
   };
 
   const handleRazorpayPayment = async () => {
-    if (!user) {
-      alert("Please sign in or register an account before placing your order.");
-      router.push(`/store/login?redirect=${encodeURIComponent("/store/checkout")}`);
-      return;
-    }
-
+    // Guest checkout enabled: shoppers can purchase instantly without forcing account creation
     if (!buyerName.trim()) {
       alert("Please enter customer recipient full name.");
       return;

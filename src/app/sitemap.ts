@@ -189,13 +189,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.95,
     },
-    
-    
-    
-    
-    
-    
-    
     {
       url: `${baseUrl}/vip`,
       lastModified: new Date(),
@@ -207,12 +200,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/best-ai-tools`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
     },
     {
       url: `${baseUrl}/store`,
