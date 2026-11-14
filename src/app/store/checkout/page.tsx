@@ -140,7 +140,7 @@ export default function CheckoutPage() {
       .join(", ");
 
     try {
-      // 1. Create order on server
+      // 1. Create order on server with calculated final total
       const res = await fetch("/api/store/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -151,6 +151,7 @@ export default function CheckoutPage() {
           buyerName,
           buyerPhone,
           currency,
+          amount: finalTotal,
           shippingAddress: fullShippingAddress,
           isPhysical: hasPhysical,
           paymentMethod: "RAZORPAY",
