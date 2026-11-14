@@ -308,7 +308,7 @@ export async function runBlogPipeline(
     const categoryName = rawCatName.length > 50 ? rawCatName.slice(0, 50) : rawCatName;
     const categorySlug = generateSlug(categoryName) || "technology";
 
-    const passedQualityScore = (critique?.critiqueScore ?? 90) >= MIN_CRITIC_APPROVAL_SCORE;
+    const passedQualityScore = Number.isFinite(critique?.critiqueScore) && critique.critiqueScore >= MIN_CRITIC_APPROVAL_SCORE;
     const requestedPublish =
       options.autoPublish !== undefined
         ? options.autoPublish
